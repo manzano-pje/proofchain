@@ -1,0 +1,134 @@
+Crie uma plataforma para geração e validação de certificados com as seguintes especificações:
+
+TECNOLOGIAS & FRAMEWORK:
+- HTML5 + CSS3 + JS
+- TailwindCSS + Shadcn/ui para componentes
+- React Hook Form + Zod para validação
+- Zustand para gerenciamento de estado
+- Animations: Framer Motion
+- Icons: Lucide React
+
+ARQUITETURA & ESTRUTURA:
+- Arquitetura modular com custom hooks
+- Components reutilizáveis e type-safe
+- Pages: 
+  - Login, Dashboard
+  - Certificados
+    - Emitir Certificado, 
+    - Validação
+  - Cadsatros
+    - Cursos
+    - Participantes
+  - Configuração
+  - Sair  
+
+- Responsive design (mobile-first)
+- Dark/Light theme support
+
+FUNCIONALIDADES
+1. ** Autenticação **
+   - Conexão obrigatória através de login e senha
+   - Feedback visual de conexão
+   - Conexão persistente
+
+2. ** DASHBOARD **
+   - Menu lateral com topicos das páginas
+   - menu superior 
+     - Painel (Dashboard)
+     - Certificados
+     - Relatórios
+   - Logotipo
+   - Parte principal contendo 3 blocos horizontais 
+     - Certificados emitidos 
+     - Transações on-chain - Registros de prova (hashes) armazenados
+     - Saldo (estimado)
+       R$ 0,80 por certificado emitido
+
+   - Box horizontal contendo a listagem dos últimos certificados emitidos com os dados:
+     - ID, Participante, Curso, Data emissão
+
+3. ** Emitir Certificado **
+   - Selecionar participante através checkbox atraves de pesquisa, lista ou selecionar todos
+   - Entrada de dados
+     - cursp
+     - Data início
+     - Data final
+     - carga horária
+   - botão gerar Certificado
+   - Pré-visualizar
+   - Limpar
+4. ** VALIDAÇÃO **
+   - Box com o campo Número do ID do Certificado
+   - Botão validar
+   - Apresentar a mensagem Não encontrado caso o ID não exista
+   - Apresentar os dados:
+     -Status Válido
+     - Participante:
+     - Curso
+     - Emitido em
+     - ID
+
+5. ** CADASTRO CURSOS **
+   - Card com o campo Curso
+   - Botões Gravar, excluir, cancelar
+   - Lista com os cursos cadastrados
+   - icones de funcionalidades nos itens das linhas
+
+6. ** CADASTRO PARTICIPANTES **
+   - Card com os campos:
+     - Nome
+     - Curso (abrir lista dropdwn dos cursos cadastrados para seleção)
+     - Data de Nascimento
+   - Botões Gravar, excluir, cancelar
+   - Lista com os cursos cadastrados
+   - icones de funcionalidades nos itens das linhas   
+
+7. ** CONFIGURAÇÃO **
+   - card para cadastro da instituição
+     - nome da instituição
+     - logo da instituição
+
+VALIDAÇÃO & REGRAS DE NEGÓCIOS
+   - Certificado so pode ser emitido para participante cadastrado
+   - Participante obrigatoriamente tem que estar cadastrado em um curso
+   - Data de início não pode ser posterior a data de hoje
+   - Data final não pode ser anterior ao início
+   - Idade obrigatória no cadastro do participante idade ser maior que 16 anos
+   - a pré-visualização deverá ser apresentada sem o id em um modal centralizado com botão para fechar e download imagem
+   - A geração do certificado deverá aparecer em um modal centralizado na tela, com as opções de imprimir ou download pdf
+   - Cadastros não podem ser duplicados. 
+
+UX/UI GUIDELINES:
+- Design System consistente (cores, tipografia, espaçamentos)
+- Estados visuais claros: disponível (verde), ocupado (vermelho), carregando
+- Micro-interactions e feedback tátil
+- Skeleton loaders durante fetch de dados
+- Toast notifications para ações
+- Breadcrumbs para navegação
+- Empty states informativos
+
+ACESSIBILIDADE & PERFORMANCE:
+- Semantic HTML e ARIA labels
+- Lighthouse score > 90
+- Bundle splitting e lazy loading
+- Image optimization (Next.js Image)
+
+SEGURANÇA:
+- Sanitização de inputs
+- Rate limiting visual feedback
+- Error boundaries para crash prevention
+- Secure environment variables handling
+
+MOBILE & RESPONSIVIDADE:
+- Touch-friendly (min 44px tap targets)
+- Swipe gestures para carrosséis
+- Progressive Web App features
+- Offline state handling
+
+INTERNACIONALIZAÇÃO:
+- Suporte pt-BR e en-US
+- Formatação de moeda por região
+- Date/time localization
+
+admin@example.com
+password
