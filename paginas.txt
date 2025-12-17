@@ -1,0 +1,27 @@
+- Login
+- Dashboard
+- Cadastro instituição
+- Cadastro usuário
+- Cadastro curso
+- Cadastro do participante
+- Emisão do certificado
+  - prévia do certificado
+  - geração do certificado
+
+- Validação do certificado
+  - validação ok
+  - erro de validação
+- Configurações
+
+- Relatórios
+  - financeiro
+  - empresas
+  - 
+
+
+Usuário:
+* login
+* cadastro da empresa
+* cadastro de participantes
+* cadastro de cursos
+* geração de certificado

@@ -1,6 +1,6 @@
 :root {
   --primary: #2d6cdf;
-  --secondary: #1e293b;
+  --secondary: #394e70;
   --success: #16a34a;
   --danger: #dc2626;
   --background: #ebf1f7;
@@ -30,4 +30,11 @@ body {
     background: var(--background);
     color: var(--text-dark);
     height: 100vh;
+}
+
+h1{
+    font-size: 1.20rem;
+    color: var(--primary);
+    font-weight: bolder
+    ;
 }
