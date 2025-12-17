@@ -34,7 +34,6 @@
 .login-image img{
   height: 100%;
   width: 100%;
-  
 }
 
 .login-slogan{
@@ -50,7 +49,6 @@
   width: 50%;             /* Deve ter a mesma largura que o .login-image */
   box-sizing: border-box; /* Garante que o padding não aumente o width */
   z-index: 10;            /* Mantenha um z-index alto para garantir a sobreposição */
-
 }
 
 .login-form {
@@ -82,15 +80,18 @@
   margin-bottom: 20px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  
 }
 .login-form button {
   padding: 12px;
   background: var(--primary);
   color: #fff;
-  border: none;
-  border-radius: 4px;
+  font-weight: bolder;
+  border: 2px solid var(--secondary);
+  border-radius: 45px;
   cursor: pointer;
 }
+ 
 .login-form button:hover {
   background: #1e40af;
 }
