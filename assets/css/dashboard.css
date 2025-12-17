@@ -1,0 +1,36 @@
+header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background-color: var(--background);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.menu{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+.menu {
+    font-size: 68px;
+    font-weight: bold;
+    color: #333;
+    margin: 0 15px;
+}
+nav .butao-superior{
+    background-color: var(--button);
+    border: 2px solid var(--secondary);
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    padding: 10px 15px;
+    border-radius: 15px;
+    width: 180px;
+    
+}
+nav .butao-superior:hover{
+    background-color: var(--button-hover);
+    color: var(--button-hover-text);
+}
