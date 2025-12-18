@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ValidaorPRO — Certificação com Blockchain</title>
+  <meta name="description"
+    content="Sistema seguro para emissão e validação de certificados com tecnologia blockchain para escolas, cursos e ONGs." />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    :root {
+      --green: #00C19D;
+      --black: #212525;
+      --white: #ffffff;
+      --gray-light: #f8f9fa;
+      --gray: #6c757d;
+      --gray-dark: #495057;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--black);
+      line-height: 1.6;
+      background-color: var(--white);
+      scroll-behavior: smooth;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Header */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: var(--white);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      z-index: 1000;
+    }
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 0;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 1.5rem;
+      color: var(--black);
+    }
+
+    .logo i {
+      color: var(--green);
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 24px;
+    }
+
+    nav a {
+      font-weight: 600;
+      transition: color 0.3s;
+    }
+
+    nav a:hover {
+      color: var(--green);
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn-primary {
+      background-color: var(--green);
+      color: var(--white);
+    }
+
+    .btn-primary:hover {
+      background-color: #00a88a;
+      transform: translateY(-2px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 2px solid var(--green);
+      color: var(--green);
+    }
+
+    .btn-outline:hover {
+      background-color: var(--green);
+      color: var(--white);
+    }
+
+    .mobile-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--black);
+    }
+
+    /* Hero */
+    .hero {
+      padding: 160px 0 80px;
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9f7f3 100%);
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 2.8rem;
+      font-weight: 800;
+      margin-bottom: 24px;
+      color: var(--black);
+    }
+
+    .hero h1 span {
+      color: var(--green);
+    }
+
+    .hero p {
+      font-size: 1.25rem;
+      max-width: 700px;
+      margin: 0 auto 40px;
+      color: var(--gray-dark);
+    }
+
+    .hero-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    /* Section */
+    section {
+      padding: 80px 0;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .section-title h2 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 16px;
+    }
+
+    .section-title p {
+      color: var(--gray);
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    /* Validation */
+    .validation {
+      background-color: var(--white);
+    }
+
+    .validation-box {
+      max-width: 600px;
+      margin: 0 auto;
+      background: var(--white);
+      border: 2px solid #eee;
+      border-radius: 12px;
+      padding: 32px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    }
+
+    .validation-box h3 {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+    }
+
+    .input-group {
+      margin-bottom: 20px;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 14px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border 0.3s;
+    }
+
+    .input-group input:focus {
+      outline: none;
+      border-color: var(--green);
+    }
+
+    .validation-result {
+      margin-top: 24px;
+      padding: 20px;
+      border-radius: 8px;
+      display: none;
+    }
+
+    .validation-result.valid {
+      background-color: #e6f7ee;
+      border: 1px solid #a8e6c1;
+      color: #1b7a4e;
+      display: block;
+    }
+
+    .validation-result.invalid {
+      background-color: #fde9e9;
+      border: 1px solid #f5c6c6;
+      color: #d32f2f;
+      display: block;
+    }
+
+    .status {
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+
+    /* Grid Cards */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .card {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 32px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+      transition: transform 0.3s, box-shadow 0.3s;
+      text-align: center;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    }
+
+    .card i {
+      font-size: 2.5rem;
+      color: var(--green);
+      margin-bottom: 20px;
+    }
+
+    .card h3 {
+      font-size: 1.4rem;
+      margin-bottom: 16px;
+    }
+
+    /* Plans */
+    .plans {
+      background-color: var(--gray-light);
+    }
+
+    .plan {
+      background: var(--white);
+      border: 2px solid #eee;
+      border-radius: 12px;
+      padding: 32px;
+      text-align: center;
+      transition: all 0.3s;
+    }
+
+    .plan.popular {
+      border-color: var(--green);
+      position: relative;
+    }
+
+    .popular-badge {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--green);
+      color: var(--white);
+      font-size: 0.85rem;
+      font-weight: bold;
+      padding: 4px 16px;
+      border-radius: 20px;
+    }
+
+    .plan h3 {
+      font-size: 1.5rem;
+      margin-bottom: 12px;
+    }
+
+    .price {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--black);
+      margin: 16px 0;
+    }
+
+    .price span {
+      font-size: 1rem;
+      font-weight: normal;
+      color: var(--gray);
+    }
+
+    .features {
+      list-style: none;
+      margin: 24px 0;
+      text-align: left;
+    }
+
+    .features li {
+      padding: 8px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .features li i {
+      color: var(--green);
+    }
+
+    /* FAQ */
+    .faq-item {
+      margin-bottom: 16px;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .faq-question {
+      padding: 16px 20px;
+      font-weight: 600;
+      background: var(--white);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .faq-answer {
+      padding: 0 20px;
+      max-height: 0;
+      overflow: hidden;
+      background: #fafafa;
+      transition: max-height 0.3s ease, padding 0.3s ease;
+    }
+
+    .faq-answer.open {
+      padding: 20px;
+      max-height: 500px;
+    }
+
+    /* CTA */
+    .cta {
+      background: var(--green);
+      color: var(--white);
+      text-align: center;
+    }
+
+    .cta h2 {
+      font-size: 2.5rem;
+      margin-bottom: 24px;
+    }
+
+    /* Footer */
+    footer {
+      background: var(--black);
+      color: #aaa;
+      padding: 60px 0 30px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 32px;
+      margin-bottom: 40px;
+    }
+
+    .footer-col h4 {
+      color: var(--white);
+      margin-bottom: 20px;
+      font-size: 1.1rem;
+    }
+
+    .footer-col ul {
+      list-style: none;
+    }
+
+    .footer-col ul li {
+      margin-bottom: 10px;
+    }
+
+    .footer-col ul li a {
+      transition: color 0.3s;
+    }
+
+    .footer-col ul li a:hover {
+      color: var(--green);
+    }
+
+    .copyright {
+      text-align: center;
+      padding-top: 30px;
+      border-top: 1px solid #333;
+      font-size: 0.9rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .mobile-toggle {
+        display: block;
+      }
+
+      nav ul {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: var(--white);
+        flex-direction: column;
+        padding: 20px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      nav ul.show {
+        display: flex;
+      }
+
+      .hero h1 {
+        font-size: 2.2rem;
+      }
+
+      .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .btn {
+        width: 100%;
+        max-width: 300px;
+      }
+    }
+
+    /* Modal Checkout */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 2000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-content {
+      background: var(--white);
+      width: 100%;
+      max-width: 500px;
+      border-radius: 12px;
+      padding: 32px;
+      position: relative;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+      animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateY(20px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .close-modal {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 1.5rem;
+      color: var(--gray);
+      cursor: pointer;
+      background: none;
+      border: none;
+    }
+
+    .form-row {
+      margin-bottom: 16px;
+    }
+
+    .form-row label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .form-row input,
+    .form-row select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="container">
+      <div class="header-content">
+        <a href="#" class="logo">
+          <i class="fas fa-shield-alt"></i>
+          <span>Validaor<span style="color:#00C19D">PRO</span></span>
+        </a>
+
+        <button class="mobile-toggle" id="mobileToggle">
+          <i class="fas fa-bars"></i>
+        </button>
+
+        <nav>
+          <ul id="navMenu">
+            <li><a href="#recursos">Recursos</a></li>
+            <li><a href="#como-funciona">Como funciona</a></li>
+            <li><a href="#planos">Planos</a></li>
+            <li><a href="./sistema.html" class="btn btn-outline" style="border:none; padding: 0;">Entrar</a></li>
+            <li><a href="#validacao" class="btn btn-primary">Validar</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <h1>Emita e valide certificados com <span>máxima segurança</span></h1>
+      <p>Sistema especializado para escolas, cursos e ONGs que precisam de certificação imutável, verificável e segura
+        com tecnologia blockchain.</p>
+      <div class="hero-buttons">
+        <a href="#planos" class="btn btn-primary">Comece agora</a>
+        <a href="#validacao" class="btn btn-outline">Validar certificado</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Validation -->
+  <section id="validacao" class="validation">
+    <div class="container">
+      <div class="section-title">
+        <h2>Validação pública de certificados</h2>
+        <p>Acesso livre para qualquer pessoa verificar a autenticidade de um certificado em segundos.</p>
+      </div>
+
+      <div class="validation-box">
+        <h3>Informe o código do certificado</h3>
+        <form id="validationForm">
+          <div class="input-group">
+            <label for="certCode">Código (ex: CERT-2025-AB12CD)</label>
+            <input type="text" id="certCode" placeholder="Digite o código aqui" required>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%">Validar</button>
+        </form>
+
+        <div id="result" class="validation-result">
+          <div class="status" id="status"></div>
+          <div id="details"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Recursos -->
+  <section id="recursos">
+    <div class="container">
+      <div class="section-title">
+        <h2>Por que escolher o ValidaorPRO?</h2>
+        <p>Tecnologia blockchain aplicada à certificação para garantir confiança absoluta.</p>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <i class="fas fa-lock"></i>
+          <h3>Segurança Blockchain</h3>
+          <p>Cada certificado é registrado em blockchain, tornando-o imutável e verificável publicamente.</p>
+        </div>
+        <div class="card">
+          <i class="fas fa-users"></i>
+          <h3>Três Acessos</h3>
+          <p>Visitante (validação), Instituição (emissão) e Administrador (gestão completa).</p>
+        </div>
+        <div class="card">
+          <i class="fas fa-file-certificate"></i>
+          <h3>Modelos Personalizáveis</h3>
+          <p>Crie modelos com sua identidade visual: logo, cores, layout e mais.</p>
+        </div>
+        <div class="card">
+          <i class="fas fa-chart-bar"></i>
+          <h3>Relatórios Inteligentes</h3>
+          <p>Emissão por curso, validações, desempenho — tudo em tempo real.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Como Funciona -->
+  <section id="como-funciona" class="validation">
+    <div class="container">
+      <div class="section-title">
+        <h2>Como funciona</h2>
+        <p>Três níveis de acesso, cada um com funcionalidades especializadas.</p>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <i class="fas fa-search"></i>
+          <h3>Validação Pública</h3>
+          <p>Acesso livre pela página principal. Basta inserir o código para ver todos os dados do certificado.</p>
+        </div>
+        <div class="card">
+          <i class="fas fa-school"></i>
+          <h3>Instituições</h3>
+          <p>Login para emitir certificados, cadastrar cursos/participantes, gerar relatórios e mais.</p>
+        </div>
+        <div class="card">
+          <i class="fas fa-cog"></i>
+          <h3>Administrador</h3>
+          <p>Gestão de clientes, assinaturas, alertas, cobrança e relatórios estratégicos de negócio.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Planos -->
+  <section id="planos" class="plans">
+    <div class="container">
+      <div class="section-title">
+        <h2>Planos simples e transparentes</h2>
+        <p>Escolha o modelo ideal para sua instituição.</p>
+      </div>
+
+      <div class="grid">
+        <div class="plan">
+          <h3>Por Quantidade</h3>
+          <p>Pacotes de 10, 20, 50 ou 100 certificados</p>
+          <div class="price">R$ 4,90 <span>/certificado</span></div>
+          <ul class="features">
+            <li><i class="fas fa-check"></i> Modelo padrão</li>
+            <li><i class="fas fa-check"></i> Validação ilimitada</li>
+            <li><i class="fas fa-check"></i> Relatórios básicos</li>
+            <li><i class="fas fa-check"></i> Suporte por e-mail</li>
+          </ul>
+          <a href="#" class="btn btn-outline">Comprar pacote</a>
+        </div>
+
+        <div class="plan">
+          <h3>Assinatura Básica</h3>
+          <p>Até 50 certificados/mês</p>
+          <div class="price">R$ 49,90 <span>/mês</span></div>
+          <ul class="features">
+            <li><i class="fas fa-check"></i> Modelo padrão</li>
+            <li><i class="fas fa-check"></i> Dashboard completo</li>
+            <li><i class="fas fa-check"></i> Relatórios avançados</li>
+            <li><i class="fas fa-check"></i> Suporte prioritário</li>
+          </ul>
+          <a href="#" class="btn btn-outline">Assinar plano</a>
+        </div>
+
+        <div class="plan popular">
+          <div class="popular-badge">Mais Popular</div>
+          <h3>Assinatura Premium</h3>
+          <p>Certificados ilimitados</p>
+          <div class="price">R$ 99,90 <span>/mês</span></div>
+          <ul class="features">
+            <li><i class="fas fa-check"></i> Modelos personalizados</li>
+            <li><i class="fas fa-check"></i> API de integração</li>
+            <li><i class="fas fa-check"></i> Dashboard avançado</li>
+            <li><i class="fas fa-check"></i> Suporte dedicado</li>
+          </ul>
+          <a href="#" class="btn btn-primary">Assinar plano</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <div class="container">
+      <div class="section-title">
+        <h2>Perguntas frequentes</h2>
+        <p>Tire suas dúvidas sobre o ValidaorPRO.</p>
+      </div>
+
+      <div style="max-width: 800px; margin: 0 auto;">
+        <div class="faq-item">
+          <div class="faq-question">
+            <span>Como funciona a validação em blockchain?</span>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+          <div class="faq-answer">
+            <p>Cada certificado recebe um hash único gravado em blockchain. Na validação, comparamos esse hash com os
+              dados atuais — se coincidirem, o certificado é autêntico.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            <span>Posso usar meu próprio modelo de certificado?</span>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+          <div class="faq-answer">
+            <p>Sim! Apenas no plano Premium. Você pode criar layouts com sua logo, cores institucionais e assinaturas.
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            <span>Os certificados têm validade?</span>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+          <div class="faq-answer">
+            <p>Sim. Você define a data de validade ao emitir. O sistema mostra se está válido, expirado ou revogado.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-question">
+            <span>Posso revogar um certificado?</span>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+          <div class="faq-answer">
+            <p>Sim. Instituições podem revogar a qualquer momento. Após isso, o certificado aparece como "revogado" na
+              validação pública.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Final -->
+  <section class="cta">
+    <div class="container">
+      <h2>Certifique com confiança, valide com segurança</h2>
+      <p>Junte-se a instituições que já transformaram sua certificação com blockchain.</p>
+      <a href="#planos" class="btn btn-primary" style="margin-top: 20px; font-size: 1.1rem;">Comece sua avaliação
+        gratuita</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h4>ValidaorPRO</h4>
+          <p style="color:#aaa; margin-top: 12px;">Sistema de certificação com blockchain para instituições que
+            valorizam autenticidade.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Solução</h4>
+          <ul>
+            <li><a href="#recursos">Recursos</a></li>
+            <li><a href="#como-funciona">Como funciona</a></li>
+            <li><a href="#planos">Planos</a></li>
+            <li><a href="#validacao">Validar certificado</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Suporte</h4>
+          <ul>
+            <li><a href="#faq">FAQ</a></li>
+            <li><a href="#">Documentação</a></li>
+            <li><a href="#">API</a></li>
+            <li><a href="#">Contato</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Legal</h4>
+          <ul>
+            <li><a href="#">Termos de uso</a></li>
+            <li><a href="#">Política de privacidade</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="copyright">
+        &copy; 2025 ValidaorPRO. Todos os direitos reservados.
+      </div>
+    </div>
+    </div>
+  </footer>
+
+  <!-- Checkout Modal -->
+  <div class="modal-overlay" id="checkoutModal">
+    <div class="modal-content">
+      <button class="close-modal" id="closeCheckout">&times;</button>
+      <h3 style="margin-bottom:8px; font-size:1.5rem">Finalizar Assinatura</h3>
+      <p style="color:var(--gray); margin-bottom:24px">Você selecionou: <strong id="selectedPlan"
+          style="color:var(--green)">Plano</strong></p>
+
+      <form id="checkoutForm">
+        <div class="form-row">
+          <label>Nome Completo</label>
+          <input type="text" placeholder="Seu nome" required />
+        </div>
+        <div class="form-row">
+          <label>E-mail Corporativo</label>
+          <input type="email" placeholder="nome@empresa.com" required />
+        </div>
+        <div class="form-row">
+          <label>Telefone / WhatsApp</label>
+          <input type="tel" placeholder="(11) 99999-9999" required />
+        </div>
+        <div class="form-row">
+          <label>Cartão de Crédito (Mock)</label>
+          <input type="text" placeholder="0000 0000 0000 0000" />
+        </div>
+        <div style="display:flex; gap:10px; margin-top:10px">
+          <div class="form-row" style="flex:1">
+            <input type="text" placeholder="MM/AA" />
+          </div>
+          <div class="form-row" style="flex:1">
+            <input type="text" placeholder="CVC" />
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width:100%; margin-top:10px">Confirmar Pagamento</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Mobile menu toggle
+    document.getElementById('mobileToggle').addEventListener('click', function () {
+      document.getElementById('navMenu').classList.toggle('show');
+    });
+
+    // FAQ Accordion
+    document.querySelectorAll('.faq-question').forEach(item => {
+      item.addEventListener('click', () => {
+        const answer = item.nextElementSibling;
+        const icon = item.querySelector('i');
+        answer.classList.toggle('open');
+        icon.classList.toggle('fa-chevron-up');
+        icon.classList.toggle('fa-chevron-down');
+      });
+    });
+
+    // Validation form
+    document.getElementById('validationForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const code = document.getElementById('certCode').value.trim().toUpperCase();
+      const resultDiv = document.getElementById('result');
+      const statusDiv = document.getElementById('status');
+      const detailsDiv = document.getElementById('details');
+
+      // Mock data
+      const validCert = {
+        id: 'CERT-2025-AB12CD',
+        course: 'Gestão de Projetos com Metodologias Ágeis',
+        institution: 'Escola Técnica Nacional',
+        issued: '15/12/2024',
+        validUntil: '15/12/2026',
+        participant: 'João Silva',
+        hours: 60,
+        status: 'VÁLIDO'
+      };
+
+      const expiredCert = {
+        id: 'CERT-2025-EF34GH',
+        course: 'Sustentabilidade em ONGs',
+        institution: 'Instituto Verde Futuro',
+        issued: '03/11/2024',
+        validUntil: '03/11/2025',
+        participant: 'Mariana Costa',
+        hours: 20,
+        status: 'EXPIRADO'
+      };
+
+      let certData = null;
+
+      if (code === validCert.id) certData = validCert;
+      else if (code === expiredCert.id) certData = expiredCert;
+
+      if (certData) {
+        const isExpired = certData.status === 'EXPIRADO';
+        resultDiv.className = 'validation-result ' + (isExpired ? 'invalid' : 'valid');
+        statusDiv.textContent = isExpired ? 'Certificado Expirado' : 'Certificado Válido';
+
+        detailsDiv.innerHTML = `
+          <p><strong>Curso:</strong> ${certData.course}</p>
+          <p><strong>Aluno:</strong> ${certData.participant}</p>
+          <p><strong>Instituição:</strong> ${certData.institution}</p>
+          <p><strong>Carga Horária:</strong> ${certData.hours} horas</p>
+          <p><strong>Emitido em:</strong> ${certData.issued}</p>
+          <p><strong>Válido até:</strong> ${certData.validUntil}</p>
+        `;
+      } else {
+        resultDiv.className = 'validation-result invalid';
+        statusDiv.textContent = 'Certificado não encontrado';
+        detailsDiv.innerHTML = '<p>Verifique o código digitado e tente novamente.</p>';
+      }
+
+      resultDiv.style.display = 'block';
+    });
+
+    // Checkout Logic
+    const modal = document.getElementById('checkoutModal');
+    const closeBtn = document.getElementById('closeCheckout');
+    const planText = document.getElementById('selectedPlan');
+
+    // Open modal
+    document.querySelectorAll('.plan .btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const planName = e.target.closest('.plan').querySelector('h3').innerText;
+        planText.innerText = planName;
+        modal.style.display = 'flex';
+      });
+    });
+
+    // Close modal
+    closeBtn.addEventListener('click', () => { modal.style.display = 'none'; });
+    modal.addEventListener('click', (e) => { if (e.target === modal) modal.style.display = 'none'; });
+
+    // Submit form
+    document.getElementById('checkoutForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      alert('Compra realizada com sucesso!\n\nVocê receberá os dados de acesso por e-mail.');
+      modal.style.display = 'none';
+      e.target.reset();
+    });
+  </script>
+</body>
+
+</html> participant: 'Maria Oliveira',
+hours: 30,
+status: 'EXPIRADO'
+};
+
+let cert = null;
+
+if (code === validCert.id) {
+cert = validCert;
+} else if (code === expiredCert.id) {
+cert = expiredCert;
+}
+
+resultDiv.className = 'validation-result';
+if (cert) {
+const isValid = cert.status === 'VÁLIDO';
+resultDiv.classList.add(isValid ? 'valid' : 'invalid');
+statusDiv.innerHTML = `<i class="fas fa-${isValid ? 'check-circle' : 'times-circle'}"></i> ${cert.status}`;
+detailsDiv.innerHTML = `
+<p><strong>Curso:</strong> ${cert.course}</p>
+<p><strong>Instituição:</strong> ${cert.institution}</p>
+<p><strong>Participante:</strong> ${cert.participant}</p>
+<p><strong>Emissão:</strong> ${cert.issued}</p>
+<p><strong>Validade:</strong> ${cert.validUntil}</p>
+<p><strong>Carga horária:</strong> ${cert.hours}h</p>
+`;
+} else {
+resultDiv.classList.add('invalid');
+statusDiv.innerHTML = `<i class="fas fa-times-circle"></i> Certificado não encontrado`;
+detailsDiv.innerHTML = `<p>Verifique o código digitado ou entre em contato com a instituição emissora.</p>`;
+}
+});
+</script>
+</body>
+
+</html>
