@@ -1,12 +1,21 @@
 
 :root {
+    
+    --green-light: #e6f7ee;
+    --green-medium: #a8e6c1;
     --green: #08602a;
-    --black: #212525;
+    --green-logo: #30a335;
+    --green-dark-logo: #07672a;
+
     --white: #ffffff;
     --gray-light: #f8f9fa;
     --gray: #6c757d;
-    --gray-dark: #495057;
     --gray-medium: #e7e7e7;
+    --gray-dark: #495057;
+    --black: #212525;
+
+    --red-ligth:#f98d8d;
+    --red: #d50404;
 }
 
 * {
@@ -90,13 +99,19 @@ nav a:hover {
     transition: all 0.3s;
 }
 
+.btn-close{
+    font-size: x-small;
+    border: none;
+}
+
 .btn-primary {
-    background-color: var(--green);
-    color: var(--white);
+    background-color: var(--green-light);
+    color: var(--green);
 }
 
 .btn-primary:hover {
-    background-color: #00a88a;
+    background-color:var(--gray-medium);
+    color: var(--white);
     transform: translateY(-2px);
 }
 
@@ -180,16 +195,8 @@ section {
 /* Validation */
 .validation {
     background-color: var(--white);
-}
+    text-align: center;
 
-.validation-box {
-    max-width: 600px;
-    margin: 0 auto;
-    background: var(--white);
-    border: 2px solid #eee;
-    border-radius: 12px;
-    padding: 32px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
 }
 
 .validation-box h3 {
@@ -197,28 +204,10 @@ section {
     margin-bottom: 20px;
 }
 
-.input-group {
-    margin-bottom: 20px;
-}
 
-.input-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 600;
-}
-
-.input-group input {
-    width: 100%;
-    padding: 14px;
-    border: 2px solid #ddd;
-    border-radius: 8px;
-    font-size: 1rem;
-    transition: border 0.3s;
-}
-
-.input-group input:focus {
-    outline: none;
-    border-color: var(--green);
+.btn-validar{
+    width: 30%;
+    max-width: 30%;
 }
 
 .validation-result {

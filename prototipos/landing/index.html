@@ -7,9 +7,12 @@
   <title>ProofChain - Geração e validação</title>
   <meta name="description"
     content="Sistema seguro para emissão e validação de certificados com tecnologia blockchain para escolas, cursos e ONGs." />
+  
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
   <link rel="stylesheet" href="./assets/css/style.css" />
-
+  <link rel="stylesheet" href="./assets/css/tipography.css"/>
 </head>
 
 <body>
@@ -32,7 +35,17 @@
             <li><a href="#como-funciona">Como funciona</a></li>
             <li><a href="#planos">Planos</a></li>
             <li><a href="#autenticacao" class="btn btn-outline">Autenticador</a></li>
-            <li><a href="#" class="btn btn-outline">Login</a></li>
+            <li>
+              <button 
+                type="button" 
+                class="btn btn-primary btn-outline" 
+                data-bs-toggle="modal"
+                data-bs-target="#authModal" 
+                data-auth="login">
+                Login
+              </button>
+              
+            </li>
           </ul>
         </nav>
       </div>
@@ -46,7 +59,7 @@
       <p>Sistema especializado para escolas, cursos e ONGs que precisam de certificação imutável, verificável e segura
         com tecnologia blockchain.</p>
       <div class="hero-buttons">
-        <a href="#planos" class="btn btn-primary">Comece agora</a>
+        <a href="#planos" class="btn btn-outline">Comece agora</a>
         <a href="#validacao" class="btn btn-outline">Autenticar certificado</a>
       </div>
     </div>
@@ -57,23 +70,15 @@
     <div class="container">
       <div class="section-title">
         <h2>Autenticação pública de certificados</h2>
-        <p>Acesso livre para qualquer pessoa verificar a autenticidade de um certificado em segundos.</p>
+        <p>Acesso livre para qualquer pessoa verificar a </p>
+        <p>autenticidade de um certificado em segundos.</p>
       </div>
-
-      <div class="validation-box">
-        <h3>Informe o código do certificado</h3>
-        <form id="validationForm">
-          <div class="input-group">
-            <label for="certCode">Código (ex: CERT-2025-AB12CD)</label>
-            <input type="text" id="certCode" placeholder="Digite o código aqui" required>
-          </div>
-          <button type="submit" class="btn btn-primary" style="width:100%">Autenticar</button>
-        </form>
-
-        <div id="result" class="validation-result">
-          <div class="status" id="status"></div>
-          <div id="details"></div>
-        </div>
+      <div>
+        <button 
+          type="submit" 
+          class="btn btn-outline btn-validar" >
+          Autenticar
+        </button>
       </div>
     </div>
   </section>
@@ -154,7 +159,14 @@
             <li><i class="fas fa-check"></i> Relatórios básicos</li>
             <li><i class="fas fa-check"></i> Suporte por e-mail</li>
           </ul>
-          <button type="button" class="btn btn-outline" onclick="register-modal" id="register-modal">Assinar Plano</button=>
+          <button 
+            type="button" 
+            class="btn btn-primary btn-outline" 
+            data-bs-toggle="modal"
+            data-bs-target="#authModal" 
+            data-auth="login">
+            Comprar
+          </button>
         </div>
 
         <div class="plan">
@@ -167,7 +179,13 @@
             <li><i class="fas fa-check"></i> Relatórios avançados</li>
             <li><i class="fas fa-check"></i> Suporte prioritário</li>
           </ul>
-          <button type="button" class="btn btn-outline" onclick="register-modal" id="register-modal">Assinar Plano</button=>
+          <button 
+            type="button" 
+            class="btn btn-primary btn-outline" 
+            data-bs-toggle="modal"
+            data-bs-target="#authModal" 
+            data-auth="register">Comprar
+          </button>
         </div>
 
         <div class="plan popular">
@@ -181,7 +199,13 @@
             <li><i class="fas fa-check"></i> Dashboard avançado</li>
             <li><i class="fas fa-check"></i> Suporte dedicado</li>
           </ul>
-          <button type="button" class="btn btn-outline" onclick="register-modal" id="register-modal">Assinar Plano</button=>
+          <button 
+            type="button" 
+            class="btn btn-primary btn-outline" 
+            data-bs-toggle="modal"
+            data-bs-target="#authModal" 
+            data-auth="register">Comprar
+          </button>
         </div>
       </div>
     </div>
@@ -294,35 +318,79 @@
     </div>
   </footer>
 
-  <!-- Register form -->
-  <div id="register-form" class="center register">
-    <div id="registerPage" class="center">
-      <div class="register-box">
-        <div class="register-title">
-          <h2> Formulário de cadastro</h2>
+  <div class="modal fade" id="authModal" tabindex="-1" aria-labelledby="authModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h5 class="modal-title" id="authModalLabel">Acesso</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
         </div>
-        <div>
-          <div class="form-row">
-            <label class="muted">Nome</label>
-            <input id="nome" placeholder="Seu nome" />
-          </div>
-          <div class="form-row">
-            <label class="muted">E-mail corporativo</label>
-            <input id="email" placeholder="contato@escola.com.br" />
-          </div>
-          <div class="form-row">
-            <label class="muted">Senha</label>
-            <input id="password" type="password" placeholder="********" />
-          </div>
-          <button class="btn register-button" onclick="goRegister()">Cadastrar</button>
+
+        <div class="modal-body">
+
+          <!-- LOGIN -->
+          <form id="loginForm" class="auth-form" data-type="login">
+            <div class="mb-3">
+              <label class="form-label">E-mail</label>
+              <input type="email" name="email" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Senha</label>
+              <input type="password" name="password" class="form-control" required>
+            </div>
+
+            <button class="btn btn-primary w-100">Entrar</button>
+            <p class="text-center mt-3">
+              Não tem conta?
+              <a href="#" onclick="switchAuth('register')">Cadastre-se</a>
+            </p>
+          </form>
+
+          <!-- CADASTRO -->
+          <form id="registerForm" class="auth-form d-none" data-type="register">
+            <div class="mb-3">
+              <label class="form-label">Nome</label>
+              <input type="text" name="name" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">E-mail</label>
+              <input type="email" name="email" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Senha</label>
+              <input type="password" name="password" class="form-control" required>
+            </div>
+
+            <button class="btn btn-success w-100">Cadastrar</button>
+            <p class="text-center mt-3">
+              Já tem conta?
+              <a href="#" onclick="switchAuth('login')">Entrar</a>
+            </p>
+          </form>
         </div>
       </div>
     </div>
   </div>
 
-  
 
 
+  <div class="modal-footer">
+    <button type="submit" form="registerForm" class="btn btn-primary btn-outline">Cadastrar</button>
+  </div>
+
+  </div>
+  </div>
+  </div>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+    crossorigin="anonymous"></script>
+  <script src="./assets/js/script.js"></script>
 
 </body>
 

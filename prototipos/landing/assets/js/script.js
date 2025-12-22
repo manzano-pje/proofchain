@@ -73,3 +73,60 @@ document.getElementById('validationForm').addEventListener('submit', function(e)
     detailsDiv.innerHTML = `<p>Verifique o código digitado ou entre em contato com a instituição emissora.</p>`;
     }
 });
+
+// Modal cadastro
+
+document.getElementById('registerForm').addEventListener('submit', function (e) {
+  e.preventDefault()
+
+  const name = document.getElementById('name').value.trim()
+  const email = document.getElementById('email').value.trim()
+  const password = document.getElementById('password').value.trim()
+
+  if (!name || !email || !password) {
+    alert('Preencha todos os campos!')
+    return
+  }
+
+  console.log({
+    name,
+    email,
+    password
+  })
+
+  // Aqui você pode enviar para API/backend
+
+  alert('Cadastro realizado com sucesso!')
+  this.reset()
+
+  const modal = bootstrap.Modal.getInstance(document.getElementById('registerModal'))
+  modal.hide()
+})
+
+
+
+// Seleciona modal Login ou Cadastro
+// expõe global se estiver usando module
+window.switchAuth = function (type) {
+  document.querySelectorAll('.auth-form').forEach(form => {
+    form.classList.toggle('d-none', form.dataset.type !== type)
+  })
+
+  const title = document.getElementById('authModalLabel')
+  if (title) {
+    title.textContent = type === 'login' ? 'Login' : 'Cadastro'
+  }
+}
+
+// garante que o formulário certo aparece ao abrir o modal
+const authModal = document.getElementById('authModal')
+
+authModal.addEventListener('show.bs.modal', event => {
+  const btn = event.relatedTarget
+
+  if (btn && btn.dataset.auth) {
+    switchAuth(btn.dataset.auth)
+  }
+})
+
+
