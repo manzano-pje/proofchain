@@ -1,40 +1,354 @@
 :root {
-  --primary: #2d6cdf;
-  --secondary: #394e70;
-  --success: #16a34a;
-  --danger: #dc2626;
-  --background: #ebf1f7;
-  --card-bg: #ffffff;
-  --text-dark: #0f172a;
-  --text-muted: #64748b;
-  --button:#3bf5d0;
-  --button-text:#065236;
-  --button-hover:#0c9a66;
-  --button-hover-text:#3bf5d0;
-
-  --radius: 12px;
-  --shadow: 0 0px 2px rgba(0,0,0,1);
-
-  --container:1200px;
+  --bg: #f8f9fa;
+  --card: #ffffff;
+  --primary: #00C19D;
+  --primary-dark: #00a88a;
+  --muted: #6c757d;
+  --border: #e9ecef;
+  --text: #212529;
+  --radius: 8px;
 }
 
-*{
+* {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
-  transition: var(--transition);
+  font-family: Inter, system-ui, Arial
 }
 
 body {
-    font-family: Arial, sans-serif;
-    background: var(--background);
-    color: var(--text-dark);
-    height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px
 }
 
-h1{
-    font-size: 1.20rem;
-    color: var(--primary);
-    font-weight: bolder
-    ;
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh
+}
+
+/* Login */
+.login-box {
+  width: 400px;
+  background: var(--card);
+  border-radius: 12px;
+  padding: 32px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--border)
+}
+
+.brand {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 24px;
+  justify-content: center;
+}
+
+.logo-icon {
+  font-size: 32px;
+  color: var(--primary)
+}
+
+.brand-text {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.5px
+}
+
+.muted {
+  color: var(--muted);
+  font-size: 14px;
+  margin-bottom: 20px
+}
+
+.form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px
+}
+
+input,
+select {
+  padding: 12px;
+  border-radius: var(--radius);
+  border: 1px solid #ced4da;
+  font-size: 14px;
+  width: 100%
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(0, 193, 157, 0.1)
+}
+
+.btn {
+  background: var(--primary);
+  color: white;
+  padding: 12px 16px;
+  border: none;
+  border-radius: var(--radius);
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s
+}
+
+.btn:hover {
+  background: var(--primary-dark)
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--primary);
+  color: var(--primary)
+}
+
+.btn-outline:hover {
+  background: var(--primary);
+  color: white
+}
+
+.btn-sm {
+  padding: 8px 12px;
+  font-size: 13px
+}
+
+/* App layout */
+.wrap {
+  display: flex;
+  height: 100vh
+}
+
+.sidebar {
+  width: 260px;
+  background: var(--card);
+  padding: 24px;
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column
+}
+
+.brand-small {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 32px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border)
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1
+}
+
+.nav button {
+  background: transparent;
+  border: none;
+  padding: 12px 16px;
+  border-radius: var(--radius);
+  text-align: left;
+  cursor: pointer;
+  color: var(--muted);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: 0.2s;
+  font-size: 14px
+}
+
+.nav button:hover {
+  background: #f1f3f5;
+  color: var(--text)
+}
+
+.nav button.active {
+  background: rgba(0, 193, 157, 0.1);
+  color: var(--primary);
+  font-weight: 600
+}
+
+.nav button i {
+  width: 20px;
+  text-align: center
+}
+
+.main {
+  flex: 1;
+  padding: 32px;
+  overflow: auto
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px
+}
+
+.header h2 {
+  font-size: 24px;
+  font-weight: 700
+}
+
+/* Dashboard Cards */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
+  margin-bottom: 32px
+}
+
+.card {
+  background: var(--card);
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
+  border: 1px solid var(--border)
+}
+
+.card-label {
+  font-size: 13px;
+  color: var(--muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px
+}
+
+.card-val {
+  font-size: 28px;
+  font-weight: 700;
+  margin-top: 8px;
+  color: var(--text)
+}
+
+.card-sub {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 4px
+}
+
+/* Tables */
+.table-container {
+  background: var(--card);
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
+  border: 1px solid var(--border);
+  overflow: hidden
+}
+
+.table-header {
+  padding: 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center
+}
+
+.table-title {
+  font-size: 16px;
+  font-weight: 700
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse
+}
+
+th {
+  background: #f8f9fa;
+  padding: 12px 20px;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  border-bottom: 1px solid var(--border)
+}
+
+td {
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px
+}
+
+tr:last-child td {
+  border-bottom: none
+}
+
+.status-badge {
+  padding: 4px 8px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  display: inline-block
+}
+
+.st-valid {
+  background: #d4edda;
+  color: #155724
+}
+
+.st-expired {
+  background: #fff3cd;
+  color: #856404
+}
+
+.st-revoked {
+  background: #f8d7da;
+  color: #721c24
+}
+
+/* Modal */
+.modal-bg {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 999
+}
+
+.modal {
+  width: 500px;
+  background: var(--card);
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2)
+}
+
+.modal h3 {
+  margin-bottom: 20px;
+  font-size: 18px
+}
+
+.row {
+  display: flex;
+  gap: 16px
+}
+
+.col {
+  flex: 1
+}
+
+@media(max-width:900px) {
+  .sidebar {
+    display: none
+  }
+
+  .wrap {
+    display: block
+  }
+
+  .main {
+    padding: 16px
+  }
 }

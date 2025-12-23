@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8" />
   <title>Valida Pró | Login</title>
@@ -7,78 +8,69 @@
   <link rel="stylesheet" href="../assets/css/base.css">
   <link rel="stylesheet" href="../assets/css/login.css">
 </head>
+
 <body>
 
-<div class="login-container">
-  <div class="login-image">
-    <img src="../assets/img/login.jpeg" alt="Certificados digitais">
-  </div>
-  <div class="login-slogan">
-    <h2>Emissão e Validação de Certificados</h2>
-    <p>Segurança, autenticidade e praticidade em um só lugar.</p>
-  </div>
-  <div class="login-form">
-    <img src="../assets/img/logo.png" class="logo">
-    <h3>Acesse sua conta</h3>
+  <div class="login-container">
+    <div class="login-image">
+      <img src="../assets/img/login.jpeg" alt="Certificados digitais">
+    </div>
+    <div class="login-slogan">
+      <h2>Emissão e Validação de Certificados</h2>
+      <p>Segurança, autenticidade e praticidade em um só lugar.</p>
+    </div>
+    <div class="login-form">
+      <img src="../assets/img/logo.png" class="logo">
+      <h3>Acesse sua conta</h3>
 
-    <form id="loginForm">
-      <div class="mb-3">
-        <label>Email</label>
-        <input type="email" class="form-control" required placeholder="admin@teste.com">
-      </div>
+      <form id="loginForm">
+        <div class="mb-3">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" class="form-control" required placeholder="admin@teste.com">
+        </div>
 
-      <div class="mb-3">
-        <label>Senha</label>
-        <input type="password" class="form-control" required>
-      </div>
+        <div class="mb-3">
+          <label for="senha">Senha</label>
+          <input type="password" id="senha" name="senha" class="form-control" required>
+        </div>
 
-      <button type="submit" class="btn btn-primary w-100">Entrar</button>
-    </form>
-  </div>
-</div>
-<form id="loginForm">
-  <div class="mb-3">
-    <label>Email</label>
-    <input type="email" id="email" name="e-mail"class="form-control" required>
+        <button type="submit" class="btn btn-primary w-100">Entrar</button>
+      </form>
+    </div>
   </div>
 
-  <div class="mb-3">
-    <label>Senha</label>
-    <input type="password" id="senha" name="senha" class="form-control"required>
-  </div>
+  <script>
+    // Check if already logged in
+    if (localStorage.getItem('isLoggedIn') === 'true') {
+      window.location.href = 'dashboard.html';
+    }
 
-  <button type="submit" class="btn btn-primary w-100">Entrar</button>
-</form>
+    const loginForm = document.getElementById('loginForm');
 
-<script>
-  const loginForm = document.getElementById('loginForm');
+    if (loginForm) {
+      loginForm.addEventListener('submit', function (e) {
+        e.preventDefault();
 
-  if (loginForm) {
-    loginForm.addEventListener('submit', function (e) {
-      e.preventDefault();
+        const formData = new FormData(loginForm);
+        const email = formData.get('email');
+        const senha = formData.get('senha');
 
-      const formData = new FormData(loginForm);
-      const email = formData.get('email');
-      const senha = formData.get('senha');
+        if (!email || !senha) {
+          alert('Preencha todos os campos.');
+          return;
+        }
 
-      // Validação simples (exemplo)
-      if (!email || !senha) {
-        alert('Preencha todos os campos.');
-        return;
-      }
-
-      // Simulação de validação (exemplo)
-      if (email === 'admin@teste.com' && senha === '123456') {
-        // Redireciona para o dashboard
-        window.location.href = 'dashboard.html';
-      } else {
-        alert('E-mail ou senha inválidos.\n
-              Tente novamente');
-      }
-    });
-  }
-</script>
-
-<script src="../assets/js/auth.js"></script>
+        // Mock validation
+        if (email === 'admin@teste.com' && senha === '123456') { // Fixed simple mock credentials
+          localStorage.setItem('isLoggedIn', 'true');
+          localStorage.setItem('userEmail', email);
+          window.location.href = 'dashboard.html';
+        } else {
+          alert('E-mail ou senha inválidos.\n Tente novamente');
+        }
+      });
+    }
+  </script>
 </body>
+
 </html>

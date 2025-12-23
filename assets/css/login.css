@@ -1,110 +1,134 @@
-.login-slogan h2 {
-  font-size: 36px;
-  font-weight: bolder;
-  margin-bottom: 0px;
-  color: #065236;
-  text-align: center;
-}
-.login-slogan p {
-  font-size: 18px;
-  font-weight: bolder;
-  line-height: 1.6;
-  color: #000000;
-  text-align: center;
-}
-
 .login-container {
-  position: relative;
   display: flex;
-  height: 100vh;
-  background: #ccc;
+  min-height: 100vh;
+  background: var(--bg);
 }
 
 .login-image {
+  position: relative;
   flex: 1;
-  width: 50%;
-  padding: 0px;
+  background-image: url('../img/login.jpeg');
+  background-size: cover;
+  background-position: center;
   display: flex;
-  flex-direction: column; 
+  align-items: flex-end;
   justify-content: center;
-  height: 100 vh;
-  z-index: 1;
+  padding: 40px;
 }
 
-.login-image img{
-  height: 100%;
-  width: 100%;
+/* Hide the actual img tag since we use background-image for better control */
+.login-image img {
+  display: none;
 }
 
-.login-slogan{
-  background: rgba(255, 255, 255, 0.5); /*Fundo semi-transparente para leitura */
-  padding: 0px;
-  display: flex;
-  flex-direction: column; 
-  justify-content: center;
-  align-items: center;
-  position: absolute;     /* Sai do fluxo normal */
-  bottom: 20px;           /* Posiciona na parte inferior do container */
-  left: 0px;              /* Posiciona no lado esquerdo do container */
-  width: 50%;             /* Deve ter a mesma largura que o .login-image */
-  box-sizing: border-box; /* Garante que o padding não aumente o width */
-  z-index: 10;            /* Mantenha um z-index alto para garantir a sobreposição */
+.login-slogan {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 24px;
+  border-radius: var(--radius);
+  text-align: center;
+  max-width: 500px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.login-slogan h2 {
+  font-size: 24px;
+  font-weight: 800;
+  margin-bottom: 8px;
+  color: var(--primary-dark);
+}
+
+.login-slogan p {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+  line-height: 1.5;
+  margin: 0;
 }
 
 .login-form {
   flex: 1;
   background: #fff;
-  padding: 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding: 40px;
 }
 
-.login-form .logo {
-  width: 150px;
-  margin-bottom: 30px;
-  align-self: center;
-}
-.login-form h3 {
-  margin-bottom: 30px;
-  color: var(--primary);
-  align-items: center;
-}
 .login-form form {
+  width: 100%;
+  max-width: 360px;
   display: flex;
   flex-direction: column;
 }
+
+.login-form .logo {
+  width: 120px;
+  margin-bottom: 24px;
+  align-self: center;
+}
+
+.login-form h3 {
+  margin-bottom: 24px;
+  color: var(--text);
+  font-weight: 700;
+  text-align: center;
+}
+
+.login-form label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 6px;
+  display: block;
+}
+
 .login-form input {
   padding: 12px;
   margin-bottom: 20px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  width: 100%;
 }
+
 .login-form button {
   padding: 12px;
   background: var(--primary);
   color: #fff;
-  font-weight: bolder;
-  border: 2px solid var(--secondary);
-  border-radius: 45px;
+  font-weight: 600;
+  border: none;
+  border-radius: var(--radius);
   cursor: pointer;
-}
- 
-.login-form button:hover {
-  background: #1e40af;
+  transition: var(--transition);
 }
 
-@media (max-width: 768px) {
+.login-form button:hover {
+  background: var(--primary-dark);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 900px) {
   .login-container {
     flex-direction: column;
   }
-  .login-image, .login-form {
+
+  .login-image {
     flex: none;
+    height: 300px;
+    padding: 24px;
+  }
+
+  .login-slogan {
     width: 100%;
-    height: auto;
-    padding: 40px;
+    padding: 16px;
+  }
+
+  .login-slogan h2 {
+    font-size: 20px;
+  }
+
+  .login-form {
+    padding: 32px 24px;
+    flex: 1;
   }
 }
-
