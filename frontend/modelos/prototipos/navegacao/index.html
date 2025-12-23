@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ValidaPro — Sistema de Certificados Digitais</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="./style.css" />
+  
+</head>
+<body>
+  <div id="app">
+    <header>
+      <div class="container">
+        <div class="header-content">
+          <a href="#home" class="logo">ValidaPro</a>
+          <button class="mobile-menu-toggle" id="mobileMenuToggle">
+            <i class="fas fa-bars"></i>
+          </button>
+          <div class="nav-actions" id="desktopNav">
+            <a href="#validation" class="btn btn-primary">Validar Certificado</a>
+            <a href="#login" class="btn btn-secondary">Login</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main id="mainContent">
+      <!-- Telas serão injetadas aqui dinamicamente -->
+    </main>
+
+    <footer>
+      <div class="container">
+        <div class="footer-content">
+          <a href="#about" class="footer-link">Sobre</a>
+          <a href="#contact" class="footer-link">Contato</a>
+          <a href="#privacy" class="footer-link">Política de Privacidade</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <div class="overlay" id="overlay"></div>
+
+  <script>
+    // Mock data
+    const mockData = {
+      courses: [
+        { id: 1, name: "Gestão de Projetos", startDate: "2025-01-10", endDate: "2025-03-20", hours: 40 },
+        { id: 2, name: "Excel Avançado", startDate: "2025-02-05", endDate: "2025-02-28", hours: 24 },
+        { id: 3, name: "LGPD para Empresas", startDate: "2025-03-01", endDate: "2025-03-15", hours: 8 }
+      ],
+      participants: [
+        { id: 1, name: "Ana Silva", email: "ana.silva@email.com", phone: "(11) 98765-4321" },
+        { id: 2, name: "Carlos Souza", email: "carlos.souza@email.com", phone: "(21) 91234-5678" },
+        { id: 3, name: "Mariana Costa", email: "mariana.costa@email.com", phone: "(31) 99999-8888" }
+      ],
+      certificates: [
+        { id: "CERT-001", course: "Gestão de Projetos", entity: "Instituto Excelência", hours: 40, issuedAt: "15/04/2025", status: "valid" },
+        { id: "CERT-002", course: "Excel Avançado", entity: "Escola de Dados", hours: 24, issuedAt: "01/04/2025", status: "expired" },
+        { id: "CERT-003", course: "LGPD para Empresas", entity: "Consultoria Segura", hours: 8, issuedAt: "10/03/2024", status: "revoked" }
+      ],
+      plans: [
+        { name: "Pacote por quantidade", options: ["10", "20", "50", "100 certificados"] },
+        { name: "Assinatura limitada", description: "Quantidade mensal limitada, modelo padrão" },
+        { name: "Assinatura ilimitada", description: "Certificados ilimitados e modelo personalizado" }
+      ]
+    };
+
+    // State management
+    let currentHash = '';
+    let currentStep = 1;
+    let selectedPlan = null;
+    let billingType = 'pf'; // 'pf' or 'pj'
+
+    // Templates
+    const templates = {
+      home: () => `
+        <div class="hero">
+          <div class="container">
+            <h1>Valide certificados de forma rápida e segura</h1>
+            <p class="subtitle">Sistema oficial de validação de certificados digitais</p>
+            <a href="#validation" class="btn btn-primary">Validar Certificado</a>
+          </div>
+        </div>
+      `,
+
+      validation: () => `
+        <div class="container">
+          <div class="card" style="max-width: 500px; margin: 0 auto;">
+            <h2>Validação de Certificado</h2>
+            <p class="body" style="margin: var(--md) 0 var(--lg);">Insira o código de acesso fornecido no certificado.</p>
+            
+            <form id="validationForm">
+              <div class="input-group">
+                <label class="input-label">Código do certificado</label>
+                <input type="text" id="certCode" placeholder="Ex: VALIDO123" required>
+              </div>
+              <button type="submit" class="btn btn-primary" style="width: 100%;">Validar</button>
+            </form>
+
+            <div id="validationResult" style="margin-top: var(--lg); display: none;">
+              <!-- Preenchido dinamicamente -->
+            </div>
+          </div>
+        </div>
+      `,
+
+      login: () => `
+        <div class="container">
+          <div class="card" style="max-width: 400px; margin: 0 auto;">
+            <h2>Entrar</h2>
+            <form id="loginForm" style="margin-top: var(--lg);">
+              <div class="input-group">
+                <label class="input-label">E-mail</label>
+                <input type="email" id="loginEmail" placeholder="seu@email.com" required>
+              </div>
+              <div class="input-group">
+                <label class="input-label">Senha</label>
+                <input type="password" id="loginPassword" placeholder="••••••••" required>
+              </div>
+              <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: var(--md);">Entrar</button>
+              <div style="text-align: center; margin-top: var(--md);">
+                <a href="#passwordReset" class="body" style="color: var(--greenDark);">Esqueci minha senha</a>
+              </div>
+            </form>
+          </div>
+        </div>
+      `,
+
+      planSelection: () => `
+        <div class="container">
+          <h1>Escolha seu plano</h1>
+          <p class="body" style="margin: var(--md) 0 var(--xl);">Selecione o plano que melhor atende às suas necessidades.</p>
+
+          <div class="grid grid-cols-1" id="plansGrid" style="gap: 16px;">
+            ${mockData.plans.map((plan, i) => `
+              <div class="card" style="border: 2px solid ${selectedPlan === i ? 'var(--greenDark)' : 'transparent'}; cursor: pointer;" onclick="selectPlan(${i})">
+                <h3>${plan.name}</h3>
+                ${plan.options 
+                  ? `<div style="margin: var(--md) 0;"><strong>Opções:</strong><br>${plan.options.map(opt => `<span class="badge" style="margin-right: 4px;">${opt}</span>`).join('')}</div>`
+                  : `<p class="body" style="margin: var(--md) 0;">${plan.description}</p>`
+                }
+                <button class="btn ${selectedPlan === i ? 'btn-primary' : 'btn-secondary'}" style="margin-top: var(--md);" onclick="event.stopPropagation(); goToNextStep()">Selecionar</button>
+              </div>
+            `).join('')}
+          </div>
+
+          <div style="text-align: center; margin-top: var(--xl);">
+            <button class="btn btn-outline" onclick="goToStep('login')">Voltar</button>
+          </div>
+        </div>
+      `,
+
+      billing: () => `
+        <div class="container">
+          <h1>Dados para cobrança</h1>
+          <p class="body" style="margin: var(--md) 0 var(--lg);">Preencha os dados abaixo para finalizar sua assinatura.</p>
+
+          <div class="card">
+            <div style="display: flex; gap: var(--md); margin-bottom: var(--lg);">
+              <button type="button" class="btn ${billingType === 'pf' ? 'btn-primary' : 'btn-outline'}" onclick="setBillingType('pf')">Pessoa Física</button>
+              <button type="button" class="btn ${billingType === 'pj' ? 'btn-primary' : 'btn-outline'}" onclick="setBillingType('pj')">Pessoa Jurídica</button>
+            </div>
+
+            <form id="billingForm">
+              ${billingType === 'pf' 
+                ? `
+                  <div class="input-group"><label class="input-label">Nome completo</label><input type="text" required></div>
+                  <div class="input-group"><label class="input-label">CPF</label><input type="text" placeholder="000.000.000-00"></div>
+                `
+                : `
+                  <div class="input-group"><label class="input-label">Instituição</label><input type="text" required></div>
+                  <div class="input-group"><label class="input-label">Responsável</label><input type="text" required></div>
+                  <div class="input-group"><label class="input-label">CNPJ</label><input type="text" placeholder="00.000.000/0000-00"></div>
+                `
+              }
+              <div class="grid grid-cols-2">
+                <div class="input-group"><label class="input-label">Cidade</label><input type="text" required></div>
+                <div class="input-group"><label class="input-label">Estado</label><select required><option value="">Selecione</option><option>SP</option><option>RJ</option><option>MG</option></select></div>
+              </div>
+              <div class="input-group"><label class="input-label">País</label><input type="text" value="Brasil" required></div>
+              <div class="input-group"><label class="input-label">E-mail</label><input type="email" required></div>
+              <div class="input-group"><label class="input-label">Telefone</label><input type="tel" placeholder="(00) 00000-0000"></div>
+              <button type="submit" class="btn btn-primary" style="margin-top: var(--lg);">Finalizar Assinatura</button>
+            </form>
+          </div>
+        </div>
+      `,
+
+      entityLayout: (screen) => `
+        <div class="container">
+          <div class="layout-with-sidebar">
+            <div class="sidebar" id="entitySidebar">
+              <div class="sidebar-header">Menu</div>
+              <ul class="sidebar-nav">
+                <li><a href="#entity/dashboard" ${screen === 'dashboard' ? 'class="active"' : ''}><i class="fas fa-home"></i> Dashboard</a></li>
+                <li><a href="#entity/courses" ${screen === 'courses' ? 'class="active"' : ''}><i class="fas fa-book"></i> Cursos</a></li>
+                <li><a href="#entity/participants" ${screen === 'participants' ? 'class="active"' : ''}><i class="fas fa-users"></i> Participantes</a></li>
+                <li><a href="#entity/certificates" ${screen === 'certificates' ? 'class="active"' : ''}><i class="fas fa-certificate"></i> Certificados</a></li>
+                <li><a href="#entity/reports" ${screen === 'reports' ? 'class="active"' : ''}><i class="fas fa-chart-bar"></i> Relatórios</a></li>
+                <li><a href="#entity/settings" ${screen === 'settings' ? 'class="active"' : ''}><i class="fas fa-cog"></i> Configurações</a></li>
+                <li><a href="#entity/support" ${screen === 'support' ? 'class="active"' : ''}><i class="fas fa-headset"></i> Fale Conosco</a></li>
+              </ul>
+            </div>
+
+            <div class="main-content">
+              ${entityScreens[screen] ? entityScreens[screen]() : `<p class="body">Tela "${screen}" não encontrada.</p>`}
+            </div>
+          </div>
+        </div>
+      `,
+
+      adminLayout: (screen) => `
+        <div class="container">
+          <div class="layout-with-sidebar">
+            <div class="sidebar" id="adminSidebar">
+              <div class="sidebar-header">Administração</div>
+              <ul class="sidebar-nav">
+                <li><a href="#admin/dashboard" ${screen === 'dashboard' ? 'class="active"' : ''}><i class="fas fa-home"></i> Dashboard</a></li>
+                <li><a href="#admin/clients" ${screen === 'clients' ? 'class="active"' : ''}><i class="fas fa-users"></i> Clientes</a></li>
+                <li><a href="#admin/subscriptions" ${screen === 'subscriptions' ? 'class="active"' : ''}><i class="fas fa-file-invoice"></i> Assinaturas</a></li>
+                <li><a href="#admin/certificates" ${screen === 'certificates' ? 'class="active"' : ''}><i class="fas fa-certificate"></i> Certificados</a></li>
+                <li><a href="#admin/validations" ${screen === 'validations' ? 'class="active"' : ''}><i class="fas fa-search"></i> Validações</a></li>
+                <li><a href="#admin/billing" ${screen === 'billing' ? 'class="active"' : ''}><i class="fas fa-credit-card"></i> Cobrança</a></li>
+                <li><a href="#admin/reports" ${screen === 'reports' ? 'class="active"' : ''}><i class="fas fa-chart-bar"></i> Relatórios</a></li>
+                <li><a href="#admin/settings" ${screen === 'settings' ? 'class="active"' : ''}><i class="fas fa-cog"></i> Configurações</a></li>
+              </ul>
+            </div>
+
+            <div class="main-content">
+              <h1>${screen.charAt(0).toUpperCase() + screen.slice(1)}</h1>
+              <p class="body" style="margin-top: var(--md);">Conteúdo da tela de Administração - ${screen}.</p>
+            </div>
+          </div>
+        </div>
+      `
+    };
+
+    const entityScreens = {
+      dashboard: () => `
+        <h2>Dashboard</h2>
+        <div class="grid grid-cols-2" style="margin-top: var(--lg);">
+          <div class="card">
+            <h3>Total de certificados</h3>
+            <p style="font-size: 28px; font-weight: 700; margin: var(--md) 0;">142</p>
+          </div>
+          <div class="card">
+            <h3>Certificados no mês</h3>
+            <p style="font-size: 28px; font-weight: 700; margin: var(--md) 0;">27</p>
+          </div>
+        </div>
+        <div class="card" style="margin-top: var(--lg);">
+          <h3>Últimos certificados emitidos</h3>
+          <table style="width: 100%; margin-top: var(--md); border-collapse: collapse;">
+            <thead>
+              <tr style="border-bottom: 1px solid var(--gray300);">
+                <th style="text-align: left; padding: var(--sm) 0;">Código</th>
+                <th style="text-align: left; padding: var(--sm) 0;">Participante</th>
+                <th style="text-align: left; padding: var(--sm) 0;">Curso</th>
+                <th style="text-align: left; padding: var(--sm) 0;">Data</th>
+                <th style="text-align: left; padding: var(--sm) 0;">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${mockData.certificates.slice(0, 3).map(cert => `
+                <tr style="border-bottom: 1px solid var(--gray100);">
+                  <td class="body">${cert.id}</td>
+                  <td class="body">Ana Silva</td>
+                  <td class="body">${cert.course}</td>
+                  <td class="body">${cert.issuedAt}</td>
+                  <td><span class="badge badge-${cert.status}">${cert.status}</span></td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      `,
+
+      courses: () => `
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--md);">
+          <h2>Cursos</h2>
+          <button class="btn btn-primary btn-sm" onclick="showModal('newCourse')"><i class="fas fa-plus"></i> Novo Curso</button>
+        </div>
+        <div class="grid grid-cols-1">
+          ${mockData.courses.map(course => `
+            <div class="card" style="display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <h3>${course.name}</h3>
+                <p class="caption" style="margin-top: var(--xs);">De ${course.startDate} a ${course.endDate} • ${course.hours}h</p>
+              </div>
+              <div>
+                <button class="btn btn-outline btn-sm"><i class="fas fa-edit"></i></button>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      `,
+
+      participants: () => `
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--md);">
+          <h2>Participantes</h2>
+          <button class="btn btn-primary btn-sm" onclick="showModal('importParticipants')"><i class="fas fa-file-import"></i> Importar</button>
+        </div>
+        <div class="grid grid-cols-1">
+          ${mockData.participants.map(p => `
+            <div class="card" style="display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <h3>${p.name}</h3>
+                <p class="caption" style="margin-top: var(--xs);">${p.email} • ${p.phone}</p>
+              </div>
+              <div>
+                <button class="btn btn-outline btn-sm"><i class="fas fa-edit"></i></button>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      `,
+
+      certificates: () => `
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--md);">
+          <h2>Certificados</h2>
+          <button class="btn btn-primary btn-sm" onclick="goToStep('entity/certificateIssue')"><i class="fas fa-plus"></i> Emitir</button>
+        </div>
+        <div class="grid grid-cols-1">
+          ${mockData.certificates.map(cert => `
+            <div class="card">
+              <div style="display: flex; justify-content: space-between; align-items: start;">
+                <div>
+                  <h3>${cert.course}</h3>
+                  <p class="body" style="margin: var(--xs) 0;"><strong>Entidade:</strong> ${cert.entity}</p>
+                  <p class="body"><strong>Carga horária:</strong> ${cert.hours}h</p>
+                  <p class="body"><strong>Data de emissão:</strong> ${cert.issuedAt}</p>
+                </div>
+                <div style="text-align: right;">
+                  <span class="badge badge-${cert.status}">${cert.status}</span>
+                  <div style="margin-top: var(--md);">
+                    <button class="btn btn-outline btn-sm"><i class="fas fa-download"></i></button>
+                    <button class="btn btn-outline btn-sm"><i class="fas fa-eye"></i></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      `,
+
+      certificateIssue: () => `
+        <h2>Emissão de Certificado</h2>
+        <div class="steps">
+          <div class="step ${currentStep >= 1 ? 'active' : ''} ${currentStep > 1 ? 'completed' : ''}">
+            <div class="step-number">1</div>
+            <div class="step-label">Selecionar participante</div>
+          </div>
+          <div class="step ${currentStep >= 2 ? 'active' : ''} ${currentStep > 2 ? 'completed' : ''}">
+            <div class="step-number">2</div>
+            <div class="step-label">Selecionar curso</div>
+          </div>
+          <div class="step ${currentStep >= 3 ? 'active' : ''} ${currentStep > 3 ? 'completed' : ''}">
+            <div class="step-number">3</div>
+            <div class="step-label">Definir período</div>
+          </div>
+          <div class="step ${currentStep === 4 ? 'active' : ''}">
+            <div class="step-number">4</div>
+            <div class="step-label">Confirmar emissão</div>
+          </div>
+        </div>
+
+        <div class="card">
+          ${currentStep === 1 ? `
+            <h3>Selecione o participante</h3>
+            <div style="max-height: 200px; overflow-y: auto; margin: var(--md) 0;">
+              ${mockData.participants.map(p => `
+                <div style="padding: var(--sm) 0; border-bottom: 1px solid var(--gray100); cursor: pointer;" onclick="setParticipant(${p.id})">
+                  <strong>${p.name}</strong><br>
+                  <span class="caption">${p.email}</span>
+                </div>
+              `).join('')}
+            </div>
+            <button class="btn btn-primary" onclick="currentStep=2; renderScreen('entity/certificateIssue')" disabled>Continuar</button>
+          ` : currentStep === 2 ? `
+            <h3>Selecione o curso</h3>
+            <div style="max-height: 200px; overflow-y: auto; margin: var(--md) 0;">
+              ${mockData.courses.map(c => `
+                <div style="padding: var(--sm) 0; border-bottom: 1px solid var(--gray100); cursor: pointer;" onclick="setCourse(${c.id})">
+                  <strong>${c.name}</strong><br>
+                  <span class="caption">${c.startDate} a ${c.endDate} • ${c.hours}h</span>
+                </div>
+              `).join('')}
+            </div>
+            <div style="display: flex; gap: var(--md); margin-top: var(--md);">
+              <button class="btn btn-outline" onclick="currentStep=1; renderScreen('entity/certificateIssue')">Voltar</button>
+              <button class="btn btn-primary" onclick="currentStep=3; renderScreen('entity/certificateIssue')">Continuar</button>
+            </div>
+          ` : currentStep === 3 ? `
+            <h3>Defina o período de participação</h3>
+            <div class="grid grid-cols-2" style="gap: var(--md); margin: var(--md) 0;">
+              <div class="input-group">
+                <label class="input-label">Data de início</label>
+                <input type="date" value="2025-01-10">
+              </div>
+              <div class="input-group">
+                <label class="input-label">Data de término</label>
+                <input type="date" value="2025-03-20">
+              </div>
+            </div>
+            <div style="display: flex; gap: var(--md); margin-top: var(--md);">
+              <button class="btn btn-outline" onclick="currentStep=2; renderScreen('entity/certificateIssue')">Voltar</button>
+              <button class="btn btn-primary" onclick="currentStep=4; renderScreen('entity/certificateIssue')">Continuar</button>
+            </div>
+          ` : `
+            <h3>Confirme a emissão</h3>
+            <div style="background: var(--gray50); padding: var(--md); border-radius: var(--radius-md); margin: var(--md) 0;">
+              <p><strong>Participante:</strong> Ana Silva</p>
+              <p><strong>Curso:</strong> Gestão de Projetos</p>
+              <p><strong>Período:</strong> 10/01/2025 a 20/03/2025</p>
+              <p><strong>Carga horária:</strong> 40h</p>
+            </div>
+            <div style="display: flex; gap: var(--md);">
+              <button class="btn btn-outline" onclick="currentStep=3; renderScreen('entity/certificateIssue')">Voltar</button>
+              <button class="btn btn-primary" onclick="alert('Certificado emitido com sucesso!'); currentStep=1; goToStep('entity/certificates')">Emitir Certificado</button>
+            </div>
+          `}
+        </div>
+      `,
+
+      reports: () => `
+        <h2>Relatórios</h2>
+        <div class="card" style="margin-top: var(--lg);">
+          <div class="input-group">
+            <label class="input-label">Curso</label>
+            <select><option>Todos</option>${mockData.courses.map(c => `<option>${c.name}</option>`).join('')}</select>
+          </div>
+          <div class="grid grid-cols-2" style="gap: var(--md); margin: var(--md) 0;">
+            <div class="input-group">
+              <label class="input-label">Data inicial</label>
+              <input type="date">
+            </div>
+            <div class="input-group">
+              <label class="input-label">Data final</label>
+              <input type="date">
+            </div>
+          </div>
+          <div style="display: flex; gap: var(--md); margin-top: var(--lg);">
+            <button class="btn btn-outline"><i class="fas fa-eye"></i> Visualizar</button>
+            <button class="btn btn-outline"><i class="fas fa-file-csv"></i> Exportar CSV</button>
+            <button class="btn btn-outline"><i class="fas fa-file-pdf"></i> Exportar PDF</button>
+          </div>
+        </div>
+      `,
+
+      settings: () => `
+        <h2>Configurações da Entidade</h2>
+        <div class="card" style="margin-top: var(--lg);">
+          <form>
+            <div class="input-group"><label class="input-label">Nome</label><input type="text" value="Instituto Excelência"></div>
+            <div class="input-group"><label class="input-label">CPF/CNPJ</label><input type="text" value="12.345.678/0001-90"></div>
+            <div class="input-group"><label class="input-label">Cidade</label><input type="text" value="São Paulo"></div>
+            <div class="grid grid-cols-2">
+              <div class="input-group"><label class="input-label">Estado</label><select><option>SP</option></select></div>
+              <div class="input-group"><label class="input-label">País</label><input type="text" value="Brasil"></div>
+            </div>
+            <div class="input-group"><label class="input-label">E-mail</label><input type="email" value="contato@institutoex.com.br"></div>
+            <div class="input-group"><label class="input-label">Telefone</label><input type="tel" value="(11) 3456-7890"></div>
+            <div class="input-group">
+              <label class="input-label">Logotipo</label>
+              <div style="display: flex; align-items: center; gap: var(--md);">
+                <img src="https://placehold.co/100x60/075136/FFFFFF?text=LOGO" alt="Logo" style="width: 100px; height: 60px; object-fit: contain;">
+                <button class="btn btn-outline btn-sm"><i class="fas fa-upload"></i> Alterar</button>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary" style="margin-top: var(--lg);">Salvar Alterações</button>
+          </form>
+        </div>
+      `,
+
+      support: () => `
+        <h2>Fale Conosco</h2>
+        <div class="card" style="margin-top: var(--lg);">
+          <form id="supportForm">
+            <div class="input-group">
+              <label class="input-label">Assunto</label>
+              <input type="text" required>
+            </div>
+            <div class="input-group">
+              <label class="input-label">Descrição</label>
+              <textarea placeholder="Descreva seu problema ou sugestão..." required></textarea>
+            </div>
+            <div class="input-group">
+              <label class="input-label">Anexo (opcional)</label>
+              <input type="file">
+            </div>
+            <button type="submit" class="btn btn-primary" style="margin-top: var(--lg);">Enviar Solicitação</button>
+          </form>
+        </div>
+      `
+    };
+
+    // Navigation logic
+    function goToStep(route) {
+      window.location.hash = route;
+      renderScreen(route);
+    }
+
+    function renderScreen(route) {
+      const main = document.getElementById('mainContent');
+      let content = '';
+
+      if (route === '' || route === 'home') {
+        content = templates.home();
+      } else if (route === 'validation') {
+        content = templates.validation();
+      } else if (route === 'login') {
+        content = templates.login();
+      } else if (route === 'planSelection') {
+        content = templates.planSelection();
+      } else if (route === 'billing') {
+        content = templates.billing();
+      } else if (route.startsWith('entity/')) {
+        const screen = route.split('/')[1] || 'dashboard';
+        content = templates.entityLayout(screen);
+      } else if (route.startsWith('admin/')) {
+        const screen = route.split('/')[1] || 'dashboard';
+        content = templates.adminLayout(screen);
+      } else {
+        content = `<div class="container"><div class="card"><h2>404 - Página não encontrada</h2><p class="body">A rota "${route}" não está configurada.</p><button class="btn btn-primary" onclick="goToStep('home')">Voltar para Home</button></div></div>`;
+      }
+
+      main.innerHTML = content;
+
+      // Setup event listeners after render
+      setupEventListeners();
+    }
+
+    function setupEventListeners() {
+      // Validation form
+      const validationForm = document.getElementById('validationForm');
+      if (validationForm) {
+        validationForm.onsubmit = function(e) {
+          e.preventDefault();
+          const code = document.getElementById('certCode').value.trim().toUpperCase();
+          const resultDiv = document.getElementById('validationResult');
+          
+          let html = '';
+          if (code === 'VALIDO123') {
+            const cert = mockData.certificates[0];
+            html = `
+              <div style="padding: var(--md); background: #e8f5e9; border-radius: var(--radius-md);">
+                <h3 style="color: var(--success); display: flex; align-items: center; gap: var(--sm);">
+                  <i class="fas fa-check-circle"></i> Certificado válido
+                </h3>
+                <div style="margin-top: var(--md);">
+                  <p><strong>Curso:</strong> ${cert.course}</p>
+                  <p><strong>Entidade:</strong> ${cert.entity}</p>
+                  <p><strong>Carga Horária:</strong> ${cert.hours}h</p>
+                  <p><strong>Data de Emissão:</strong> ${cert.issuedAt}</p>
+                  <p><strong>Status:</strong> <span class="badge badge-valid">Válido</span></p>
+                </div>
+              </div>
+            `;
+          } else {
+            html = `
+              <div style="padding: var(--md); background: #fadbd8; border-radius: var(--radius-md);">
+                <h3 style="color: var(--error); display: flex; align-items: center; gap: var(--sm);">
+                  <i class="fas fa-exclamation-triangle"></i> Certificado não encontrado
+                </h3>
+                <p class="body" style="margin-top: var(--md);">
+                  O código <strong>${code}</strong> não corresponde a nenhum certificado válido em nosso sistema.
+                </p>
+              </div>
+            `;
+          }
+          resultDiv.innerHTML = html;
+          resultDiv.style.display = 'block';
+          resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        };
+      }
+
+      // Login form
+      const loginForm = document.getElementById('loginForm');
+      if (loginForm) {
+        loginForm.onsubmit = function(e) {
+          e.preventDefault();
+          alert('Login simulado com sucesso!\nRedirecionando para seleção de plano...');
+          goToStep('planSelection');
+        };
+      }
+
+      // Billing form
+      const billingForm = document.getElementById('billingForm');
+      if (billingForm) {
+        billingForm.onsubmit = function(e) {
+          e.preventDefault();
+          alert('Assinatura finalizada com sucesso!\nBem-vindo ao ValidaPro!');
+          goToStep('entity/dashboard');
+        };
+      }
+
+      // Support form
+      const supportForm = document.getElementById('supportForm');
+      if (supportForm) {
+        supportForm.onsubmit = function(e) {
+          e.preventDefault();
+          alert('Solicitação enviada com sucesso!\nEm breve retornaremos pelo e-mail cadastrado.');
+        };
+      }
+
+      // Sidebar mobile toggle
+      const toggle = document.getElementById('mobileMenuToggle');
+      const sidebar = document.querySelector('.sidebar');
+      const overlay = document.getElementById('overlay');
+      if (toggle) {
+        toggle.onclick = () => {
+          sidebar.classList.toggle('open');
+          overlay.classList.toggle('active');
+        };
+      }
+      if (overlay) {
+        overlay.onclick = () => {
+          sidebar.classList.remove('open');
+          overlay.classList.remove('active');
+        };
+      }
+
+      // Sidebar links delegation
+      const sidebarNav = document.querySelector('.sidebar-nav');
+      if (sidebarNav) {
+        sidebarNav.onclick = function(e) {
+          if (e.target.tagName === 'A') {
+            e.preventDefault();
+            const href = e.target.getAttribute('href');
+            goToStep(href.substring(1)); // remove #
+            if (window.innerWidth < 768) {
+              sidebar.classList.remove('open');
+              overlay.classList.remove('active');
+            }
+          }
+        };
+      }
+    }
+
+    function selectPlan(index) {
+      selectedPlan = index;
+      document.querySelectorAll('#plansGrid .card').forEach((el, i) => {
+        if (i === index) {
+          el.style.border = '2px solid var(--greenDark)';
+        } else {
+          el.style.border = '2px solid transparent';
+        }
+      });
+    }
+
+    function goToNextStep() {
+      if (selectedPlan === null) {
+        alert('Por favor, selecione um plano.');
+        return;
+      }
+      goToStep('billing');
+    }
+
+    function setBillingType(type) {
+      billingType = type;
+      renderScreen('billing');
+    }
+
+    function setParticipant(id) {
+      // In real app: store selected participant
+      document.querySelectorAll('.card > div[onclick]').forEach(el => {
+        el.style.backgroundColor = '';
+      });
+      event.target.closest('div').style.backgroundColor = 'var(--greenLight)';
+      // Enable next button
+      const btn = document.querySelector('.btn-primary');
+      if (btn) btn.disabled = false;
+    }
+
+    function setCourse(id) {
+      // In real app: store selected course
+      document.querySelectorAll('.card > div[onclick]').forEach(el => {
+        el.style.backgroundColor = '';
+      });
+      event.target.closest('div').style.backgroundColor = 'var(--greenLight)';
+    }
+
+    function showModal(id) {
+      alert(`Modal '${id}' seria aberto aqui.`);
+    }
+
+    // Hash change handling
+    function onHashChange() {
+      const hash = window.location.hash.substring(1) || 'home';
+      if (hash !== currentHash) {
+        currentHash = hash;
+        renderScreen(hash);
+      }
+    }
+
+    // Initialize
+    window.addEventListener('DOMContentLoaded', () => {
+      window.addEventListener('hashchange', onHashChange);
+      onHashChange(); // initial render
+    });
+
+    // Expose functions to global for onclick handlers
+    window.goToStep = goToStep;
+    window.selectPlan = selectPlan;
+    window.goToNextStep = goToNextStep;
+    window.setBillingType = setBillingType;
+    window.setParticipant = setParticipant;
+    window.setCourse = setCourse;
+    window.showModal = showModal;
+  </script>
+</body>
+</html>
+

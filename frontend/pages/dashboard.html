@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Valida Pró</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/css/base.css">
+    <link rel="stylesheet" href="../assets/css/dashboard.css">
+    <link rel="stylesheet" href="../assets/css/componentes.css">
+</head>
+
+<body>
+    <div class="wrap">
+        <aside class="sidebar">
+            <div class="brand-small">
+                <img src="../assets/img/logo.png" class="logo" alt="Logo Valida Pró" style="width: 30px;">
+                <span style="font-weight: 700; font-size: 16px;">Valida Pró</span>
+            </div>
+
+            <nav class="nav">
+                <button class="active"><i>📊</i> Painel</button>
+                <button><i>📜</i> Meus Certificados</button>
+                <button><i>✨</i> Emitir Certificados</button>
+                <button><i>📈</i> Relatórios</button>
+                <button><i>⚙️</i> Configurações</button>
+            </nav>
+
+            <button id="logoutBtn" class="btn btn-outline btn-sm"
+                style="margin-top: auto; border: 1px solid var(--danger); color: var(--danger);">
+                <i>🚪</i> Sair
+            </button>
+        </aside>
+
+        <div class="main">
+            <header class="header">
+                <h2>Painel</h2>
+                <div class="perfil">
+                    <div class="logado">
+                        <p class="texto-perfil">Logado como</p>
+                        <p class="nome-perfil">Paulo Manzano</p>
+                    </div>
+                    <div class="avatar-perfil">PM</div>
+                </div>
+            </header>
+
+            <div class="cards">
+                <div class="card">
+                    <div class="card-label">Certificados Emitidos</div>
+                    <div class="card-val">150</div>
+                    <div class="card-sub text-success">↑ 12% vs mês anterior</div>
+                </div>
+                <div class="card">
+                    <div class="card-label">No mês atual</div>
+                    <div class="card-val">75</div>
+                    <div class="card-sub">50% da meta</div>
+                </div>
+                <div class="card">
+                    <div class="card-label">Pendentes</div>
+                    <div class="card-val">30</div>
+                    <div class="card-sub">Aguardando assinatura</div>
+                </div>
+                <div class="card">
+                    <div class="card-label">Revogados</div>
+                    <div class="card-val">2</div>
+                    <div class="card-sub text-danger">Ação necessária</div>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <div class="table-header">
+                    <h3 class="table-title">Últimas Emissões</h3>
+                    <button class="btn btn-sm">Ver todos</button>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Beneficiário</th>
+                            <th>Curso/Evento</th>
+                            <th>Data</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#1023</td>
+                            <td>Carlos Silva</td>
+                            <td>Workshop Web3</td>
+                            <td>23/12/2025</td>
+                            <td><span class="status-badge st-valid">Válido</span></td>
+                        </tr>
+                        <tr>
+                            <td>#1022</td>
+                            <td>Ana Souza</td>
+                            <td>Design System Masterclass</td>
+                            <td>22/12/2025</td>
+                            <td><span class="status-badge st-valid">Válido</span></td>
+                        </tr>
+                        <tr>
+                            <td>#1021</td>
+                            <td>Roberto Mendes</td>
+                            <td>Intro ao Blockchain</td>
+                            <td>20/12/2025</td>
+                            <td><span class="status-badge st-expired">Expirado</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous">
+        </script>
+    <script>
+        // Auth Check
+        if (localStorage.getItem('isLoggedIn') !== 'true') {
+            window.location.href = 'login.html';
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', () => {
+                    localStorage.removeItem('isLoggedIn');
+                    localStorage.removeItem('userEmail');
+                    window.location.href = 'login.html';
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>
