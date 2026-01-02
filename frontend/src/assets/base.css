@@ -50,6 +50,25 @@
   }
 }
 
+/* Custom Brand Colors */
+:root {
+  --green-light: #e6f7ee;
+  --green-medium: #a8e6c1;
+  --green: #08602a;
+  --green-logo: #30a335;
+  --green-dark-logo: #07672a;
+
+  --white: #ffffff;
+  --gray-light: #f8f9fa;
+  --gray: #6c757d;
+  --gray-medium: #e7e7e7;
+  --gray-dark: #495057;
+  --black: #212525;
+
+  --red-ligth: #f98d8d;
+  --red: #d50404;
+}
+
 *,
 *::before,
 *::after {

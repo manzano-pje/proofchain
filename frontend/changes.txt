@@ -1,0 +1,12 @@
+# Histórico de Mudanças (Changelog)
+
+## Versão 0.1.0 - 02/01/2026
+
+### Melhorias Estruturais e de Código
+- **Refatoração do Cabeçalho**: Criação do componente `AppHeader.vue` utilizando a Composition API do Vue 3 e remoção do antigo `cabecalho.vue`.
+- **Organização de Estilos**: Centralização das variáveis de cores no arquivo `base.css` e limpeza de estilos conflitantes no `main.css`.
+- **Limpeza do App.vue**: Remoção de código legado e simplificação da estrutura principal para utilizar o novo cabeçalho e roteamento.
+
+### Correções
+- Ajuste no menu mobile para funcionar corretamente com a nova estrutura.
+- Padronização das cores da marca (verde institucional) em toda a aplicação.
