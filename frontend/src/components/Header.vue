@@ -28,7 +28,7 @@ const toggleMenu = () => {
         <li><a href="#planos" @click="isMenuOpen = false">Planos</a></li>
         <li><a href="#autenticacao" class="btn btn-outline" @click="isMenuOpen = false">Autenticador</a></li>
         <li>
-            <RouterLink to="/login" class="btn btn-outline btn-primary" @click="isMenuOpen = false">Login</RouterLink>                
+            <RouterLink to="/login" class="btn btn-primary btn-outline" @click="isMenuOpen = false">Login</RouterLink>                
         </li>
         </ul>
     </nav>
@@ -107,7 +107,6 @@ nav a:hover {
 .btn-primary {
     background-color: var(--green-light);
     color: var(--green);
-    border: 2px solid transparent;
 }
 
 .btn-primary:hover {
