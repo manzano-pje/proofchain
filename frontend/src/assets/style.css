@@ -1,29 +1,4 @@
 
-:root {
-    
-    --green-light: #e6f7ee;
-    --green-medium: #a8e6c1;
-    --green: #08602a;
-    --green-logo: #30a335;
-    --green-dark-logo: #07672a;
-
-    --white: #ffffff;
-    --gray-light: #f8f9fa;
-    --gray: #6c757d;
-    --gray-medium: #e7e7e7;
-    --gray-dark: #495057;
-    --black: #212525;
-
-    --red-ligth:#f98d8d;
-    --red: #d50404;
-}
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: var(--black);
@@ -121,8 +96,6 @@ nav a:hover {
     color: var(--white);
 }
 
-
-
 .mobile-toggle {
     display: none;
     background: none;
@@ -191,21 +164,37 @@ section {
 }
 
 /* Validation */
-.validation {
-    background-color: var(--white);
+.validacao {
+    background-color: var(--gray-medium);
     text-align: center;
+    padding: 80px 0;
+    justify-items: center;
 
 }
 
 .validation-box h3 {
-    font-size: 1.5rem;
-    margin-bottom: 20px;
+    font-size: 2.25rem;
+    margin: 0 auto 20px;
+    font-weight: bolder;
+    max-width: 800px;
+    text-align: center;
 }
 
+.validation-box p {
+    color: var(--gray-dark);
+    max-width: 800px;
+    margin: 0 auto;
+    font-size: 1.25rem;
+    text-align: center;
+    font-weight: bold;
+}
 
 .btn-validar{
-    width: 30%;
-    max-width: 30%;
+    width: 550px;
+    /* max-width: 30%; */
+    text-align: center;
+    justify-items: center;
+    margin-top: 80px
 }
 
 .validation-result {
@@ -443,7 +432,7 @@ input{
 /* Footer */
 footer {
     background: var(--black);
-    color: #aaa;
+    color: var(--white);
     padding: 60px 0 30px;
 }
 

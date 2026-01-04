@@ -4,7 +4,7 @@ const version = 'v0.1.0';
 </script>
 
 <template>
-  <footer class="app-footer">
+  <footer class="footer">
     <div class="container">
       <div class="footer-content">
         <p>&copy; {{ currentYear }} Validex ProofChain. Todos os direitos reservados.</p>
@@ -16,7 +16,7 @@ const version = 'v0.1.0';
   </footer>
 </template>
 
-<style scoped>
+<!-- <style scoped>
 .app-footer {
   background-color: var(--gray-light);
   border-top: 1px solid var(--gray-medium);
@@ -55,4 +55,4 @@ const version = 'v0.1.0';
     text-align: center;
   }
 }
-</style>
+</style> -->

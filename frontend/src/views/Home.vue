@@ -2,7 +2,7 @@
     <!-- <Hero /> -->
     <section class="section hero ">
         <div class="container">
-            <h1 class="section-type">Certificados realmente<br>
+            <h1>Certificados realmente<br>
                 <span>seguros contra fraudes</span>
             </h1>
             <p>Emissão e autenticação de <br>certificados com tecnologia blockchain.</p>
@@ -14,9 +14,15 @@
     </section>   
 
     <!-- Autenticação -->
-     <section class="section">
-        <div class="container">
-
+     <section id="id-validacao" class="validacao">
+        <div class="validation-box">
+            <h3>Autenticação de Certificados</h3>
+            <p>Confirme a validade de um certificado em segundos,<br>
+                com total transparência e segurança.
+            </p>
+            <div class="btn-validar">
+                <a href="#validar" class="btn btn-outline">Validar Certificado</a>
+            </div>
         </div>
      </section>
 </template>
