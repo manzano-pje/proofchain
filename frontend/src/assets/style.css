@@ -1,29 +1,4 @@
 
-:root {
-    
-    --green-light: #e6f7ee;
-    --green-medium: #a8e6c1;
-    --green: #08602a;
-    --green-logo: #30a335;
-    --green-dark-logo: #07672a;
-
-    --white: #ffffff;
-    --gray-light: #f8f9fa;
-    --gray: #6c757d;
-    --gray-medium: #e7e7e7;
-    --gray-dark: #495057;
-    --black: #212525;
-
-    --red-ligth:#f98d8d;
-    --red: #d50404;
-}
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: var(--black);
@@ -91,32 +66,27 @@ nav a:hover {
 
 .btn {
     display: inline-block;
-    padding: 5px 24px;
+    padding: 8px 24px;
     border-radius: 8px;
     font-weight: 600;
     text-align: center;
     cursor: pointer;
     transition: all 0.3s;
-}
-
-.btn-close{
-    font-size: x-small;
-    border: none;
+    text-decoration: none;
 }
 
 .btn-primary {
-    background-color: var(--green-light);
+    background-color: var(--gray-light);
     color: var(--green);
 }
 
 .btn-primary:hover {
-    background-color:var(--gray-medium);
+    background-color:var(--green);
     color: var(--white);
-    transform: translateY(-2px);
 }
 
 .btn-outline {
-    background: transparent;
+    background-color: var(--gray-light);
     border: 2px solid var(--green);
     color: var(--green);
 }
@@ -137,15 +107,13 @@ nav a:hover {
 
 /* Hero */
 .hero {
-    padding: 160px 0 80px;
-    /* background: linear-gradient(135deg, #f8f9fa 0%, #e9f7f3 100%); */
-    background-image: url('../img/fundo-home.png');
-
+    padding: 80px 0 150px;
+    background-image: url("./img/fundo-home.png");
     text-align: center;
 }
 
 .hero h1 {
-    font-size: 2.8rem;
+    font-size: 3.5rem;
     font-weight: 800;
     margin-bottom: 24px;
     color: var(--black);
@@ -153,16 +121,19 @@ nav a:hover {
 
 .hero h1 span {
     color: var(--green);
+    font-weight: 800;
 }
 
-.hero p {
-    font-size: 1.25rem;
+.hero .container p {
+    font-size: 1.75rem;
     max-width: 700px;
+    font-weight: 700;
     margin: 0 auto 40px;
     color: var(--gray-dark);
 }
 
 .hero-buttons {
+    margin-top: 50px;
     display: flex;
     justify-content: center;
     gap: 16px;
@@ -193,21 +164,37 @@ section {
 }
 
 /* Validation */
-.validation {
-    background-color: var(--white);
+.validacao {
+    background-color: var(--gray-medium);
     text-align: center;
+    padding: 80px 0;
+    justify-items: center;
 
 }
 
 .validation-box h3 {
-    font-size: 1.5rem;
-    margin-bottom: 20px;
+    font-size: 2.25rem;
+    margin: 0 auto 20px;
+    font-weight: bolder;
+    max-width: 800px;
+    text-align: center;
 }
 
+.validation-box p {
+    color: var(--gray-dark);
+    max-width: 800px;
+    margin: 0 auto;
+    font-size: 1.25rem;
+    text-align: center;
+    font-weight: bold;
+}
 
 .btn-validar{
-    width: 30%;
-    max-width: 30%;
+    width: 550px;
+    /* max-width: 30%; */
+    text-align: center;
+    justify-items: center;
+    margin-top: 80px
 }
 
 .validation-result {
@@ -359,7 +346,7 @@ register.active{
 }
 
 .register-box{
-    position: ;
+    /* position: ; */
     width: 100%;
     max-width: 420px;
     background-color: var(--gray-medium);
@@ -445,7 +432,7 @@ input{
 /* Footer */
 footer {
     background: var(--black);
-    color: #aaa;
+    color: var(--white);
     padding: 60px 0 30px;
 }
 
