@@ -10,3 +10,11 @@
 ### Correções
 - Ajuste no menu mobile para funcionar corretamente com a nova estrutura.
 - Padronização das cores da marca (verde institucional) em toda a aplicação.
+
+## Versão 0.1.1 - 05/01/2026
+
+### Correções (05/01/2026)
+- **CSS**: Correção de erro de sintaxe no `base.css` e importação faltante no `main.css`.
+- **Componentes**: Restauração dos estilos do `Footer.vue` e limpeza de imports não utilizados no `Home.vue`.
+- **Views**: Implementação das páginas `Login.vue` e `Dashboard.vue` que estavam vazias.
+- **Views**: Links menu e seu componente `Header.vue`, `Footer.vue` e `Home.vue`.
