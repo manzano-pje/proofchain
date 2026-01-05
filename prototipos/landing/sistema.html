@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>ProofPRO - Área da Instituição</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <style>
+        :root {
+            --bg: #f8f9fa;
+            --card: #ffffff;
+            --primary: #00C19D;
+            --primary-dark: #00a88a;
+            --muted: #6c757d;
+            --border: #e9ecef;
+            --text: #212529;
+            --radius: 8px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Inter, system-ui, Arial
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-size: 15px
+        }
+
+        .center {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh
+        }
+
+        /* Login */
+        .login-box {
+            width: 400px;
+            background: var(--card);
+            border-radius: 12px;
+            padding: 32px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border)
+        }
+
+        .brand {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 24px;
+            justify-content: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: var(--black);
+            }
+
+            .logo i {
+            color: var(--green);
+            }
+
+        .brand-text {
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.5px
+        }
+
+        .muted {
+            color: var(--muted);
+            font-size: 14px;
+            margin-bottom: 20px
+        }
+
+        .form-row {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 16px
+        }
+
+        input,
+        select {
+            padding: 12px;
+            border-radius: var(--radius);
+            border: 1px solid #ced4da;
+            font-size: 14px;
+            width: 100%
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 193, 157, 0.1)
+        }
+
+        .btn {
+            background: var(--primary);
+            color: white;
+            padding: 12px 16px;
+            border: none;
+            border-radius: var(--radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s
+        }
+
+        .btn:hover {
+            background: var(--primary-dark)
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary)
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white
+        }
+
+        .btn-sm {
+            padding: 8px 12px;
+            font-size: 13px
+        }
+
+        /* App layout */
+        .wrap {
+            display: flex;
+            height: 100vh
+        }
+
+        .sidebar {
+            width: 260px;
+            background: var(--card);
+            padding: 24px;
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column
+        }
+
+        .brand-small {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 32px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border)
+        }
+
+        .nav {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex: 1
+        }
+
+        .nav button {
+            background: transparent;
+            border: none;
+            padding: 12px 16px;
+            border-radius: var(--radius);
+            text-align: left;
+            cursor: pointer;
+            color: var(--muted);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: 0.2s;
+            font-size: 14px
+        }
+
+        .nav button:hover {
+            background: #f1f3f5;
+            color: var(--text)
+        }
+
+        .nav button.active {
+            background: rgba(0, 193, 157, 0.1);
+            color: var(--primary);
+            font-weight: 600
+        }
+
+        .nav button i {
+            width: 20px;
+            text-align: center
+        }
+
+        .main {
+            flex: 1;
+            padding: 32px;
+            overflow: auto
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px
+        }
+
+        .header h2 {
+            font-size: 24px;
+            font-weight: 700
+        }
+
+        /* Dashboard Cards */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px
+        }
+
+        .card {
+            background: var(--card);
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
+            border: 1px solid var(--border)
+        }
+
+        .card-label {
+            font-size: 13px;
+            color: var(--muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px
+        }
+
+        .card-val {
+            font-size: 28px;
+            font-weight: 700;
+            margin-top: 8px;
+            color: var(--text)
+        }
+
+        .card-sub {
+            font-size: 13px;
+            color: var(--muted);
+            margin-top: 4px
+        }
+
+        /* Tables */
+        .table-container {
+            background: var(--card);
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
+            border: 1px solid var(--border);
+            overflow: hidden
+        }
+
+        .table-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center
+        }
+
+        .table-title {
+            font-size: 16px;
+            font-weight: 700
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse
+        }
+
+        th {
+            background: #f8f9fa;
+            padding: 12px 20px;
+            text-align: left;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--muted);
+            border-bottom: 1px solid var(--border)
+        }
+
+        td {
+            padding: 14px 20px;
+            border-bottom: 1px solid var(--border);
+            font-size: 14px
+        }
+
+        tr:last-child td {
+            border-bottom: none
+        }
+
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            display: inline-block
+        }
+
+        .st-valid {
+            background: #d4edda;
+            color: #155724
+        }
+
+        .st-expired {
+            background: #fff3cd;
+            color: #856404
+        }
+
+        .st-revoked {
+            background: #f8d7da;
+            color: #721c24
+        }
+
+        /* Modal */
+        .modal-bg {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 999
+        }
+
+        .modal {
+            width: 500px;
+            background: var(--card);
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2)
+        }
+
+        .modal h3 {
+            margin-bottom: 20px;
+            font-size: 18px
+        }
+
+        .row {
+            display: flex;
+            gap: 16px
+        }
+
+        .col {
+            flex: 1
+        }
+
+        @media(max-width:900px) {
+            .sidebar {
+                display: none
+            }
+
+            .wrap {
+                display: block
+            }
+
+            .main {
+                padding: 16px
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- LOGIN PAGE -->
+    <div id="loginPage" class="center">
+        <div class="login-box">
+            <div class="brand">
+                <a href="index.html" class="logo">
+          <i class="fas fa-shield-alt"></i>
+          <span>Proof<span style="color:#00C19D">PRO</span></span>
+        </a>
+            </div>
+
+            <div class="muted" style="text-align:center">Acesso exclusivo para Instituições de Ensino</div>
+
+            <div class="form-row">
+                <label class="muted" style="margin:0">E-mail corporativo</label>
+                <input id="email" placeholder="contato@escola.com.br" value="entidade@validex.com" />
+            </div>
+            <div class="form-row">
+                <label class="muted" style="margin:0">Senha</label>
+                <input id="password" type="password" placeholder="••••••••" value="123456" />
+            </div>
+
+            <button class="btn" style="width:100%;margin-top:10px" onclick="doLogin()">Acessar Plataforma</button>
+
+            <div style="margin-top:20px;text-align:center;color:var(--muted);font-size:12px;line-height:1.5">
+                Credenciais de Teste:<br>
+                <strong>entidade@validex.com</strong> / <strong>123456</strong>
+            </div>
+        </div>
+    </div>
+
+    <!-- APP LAYOUT -->
+    <div id="app" class="wrap" style="display:none">
+        <aside class="sidebar">
+            <div class="brand-small">
+                <a href="index.html" class="logo">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Proof<span style="color:#00C19D">PRO</span></span>
+                    </a>            
+            </div>
+
+            <nav class="nav">
+                <button onclick="route('dashboard', this)" class="active"><i class="fas fa-th-large"></i>
+                    Dashboard</button>
+                <button onclick="route('certificados', this)"><i class="fas fa-certificate"></i> Certificados</button>
+                <button onclick="route('cursos', this)"><i class="fas fa-book"></i> Cursos</button>
+                <button onclick="route('participantes', this)"><i class="fas fa-user-graduate"></i>
+                    Participantes</button>
+                <button onclick="route('relatorios', this)"><i class="fas fa-chart-line"></i> Relatórios</button>
+                <button onclick="route('config', this)"><i class="fas fa-cog"></i> Configurações</button>
+            </nav>
+
+            <div style="margin-top:auto">
+                <button onclick="logout()"
+                    style="color:#dc3545;background:transparent;border:none;cursor:pointer;display:flex;align-items:center;gap:10px;font-weight:600;width:100%;padding:12px"><i
+                        class="fas fa-sign-out-alt"></i> Sair</button>
+            </div>
+        </aside>
+
+        <main class="main">
+
+            <!-- DASHBOARD VIEW -->
+            <div id="view-dashboard">
+                <div class="header">
+                    <div>
+                        <h2>Visão Geral</h2>
+                        <div class="muted">Bem-vindo, <span id="dash-entity-name">...</span></div>
+                    </div>
+                    <button class="btn" onclick="openModal('emitir')"><i class="fas fa-plus"></i> Emitir
+                        Certificado</button>
+                </div>
+
+                <div class="cards">
+                    <div class="card">
+                        <div class="card-label">Total Emitido</div>
+                        <div class="card-val" id="kpi-total">0</div>
+                        <div class="card-sub">Certificados na blockchain</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-label">Emitidos no Mês</div>
+                        <div class="card-val" id="kpi-month" style="color:var(--primary)">0</div>
+                        <div class="card-sub">+12% vs mês anterior</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-label">Cursos Ativos</div>
+                        <div class="card-val" id="kpi-courses">0</div>
+                        <div class="card-sub">Com emissões recentes</div>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <div class="table-header">
+                        <div class="table-title">Últimas Emissões</div>
+                        <a href="#" onclick="route('certificados', document.querySelectorAll('.nav button')[1])"
+                            style="font-size:13px;color:var(--primary);font-weight:600">Ver todos</a>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Participante</th>
+                                <th>Curso</th>
+                                <th>Data</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-dash-certs"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- CERTIFICADOS VIEW -->
+            <div id="view-certificados" style="display:none">
+                <div class="header">
+                    <h2>Certificados</h2>
+                    <button class="btn" onclick="openModal('emitir')"><i class="fas fa-plus"></i> Novo
+                        Certificado</button>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Participante</th>
+                                <th>Curso</th>
+                                <th>Emitido em</th>
+                                <th>Status</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-all-certs"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- CURSOS VIEW -->
+            <div id="view-cursos" style="display:none">
+                <div class="header">
+                    <h2>Cursos</h2>
+                    <button class="btn" onclick="openModal('curso')"><i class="fas fa-plus"></i> Novo Curso</button>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nome do Curso</th>
+                                <th>Carga Horária</th>
+                                <th>Status</th>
+                                <th>Alunos Certificados</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-courses"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- PARTICIPANTES VIEW -->
+            <div id="view-participantes" style="display:none">
+                <div class="header">
+                    <h2>Participantes</h2>
+                    <button class="btn" onclick="openModal('participante')"><i class="fas fa-plus"></i> Novo
+                        Cadastro</button>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>E-mail</th>
+                                <th>CPF</th>
+                                <th>Certificados</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-people"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- CONFIG VIEW -->
+            <div id="view-config" style="display:none">
+                <div class="header">
+                    <h2>Configurações da Instituição</h2>
+                    <button class="btn" onclick="alert('Dados salvos com sucesso!')">Salvar Alterações</button>
+                </div>
+                <div class="card" style="max-width:800px">
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-row">
+                                <label class="muted">Nome da Instituição</label>
+                                <input value="Escola Técnica Nacional" />
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-row">
+                                <label class="muted">CNPJ</label>
+                                <input value="12.345.678/0001-99" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-row">
+                                <label class="muted">E-mail de Contato</label>
+                                <input value="contato@escola.com.br" />
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-row">
+                                <label class="muted">Telefone</label>
+                                <input value="(11) 3333-4444" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <label class="muted">Endereço Completo</label>
+                        <input value="Av. Paulista, 1000 - São Paulo/SP" />
+                    </div>
+                    <div style="margin-top:20px;padding-top:20px;border-top:1px solid var(--border)">
+                        <div class="table-title" style="margin-bottom:12px">Logotipo</div>
+                        <button class="btn btn-outline btn-sm">Carregar Nova Imagem</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- REPORTS VIEW (Placeholder) -->
+            <div id="view-relatorios" style="display:none">
+                <div class="header">
+                    <h2>Relatórios Gerenciais</h2>
+                </div>
+                <div class="card" style="text-align:center;padding:60px">
+                    <i class="fas fa-chart-pie" style="font-size:48px;color:var(--primary);margin-bottom:20px"></i>
+                    <h3>Em Breve</h3>
+                    <p class="muted">Relatórios avançados de exportação estarão disponíveis na próxima versão.</p>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- MODALS -->
+
+    <!-- Modal Emitir Certificado -->
+    <div class="modal-bg" id="modalEmitir">
+        <div class="modal">
+            <h3>Emitir Novo Certificado</h3>
+            <div class="form-row">
+                <label class="muted">Selecione o Curso</label>
+                <select id="m_emit_course"></select>
+            </div>
+            <div class="form-row">
+                <label class="muted">Selecione o Participante</label>
+                <select id="m_emit_person"></select>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <label class="muted">Data Início</label>
+                    <input type="date" id="m_emit_start" />
+                </div>
+                <div class="col">
+                    <label class="muted">Data Conclusão</label>
+                    <input type="date" id="m_emit_end" />
+                </div>
+            </div>
+            <div style="display:flex;justify-content:flex-end;gap:12px;margin-top:24px">
+                <button class="btn btn-outline" onclick="closeModal('emitir')">Cancelar</button>
+                <button class="btn" onclick="saveCertificate()">Emitir Agora</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Novo Curso -->
+    <div class="modal-bg" id="modalCurso">
+        <div class="modal">
+            <h3>Cadastrar Novo Curso</h3>
+            <div class="form-row">
+                <label class="muted">Nome do Curso</label>
+                <input id="m_course_name" placeholder="Ex: Gestão Ágil" />
+            </div>
+            <div class="form-row">
+                <label class="muted">Carga Horária (horas)</label>
+                <input type="number" id="m_course_hours" placeholder="Ex: 40" />
+            </div>
+            <div style="display:flex;justify-content:flex-end;gap:12px;margin-top:24px">
+                <button class="btn btn-outline" onclick="closeModal('curso')">Cancelar</button>
+                <button class="btn" onclick="saveCourse()">Salvar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Novo Participante -->
+    <div class="modal-bg" id="modalParticipante">
+        <div class="modal">
+            <h3>Cadastrar Participante</h3>
+            <div class="form-row">
+                <label class="muted">Nome Completo</label>
+                <input id="m_person_name" />
+            </div>
+            <div class="row">
+                <div class="col">
+                    <label class="muted">E-mail</label>
+                    <input id="m_person_email" type="email" />
+                </div>
+                <div class="col">
+                    <label class="muted">CPF</label>
+                    <input id="m_person_cpf" />
+                </div>
+            </div>
+            <div style="display:flex;justify-content:flex-end;gap:12px;margin-top:24px">
+                <button class="btn btn-outline" onclick="closeModal('participante')">Cancelar</button>
+                <button class="btn" onclick="savePerson()">Salvar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* --------- MOCK DATABASE --------- */
+        const storageKey = 'validaorpro_db_v1';
+        function loadDB() {
+            const raw = localStorage.getItem(storageKey);
+            if (raw) return JSON.parse(raw);
+
+            // Initial Seed Data
+            const seed = {
+                institution: { name: 'Escola Técnica Nacional' },
+                courses: [
+                    { id: 1, name: 'Gestão de Projetos com Metodologias Ágeis', hours: 40, students: 12, status: 'Ativo' },
+                    { id: 2, name: 'Introdução ao Blockchain', hours: 20, students: 5, status: 'Ativo' },
+                    { id: 3, name: 'Marketing Digital para Negócios', hours: 60, students: 8, status: 'Ativo' }
+                ],
+                people: [
+                    { id: 1, name: 'João Silva', email: 'joao@email.com', cpf: '123.456.789-00', certs: 1 },
+                    { id: 2, name: 'Maria Oliveira', email: 'maria@email.com', cpf: '987.654.321-11', certs: 1 },
+                    { id: 3, name: 'Carlos Santos', email: 'carlos@email.com', cpf: '456.789.123-22', certs: 0 }
+                ],
+                certificates: [
+                    { id: 'CERT-2024-A1B2', person: 'João Silva', course: 'Gestão de Projetos com Metodologias Ágeis', date: '2024-12-10', status: 'VÁLIDO' },
+                    { id: 'CERT-2024-C3D4', person: 'Maria Oliveira', course: 'Introdução ao Blockchain', date: '2024-12-15', status: 'VÁLIDO' }
+                ]
+            };
+            saveDB(seed);
+            return seed;
+        }
+        function saveDB(db) { localStorage.setItem(storageKey, JSON.stringify(db)); }
+        let DB = loadDB();
+
+        /* --------- AUTH --------- */
+        function doLogin() {
+            const email = document.getElementById('email').value;
+            const pwd = document.getElementById('password').value;
+            if (email === 'entidade@validex.com' && pwd === '123456') {
+                localStorage.setItem('validaor_token', 'true');
+                showApp();
+            } else {
+                alert('E-mail ou senha incorretos. Use as credenciais de teste.');
+            }
+        }
+        function logout() {
+            localStorage.removeItem('validaor_token');
+            location.reload('index,html');
+        }
+
+        /* --------- UI & ROUTING --------- */
+        function showApp() {
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('app').style.display = 'flex';
+            document.getElementById('dash-entity-name').innerText = DB.institution.name;
+            renderDashboard();
+            renderCourses();
+            renderPeople();
+            renderCertificates();
+        }
+
+        function route(view, btn) {
+            document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+            document.querySelectorAll('.main > div').forEach(v => v.style.display = 'none');
+
+            const target = document.getElementById('view-' + view);
+            if (target) target.style.display = 'block';
+
+            if (view === 'dashboard') renderDashboard();
+            if (view === 'certificados') renderCertificates();
+            if (view === 'cursos') renderCourses();
+            if (view === 'participantes') renderPeople();
+        }
+
+        /* --------- RENDER FUNCTIONS --------- */
+        function renderDashboard() {
+            document.getElementById('kpi-total').innerText = DB.certificates.length;
+            document.getElementById('kpi-month').innerText = DB.certificates.filter(c => c.date.startsWith('2024-12')).length;
+            document.getElementById('kpi-courses').innerText = DB.courses.length;
+
+            const recent = [...DB.certificates].reverse().slice(0, 5);
+            const rows = recent.map(c => `
+    <tr>
+      <td><span style="font-family:monospace;font-weight:600">${c.id}</span></td>
+      <td>${c.person}</td>
+      <td>${c.course}</td>
+      <td>${formatDate(c.date)}</td>
+      <td><span class="status-badge st-valid">${c.status}</span></td>
+    </tr>
+  `).join('');
+            document.getElementById('table-dash-certs').innerHTML = rows || '<tr><td colspan="5" style="text-align:center;padding:20px">Nenhum certificado emitido.</td></tr>';
+        }
+
+        function renderCertificates() {
+            const rows = DB.certificates.map(c => `
+    <tr>
+      <td><span style="font-family:monospace;font-weight:600">${c.id}</span></td>
+      <td>${c.person}</td>
+      <td>${c.course}</td>
+      <td>${formatDate(c.date)}</td>
+      <td><span class="status-badge st-valid">${c.status}</span></td>
+      <td>
+        <button class="btn-outline btn-sm"><i class="fas fa-eye"></i></button>
+        <button class="btn-outline btn-sm"><i class="fas fa-download"></i></button>
+      </td>
+    </tr>
+  `).join('');
+            document.getElementById('table-all-certs').innerHTML = rows;
+        }
+
+        function renderCourses() {
+            const rows = DB.courses.map(c => `
+    <tr>
+      <td>${c.name}</td>
+      <td>${c.hours}h</td>
+      <td><span class="status-badge st-valid">${c.status}</span></td>
+      <td>${c.students}</td>
+    </tr>
+  `).join('');
+            document.getElementById('table-courses').innerHTML = rows;
+        }
+
+        function renderPeople() {
+            const rows = DB.people.map(p => `
+    <tr>
+      <td>${p.name}</td>
+      <td>${p.email}</td>
+      <td>${p.cpf}</td>
+      <td>${p.certs}</td>
+    </tr>
+  `).join('');
+            document.getElementById('table-people').innerHTML = rows;
+        }
+
+        /* --------- ACTIONS --------- */
+        function saveCertificate() {
+            const courseId = document.getElementById('m_emit_course').value;
+            const personId = document.getElementById('m_emit_person').value;
+            const date = document.getElementById('m_emit_end').value;
+
+            if (!courseId || !personId || !date) { alert('Preencha os dados.'); return; }
+
+            const course = DB.courses.find(c => c.id == courseId);
+            const person = DB.people.find(p => p.id == personId);
+
+            // Create Cert
+            const newCert = {
+                id: 'CERT-' + new Date().getFullYear() + '-' + Math.floor(Math.random() * 10000),
+                person: person.name,
+                course: course.name,
+                date: date,
+                status: 'VÁLIDO'
+            };
+
+            DB.certificates.push(newCert);
+            person.certs++; // simple increment
+            course.students++; // simple increment
+            saveDB(DB);
+
+            closeModal('emitir');
+            renderDashboard();
+            renderCertificates();
+            alert('Certificado emitido e registrado na blockchain!');
+        }
+
+        function saveCourse() {
+            const name = document.getElementById('m_course_name').value;
+            const hours = document.getElementById('m_course_hours').value;
+            if (!name) { alert('Nome obrigatório'); return; }
+
+            DB.courses.push({ id: Date.now(), name, hours, students: 0, status: 'Ativo' });
+            saveDB(DB);
+            closeModal('curso');
+            renderCourses();
+        }
+
+        function savePerson() {
+            const name = document.getElementById('m_person_name').value;
+            const email = document.getElementById('m_person_email').value;
+            const cpf = document.getElementById('m_person_cpf').value;
+            if (!name) { alert('Nome obrigatório'); return; }
+
+            DB.people.push({ id: Date.now(), name, email, cpf, certs: 0 });
+            saveDB(DB);
+            closeModal('participante');
+            renderPeople();
+        }
+
+        /* --------- MODALS & UTILS --------- */
+        function openModal(id) {
+            document.getElementById('modal' + capitalize(id)).style.display = 'flex';
+
+            if (id === 'emitir') {
+                // Populate dropdowns
+                const courseSel = document.getElementById('m_emit_course');
+                courseSel.innerHTML = DB.courses.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+
+                const personSel = document.getElementById('m_emit_person');
+                personSel.innerHTML = DB.people.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
+            }
+        }
+        function closeModal(id) { document.getElementById('modal' + capitalize(id)).style.display = 'none'; }
+        function capitalize(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+        function formatDate(iso) { if (!iso) return '-'; const [y, m, d] = iso.split('-'); return `${d}/${m}/${y}`; }
+
+        // Init
+        if (localStorage.getItem('validaor_token')) showApp();
+    </script>
+</body>
+
+</html>

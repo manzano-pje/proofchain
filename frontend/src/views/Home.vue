@@ -80,9 +80,44 @@
             </div>
         </div>
     </section>
+
+    <!--Como funciona -->
+    <section id="id-funcinoamento" class="funcionamento">
+         <div class="container">
+            <div class="funcionamento-box">
+            <!--    <h3>Como funciona</h3>
+                <p>
+                A plataforma opera com dois níveis de acesso, garantindo <br>transparência para o público e controle completo para as instituições. <br>
+                Cada nível oferece funcionalidades específicas de acordo com o perfil do usuário.
+                </p>
+
+                <div class="grid">
+                    <div class="card">
+                        <i class="fa-solid fa-shield"></i>
+                        <h3>Validação Pública</h3>
+                        <p>Acesso livre pela página principal.</p>
+                        <span>Qualquer pessoa pode inserir o código do certificado<br> 
+                              para visualizar todas as informações e confirmar sua<br>
+                              autenticidade de forma rápida e segura.</span>
+                    </div>
+
+                    <div class="card">
+                        <i class="fa-solid fa-fingerprint"></i>
+                        <h3>Instituições</h3>
+                        <p>Acesso exclusivo por login.</p>
+                        <span>As instituições podem emitir certificados, cadastrar cursos<br>
+                              e participantes, gerar relatórios, além de gerenciar todas <br>
+                              as informações de forma centralizada e eficiente.
+                        </span>
+                    </div>
+                </div>-->
+            </div>
+        </div>
+    </section>
 </template>
 
 <script setup lang="ts">
     import Header from '@/components/Header.vue';
     import Footer from '@/components/Footer.vue';
+import { textSpanContainsPosition } from 'typescript';
 </script>

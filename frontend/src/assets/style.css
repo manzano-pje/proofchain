@@ -155,7 +155,7 @@ section {
 .recursos {
     background-color: var(--gray-light);
     text-align: center;
-    padding: 40px 0 80px;
+    padding: 40px 0 0;
     justify-items: center;
 }
 
@@ -213,6 +213,42 @@ section {
 .card h3 {
     font-size: 1.4rem;
     margin-bottom: 16px;
+}
+
+
+/* funcionamento */
+
+.funcionamento {
+    background-color: var(--gray-medium);
+    text-align: center;
+    padding: 0 0 20px;
+    justify-items: center;
+    background-image: url("./img/funcionamento.png");
+    width: 1280px  ;
+    height: 800px
+}
+
+.funcionamento-box h3 {
+    font-size: 2.25rem;
+    margin: 0 auto 20px;
+    font-weight: bolder;
+    max-width: 800px;
+    text-align: center;
+    
+}
+
+.funcionamento-box p {
+    color: var(--gray-dark);
+    max-width: 800px;
+    margin: 0 auto;
+    font-size: 1.25rem;
+    text-align: center;
+    font-weight: bold;
+}
+
+.funcionamento-box span{
+    color: var(--green);
+    font-weight: bolder;
 }
 
 /* Plans */
