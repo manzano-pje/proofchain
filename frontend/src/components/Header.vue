@@ -26,7 +26,7 @@ const toggleMenu = () => {
         <li><a href="#recursos" @click="isMenuOpen = false">Recursos</a></li>
         <li><a href="#como-funciona" @click="isMenuOpen = false">Como funciona</a></li>
         <li><a href="#planos" @click="isMenuOpen = false">Planos</a></li>
-        <li><a href="#autenticacao" class="btn btn-outline" @click="isMenuOpen = false">Autenticador</a></li>
+        <li><a href="#validacao" class="btn btn-outline" @click="isMenuOpen = false">Autenticador</a></li>
         <li>
             <RouterLink to="/login" class="btn btn-primary btn-outline" @click="isMenuOpen = false">Login</RouterLink>                
         </li>

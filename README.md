@@ -239,3 +239,7 @@ O frontend deve seguir estritamente os tokens visuais definidos no protótipo `c
 - [ ] Conectar formulário de Login do Frontend com API `/auth/login`.
 - [ ] Implementar Dashboard com dados reais da API.
 - [ ] Implementar rotina de "Validação" pública (sem login).
+
+---
+
+> Robson  CH: [![wakatime](https://wakatime.com/badge/user/7b985f77-0bde-4bbf-899e-c4bb0e25f27b/project/91eb7bd9-d37d-43cb-8663-6c384105ea9d.svg)](https://wakatime.com/badge/user/7b985f77-0bde-4bbf-899e-c4bb0e25f27b/project/91eb7bd9-d37d-43cb-8663-6c384105ea9d)

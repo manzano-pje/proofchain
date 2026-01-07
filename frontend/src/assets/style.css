@@ -91,9 +91,9 @@ section {
 
 /* Validation */
 .validacao {
-    background-color: var(--gray-medium);
+    background-color: var(--gray-l);
     text-align: center;
-    padding: 80px 0;
+    padding: 80px 0 20px;
     justify-items: center;
 
 }
@@ -110,9 +110,9 @@ section {
     color: var(--gray-dark);
     max-width: 800px;
     margin: 0 auto;
-    font-size: 1.25rem;
+    font-size: 1.0rem;
     text-align: center;
-    font-weight: bold;
+    font-weight: 700;
 }
 
 .btn-validar{
@@ -120,7 +120,7 @@ section {
     /* max-width: 30%; */
     text-align: center;
     justify-items: center;
-    margin-top: 80px
+    margin-top: 40px
 }
 
 .validation-result {
@@ -171,9 +171,9 @@ section {
     color: var(--gray-dark);
     max-width: 800px;
     margin: 0 auto;
-    font-size: 1.25rem;
+    font-size: 1.10rem;
     text-align: center;
-    font-weight: bold;
+    font-weight: 600;
 }
 
 .recursos-box span{
@@ -219,26 +219,25 @@ section {
 /* funcionamento */
 
 .funcionamento {
-    background-color: var(--gray-medium);
     text-align: center;
     padding: 0 0 20px;
     justify-items: center;
-    background-image: url("./img/funcionamento.png");
-    width: 1280px  ;
-    height: 800px
+    width: 100%  ;
+    /* background-image: url(./img/fundo-funcionamento.png);/
+    max-height: 550px;*/
 }
 
 .funcionamento-box h3 {
     font-size: 2.25rem;
-    margin: 0 auto 20px;
+    margin: 0 auto 0px;
     font-weight: bolder;
     max-width: 800px;
     text-align: center;
-    
+    color: var(--red);    
 }
 
 .funcionamento-box p {
-    color: var(--gray-dark);
+    color: var(--gray);
     max-width: 800px;
     margin: 0 auto;
     font-size: 1.25rem;
@@ -247,25 +246,44 @@ section {
 }
 
 .funcionamento-box span{
-    color: var(--green);
+    color: var(--gray);
     font-weight: bolder;
 }
 
 /* Plans */
-.plans {
+.planos {
     background-color: var(--gray-light);
+    margin: 0;
+    padding: 0 0 80px
 }
 
-.plan {
-    background: var(--white);
-    border: 2px solid #eee;
+.planos .grid {
+    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+    padding: 0;
+    margin: 0;
+}
+
+.planos .btn-outline{
+    justify-self:baseline;
+}
+
+.plano {
+    border: 2px solid var(--gray-medium);
     border-radius: 12px;
-    padding: 32px;
+    padding: 32px 0;
     text-align: center;
     transition: all 0.3s;
 }
 
-.plan.popular {
+.plano h2 {
+    margin: 0 auto 0px;
+    font-weight: bolder;
+    max-width: 800px;
+    text-align: center;
+    color:var(--green);
+}
+
+.plano.popular {
     border-color: var(--green);
     position: relative;
 }
@@ -283,19 +301,14 @@ section {
     border-radius: 20px;
 }
 
-.plan h3 {
-    font-size: 1.5rem;
-    margin-bottom: 12px;
-}
-
-.price {
-    font-size: 2.2rem;
+.valor {
+    font-size: 2.0rem;
     font-weight: 800;
     color: var(--black);
     margin: 16px 0;
 }
 
-.price span {
+.valor span {
     font-size: 1rem;
     font-weight: normal;
     color: var(--gray);
@@ -308,10 +321,11 @@ section {
 }
 
 .features li {
-    padding: 8px 0;
+    padding: 0;
     display: flex;
     align-items: center;
     gap: 8px;
+    margin: 0;
 }
 
 .features li i {
