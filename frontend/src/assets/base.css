@@ -7,9 +7,9 @@
   --green-dark-logo: #07672a;
 
   --white: #ffffff;
-  --gray-light: #f8f9fa;
+  --gray-light: #f4f5f5;
+  --gray-medium: #d0cdcd;
   --gray: #6c757d;
-  --gray-medium: #e7e7e7;
   --gray-dark: #495057;
   --black: #212525;
 
@@ -21,7 +21,7 @@
 }
 
 *,
-*::before,
+
 *::after {
   box-sizing: border-box;
   margin: 0;
@@ -54,4 +54,10 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.container{ 
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
 }

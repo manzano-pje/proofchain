@@ -1,79 +1,4 @@
 
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: var(--black);
-    line-height: 1.6;
-    background-color: var(--white);
-    scroll-behavior: smooth;
-}
-
-a {
-    text-decoration: none;
-    color: inherit;
-}
-
-.container {
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-/* Header */
-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background-color: var(--white);
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    z-index: 1000;
-}
-
-.header-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 16px 0;
-}
-
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-.logo img {
-    height: 40px;
-}
-.logo i {
-    color: var(--green);
-}
-
-nav ul {
-    display: flex;
-    list-style: none;
-    gap: 24px;
-}
-
-nav a {
-    font-weight: 600;
-    transition: color 0.3s;
-}
-
-nav a:hover {
-    color: var(--green);
-}
-
-.btn {
-    display: inline-block;
-    padding: 8px 24px;
-    border-radius: 8px;
-    font-weight: 600;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.3s;
-    text-decoration: none;
-}
 
 .btn-primary {
     background-color: var(--gray-light);
@@ -88,7 +13,8 @@ nav a:hover {
 .btn-outline {
     background-color: var(--gray-light);
     border: 2px solid var(--green);
-    color: var(--green);
+    color: var(--black);
+    font-weight: 600;
 }
 
 .btn-outline:hover {
@@ -138,6 +64,7 @@ nav a:hover {
     justify-content: center;
     gap: 16px;
     flex-wrap: wrap;
+    font-size: 1.25rem;
 }
 
 /* Section */
@@ -165,9 +92,9 @@ section {
 
 /* Validation */
 .validacao {
-    background-color: var(--gray-medium);
+    background-color: var(--gray-l);
     text-align: center;
-    padding: 80px 0;
+    padding: 80px 0 20px;
     justify-items: center;
 
 }
@@ -184,9 +111,9 @@ section {
     color: var(--gray-dark);
     max-width: 800px;
     margin: 0 auto;
-    font-size: 1.25rem;
+    font-size: 1.0rem;
     text-align: center;
-    font-weight: bold;
+    font-weight: 700;
 }
 
 .btn-validar{
@@ -194,7 +121,7 @@ section {
     /* max-width: 30%; */
     text-align: center;
     justify-items: center;
-    margin-top: 80px
+    margin-top: 40px
 }
 
 .validation-result {
@@ -223,15 +150,49 @@ section {
     margin-bottom: 12px;
 }
 
+
+/* Recursos */
+
+.recursos {
+    background-color: var(--gray-light);
+    text-align: center;
+    padding: 40px 0 0;
+    justify-items: center;
+}
+
+.recursos-box h3 {
+    font-size: 2.25rem;
+    margin: 0 auto 20px;
+    font-weight: bolder;
+    max-width: 800px;
+    text-align: center;
+}
+
+.recursos-box p {
+    color: var(--gray-dark);
+    max-width: 800px;
+    margin: 0 auto;
+    font-size: 1.10rem;
+    text-align: center;
+    font-weight: 600;
+}
+
+.recursos-box span{
+    color: var(--green);
+    font-weight: bolder;
+}
+
 /* Grid Cards */
 .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 24px;
+    margin: 50px 0;
 }
 
 .card {
-    background: var(--white);
+    background: var(--green-light);
+    color: #d32f2f;
     border-radius: 12px;
     padding: 32px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.04);
@@ -255,23 +216,83 @@ section {
     margin-bottom: 16px;
 }
 
-/* Plans */
-.plans {
-    background-color: var(--gray-light);
+
+/* funcionamento */
+
+.funcionamento {
+    text-align: center;
+    padding: 0 0 20px;
+    justify-items: center;
+    width: 100%  ;
+    /* background-image: url(./img/fundo-funcionamento.png);/
+    max-height: 550px;*/
 }
 
-.plan {
-    background: var(--white);
-    border: 2px solid #eee;
+.funcionamento-box h3 {
+    font-size: 2.25rem;
+    margin: 0 auto 0px;
+    font-weight: bolder;
+    max-width: 800px;
+    text-align: center;
+    color: var(--red);    
+}
+
+.funcionamento-box p {
+    color: var(--gray);
+    max-width: 800px;
+    margin: 0 auto;
+    font-size: 1.25rem;
+    text-align: center;
+    font-weight: bold;
+}
+
+.funcionamento-box span{
+    color: var(--gray);
+    font-weight: bolder;
+}
+
+/* Plans */
+.planos {
+    background-color: var(--gray-light);
+    margin: 0;
+    padding: 0 0 80px
+}
+
+.planos .grid {
+    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+    padding: 0;
+    margin: 0;
+}
+
+.planos .btn-outline{
+    margin-top: auto;
+    align-self:center;
+    
+}
+
+.plano {
+    border: 2px solid var(--gray-medium);
     border-radius: 12px;
-    padding: 32px;
+    padding: 32px 0;
     text-align: center;
     transition: all 0.3s;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
-.plan.popular {
+.plano h2 {
+    margin: 0 auto 0px;
+    font-weight: bolder;
+    max-width: 800px;
+    text-align: center;
+    color:var(--green);
+}
+
+.plano.popular {
     border-color: var(--green);
     position: relative;
+    background-color: var(--green-medium);
 }
 
 .popular-badge {
@@ -287,19 +308,14 @@ section {
     border-radius: 20px;
 }
 
-.plan h3 {
-    font-size: 1.5rem;
-    margin-bottom: 12px;
-}
-
-.price {
-    font-size: 2.2rem;
+.valor {
+    font-size: 2.0rem;
     font-weight: 800;
-    color: var(--black);
-    margin: 16px 0;
+    color: var(--green);
+    margin: 8px 0;
 }
 
-.price span {
+.valor span {
     font-size: 1rem;
     font-weight: normal;
     color: var(--gray);
@@ -312,10 +328,11 @@ section {
 }
 
 .features li {
-    padding: 8px 0;
+    padding: 0;
     display: flex;
     align-items: center;
     gap: 8px;
+    margin: 0;
 }
 
 .features li i {
