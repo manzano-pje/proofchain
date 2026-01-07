@@ -13,7 +13,8 @@
 .btn-outline {
     background-color: var(--gray-light);
     border: 2px solid var(--green);
-    color: var(--green);
+    color: var(--black);
+    font-weight: 600;
 }
 
 .btn-outline:hover {
@@ -264,7 +265,9 @@ section {
 }
 
 .planos .btn-outline{
-    justify-self:baseline;
+    margin-top: auto;
+    align-self:center;
+    
 }
 
 .plano {
@@ -273,6 +276,9 @@ section {
     padding: 32px 0;
     text-align: center;
     transition: all 0.3s;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 .plano h2 {
@@ -286,6 +292,7 @@ section {
 .plano.popular {
     border-color: var(--green);
     position: relative;
+    background-color: var(--green-medium);
 }
 
 .popular-badge {
@@ -304,8 +311,8 @@ section {
 .valor {
     font-size: 2.0rem;
     font-weight: 800;
-    color: var(--black);
-    margin: 16px 0;
+    color: var(--green);
+    margin: 8px 0;
 }
 
 .valor span {

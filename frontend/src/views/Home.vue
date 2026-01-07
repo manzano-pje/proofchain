@@ -137,7 +137,6 @@ d<template>
             <li><i class="fas fa-check"></i> 10 autenticações</li>
             <li><i class="fas fa-check"></i> Modelo padrão</li>
             <li><i class="fas fa-check"></i> Válido por 7 dias</li>
-            <!-- <li><i class="fas fa-check"></i> Não é necessário cartão de crédito</li> -->
           </ul>
           <button type="button" class="btn btn-primary btn-outline" data-bs-toggle="modal" 
             data-bs-target="#authModal" data-auth="login">Começar teste gratuito
