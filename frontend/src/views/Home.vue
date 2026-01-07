@@ -14,7 +14,7 @@ d<template>
     </section>   
 
     <!-- Autenticação -->
-    <section id="id-validacao" class="validacao">
+    <section id="validacao" class="validacao">
         <div class="validation-box">
             <h2>Autenticação de Certificados</h2>
             <p>Confirme a validade de um certificado em segundos,<br>
@@ -27,7 +27,7 @@ d<template>
     </section>
 
     <!-- Recursos -->
-    <section id="id-recursos" class="recursos">
+    <section id="recursos" class="recursos">
         <div class="container">
             <div class="recursos-box">
                 <h2>Por que escolher o <span>ProofChain?</span></h2>
@@ -82,7 +82,7 @@ d<template>
     </section>
 
     <!--Como funciona -->
-    <section id="id-funcinoamento" class="funcionamento">
+    <section id="funcionamento" class="funcionamento">
          <div class="container">
             <div class="funcionamento-box">
                 <h2>Como funciona</h2>
