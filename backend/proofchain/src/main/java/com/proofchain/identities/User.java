@@ -28,7 +28,7 @@ public class User {
     )
     private Long userNumber;
 
-    @Column(nullable = false)
+//    @Column(nullable = false)
     private String name;
 
     @Column(nullable = false, unique = true)
