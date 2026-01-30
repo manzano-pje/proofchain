@@ -3,6 +3,7 @@ package com.proofchain.controller;
 import com.proofchain.Dtos.UserRequestDto;
 import com.proofchain.service.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +21,8 @@ public class UserController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@RequestBody UserRequestDto user) {
-        return userService.registerUser(user);
+    public ResponseEntity<Void> createUser(@RequestBody UserRequestDto user) {
+        userService.createUser(user);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }

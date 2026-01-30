@@ -1,19 +1,49 @@
 package com.proofchain.service;
 
 import com.proofchain.Dtos.UserRequestDto;
+import com.proofchain.exceptions.BusinessRuleException;
+import com.proofchain.exceptions.ResourceNotFoundException;
+import com.proofchain.identities.Instituition;
+import com.proofchain.identities.User;
+import com.proofchain.repository.InstituitionRepository;
 import com.proofchain.repository.UserRepository;
+import com.proofchain.security.SecurityUtils;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+import java.util.UUID;
+
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
+    private final InstituitionRepository instituitionRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public ResponseEntity<String> registerUser(UserRequestDto user) {
+    public void createUser(UserRequestDto newUser) {
+        // 🔑 Instituição vem do TOKEN, não do request
+        UUID institutionId = SecurityUtils.getInstitutionId();
 
-        return null;
+        Instituition institution = instituitionRepository.findById(institutionId)
+            .orElseThrow(() ->new ResourceNotFoundException("Instituição não encontrada"));
+
+        // Valida se usuário já existe
+        Optional<User> userOptional = userRepository.findByEmail(newUser.getEmail());
+        if(userOptional.isPresent()){
+            throw new BusinessRuleException("Usuário já cadastrado");
+        }
+
+        // Cria usuário
+        User user = new User();
+        
+
+
+
+
     }
 }
