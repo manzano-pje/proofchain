@@ -1,4 +1,4 @@
-package com.proofchain.identiies.enums;
+package com.proofchain.identities.enums;
 
 public enum UserRole {
     INSTITUTION,

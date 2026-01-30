@@ -1,4 +1,4 @@
-package com.proofchain.identiies;
+package com.proofchain.identities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -8,7 +8,6 @@ import lombok.*;
 import org.hibernate.validator.constraints.br.CPF;
 
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @AllArgsConstructor

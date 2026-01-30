@@ -1,4 +1,4 @@
-package com.proofchain.identiies;
+package com.proofchain.identities;
 
 import jakarta.persistence.*;
 import lombok.*;
