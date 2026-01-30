@@ -208,10 +208,109 @@ d<template>
     </div>
   </section>
 
+<!-- 
+  <section id="login" class="login">
+     Modal -
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Login</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="loginForm">
+              <div class="mb-3">
+                <label for="email" class="col-form-label">Email:</label>
+                <input type="email" class="form-control" id="email" required="true">
+
+                <div class="invalid-feedback">Informe um e-mail válido.</div>
+              </div>
+
+              <div class="mb-3">
+                <label for="password" class="col-form-label">Password:</label>
+                <input type="password" class="form-control" id="password" required="true" minlength="6">
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section> -->
+
+
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted } from 'vue';
+import Header from '@/components/Header.vue';
+import Footer from '@/components/Footer.vue';
+
+
+// const loginModal = ref(null);
+// const loginForm = ref(null);
+
+// onMounted(() => {
+//   if (loginModal.value) {
+//     loginModal.value.addEventListener('show.bs.modal', () => {
+//       if (loginForm.value) {
+//         loginForm.value.reset();
+//         loginForm.value.classList.remove('was-validated');
+//       }
+//     });
+//   }
+
+//   if (loginForm.value) {
+//     loginForm.value.addEventListener('submit', (e) => {
+//       e.preventDefault();
+//       if (!loginForm.value.checkValidity()) {
+//         loginForm.value.classList.add('was-validated');
+//         return;
+//       }
+//       const email = loginForm.value.querySelector('#email').value;
+//       const password = loginForm.value.querySelector('#password').value;
+//       console.log('Login:', email, password);
+//       // Chame API aqui
+//     });
+//   }
+// });
+</script>
+
+
+
+<!-- <script setup lang="ts">
     import Header from '@/components/Header.vue';
     import Footer from '@/components/Footer.vue';
-import { textSpanContainsPosition } from 'typescript';
+    import { textSpanContainsPosition } from 'typescript';
 </script>
+<script setup lang="ts">
+  const modal = document.getElementById('loginModal');
+  const form = document.getElementById('loginForm');
+
+  modal.addEventListener('show.bs.modal', () => {
+    form.reset();
+    form.classList.remove('was-validated');
+  });
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    if (!form.checkValidity()) {
+      form.classList.add('was-validated');
+      return;
+    }
+
+    // ✔️ Formulário válido
+    const email = document.getElementById('email').value;
+    const senha = document.getElementById('senha').value;
+
+    console.log('Login:', email, senha);
+
+    // Aqui você pode chamar sua API
+  });
+
+</script> -->

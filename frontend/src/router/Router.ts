@@ -17,14 +17,14 @@ const router = createRouter({
       // que é carregado sob demanda quando a rota é visitada.
       component: () => import('../views/Dashboard.vue'),
     },
-    {
-      path: '/Login',
-      name: 'Login',
-      // divisão de código em nível de rota
-      // isso gera um chunk separado (About.[hash].js) para esta rota
-      // que é carregado sob demanda quando a rota é visitada.
-      component: () => import('../views/Login.vue'),
-    },
+    // {
+    //   path: '/Login',
+    //   name: 'Login',
+    //   // divisão de código em nível de rota
+    //   // isso gera um chunk separado (About.[hash].js) para esta rota
+    //   // que é carregado sob demanda quando a rota é visitada.
+    //   component: () => import('../views/Login.vue'),
+    // },
 
   ],
 })

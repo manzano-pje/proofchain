@@ -11,11 +11,11 @@ const toggleMenu = () => {
 </script>
 
 <template>    
-<header class="container">
-    <div class="header-content">
-    <RouterLink to="/" class="logo">
-        <img :src="logo" alt="ProofChain Logo" />
-    </RouterLink>
+<header id="home" class="container">
+    <div class="header-content logo">
+    <!-- <RouterLink to="/" class="logo"> -->
+        <a href="#home" @click="isMenuOpen = false"><img :src="logo" alt="ProofChain Logo" /></a>
+    <!-- </RouterLink> -->
 
     <button class="mobile-toggle" @click="toggleMenu" aria-label="Toggle navigation">
         <i class="fas fa-bars"></i>
@@ -23,14 +23,15 @@ const toggleMenu = () => {
 
     <nav :class="{open: isMenuOpen}">
         <ul>
-        <li><a href="#recursos" @click="isMenuOpen = false">Recursos</a></li>
-        <li><a href="#funcionamento" @click="isMenuOpen = false">Como funciona</a></li>
-        <li><a href="#planos" @click="isMenuOpen = false">Planos</a></li>
-        <li><a href="#validacao" class="btn btn-outline" @click="isMenuOpen = false">Autenticador</a></li>
-        <li>
-            <RouterLink to="/login" class="btn btn-primary btn-outline" @click="isMenuOpen = false">Login</RouterLink>                
-        </li>
+            <li><a href="#recursos" @click="isMenuOpen = false">Recursos</a></li>
+            <li><a href="#funcionamento" @click="isMenuOpen = false">Como funciona</a></li>
+            <li><a href="#planos" @click="isMenuOpen = false">Planos</a></li>
+            <li><a href="#validacao" class="btn btn-outline" @click="isMenuOpen = false">Autenticador</a></li>
+            <li><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Login</button></li>
         </ul>
+
+            <!-- Button trigger modal -->
+    
     </nav>
     </div>
 </header>
