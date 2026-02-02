@@ -2,6 +2,7 @@ package com.proofchain.service;
 
 // Serviço uitlizado pelo Spring Security no login
 
+import com.proofchain.exceptions.ResourceNotFoundException;
 import com.proofchain.identities.User;
 import com.proofchain.repository.UserRepository;
 import com.proofchain.user.UserDetailsImpl;
@@ -22,11 +23,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email)  {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() ->
-                        new UsernameNotFoundException("Usuário não localizado"));
-
+                        new ResourceNotFoundException("Usuário não localizado"));
         return new UserDetailsImpl(user);
     }
 }
