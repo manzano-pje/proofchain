@@ -9,10 +9,7 @@ import com.proofchain.identities.User;
 import com.proofchain.repository.InstituitionRepository;
 import com.proofchain.repository.UserRepository;
 import com.proofchain.security.SecurityUtils;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +32,7 @@ public class UserService {
         // 🔑 Instituição vem do TOKEN, não do request
         UUID institutionId = SecurityUtils.getInstitutionId();
 
-        Instituition institution = instituitionRepository.findById(institutionId)
+        Instituition institution = instituitionRepository.findByidInstituition(institutionId)
             .orElseThrow(() ->new ResourceNotFoundException("Instituição não encontrada"));
 
         // Valida se usuário já existe

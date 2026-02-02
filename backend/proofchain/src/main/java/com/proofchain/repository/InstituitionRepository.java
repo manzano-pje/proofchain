@@ -8,6 +8,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface InstituitionRepository extends JpaRepository<Instituition, Long> {
-    Optional<Instituition> findById(UUID institutionId);
+public interface InstituitionRepository extends JpaRepository<Instituition, UUID> {
+    Optional<Instituition> findByidInstituition(UUID institutionId);
 }
