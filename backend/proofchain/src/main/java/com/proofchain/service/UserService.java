@@ -1,6 +1,7 @@
 package com.proofchain.service;
 
 import com.proofchain.Dtos.UserRequestDto;
+import com.proofchain.Dtos.UserReturnDto;
 import com.proofchain.configuration.ModelMapperConfig;
 import com.proofchain.exceptions.BusinessRuleException;
 import com.proofchain.exceptions.ResourceNotFoundException;
@@ -49,5 +50,22 @@ public class UserService {
         user.setCreateAt(now());
         user.setActive(true);
         userRepository.save(user);
+    }
+    
+
+    public UserReturnDto getUser(String email) {
+        // 🔑 Instituição vem do TOKEN, não do request
+        UUID institutionId = SecurityUtils.getInstitutionId();
+
+        Instituition institution = instituitionRepository.findByidInstituition(institutionId)
+                .orElseThrow(() ->new ResourceNotFoundException("Instituição não encontrada"));
+
+        // Valida se usuário não existe
+        Optional<User> userOptional = userRepository.findByEmail(email);
+        if(userOptional.isPresent()){
+            throw new ResourceNotFoundException("Usuário não cadastrado");
+        }
+        UserReturnDto user = mapper.modelMapper().map(userOptional.get(), UserReturnDto.class);
+        return user;
     }
 }

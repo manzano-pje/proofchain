@@ -59,84 +59,84 @@ public class User {
 
     ///// GETTERS e SETTERS /////
 
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public Long getUserNumber() {
-        return userNumber;
-    }
-
-    public void setUserNumber(Long userNumber) {
-        this.userNumber = userNumber;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public UserRole getRole() {
-        return role;
-    }
-
-    public void setRole(UserRole role) {
-        this.role = role;
-    }
-
-    public Instant getCreateAt() {
-        return createAt;
-    }
-
-    public void setCreateAt(Instant createAt) {
-        this.createAt = createAt;
-    }
-
-    public Instant getUpdateAt() {
-        return updateAt;
-    }
-
-    public void setUpdateAt(Instant updateAt) {
-        this.updateAt = updateAt;
-    }
-
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setActive(boolean active) {
-        isActive = active;
-    }
-
-    public Instituition getInstituition() {
-        return instituition;
-    }
-
-    public void setInstituition(Instituition instituition) {
-        this.instituition = instituition;
-    }
+//
+//    public UUID getId() {
+//        return id;
+//    }
+//
+//    public void setId(UUID id) {
+//        this.id = id;
+//    }
+//
+//    public Long getUserNumber() {
+//        return userNumber;
+//    }
+//
+//    public void setUserNumber(Long userNumber) {
+//        this.userNumber = userNumber;
+//    }
+//
+//    public String getName() {
+//        return name;
+//    }
+//
+//    public void setName(String name) {
+//        this.name = name;
+//    }
+//
+//    public String getEmail() {
+//        return email;
+//    }
+//
+//    public void setEmail(String email) {
+//        this.email = email;
+//    }
+//
+//    public String getPassword() {
+//        return password;
+//    }
+//
+//    public void setPassword(String password) {
+//        this.password = password;
+//    }
+//
+//    public UserRole getRole() {
+//        return role;
+//    }
+//
+//    public void setRole(UserRole role) {
+//        this.role = role;
+//    }
+//
+//    public Instant getCreateAt() {
+//        return createAt;
+//    }
+//
+//    public void setCreateAt(Instant createAt) {
+//        this.createAt = createAt;
+//    }
+//
+//    public Instant getUpdateAt() {
+//        return updateAt;
+//    }
+//
+//    public void setUpdateAt(Instant updateAt) {
+//        this.updateAt = updateAt;
+//    }
+//
+//    public boolean isActive() {
+//        return isActive;
+//    }
+//
+//    public void setActive(boolean active) {
+//        isActive = active;
+//    }
+//
+//    public Instituition getInstituition() {
+//        return instituition;
+//    }
+//
+//    public void setInstituition(Instituition instituition) {
+//        this.instituition = instituition;
+//    }
 }
