@@ -2,6 +2,7 @@ package com.proofchain.service;
 
 import com.proofchain.Dtos.UserRequestDto;
 import com.proofchain.Dtos.UserReturnDto;
+import com.proofchain.Dtos.UserUpdateDto;
 import com.proofchain.configuration.ModelMapperConfig;
 import com.proofchain.exceptions.BusinessRuleException;
 import com.proofchain.exceptions.ResourceNotFoundException;
@@ -64,7 +65,7 @@ public class UserService {
 
         // Valida se usuário não existe
         Optional<User> userOptional = userRepository.findByEmail(email);
-        if(userOptional.isPresent()){
+        if(userOptional.isEmpty()){
             throw new ResourceNotFoundException("Usuário não cadastrado");
         }
         UserReturnDto user = mapper.modelMapper().map(userOptional.get(), UserReturnDto.class);
@@ -80,11 +81,32 @@ public class UserService {
 
         List<User> userList = userRepository.findAll();
         if(userList.isEmpty()){
-            throw new ResourceNotFoundException("Não há usu[arios cadsatrados.");
+            throw new ResourceNotFoundException("Não há usuários cadsatrados.");
         }
 
         return userList.stream()
                 .map(UserReturnDto::new)
                 .collect(Collectors.toList());
+    }
+
+    public void updateUser(String email, UserUpdateDto userUpadte){
+        // 🔑 Instituição vem do TOKEN, não do request
+        UUID institutionId = SecurityUtils.getInstitutionId();
+
+        Instituition institution = instituitionRepository.findByidInstituition(institutionId)
+                .orElseThrow(() ->new ResourceNotFoundException("Instituição não encontrada"));
+
+        Optional<User> userOptional = userRepository.findByEmail(email);
+        if(userOptional.isEmpty()){
+            throw new ResourceNotFoundException("Usuário não cadastrado");
+        }
+
+        User user = new User();
+        user.setId(userOptional.get().getId());
+        user.setName(userUpadte.getName());
+        user.setRole(userUpadte.getRole());
+        user.setActive(userUpadte.isActive());
+        user.setUpdateAt(now());         
+        userRepository.save(user);
     }
 }

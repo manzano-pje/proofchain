@@ -2,6 +2,7 @@ package com.proofchain.controller;
 
 import com.proofchain.Dtos.UserRequestDto;
 import com.proofchain.Dtos.UserReturnDto;
+import com.proofchain.Dtos.UserUpdateDto;
 import com.proofchain.repository.UserRepository;
 import com.proofchain.service.UserService;
 import lombok.AllArgsConstructor;
@@ -40,4 +41,13 @@ public class UserController {
     public List<UserReturnDto> getAllUser(){
         return userService.getAllUser();
     }
+
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @PatchMapping("/update/{email}")
+    public ResponseEntity<Void> updateUser(@PathVariable String email, @RequestBody UserUpdateDto userUpdateDto){
+        userService.updateUser(email, userUpdateDto);
+        return ResponseEntity.ok().build();
+    }
+
+
 }
