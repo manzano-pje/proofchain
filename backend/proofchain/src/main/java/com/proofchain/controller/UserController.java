@@ -42,12 +42,18 @@ public class UserController {
         return userService.getAllUser();
     }
 
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_USER','ROLE_ADMIN')")
     @PatchMapping("/update/{email}")
     public ResponseEntity<Void> updateUser(@PathVariable String email, @RequestBody UserUpdateDto userUpdateDto){
         userService.updateUser(email, userUpdateDto);
         return ResponseEntity.ok().build();
     }
 
+    @PreAuthorize("hasHole('ROLE_ADMIN')")
+    @DeleteMapping("/delete/{email}")
+    public ResponseEntity<Void> deleteUSer(@PathVariable String email){
+        userService.deleteUSer(email);
+        return ResponseEntity.ok().build();
+    }
 
 }

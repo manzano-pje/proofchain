@@ -109,4 +109,18 @@ public class UserService {
         user.setUpdateAt(now());         
         userRepository.save(user);
     }
+
+    public void deleteUSer(String email){
+        // 🔑 Instituição vem do TOKEN, não do request
+        UUID institutionId = SecurityUtils.getInstitutionId();
+
+        Instituition institution = instituitionRepository.findByidInstituition(institutionId)
+                .orElseThrow(() ->new ResourceNotFoundException("Instituição não encontrada"));
+
+        Optional<User> userOptional = userRepository.findByEmail(email);
+        if(userOptional.isEmpty()){
+            throw new ResourceNotFoundException("Usuário não cadastrado");
+        }
+        userRepository.deleteByEmail(email);
+    }
 }
