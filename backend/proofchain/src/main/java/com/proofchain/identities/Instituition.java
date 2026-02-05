@@ -46,7 +46,7 @@ public class Instituition {
     private String addressInstituition;
     private int numberInstituition;
     private String complementInstituition;
-    private String bairroInstituition;
+    private String neighborhoodInstituition;
     private String cityInstituition;
 
     @Size(min = 2, max = 2)
@@ -128,12 +128,12 @@ public class Instituition {
         this.complementInstituition = complementInstituition;
     }
 
-    public String getBairroInstituition() {
-        return bairroInstituition;
+    public String getNeighborhoodInstituition() {
+        return neighborhoodInstituition;
     }
 
-    public void setBairroInstituition(String bairroInstituition) {
-        this.bairroInstituition = bairroInstituition;
+    public void setBairroInstituition(String neighborhoodInstituition) {
+        this.neighborhoodInstituition = neighborhoodInstituition;
     }
 
     public String getCityInstituition() {

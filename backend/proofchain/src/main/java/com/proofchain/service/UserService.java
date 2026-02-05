@@ -32,6 +32,7 @@ public class UserService {
     public void createUser(UserRequestDto newUser) {
         // 🔑 Instituição vem do TOKEN, não do request
         // Valida se instituição existe
+        // ####### ALTERAR PARA VALIDAR POR CNPJ ########
         Optional<Instituition> institutionOptional = instituitionRepository.findByidInstituition(SecurityUtils.getInstitutionId());
         if(institutionOptional.isEmpty()){
             throw new ResourceNotFoundException("Instituição não encontrada");

@@ -1,17 +1,24 @@
 package com.proofchain.service;
 
+import com.proofchain.Dtos.InstituitionRequestDto;
+import com.proofchain.Dtos.InstituitionReturnDto;
 import com.proofchain.Dtos.NewInstituitionRequestDto;
 import com.proofchain.configuration.ModelMapperConfig;
 import com.proofchain.exceptions.BusinessRuleException;
+import com.proofchain.exceptions.ResourceNotFoundException;
 import com.proofchain.identities.Instituition;
 import com.proofchain.identities.User;
 import com.proofchain.repository.InstituitionRepository;
 import com.proofchain.repository.UserRepository;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static java.time.Instant.now;
 
@@ -27,9 +34,11 @@ public class InstituitionService {
     public void createInstituition(NewInstituitionRequestDto newInstituitionRequestDto) {
 
         Optional<Instituition> instituitionOptional = instituitionRepository.findByCnpj(newInstituitionRequestDto.getCnpj());
-        if(instituitionOptional.isPresent()){
-            throw new BusinessRuleException("Instituição já cadastrada");
+        if(instituitionOptional.isEmpty()){
+            throw new BusinessRuleException("Instituição não cadastrada");
         }
+
+
 
         // Valida se usuário já existe
         Optional<User> userOptional = userRepository.findByEmail(newInstituitionRequestDto.getEmail());
@@ -57,4 +66,47 @@ public class InstituitionService {
         user.setActive(true);
         userRepository.save(user);
     }
+
+    public void updateInstituition(String cnpj, InstituitionRequestDto instituitionRequestDto){
+        Optional<Instituition> instituitionOptional = instituitionRepository.findByCnpj(cnpj);
+        if(instituitionOptional.isEmpty()){
+            throw new ResourceNotFoundException("Instituição não encontrada.");
+        }
+
+        Instituition instituition = new Instituition();
+        instituition.setIdInstituition(instituitionOptional.get().getIdInstituition());
+        instituition.setAddressInstituition(instituitionRequestDto.addressInstituition());
+        instituition.setNumberInstituition(instituitionRequestDto.numberInstituition());
+        instituition.setComplementInstituition(instituitionRequestDto.complementInstituition());
+        instituition.setNeighborhoodInstituition(instituitionRequestDto.neighborhoodInstituition());
+        instituition.setCityInstituition(instituition.getCityInstituition());
+        instituition.setStateInstituition(instituitionRequestDto.stateInstituition());
+        instituition.setPostalCodeInstituition(instituition.getPostalCodeInstituition());
+        instituition.setPhoneInstituition(instituition.getPhoneInstituition());
+
+        instituitionRepository.save(instituition);
+    }
+
+    public List<InstituitionReturnDto> getAllInstituition(){
+        List<Instituition> instituitionList = instituitionRepository.findAll();
+        if(instituitionList.isEmpty()){
+            throw new ResourceNotFoundException("Não existem instituições cadastradas.");
+        }
+
+        return instituitionList.stream()
+                .map(InstituitionReturnDto::new)
+                .collect(Collectors.toList());
+    }
+
+    public InstituitionReturnDto getOneInstituition(String cnpj){
+        Optional<Instituition> instituitionOptional = instituitionRepository.findByCnpj(cnpj);
+        if(instituitionOptional.isEmpty()){
+            throw new ResourceNotFoundException("Instituição não encontrada.");
+        }
+        InstituitionReturnDto instituition = new InstituitionReturnDto();
+        instituition = mapper.modelMapper().map(instituitionOptional, InstituitionReturnDto.class);
+        return instituition;
+    }
+
+
 }
