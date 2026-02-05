@@ -2,12 +2,15 @@ package com.proofchain.controller;
 
 import com.proofchain.Dtos.UserRequestDto;
 import com.proofchain.Dtos.UserReturnDto;
+import com.proofchain.repository.UserRepository;
 import com.proofchain.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
+    private final UserRepository userRepository;
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/register")
@@ -29,5 +33,11 @@ public class UserController {
     public ResponseEntity<UserReturnDto> getUser(@PathVariable String email) {
         UserReturnDto user = userService.getUser(email);
         return ResponseEntity.ok(user);
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping
+    public List<UserReturnDto> getAllUser(){
+        return userService.getAllUser();
     }
 }

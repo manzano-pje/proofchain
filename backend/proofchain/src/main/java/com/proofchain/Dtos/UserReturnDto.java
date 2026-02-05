@@ -1,5 +1,6 @@
 package com.proofchain.Dtos;
 
+import com.proofchain.identities.User;
 import com.proofchain.identities.enums.UserRole;
 import jakarta.persistence.Column;
 import jakarta.persistence.EnumType;
@@ -27,4 +28,7 @@ public class UserReturnDto {
     private boolean active;
     private Instant createAt;
     private Instant updateAt;
+
+    public UserReturnDto(User user) {
+    }
 }
