@@ -12,4 +12,5 @@ public interface InstituitionRepository extends JpaRepository<Instituition, UUID
 
     Optional<Instituition> findByidInstituition(UUID institutionId);
     Optional<Instituition> findByCnpj(String cnpj);
+    void deleteByCnpj(String cnpj);
 }

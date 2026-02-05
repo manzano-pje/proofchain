@@ -7,8 +7,8 @@ import lombok.*;
 
 import java.util.UUID;
 
-//@AllArgsConstructor
-//@NoArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 public class InstituitionReturnDto {
@@ -34,4 +34,6 @@ public class InstituitionReturnDto {
 
         public InstituitionReturnDto(Instituition instituition) {
         }
+
+
 }

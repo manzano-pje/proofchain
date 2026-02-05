@@ -59,128 +59,38 @@ public class Instituition {
     private String phoneInstituition;
 
 
-
-
     ///// RELACIONAMENTO /////
 
     // Courses
+    @OneToMany(mappedBy = "instituition",
+               cascade = CascadeType.ALL,
+               orphanRemoval = true)
+    @ToString.Exclude
+    private List<Course> listCourses;
+
+    // Useres
+    @OneToMany(mappedBy = "instituition",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    @ToString.Exclude
+    private List<User> listUsers;
+
+    // Instructor
+    @OneToMany(mappedBy = "instituition",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    @ToString.Exclude
+    private List<Instructor> listInstructors;
+
+    // Participants
+    @OneToMany(mappedBy = "instituition",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    @ToString.Exclude
+    private List<Participant> listParticipants;
+
+    // Instructor
     @OneToMany(mappedBy = "instituition")
-    private List<Course> courses;
-
-    // Certificates
-
-    ///// GETTERS e SETTERS /////
-
-
-    public UUID getIdInstituition() {
-        return idInstituition;
-    }
-
-    public void setIdInstituition(UUID idInstituition) {
-        this.idInstituition = idInstituition;
-    }
-
-    public Long getUserInstituition() {
-        return userInstituition;
-    }
-
-    public void setUserInstituition(Long userInstituition) {
-        this.userInstituition = userInstituition;
-    }
-
-    public String getNameInstituition() {
-        return nameInstituition;
-    }
-
-    public void setNameInstituition(String nameInstituition) {
-        this.nameInstituition = nameInstituition;
-    }
-
-    public @CNPJ String getCnpj() {
-        return cnpj;
-    }
-
-    public void setCnpj(@CNPJ String cnpj) {
-        this.cnpj = cnpj;
-    }
-
-    public @Size(min = 3, message = "O campo rua precisa ter no mínimo 3 caracteres!") String getAddressInstituition() {
-        return addressInstituition;
-    }
-
-    public void setAddressInstituition(@Size(min = 3, message = "O campo rua precisa ter no mínimo 3 caracteres!") String addressInstituition) {
-        this.addressInstituition = addressInstituition;
-    }
-
-    public int getNumberInstituition() {
-        return numberInstituition;
-    }
-
-    public void setNumberInstituition(int numberInstituition) {
-        this.numberInstituition = numberInstituition;
-    }
-
-    public String getComplementInstituition() {
-        return complementInstituition;
-    }
-
-    public void setComplementInstituition(String complementInstituition) {
-        this.complementInstituition = complementInstituition;
-    }
-
-    public String getNeighborhoodInstituition() {
-        return neighborhoodInstituition;
-    }
-
-    public void setBairroInstituition(String neighborhoodInstituition) {
-        this.neighborhoodInstituition = neighborhoodInstituition;
-    }
-
-    public String getCityInstituition() {
-        return cityInstituition;
-    }
-
-    public void setCityInstituition(String cityInstituition) {
-        this.cityInstituition = cityInstituition;
-    }
-
-    public @Size(min = 2, max = 2) String getStateInstituition() {
-        return stateInstituition;
-    }
-
-    public void setStateInstituition(@Size(min = 2, max = 2) String stateInstituition) {
-        this.stateInstituition = stateInstituition;
-    }
-
-    public @Pattern(regexp = "\\d{5}-\\d{3}", message = "O cep deve ser no fornato XXXXX-XXX") String getPostalCodeInstituition() {
-        return postalCodeInstituition;
-    }
-
-    public void setPostalCodeInstituition(@Pattern(regexp = "\\d{5}-\\d{3}", message = "O cep deve ser no fornato XXXXX-XXX") String postalCodeInstituition) {
-        this.postalCodeInstituition = postalCodeInstituition;
-    }
-
-    public @Pattern(regexp = "\\(\\d{2}\\) \\d{5}-\\d{4}", message = "O telefone deve estar no formato (XX) XXXXX-XXXX") String getPhoneInstituition() {
-        return phoneInstituition;
-    }
-
-    public void setPhoneInstituition(@Pattern(regexp = "\\(\\d{2}\\) \\d{5}-\\d{4}", message = "O telefone deve estar no formato (XX) XXXXX-XXXX") String phoneInstituition) {
-        this.phoneInstituition = phoneInstituition;
-    }
-
-    public @Email String getEmailInstituition() {
-        return emailInstituition;
-    }
-
-    public void setEmailInstituition(@Email String emailInstituition) {
-        this.emailInstituition = emailInstituition;
-    }
-
-    public List<Course> getCourses() {
-        return courses;
-    }
-
-    public void setCourses(List<Course> courses) {
-        this.courses = courses;
-    }
+    @ToString.Exclude
+    private List<Certificate> listCertificates;
 }

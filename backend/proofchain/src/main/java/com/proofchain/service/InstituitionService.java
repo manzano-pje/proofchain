@@ -108,5 +108,12 @@ public class InstituitionService {
         return instituition;
     }
 
+    public void deleteInstituition(String cnpj){
+        Optional<Instituition> instituitionOptional = instituitionRepository.findByCnpj(cnpj);
+        if(instituitionOptional.isEmpty()){
+            throw new ResourceNotFoundException("Instituição não encontrada.");
+        }
+        instituitionRepository.deleteByCnpj(cnpj);
+    }
 
 }

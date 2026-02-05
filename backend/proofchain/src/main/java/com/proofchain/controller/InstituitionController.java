@@ -42,4 +42,13 @@ public class InstituitionController {
     public InstituitionReturnDto getOneInstituition(@PathVariable String cnpj){
         return instituitionService.getOneInstituition(cnpj);
     }
+
+    @PreAuthorize("hasRole('ROLE_SUPER_ADMIN', 'ROLE_ADMIN')")
+    @DeleteMapping("/delete/{cnpj}")
+    public ResponseEntity<Void> deleteInstituition(@PathVariable String cnpj){
+        instituitionService.deleteInstituition(cnpj);
+        return ResponseEntity.ok().build();
+
+    }
+
 }
