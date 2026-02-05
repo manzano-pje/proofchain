@@ -31,21 +31,22 @@ public class UserService {
 
     public void createUser(UserRequestDto newUser) {
         // 🔑 Instituição vem do TOKEN, não do request
-        UUID institutionId = SecurityUtils.getInstitutionId();
-
-        Instituition institution = instituitionRepository.findByidInstituition(institutionId)
-            .orElseThrow(() ->new ResourceNotFoundException("Instituição não encontrada"));
+        // Valida se instituição existe
+        Optional<Instituition> institutionOptional = instituitionRepository.findByidInstituition(SecurityUtils.getInstitutionId());
+        if(institutionOptional.isEmpty()){
+            throw new ResourceNotFoundException("Instituição não encontrada");
+        }
 
         // Valida se usuário já existe
         Optional<User> userOptional = userRepository.findByEmail(newUser.getEmail());
         if(userOptional.isPresent()){
-            throw new BusinessRuleException("Usuário já cadastrado");
+            throw new BusinessRuleException("E-mail já cadastrado");
         }
 
         // Cria usuário
         User user = new User();
         user = mapper.modelMapper().map(newUser, User.class);
-        user.setInstituition(institution);
+        user.setInstituition(institutionOptional.get());
         user.setPassword(passwordEncoder.encode(newUser.getPassword()));
         user.setCreateAt(now());
         user.setActive(true);
@@ -62,8 +63,8 @@ public class UserService {
 
         // Valida se usuário não existe
         Optional<User> userOptional = userRepository.findByEmail(email);
-        if(userOptional.isPresent()){
-            throw new ResourceNotFoundException("Usuário não cadastrado");
+        if(userOptional.isEmpty()){
+            throw new ResourceNotFoundException("E-mail não cadastrado");
         }
         UserReturnDto user = mapper.modelMapper().map(userOptional.get(), UserReturnDto.class);
         return user;

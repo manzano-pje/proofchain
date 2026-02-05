@@ -31,43 +31,34 @@ public class Instituition {
     private Long userInstituition;
 
     @Column(nullable = false, unique = true)
+    @Size(min = 5, max = 100)
     private String nameInstituition;
 
     @Column(nullable = false)
     @CNPJ
-    private String cnpjInstituition;
-
-    @Column(nullable = false)
-    @Size(min = 3, message = "O campo rua precisa ter no mínimo 3 caracteres!")
-    private String addressInstituition;
-
-    @Column
-    private int numberInstituition;
-
-    @Column
-    private String complementInstituition;
-
-    @Column(nullable = false)
-    private String bairroInstituition;
-
-    @Column(nullable = false)
-    private String cityInstituition;
-
-    @Column(nullable = false)
-    @Size(min = 2, max = 2)
-    private String stateInstituition;
-
-    @Column(nullable = false)
-    @Pattern(regexp = "\\d{5}-\\d{3}",message = "O cep deve ser no fornato XXXXX-XXX")
-    private String postalCodeInstituition;
-
-    @Column(nullable = false)
-    @Pattern(regexp = "\\(\\d{2}\\) \\d{5}-\\d{4}", message = "O telefone deve estar no formato (XX) XXXXX-XXXX")
-    private String phoneInstituition;
+    private String cnpj;
 
     @Email
     @Column(nullable = false)
     private String emailInstituition;
+
+    @Size(min = 3, message = "O campo rua precisa ter no mínimo 3 caracteres!")
+    private String addressInstituition;
+    private int numberInstituition;
+    private String complementInstituition;
+    private String bairroInstituition;
+    private String cityInstituition;
+
+    @Size(min = 2, max = 2)
+    private String stateInstituition;
+
+    @Pattern(regexp = "\\d{5}-\\d{3}",message = "O cep deve ser no fornato XXXXX-XXX")
+    private String postalCodeInstituition;
+
+    @Pattern(regexp = "\\(\\d{2}\\) \\d{5}-\\d{4}", message = "O telefone deve estar no formato (XX) XXXXX-XXXX")
+    private String phoneInstituition;
+
+
 
 
     ///// RELACIONAMENTO /////
@@ -105,12 +96,12 @@ public class Instituition {
         this.nameInstituition = nameInstituition;
     }
 
-    public @CNPJ String getCnpjInstituition() {
-        return cnpjInstituition;
+    public @CNPJ String getCnpj() {
+        return cnpj;
     }
 
-    public void setCnpjInstituition(@CNPJ String cnpjInstituition) {
-        this.cnpjInstituition = cnpjInstituition;
+    public void setCnpj(@CNPJ String cnpj) {
+        this.cnpj = cnpj;
     }
 
     public @Size(min = 3, message = "O campo rua precisa ter no mínimo 3 caracteres!") String getAddressInstituition() {
