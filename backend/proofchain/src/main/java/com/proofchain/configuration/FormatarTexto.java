@@ -1,4 +1,4 @@
-package com.api.estoque.configuracoes;
+package com.proofchain.configuration;
 
 import org.springframework.stereotype.Component;
 

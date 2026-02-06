@@ -1,6 +1,7 @@
 package com.proofchain.identities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.util.List;
@@ -22,6 +23,7 @@ public class Course {
     private String name;
 
     @Column(nullable = false)
+    @Size(max = 200)
     private String description;
 
     /////RELACIONAMENTO /////
