@@ -13,7 +13,6 @@ public class SecurityUtils {
 
         Authentication auth =
                 SecurityContextHolder.getContext().getAuthentication();
-
         Claims claims = (Claims) auth.getDetails();
 
         return UUID.fromString(
@@ -25,7 +24,7 @@ public class SecurityUtils {
     public static UUID getUserId() {
         Authentication auth =
                 SecurityContextHolder.getContext().getAuthentication();
-
         return UUID.fromString(auth.getName());
     }
+
 }

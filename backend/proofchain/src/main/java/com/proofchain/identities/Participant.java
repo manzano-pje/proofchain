@@ -69,4 +69,9 @@ public class Participant extends User {
     // Course
     @ManyToMany(mappedBy = "participants")
     private List<Course> courses;
+
+    // EM Instituition
+    @ManyToOne
+    @JoinColumn(name = "institution_id")
+    private Instituition instituition;
 }

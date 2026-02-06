@@ -28,7 +28,8 @@ public class Course {
 
     // Instituition
     @ManyToOne
-    @JoinColumn(name = "instituition_id")
+    @JoinColumn(name = "instituition_id",
+                nullable = false)
     private Instituition instituition;
 
     // Instrutor

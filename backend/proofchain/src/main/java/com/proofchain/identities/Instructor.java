@@ -34,4 +34,9 @@ public class Instructor extends User {
     // course
     @OneToMany(mappedBy = "instructor")
     private List<Course> courses;
+
+    // EM Instituition
+    @ManyToOne
+    @JoinColumn(name = "institution_id")
+    private Instituition instituition;
 }

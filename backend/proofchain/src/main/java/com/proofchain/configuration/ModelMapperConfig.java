@@ -12,7 +12,6 @@ public class ModelMapperConfig {
 
     @Bean
     public org.modelmapper.ModelMapper modelMapper() {
-
         return new org.modelmapper.ModelMapper();
     }
 
