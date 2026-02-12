@@ -12,8 +12,7 @@ import java.util.UUID;
 @Getter
 @Setter
 public class InstituitionReturnDto {
-        UUID idInstituition;
-        Long userInstituition;
+        Long idInstituition;
         String nameInstituition;
         String cnpj;
         String emailInstituition;

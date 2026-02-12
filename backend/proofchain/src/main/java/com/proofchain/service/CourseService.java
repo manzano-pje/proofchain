@@ -14,7 +14,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-import java.util.UUID;
+
 
 @AllArgsConstructor
 @Service
@@ -27,7 +27,7 @@ public class CourseService {
     public void createCourse(CourseRequestDto newCourse)  {
 
         // 🔑 Instituição vem do TOKEN, não do request
-        UUID institutionId = SecurityUtils.getInstitutionId();
+        Long institutionId = SecurityUtils.getInstitutionId();
 
         Instituition institution = instituitionRepository.findByidInstituition(institutionId)
                 .orElseThrow(() ->new ResourceNotFoundException("Instituição não encontrada"));

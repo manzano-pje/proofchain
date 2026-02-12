@@ -44,7 +44,8 @@ public class UserController {
 
     @PreAuthorize("hasRole('ROLE_USER','ROLE_ADMIN')")
     @PatchMapping("/update/{email}")
-    public ResponseEntity<Void> updateUser(@PathVariable String email, @RequestBody UserUpdateDto userUpdateDto){
+    public ResponseEntity<Void> updateUser(@PathVariable String email,
+                                           @RequestBody UserUpdateDto userUpdateDto){
         userService.updateUser(email, userUpdateDto);
         return ResponseEntity.ok().build();
     }

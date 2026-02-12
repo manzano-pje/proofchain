@@ -21,15 +21,15 @@ public class UserRequestDto {
 
     private String name;
 
-    @Column(nullable = false, unique = true)
+//    @Column(nullable = false, unique = true)
     @Email
     private String email;
 
-    @Column(nullable = false)
+//    @Column(nullable = false)
     private String password;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+//    @Column(nullable = false)
     private UserRole role;
 
 }

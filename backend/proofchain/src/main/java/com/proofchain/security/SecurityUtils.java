@@ -4,27 +4,27 @@ import io.jsonwebtoken.Claims;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import java.util.UUID;
+import static java.lang.String.valueOf;
 
 public class SecurityUtils {
 
     // Retorna o ID da instituição do usuário logado
-    public static UUID getInstitutionId() {
+    public static Long getInstitutionId() {
 
         Authentication auth =
                 SecurityContextHolder.getContext().getAuthentication();
         Claims claims = (Claims) auth.getDetails();
 
-        return UUID.fromString(
+        return Long.valueOf(
                 claims.get("institution_id", String.class)
         );
     }
 
     // Retorna o ID do usuário logado
-    public static UUID getUserId() {
+    public static Long getUserId() {
         Authentication auth =
                 SecurityContextHolder.getContext().getAuthentication();
-        return UUID.fromString(auth.getName());
+        return Long.valueOf(auth.getName());
     }
 
 }

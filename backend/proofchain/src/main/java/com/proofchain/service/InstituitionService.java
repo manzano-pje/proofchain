@@ -8,6 +8,7 @@ import com.proofchain.exceptions.BusinessRuleException;
 import com.proofchain.exceptions.ResourceNotFoundException;
 import com.proofchain.identities.Instituition;
 import com.proofchain.identities.User;
+import com.proofchain.identities.enums.UserRole;
 import com.proofchain.repository.InstituitionRepository;
 import com.proofchain.repository.UserRepository;
 import jakarta.validation.constraints.Pattern;
@@ -32,7 +33,6 @@ public class InstituitionService {
     private final PasswordEncoder passwordEncoder;
 
     public void createInstituition(NewInstituitionRequestDto newInstituitionRequestDto) {
-        System.out.println("Entrou no service: " + newInstituitionRequestDto.toString());
         if(newInstituitionRequestDto.getCnpj() == null || (newInstituitionRequestDto.getCnpj().length() != 14)){
             throw new BusinessRuleException("CNPJ inválido");
         }
@@ -54,28 +54,23 @@ public class InstituitionService {
             throw new BusinessRuleException("E-mail já cadastrado");
         }
 
-        Optional<User> userOptional1 = userRepository.findByEmail(newInstituitionRequestDto.getEmail());
-        if(userOptional.isPresent()){
-            throw new BusinessRuleException("E-mail já cadastrado");
-        }
-
-        // Cria usuário
-        User user = new User();
-        user.setInstituition(instituition);
-        user.setPassword(passwordEncoder.encode(newInstituitionRequestDto.getPassword()));
-        user.setCreateAt(now());
-        user.setActive(true);
-        userRepository.save(user);
 
         Instituition instituition = new Instituition();
         instituition.setCnpj(newInstituitionRequestDto.getCnpj());
-        instituition.setUserInstituition(newInstituitionRequestDto.getUserName());
         instituition.setNameInstituition(newInstituitionRequestDto.getName());
-        instituition.setEmailInstituition(newInstituitionRequestDto.getEmail());
 
-        instituition = instituitionRepository.save(instituition);
+        User user = new User();
+        user.setName(newInstituitionRequestDto.getName());
+        user.setEmail(newInstituitionRequestDto.getEmail());
+        user.setPassword(passwordEncoder.encode(newInstituitionRequestDto.getPassword()));
+        user.setRole((UserRole.role_super_admin));
+        user.setCreateAt(now());
+        user.setActive(true);
+        user.setInstituition(instituition);
 
+        instituition.getListUsers().add(user);
 
+        instituitionRepository.save(instituition);
     }
 
     public void updateInstituition(String cnpj, InstituitionRequestDto instituitionRequestDto){

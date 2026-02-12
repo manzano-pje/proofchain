@@ -15,12 +15,7 @@ import java.util.List;
 @Table(name = "tb_instructors")
 public class Instructor extends User {
 
-    @Column(
-            name = "instructor_number",
-            insertable = false,
-            updatable = false,
-            unique = true
-    )
+    @Column(nullable = false)
     private Long instructorNumber;
 
     @Column(nullable = false, unique = true)

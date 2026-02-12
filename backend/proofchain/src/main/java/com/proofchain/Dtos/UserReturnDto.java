@@ -21,7 +21,7 @@ import java.util.UUID;
 @Setter
 public class UserReturnDto {
 
-    private UUID idUser;
+    private Long idUser;
     private String name;
     private String email;
     private UserRole role;

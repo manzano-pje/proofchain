@@ -1,7 +1,7 @@
 package com.proofchain.exceptions;
 
-public class ResourceNotFoundException extends ResponseError {
+public class ResourceNotFoundException extends RuntimeException{
     public ResourceNotFoundException(String message){
-        super(message,404);
+        super(message);
     }
 }

@@ -34,7 +34,7 @@ public class UserService {
 
     public void createUser(UserRequestDto newUser) {
         // 🔑 Instituição vem do TOKEN, não do request
-        UUID institutionId = SecurityUtils.getInstitutionId();
+        Long institutionId = SecurityUtils.getInstitutionId();
 
         Instituition institution = instituitionRepository.findByidInstituition(institutionId)
             .orElseThrow(() ->new ResourceNotFoundException("Instituição não encontrada"));
@@ -58,7 +58,7 @@ public class UserService {
 
     public UserReturnDto getUser(String email) {
         // 🔑 Instituição vem do TOKEN, não do request
-        UUID institutionId = SecurityUtils.getInstitutionId();
+        Long institutionId = SecurityUtils.getInstitutionId();
 
         Instituition institution = instituitionRepository.findByidInstituition(institutionId)
                 .orElseThrow(() ->new ResourceNotFoundException("Instituição não encontrada"));
@@ -74,7 +74,7 @@ public class UserService {
 
     public List<UserReturnDto> getAllUser(){
         // 🔑 Instituição vem do TOKEN, não do request
-        UUID institutionId = SecurityUtils.getInstitutionId();
+        Long institutionId = SecurityUtils.getInstitutionId();
 
         Instituition institution = instituitionRepository.findByidInstituition(institutionId)
                 .orElseThrow(() ->new ResourceNotFoundException("Instituição não encontrada"));
@@ -91,7 +91,7 @@ public class UserService {
 
     public void updateUser(String email, UserUpdateDto userUpadte){
         // 🔑 Instituição vem do TOKEN, não do request
-        UUID institutionId = SecurityUtils.getInstitutionId();
+        Long institutionId = SecurityUtils.getInstitutionId();
 
         Instituition institution = instituitionRepository.findByidInstituition(institutionId)
                 .orElseThrow(() ->new ResourceNotFoundException("Instituição não encontrada"));
@@ -112,7 +112,7 @@ public class UserService {
 
     public void deleteUSer(String email){
         // 🔑 Instituição vem do TOKEN, não do request
-        UUID institutionId = SecurityUtils.getInstitutionId();
+        Long institutionId = SecurityUtils.getInstitutionId();
 
         Instituition institution = instituitionRepository.findByidInstituition(institutionId)
                 .orElseThrow(() ->new ResourceNotFoundException("Instituição não encontrada"));
