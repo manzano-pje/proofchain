@@ -361,14 +361,12 @@ declare const bootstrap: any
       })
     })
 
-       const data = await response.json()
+    const data = await response.json()
     console.log('Resposta da API:', data)
-    
+
     if (!response.ok) {
       throw new Error('Erro ao cadastrar instituição')
     }
-
- 
 
     const modalElement = document.getElementById('acquisitionModal')
 
@@ -379,6 +377,7 @@ declare const bootstrap: any
 
     modalInstance.hide()
   }
+
   } catch (error) {
     console.error('Erro:', error)
   }
