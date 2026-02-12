@@ -19,7 +19,7 @@ public class InstituitionController {
     public final InstituitionService instituitionService;
 
     @PostMapping
-    public ResponseEntity<Void> createInstituition(@RequestBody NewInstituitionRequestDto newInstituitionRequestDto){
+    public ResponseEntity<Void> createInstituition(  @RequestBody NewInstituitionRequestDto newInstituitionRequestDto){
         instituitionService.createInstituition(newInstituitionRequestDto);
         return ResponseEntity.ok().build();
     }

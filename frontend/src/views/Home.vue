@@ -1,4 +1,4 @@
-d<template>
+<template>
     <!-- <Hero /> -->
     <section class="section hero ">
         <div class="container">
@@ -138,8 +138,8 @@ d<template>
             <li><i class="fas fa-check"></i> Modelo padrão</li>
             <li><i class="fas fa-check"></i> Válido por 7 dias</li>
           </ul>
-          <button type="button" class="btn btn-primary btn-outline" data-bs-toggle="modal" 
-            data-bs-target="#authModal" data-auth="login">Começar teste gratuito
+          <button type="button" class="btn btn-primary btn-outline" data-bs-toggle="modal" data-bs-target="#acquisitionModal" 
+             data-auth="login">Começar teste gratuito
           </button>
         </div>
 
@@ -157,7 +157,7 @@ d<template>
             <li><i class="fas fa-check"></i> Relatórios básicos</li>
             <li><i class="fas fa-check"></i> Válido por 15 dias</li>
           </ul>
-          <button type="button" class="btn btn-primary btn-outline" data-bs-toggle="modal" data-bs-target="#authModal"
+          <button type="button" class="btn btn-primary btn-outline" data-bs-toggle="modal" data-bs-target="#acquisitionModal"
             data-auth="register">Comprar
           </button>
         </div>
@@ -179,7 +179,7 @@ d<template>
             <li><i class="fas fa-check"></i> Suporte prioritário</li>
             <li><i class="fas fa-check"></i> Cancele quando quiser</li>
           </ul>
-          <button type="button" class="btn btn-primary btn-outline" data-bs-toggle="modal" data-bs-target="#authModal"
+          <button type="button" class="btn btn-primary btn-outline" data-bs-toggle="modal" data-bs-target="#acquisitionModal"
             data-auth="register">Comprar
           </button>
         </div>
@@ -200,96 +200,175 @@ d<template>
             <li><i class="fas fa-check"></i> API de integração</li>
             <li><i class="fas fa-check"></i> Suporte dedicado</li>
           </ul>
-          <button type="button" class="btn btn-primary btn-outline" data-bs-toggle="modal" data-bs-target="#authModal"
+          <button type="button" class="btn btn-primary btn-outline" data-bs-toggle="modal" data-bs-target="#acquisitionModal"
             data-auth="register">Comprar
           </button>
         </div>
       </div>
     </div>
   </section>
-
-<!-- 
-  <section id="login" class="login">
-     Modal -
-    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <section id="modal-acquisition" class="modal-acquisition">
+    <div class="modal fade" id="acquisitionModal" tabindex="-1" aria-labelledby="acquisitionModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalLabel">Login</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <h1 class="modal-title fs-5" id="acquisitionModalLabel">Aquisição de Assinatura</h1>
           </div>
           <div class="modal-body">
-            <form id="loginForm">
+            <form @submit.prevent="submitForm">
+              <div class="mb-3">
+                <label for="name" class="col-form-label">Nome da Instituição:</label>
+                <input type="text" class="form-control" v-model="formData.name" required>
+              </div>
+              <div class="mb-3">
+                <label for="cnpj" class="col-form-label">CNPJ:</label>
+                <input type="text" class="form-control" v-model="formData.cnpj" :class="{ 'is-invalid': errors.cnpj }" required>
+                <div class="invalid-feedback">{{ errors.cnpj }}</div>
+              </div>
+
+              <div class="mb-3">
+                <label for="userName" class="col-form-label">Nome do Usuário Maste:</label>
+                <input type="text" class="form-control" v-model="formData.userName" required>
+              </div>
+
               <div class="mb-3">
                 <label for="email" class="col-form-label">Email:</label>
-                <input type="email" class="form-control" id="email" required="true">
-
-                <div class="invalid-feedback">Informe um e-mail válido.</div>
+                <input type="email" class="form-control" v-model="formData.email" :class="{ 'is-invalid': errors.email }" required>
+                <div class="invalid-feedback">{{ errors.email }}</div>
               </div>
 
               <div class="mb-3">
-                <label for="password" class="col-form-label">Password:</label>
-                <input type="password" class="form-control" id="password" required="true" minlength="6">
+                <label for="password" class="col-form-label">Senha:</label>
+                <input type="password" class="form-control" v-model="formData.password" :class="{ 'is-invalid': errors.password }"required minlength="8">
+                <div class="invalid-feedback">{{ errors.password }}</div>
+              </div>
+
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-primary">Assinar</button>
               </div>
             </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
-          </div>
+          </div>          
         </div>
       </div>
-    </div>
-  </section> -->
-
-
+    </div>  
+  </section> 
 </template>
 
+
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import Header from '@/components/Header.vue';
-import Footer from '@/components/Footer.vue';
+import { reactive } from 'vue'
+
+declare const bootstrap: any
 
 
-// const loginModal = ref(null);
-// const loginForm = ref(null);
+  const formData = reactive({
+    name: '',
+    cnpj: '',
+    userName: '',
+    email: '',
+    password: ''
+  })
 
-// onMounted(() => {
-//   if (loginModal.value) {
-//     loginModal.value.addEventListener('show.bs.modal', () => {
-//       if (loginForm.value) {
-//         loginForm.value.reset();
-//         loginForm.value.classList.remove('was-validated');
-//       }
-//     });
-//   }
+  const errors = reactive({
+    cnpj: '',
+    email: '',
+    password: ''
+  })
 
-//   if (loginForm.value) {
-//     loginForm.value.addEventListener('submit', (e) => {
-//       e.preventDefault();
-//       if (!loginForm.value.checkValidity()) {
-//         loginForm.value.classList.add('was-validated');
-//         return;
-//       }
-//       const email = loginForm.value.querySelector('#email').value;
-//       const password = loginForm.value.querySelector('#password').value;
-//       console.log('Login:', email, password);
-//       // Chame API aqui
-//     });
-//   }
-// });
+  function validateCNPJ(cnpj: string): boolean {
+    cnpj = cnpj.replace(/[^\d]+/g, '')
+
+    if (cnpj.length !== 14) return false
+    if (/^(\d)\1+$/.test(cnpj)) return false
+
+    let tamanho = cnpj.length - 2
+    let numeros = cnpj.substring(0, tamanho)
+    const digitos = cnpj.substring(tamanho)
+    let soma = 0
+    let pos = tamanho - 7
+
+    for (let i = tamanho; i >= 1; i--) {
+      soma += Number(numeros.charAt(tamanho - i)) * pos--
+      if (pos < 2) pos = 9
+    }
+
+    let resultado = soma % 11 < 2 ? 0 : 11 - (soma % 11)
+    if (resultado !== Number(digitos.charAt(0))) return false
+
+    tamanho = tamanho + 1
+    numeros = cnpj.substring(0, tamanho)
+    soma = 0
+    pos = tamanho - 7
+
+    for (let i = tamanho; i >= 1; i--) {
+      soma += Number(numeros.charAt(tamanho - i)) * pos--
+      if (pos < 2) pos = 9
+    }
+
+    resultado = soma % 11 < 2 ? 0 : 11 - (soma % 11)
+    return resultado === Number(digitos.charAt(1))
+  }
+
+  function validateEmail(email: string): boolean {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    return regex.test(email)
+  }
+
+  function validatePassword(password: string): boolean {
+    const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/
+    return regex.test(password)
+  }
+
+  function submitForm() {
+    errors.cnpj = ''
+    errors.email = ''
+    errors.password = ''
+
+    let isValid = true
+
+    if (!validateCNPJ(formData.cnpj)) {
+      errors.cnpj = 'CNPJ inválido'
+      isValid = false
+    }
+
+    if (!validateEmail(formData.email)) {
+      errors.email = 'E-mail inválido'
+      isValid = false
+    }
+
+    if (!validatePassword(formData.password)) {
+      errors.password =
+        'A senha deve ter no mínimo 8 caracteres, letras e números'
+      isValid = false
+    }
+
+    if (!isValid) return
+
+    console.log('Dados válidos enviados:')
+    console.log({ ...formData })
+
+    const modalElement = document.getElementById('acquisitionModal')
+
+  if (modalElement) {
+    // @ts-ignore
+    const modalInstance = bootstrap.Modal.getInstance(modalElement) 
+      || new bootstrap.Modal(modalElement)
+
+    modalInstance.hide()
+  }
+    
+}
 </script>
-
-
 
 <!-- <script setup lang="ts">
     import Header from '@/components/Header.vue';
     import Footer from '@/components/Footer.vue';
     import { textSpanContainsPosition } from 'typescript';
-</script>
-<script setup lang="ts">
-  const modal = document.getElementById('loginModal');
-  const form = document.getElementById('loginForm');
+</script> -->
+<!-- <script setup lang="ts">
+  const modal = document.getElementById('modal-acquisition');
+  const form = document.getElementById('acquisition-Form');
 
   modal.addEventListener('show.bs.modal', () => {
     form.reset();
@@ -305,12 +384,13 @@ import Footer from '@/components/Footer.vue';
     }
 
     // ✔️ Formulário válido
+    const name = document.getElementById('name').value;
+    const cnpj = document.getElementById('cnpj').value;
+    const userName = document.getElementById('userName').value;
     const email = document.getElementById('email').value;
     const senha = document.getElementById('senha').value;
-
-    console.log('Login:', email, senha);
 
     // Aqui você pode chamar sua API
   });
 
-</script> -->
+</script>  -->
