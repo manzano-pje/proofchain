@@ -23,5 +23,5 @@ public class NewInstituitionRequestDto {
     @Email
     private String email;
     @Size(min=8)
-    private String pasword;
+    private String password;
 }

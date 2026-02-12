@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -24,12 +27,19 @@ public class GlobalExceptionHandler {
 
     // 409 - Conflito / regra de negócio
     @ExceptionHandler(BusinessRuleException.class)
-    public ResponseEntity<ResponseError> handleBusinessRule(
-            BusinessRuleException ex) {
+//    public ResponseEntity<ResponseError> handleBusinessRule(
+//            BusinessRuleException ex) {
+//
+//        return ResponseEntity
+//                .status(HttpStatus.CONFLICT)
+//                .body(new ResponseError(ex.getMessage(), 409));
+//    }
 
-        return ResponseEntity
-                .status(HttpStatus.CONFLICT)
-                .body(new ResponseError(ex.getMessage(), 409));
+    public ResponseEntity<Map<String, String>> handleBusinessRule(BusinessRuleException ex) {
+        Map<String, String> response = new HashMap<>();
+        response.put("error", "Conflito ao criar instituição");
+        response.put("message", ex.getMessage()); // se tiver
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
     }
 
     // 400 - Erros de validação (@Valid)

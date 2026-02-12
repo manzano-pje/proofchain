@@ -32,26 +32,27 @@ public class InstituitionService {
     private final PasswordEncoder passwordEncoder;
 
     public void createInstituition(NewInstituitionRequestDto newInstituitionRequestDto) {
-
-        Optional<Instituition> instituitionOptional = instituitionRepository.findByCnpj(newInstituitionRequestDto.getCnpj());
-        if(instituitionOptional.isEmpty()){
-            throw new BusinessRuleException("Instituição não cadastrada");
+        System.out.println("Entrou no service: " + newInstituitionRequestDto.toString());
+        if(newInstituitionRequestDto.getCnpj() == null || (newInstituitionRequestDto.getCnpj().length() != 14)){
+            throw new BusinessRuleException("CNPJ inválido");
+        }
+        if(newInstituitionRequestDto.getName() == null || newInstituitionRequestDto.getName().length() < 5){
+            throw new BusinessRuleException("Nome inválido");
+        }
+        if(newInstituitionRequestDto.getEmail() == null){
+            throw new BusinessRuleException("E-mail inválido");
         }
 
-
+        Optional<Instituition> instituitionOptional = instituitionRepository.findByCnpj(newInstituitionRequestDto.getCnpj());
+        if(instituitionOptional.isPresent()){
+            throw new BusinessRuleException("Instituição já cadastrada");
+        }
 
         // Valida se usuário já existe
         Optional<User> userOptional = userRepository.findByEmail(newInstituitionRequestDto.getEmail());
         if(userOptional.isPresent()){
             throw new BusinessRuleException("E-mail já cadastrado");
         }
-
-        Instituition instituition = new Instituition();
-        instituition.setCnpj(newInstituitionRequestDto.getCnpj());
-        instituition.setNameInstituition(newInstituitionRequestDto.getName());
-        instituition.setEmailInstituition(newInstituitionRequestDto.getEmail());
-
-        instituition = instituitionRepository.save(instituition);
 
         Optional<User> userOptional1 = userRepository.findByEmail(newInstituitionRequestDto.getEmail());
         if(userOptional.isPresent()){
@@ -61,10 +62,20 @@ public class InstituitionService {
         // Cria usuário
         User user = new User();
         user.setInstituition(instituition);
-        user.setPassword(passwordEncoder.encode(newInstituitionRequestDto.getPasword()));
+        user.setPassword(passwordEncoder.encode(newInstituitionRequestDto.getPassword()));
         user.setCreateAt(now());
         user.setActive(true);
         userRepository.save(user);
+
+        Instituition instituition = new Instituition();
+        instituition.setCnpj(newInstituitionRequestDto.getCnpj());
+        instituition.setUserInstituition(newInstituitionRequestDto.getUserName());
+        instituition.setNameInstituition(newInstituitionRequestDto.getName());
+        instituition.setEmailInstituition(newInstituitionRequestDto.getEmail());
+
+        instituition = instituitionRepository.save(instituition);
+
+
     }
 
     public void updateInstituition(String cnpj, InstituitionRequestDto instituitionRequestDto){
@@ -115,5 +126,4 @@ public class InstituitionService {
         }
         instituitionRepository.deleteByCnpj(cnpj);
     }
-
 }

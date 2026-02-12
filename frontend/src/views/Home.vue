@@ -320,7 +320,7 @@ declare const bootstrap: any
     return regex.test(password)
   }
 
-  function submitForm() {
+  async function submitForm() {
     errors.cnpj = ''
     errors.email = ''
     errors.password = ''
@@ -345,8 +345,30 @@ declare const bootstrap: any
 
     if (!isValid) return
 
-    console.log('Dados válidos enviados:')
-    console.log({ ...formData })
+    // Envio dos dados para a API
+     try {
+    const response = await fetch('http://localhost:8080/instituition', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        name: formData.name,
+        cnpj: formData.cnpj,
+        userName: formData.userName,
+        email: formData.email,
+        password: formData.password
+      })
+    })
+
+       const data = await response.json()
+    console.log('Resposta da API:', data)
+    
+    if (!response.ok) {
+      throw new Error('Erro ao cadastrar instituição')
+    }
+
+ 
 
     const modalElement = document.getElementById('acquisitionModal')
 
@@ -356,6 +378,9 @@ declare const bootstrap: any
       || new bootstrap.Modal(modalElement)
 
     modalInstance.hide()
+  }
+  } catch (error) {
+    console.error('Erro:', error)
   }
     
 }

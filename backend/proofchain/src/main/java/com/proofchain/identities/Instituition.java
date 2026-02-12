@@ -30,7 +30,7 @@ public class Instituition {
     )
     private Long userInstituition;
 
-    @Column(nullable = false, unique = true)
+    @Column(unique = true)
     @Size(min = 5, max = 100)
     private String nameInstituition;
 
@@ -42,9 +42,8 @@ public class Instituition {
     @Column(nullable = false)
     private String emailInstituition;
 
-    @Size(min = 3, message = "O campo rua precisa ter no mínimo 3 caracteres!")
     private String addressInstituition;
-    private int numberInstituition;
+    private Integer numberInstituition;
     private String complementInstituition;
     private String neighborhoodInstituition;
     private String cityInstituition;
