@@ -1,8 +1,8 @@
 package com.proofchain.controller;
 
-import com.proofchain.Dtos.UserRequestDto;
-import com.proofchain.Dtos.UserReturnDto;
-import com.proofchain.Dtos.UserUpdateDto;
+import com.proofchain.Dtos.request.UserRequestDto;
+import com.proofchain.Dtos.response.UserReturnDto;
+import com.proofchain.Dtos.request.UserUpdateDto;
 import com.proofchain.repository.UserRepository;
 import com.proofchain.service.UserService;
 import lombok.AllArgsConstructor;
@@ -44,7 +44,8 @@ public class UserController {
 
     @PreAuthorize("hasRole('ROLE_USER','ROLE_ADMIN')")
     @PatchMapping("/update/{email}")
-    public ResponseEntity<Void> updateUser(@PathVariable String email, @RequestBody UserUpdateDto userUpdateDto){
+    public ResponseEntity<Void> updateUser(@PathVariable String email,
+                                           @RequestBody UserUpdateDto userUpdateDto){
         userService.updateUser(email, userUpdateDto);
         return ResponseEntity.ok().build();
     }

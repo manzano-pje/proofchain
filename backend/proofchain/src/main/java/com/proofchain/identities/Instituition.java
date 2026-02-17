@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.validator.constraints.br.CNPJ;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,32 +20,23 @@ import java.util.UUID;
 @Table(name = "tb_institutions")
 public class Instituition {
     @Id
-    @GeneratedValue
-    private UUID idInstituition;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idInstituition;
 
-    @Column(
-            name = "user_number",
-            insertable = false,
-            updatable = false,
-            unique = true
-    )
-    private Long userInstituition;
-
-    @Column(nullable = false, unique = true)
+    @Column(unique = true)
     @Size(min = 5, max = 100)
     private String nameInstituition;
 
-    @Column(nullable = false)
+//    @Column(nullable = false)
     @CNPJ
     private String cnpj;
 
     @Email
-    @Column(nullable = false)
+//    @Column(nullable = false)
     private String emailInstituition;
 
-    @Size(min = 3, message = "O campo rua precisa ter no mínimo 3 caracteres!")
     private String addressInstituition;
-    private int numberInstituition;
+    private Integer numberInstituition;
     private String complementInstituition;
     private String neighborhoodInstituition;
     private String cityInstituition;
@@ -66,31 +58,31 @@ public class Instituition {
                cascade = CascadeType.ALL,
                orphanRemoval = true)
     @ToString.Exclude
-    private List<Course> listCourses;
+    private List<Course> listCourses = new ArrayList<>();
 
     // Useres
     @OneToMany(mappedBy = "instituition",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
     @ToString.Exclude
-    private List<User> listUsers;
+    private List<User> listUsers = new ArrayList<>();
 
     // Instructor
     @OneToMany(mappedBy = "instituition",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
     @ToString.Exclude
-    private List<Instructor> listInstructors;
+    private List<Instructor> listInstructors = new ArrayList<>();
 
     // Participants
     @OneToMany(mappedBy = "instituition",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
     @ToString.Exclude
-    private List<Participant> listParticipants;
+    private List<Participant> listParticipants = new ArrayList<>();
 
     // Instructor
     @OneToMany(mappedBy = "instituition")
     @ToString.Exclude
-    private List<Certificate> listCertificates;
+    private List<Certificate> listCertificates = new ArrayList<>();
 }

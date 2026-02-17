@@ -1,6 +1,6 @@
 package com.proofchain.service;
 
-import com.proofchain.Dtos.CourseRequestDto;
+import com.proofchain.Dtos.request.CourseRequestDto;
 import com.proofchain.configuration.FormatarTexto;
 import com.proofchain.exceptions.BusinessRuleException;
 import com.proofchain.exceptions.ResourceNotFoundException;
@@ -14,7 +14,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-import java.util.UUID;
+
 
 @AllArgsConstructor
 @Service
@@ -27,7 +27,7 @@ public class CourseService {
     public void createCourse(CourseRequestDto newCourse)  {
 
         // 🔑 Instituição vem do TOKEN, não do request
-        UUID institutionId = SecurityUtils.getInstitutionId();
+        Long institutionId = SecurityUtils.getInstitutionId();
 
         Instituition institution = instituitionRepository.findByidInstituition(institutionId)
                 .orElseThrow(() ->new ResourceNotFoundException("Instituição não encontrada"));

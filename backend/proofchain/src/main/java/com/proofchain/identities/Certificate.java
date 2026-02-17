@@ -21,17 +21,9 @@ import java.util.UUID;
 
 public class Certificate {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    // Sequencia number for human use
-    @Column(
-            name = "certificate_number",
-            insertable = false,
-            updatable = false,
-            unique = true
-    )
-    private Long certificateNumber;
 
     // Cryptographic proof (off-chain / on-chain)
     @Column(nullable = false, unique = true, length = 64)

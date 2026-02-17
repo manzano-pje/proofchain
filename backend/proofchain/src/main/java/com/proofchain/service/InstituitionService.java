@@ -1,17 +1,16 @@
 package com.proofchain.service;
 
-import com.proofchain.Dtos.InstituitionRequestDto;
-import com.proofchain.Dtos.InstituitionReturnDto;
-import com.proofchain.Dtos.NewInstituitionRequestDto;
+import com.proofchain.Dtos.request.InstituitionRequestDto;
+import com.proofchain.Dtos.response.InstituitionReturnDto;
+import com.proofchain.Dtos.request.NewInstituitionRequestDto;
 import com.proofchain.configuration.ModelMapperConfig;
 import com.proofchain.exceptions.BusinessRuleException;
 import com.proofchain.exceptions.ResourceNotFoundException;
 import com.proofchain.identities.Instituition;
 import com.proofchain.identities.User;
+import com.proofchain.identities.enums.UserRole;
 import com.proofchain.repository.InstituitionRepository;
 import com.proofchain.repository.UserRepository;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -32,13 +31,20 @@ public class InstituitionService {
     private final PasswordEncoder passwordEncoder;
 
     public void createInstituition(NewInstituitionRequestDto newInstituitionRequestDto) {
-
-        Optional<Instituition> instituitionOptional = instituitionRepository.findByCnpj(newInstituitionRequestDto.getCnpj());
-        if(instituitionOptional.isEmpty()){
-            throw new BusinessRuleException("Instituição não cadastrada");
+        if(newInstituitionRequestDto.getCnpj() == null || (newInstituitionRequestDto.getCnpj().length() != 14)){
+            throw new BusinessRuleException("CNPJ inválido");
+        }
+        if(newInstituitionRequestDto.getName() == null || newInstituitionRequestDto.getName().length() < 5){
+            throw new BusinessRuleException("Nome inválido");
+        }
+        if(newInstituitionRequestDto.getEmail() == null){
+            throw new BusinessRuleException("E-mail inválido");
         }
 
-
+        Optional<Instituition> instituitionOptional = instituitionRepository.findByCnpj(newInstituitionRequestDto.getCnpj());
+        if(instituitionOptional.isPresent()){
+            throw new BusinessRuleException("Instituição já cadastrada");
+        }
 
         // Valida se usuário já existe
         Optional<User> userOptional = userRepository.findByEmail(newInstituitionRequestDto.getEmail());
@@ -51,20 +57,18 @@ public class InstituitionService {
         instituition.setNameInstituition(newInstituitionRequestDto.getName());
         instituition.setEmailInstituition(newInstituitionRequestDto.getEmail());
 
-        instituition = instituitionRepository.save(instituition);
-
-        Optional<User> userOptional1 = userRepository.findByEmail(newInstituitionRequestDto.getEmail());
-        if(userOptional.isPresent()){
-            throw new BusinessRuleException("E-mail já cadastrado");
-        }
-
-        // Cria usuário
         User user = new User();
-        user.setInstituition(instituition);
-        user.setPassword(passwordEncoder.encode(newInstituitionRequestDto.getPasword()));
+        user.setName(newInstituitionRequestDto.getName());
+        user.setEmail(newInstituitionRequestDto.getEmail());
+        user.setPassword(passwordEncoder.encode(newInstituitionRequestDto.getPassword()));
+        user.setRole((UserRole.role_super_admin));
         user.setCreateAt(now());
         user.setActive(true);
-        userRepository.save(user);
+        user.setInstituition(instituition);
+
+        instituition.getListUsers().add(user);
+
+        instituitionRepository.save(instituition);
     }
 
     public void updateInstituition(String cnpj, InstituitionRequestDto instituitionRequestDto){
@@ -115,5 +119,4 @@ public class InstituitionService {
         }
         instituitionRepository.deleteByCnpj(cnpj);
     }
-
 }

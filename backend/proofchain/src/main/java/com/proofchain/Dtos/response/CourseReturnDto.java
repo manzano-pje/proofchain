@@ -1,4 +1,4 @@
-package com.proofchain.Dtos;
+package com.proofchain.Dtos.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

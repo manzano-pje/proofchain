@@ -19,17 +19,11 @@ import java.util.List;
 @Table(name = "tb_participants")
 public class Participant extends User {
 
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.UUID)
-//    private UUID id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    // Sequencia number for human use
-    @Column(
-            name = "certificate_number",
-            insertable = false,
-            updatable = false,
-            unique = true
-    )
+    @Column(nullable = false)
     private String name;
 
     @Column(nullable = false)

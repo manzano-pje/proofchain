@@ -1,8 +1,8 @@
 package com.proofchain.service;
 
-import com.proofchain.Dtos.UserRequestDto;
-import com.proofchain.Dtos.UserReturnDto;
-import com.proofchain.Dtos.UserUpdateDto;
+import com.proofchain.Dtos.request.UserRequestDto;
+import com.proofchain.Dtos.response.UserReturnDto;
+import com.proofchain.Dtos.request.UserUpdateDto;
 import com.proofchain.configuration.ModelMapperConfig;
 import com.proofchain.exceptions.BusinessRuleException;
 import com.proofchain.exceptions.ResourceNotFoundException;
@@ -15,10 +15,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static java.time.Instant.now;
@@ -34,7 +32,7 @@ public class UserService {
 
     public void createUser(UserRequestDto newUser) {
         // 🔑 Instituição vem do TOKEN, não do request
-        UUID institutionId = SecurityUtils.getInstitutionId();
+        Long institutionId = SecurityUtils.getInstitutionId();
 
         Instituition institution = instituitionRepository.findByidInstituition(institutionId)
             .orElseThrow(() ->new ResourceNotFoundException("Instituição não encontrada"));
@@ -58,7 +56,7 @@ public class UserService {
 
     public UserReturnDto getUser(String email) {
         // 🔑 Instituição vem do TOKEN, não do request
-        UUID institutionId = SecurityUtils.getInstitutionId();
+        Long institutionId = SecurityUtils.getInstitutionId();
 
         Instituition institution = instituitionRepository.findByidInstituition(institutionId)
                 .orElseThrow(() ->new ResourceNotFoundException("Instituição não encontrada"));
@@ -74,7 +72,7 @@ public class UserService {
 
     public List<UserReturnDto> getAllUser(){
         // 🔑 Instituição vem do TOKEN, não do request
-        UUID institutionId = SecurityUtils.getInstitutionId();
+        Long institutionId = SecurityUtils.getInstitutionId();
 
         Instituition institution = instituitionRepository.findByidInstituition(institutionId)
                 .orElseThrow(() ->new ResourceNotFoundException("Instituição não encontrada"));
@@ -91,7 +89,7 @@ public class UserService {
 
     public void updateUser(String email, UserUpdateDto userUpadte){
         // 🔑 Instituição vem do TOKEN, não do request
-        UUID institutionId = SecurityUtils.getInstitutionId();
+        Long institutionId = SecurityUtils.getInstitutionId();
 
         Instituition institution = instituitionRepository.findByidInstituition(institutionId)
                 .orElseThrow(() ->new ResourceNotFoundException("Instituição não encontrada"));
@@ -112,7 +110,7 @@ public class UserService {
 
     public void deleteUSer(String email){
         // 🔑 Instituição vem do TOKEN, não do request
-        UUID institutionId = SecurityUtils.getInstitutionId();
+        Long institutionId = SecurityUtils.getInstitutionId();
 
         Instituition institution = instituitionRepository.findByidInstituition(institutionId)
                 .orElseThrow(() ->new ResourceNotFoundException("Instituição não encontrada"));

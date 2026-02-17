@@ -1,4 +1,4 @@
-package com.proofchain.Dtos;
+package com.proofchain.Dtos.request;
 
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.Size;

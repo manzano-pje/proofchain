@@ -1,16 +1,13 @@
 package com.proofchain.exceptions;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import java.util.HashMap;
 import java.util.Map;
 
-public class ResponseError extends RuntimeException{
-
-    private String mensage;
-    private Integer code;
-
-    public ResponseError(String mensage, Integer code){
-        this.mensage = mensage;
-        this.code = code;
-    }
-
-}
+public record ResponseError(
+        String message,
+        Integer code
+) {}

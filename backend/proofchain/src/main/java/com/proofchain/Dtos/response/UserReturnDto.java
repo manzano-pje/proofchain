@@ -1,18 +1,13 @@
-package com.proofchain.Dtos;
+package com.proofchain.Dtos.response;
 
 import com.proofchain.identities.User;
 import com.proofchain.identities.enums.UserRole;
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.Instant;
-import java.util.UUID;
 
 
 @AllArgsConstructor
@@ -21,7 +16,7 @@ import java.util.UUID;
 @Setter
 public class UserReturnDto {
 
-    private UUID idUser;
+    private Long idUser;
     private String name;
     private String email;
     private UserRole role;

@@ -1,11 +1,8 @@
 package com.proofchain.controller;
 
-import com.proofchain.Dtos.CourseRequestDto;
-import com.proofchain.configuration.FormatarTexto;
+import com.proofchain.Dtos.request.CourseRequestDto;
 import com.proofchain.service.CourseService;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;

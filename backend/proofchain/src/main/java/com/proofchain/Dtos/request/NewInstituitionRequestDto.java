@@ -1,4 +1,4 @@
-package com.proofchain.Dtos;
+package com.proofchain.Dtos.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
@@ -23,5 +23,5 @@ public class NewInstituitionRequestDto {
     @Email
     private String email;
     @Size(min=8)
-    private String pasword;
+    private String password;
 }

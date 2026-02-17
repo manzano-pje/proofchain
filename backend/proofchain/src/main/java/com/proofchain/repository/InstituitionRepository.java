@@ -8,9 +8,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface InstituitionRepository extends JpaRepository<Instituition, UUID> {
+public interface InstituitionRepository extends JpaRepository<Instituition, Long> {
 
-    Optional<Instituition> findByidInstituition(UUID institutionId);
+    Optional<Instituition> findByidInstituition(Long institutionId);
     Optional<Instituition> findByCnpj(String cnpj);
     void deleteByCnpj(String cnpj);
 }
