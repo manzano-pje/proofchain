@@ -19,9 +19,7 @@ public class Instructor extends User {
     private Long instructorNumber;
 
     @Column(nullable = false, unique = true)
-    private String nameCourse;
-    @Column(nullable = false)
-    private int workload;
+    private Long idCourse;
 
 
     /////// RELACIONAMENTO ///////

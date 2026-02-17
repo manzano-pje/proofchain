@@ -26,6 +26,9 @@ public class Course {
     @Size(max = 200)
     private String description;
 
+    @Column(nullable = false)
+    private int hours;
+
     /////RELACIONAMENTO /////
 
     // Instituition
