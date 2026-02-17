@@ -1,8 +1,8 @@
 package com.proofchain.service;
 
-import com.proofchain.Dtos.UserRequestDto;
-import com.proofchain.Dtos.UserReturnDto;
-import com.proofchain.Dtos.UserUpdateDto;
+import com.proofchain.Dtos.request.UserRequestDto;
+import com.proofchain.Dtos.response.UserReturnDto;
+import com.proofchain.Dtos.request.UserUpdateDto;
 import com.proofchain.configuration.ModelMapperConfig;
 import com.proofchain.exceptions.BusinessRuleException;
 import com.proofchain.exceptions.ResourceNotFoundException;
@@ -15,10 +15,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static java.time.Instant.now;

@@ -1,6 +1,6 @@
 package com.proofchain.service;
 
-import com.proofchain.Dtos.CourseRequestDto;
+import com.proofchain.Dtos.request.CourseRequestDto;
 import com.proofchain.configuration.FormatarTexto;
 import com.proofchain.exceptions.BusinessRuleException;
 import com.proofchain.exceptions.ResourceNotFoundException;

@@ -1,8 +1,6 @@
-package com.proofchain.Dtos;
+package com.proofchain.Dtos.request;
 
-import com.proofchain.identities.User;
 import com.proofchain.identities.enums.UserRole;
-import jakarta.persistence.Column;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Email;
@@ -11,24 +9,23 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.Instant;
-import java.util.UUID;
-
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class UserReturnDto {
+public class UserRequestDto {
 
-    private Long idUser;
     private String name;
-    private String email;
-    private UserRole role;
-    private boolean active;
-    private Instant createAt;
-    private Instant updateAt;
 
-    public UserReturnDto(User user) {
-    }
+//    @Column(nullable = false, unique = true)
+    @Email
+    private String email;
+
+//    @Column(nullable = false)
+    private String password;
+
+    @Enumerated(EnumType.STRING)
+//    @Column(nullable = false)
+    private UserRole role;
+
 }

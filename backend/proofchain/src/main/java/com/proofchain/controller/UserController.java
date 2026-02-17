@@ -1,8 +1,8 @@
 package com.proofchain.controller;
 
-import com.proofchain.Dtos.UserRequestDto;
-import com.proofchain.Dtos.UserReturnDto;
-import com.proofchain.Dtos.UserUpdateDto;
+import com.proofchain.Dtos.request.UserRequestDto;
+import com.proofchain.Dtos.response.UserReturnDto;
+import com.proofchain.Dtos.request.UserUpdateDto;
 import com.proofchain.repository.UserRepository;
 import com.proofchain.service.UserService;
 import lombok.AllArgsConstructor;

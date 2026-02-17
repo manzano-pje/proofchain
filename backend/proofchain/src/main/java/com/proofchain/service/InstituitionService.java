@@ -1,8 +1,8 @@
 package com.proofchain.service;
 
-import com.proofchain.Dtos.InstituitionRequestDto;
-import com.proofchain.Dtos.InstituitionReturnDto;
-import com.proofchain.Dtos.NewInstituitionRequestDto;
+import com.proofchain.Dtos.request.InstituitionRequestDto;
+import com.proofchain.Dtos.response.InstituitionReturnDto;
+import com.proofchain.Dtos.request.NewInstituitionRequestDto;
 import com.proofchain.configuration.ModelMapperConfig;
 import com.proofchain.exceptions.BusinessRuleException;
 import com.proofchain.exceptions.ResourceNotFoundException;
@@ -11,8 +11,6 @@ import com.proofchain.identities.User;
 import com.proofchain.identities.enums.UserRole;
 import com.proofchain.repository.InstituitionRepository;
 import com.proofchain.repository.UserRepository;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -54,10 +52,10 @@ public class InstituitionService {
             throw new BusinessRuleException("E-mail já cadastrado");
         }
 
-
         Instituition instituition = new Instituition();
         instituition.setCnpj(newInstituitionRequestDto.getCnpj());
         instituition.setNameInstituition(newInstituitionRequestDto.getName());
+        instituition.setEmailInstituition(newInstituitionRequestDto.getEmail());
 
         User user = new User();
         user.setName(newInstituitionRequestDto.getName());

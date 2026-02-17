@@ -1,11 +1,9 @@
-package com.proofchain.Dtos;
+package com.proofchain.Dtos.response;
 
 import com.proofchain.identities.Instituition;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
-
-import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
