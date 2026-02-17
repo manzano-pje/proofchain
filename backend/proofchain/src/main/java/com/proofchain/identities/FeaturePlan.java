@@ -24,6 +24,4 @@ public class FeaturePlan {
     private String feature;
     private Integer quantity;
 
-    @OneToMany(mappedBy = "idPlan")
-    private List<FeaturePlan> featurePlans = new ArrayList<>();
 }

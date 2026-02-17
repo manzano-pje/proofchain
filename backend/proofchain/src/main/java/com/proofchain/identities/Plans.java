@@ -30,5 +30,4 @@ public class Plans {
     @OneToMany(mappedBy = "idPlan")
     private List<FeaturePlan> featurePlans = new ArrayList<>();
 
-
 }

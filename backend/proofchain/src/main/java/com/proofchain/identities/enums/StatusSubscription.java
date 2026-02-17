@@ -1,6 +1,6 @@
 package com.proofchain.identities.enums;
 
-public enum Status {
+public enum StatusSubscription {
     ACTIVE,
     EXPIRED,
     CANCELED

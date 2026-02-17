@@ -1,6 +1,6 @@
 package com.proofchain.identities;
 
-import com.proofchain.identities.enums.Status;
+import com.proofchain.identities.enums.StatusSubscription;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -33,7 +33,7 @@ public class Subscriptions {
 //    private Long idPlan;
 
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private StatusSubscription StatusSubscription;
     private Instant startsAt;
     private Instant expiresAt;
     private Instant createdAt;
