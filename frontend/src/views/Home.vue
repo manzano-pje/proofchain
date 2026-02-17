@@ -215,6 +215,10 @@
             <h1 class="modal-title fs-5" id="acquisitionModalLabel">Aquisição de Assinatura</h1>
           </div>
           <div class="modal-body">
+            <div v-if="apiError" class="alert alert-danger" role="alert">
+              {{ apiError }}
+            </div>
+
             <form @submit.prevent="submitForm">
               <div class="mb-3">
                 <label for="name" class="col-form-label">Nome da Instituição:</label>
@@ -257,7 +261,7 @@
 
 
 <script setup lang="ts">
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 
 declare const bootstrap: any
 
@@ -275,6 +279,8 @@ declare const bootstrap: any
     email: '',
     password: ''
   })
+  const apiError = ref('') // 🔴 erro vindo do backend
+
 
   function validateCNPJ(cnpj: string): boolean {
     cnpj = cnpj.replace(/[^\d]+/g, '')
@@ -321,9 +327,11 @@ declare const bootstrap: any
   }
 
   async function submitForm() {
+   // limpa erros anteriores
     errors.cnpj = ''
     errors.email = ''
     errors.password = ''
+    apiError.value = ''
 
     let isValid = true
 
@@ -352,26 +360,20 @@ declare const bootstrap: any
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({
-        name: formData.name,
-        cnpj: formData.cnpj,
-        userName: formData.userName,
-        email: formData.email,
-        password: formData.password
-      })
+      body: JSON.stringify(formData)
     })
 
     const data = await response.json()
-    console.log('Resposta da API:', data)
-
+    
     if (!response.ok) {
-      throw new Error('Erro ao cadastrar instituição')
+      apiError.value = data.message || 'Erro ao cadastrar instituição'
+      return
     }
 
+    // ✅ sucesso → fecha modal
     const modalElement = document.getElementById('acquisitionModal')
 
   if (modalElement) {
-    // @ts-ignore
     const modalInstance = bootstrap.Modal.getInstance(modalElement) 
       || new bootstrap.Modal(modalElement)
 
@@ -379,42 +381,8 @@ declare const bootstrap: any
   }
 
   } catch (error) {
-    console.error('Erro:', error)
+    apiError.value = 'Erro ao conectar com o servidor'
   }
     
 }
 </script>
-
-<!-- <script setup lang="ts">
-    import Header from '@/components/Header.vue';
-    import Footer from '@/components/Footer.vue';
-    import { textSpanContainsPosition } from 'typescript';
-</script> -->
-<!-- <script setup lang="ts">
-  const modal = document.getElementById('modal-acquisition');
-  const form = document.getElementById('acquisition-Form');
-
-  modal.addEventListener('show.bs.modal', () => {
-    form.reset();
-    form.classList.remove('was-validated');
-  });
-
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-
-    if (!form.checkValidity()) {
-      form.classList.add('was-validated');
-      return;
-    }
-
-    // ✔️ Formulário válido
-    const name = document.getElementById('name').value;
-    const cnpj = document.getElementById('cnpj').value;
-    const userName = document.getElementById('userName').value;
-    const email = document.getElementById('email').value;
-    const senha = document.getElementById('senha').value;
-
-    // Aqui você pode chamar sua API
-  });
-
-</script>  -->
