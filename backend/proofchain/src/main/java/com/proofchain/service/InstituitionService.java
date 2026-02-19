@@ -10,6 +10,7 @@ import com.proofchain.identities.Instituition;
 import com.proofchain.identities.Plans;
 import com.proofchain.identities.Subscriptions;
 import com.proofchain.identities.User;
+import com.proofchain.identities.enums.BillingType;
 import com.proofchain.identities.enums.StatusSubscription;
 import com.proofchain.identities.enums.UserRole;
 import com.proofchain.repository.InstituitionRepository;
@@ -19,6 +20,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -76,15 +79,52 @@ public class InstituitionService {
         instituition.getListUsers().add(user);
 
         ///////// CRIA ASSINATURA /////////
+        BillingType billingType = null;
+        Instant periodStart ;
+        Instant periodEnd ;
+        Instant nextBilling;
+        int idPlan = newInstituitionRequestDto.getIdPlan();
         Plans plans = new Plans();
         Subscriptions subscription = new Subscriptions();
+
+        switch(idPlan){
+            case 1:
+                billingType = subscription.getBillingType().MANUAL;
+                periodStart = now();
+                periodEnd = now().plus(7, ChronoUnit.DAYS);
+                break;
+            case 2:
+                billingType = subscription.getBillingType().MANUAL;
+                periodStart = now();
+                periodEnd = now().plus(15, ChronoUnit.DAYS);
+                break;
+            case 3:
+                billingType = subscription.getBillingType().RECURRING;
+                periodStart = now();
+                periodEnd = now().plus(30, ChronoUnit.DAYS);
+                nextBilling =  now().plus(30, ChronoUnit.DAYS);
+                break;
+            case 4:
+                billingType = subscription.getBillingType().RECURRING;
+                periodStart = now();
+                periodEnd = now().plus(30, ChronoUnit.DAYS);
+                nextBilling =  now().plus(30, ChronoUnit.DAYS);
+                break;
+            default:
+                throw new ResourceNotFoundException("Plano inválido.");
+        }
+
         subscription.setInstituition(instituition);
         subscription.setPlans(plans);
         subscription.setStatusSubscription(StatusSubscription.PENDING);
+        subscription.setBillingType(billingType);
+        subscription.setCurrentPeriodStarts(null);
+        subscription.setCurrentPeriodEnd(null);
         subscription.setCreatedAt(now());
 
         instituitionRepository.save(instituition);
         subscriptionRepository.save(subscription);
+
     }
 
     public void updateInstituition(String cnpj, InstituitionRequestDto instituitionRequestDto){

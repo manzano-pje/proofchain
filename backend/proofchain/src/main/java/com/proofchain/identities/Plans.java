@@ -1,5 +1,6 @@
 package com.proofchain.identities;
 
+import com.proofchain.identities.enums.BillingType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,7 +29,7 @@ public class Plans {
 //    private boolean isReccurent;
     private boolean isActive;
     private Instant createdAt;
-    private BillingTypes billingTypes;
+    private BillingType billingType;
     private Integer monthlyCertificateLimit;
 
     @OneToMany(mappedBy = "idPlan")

@@ -124,6 +124,9 @@
       </div>
 
       <div class="grid">
+
+        <!-- validar envio do código do plano -->
+        
         <div class="plano">
           <h3>Plano Gratuito</h3>
           <p>Teste gratuito por 7 dias</p>
@@ -134,11 +137,10 @@
             <li><i class="fas fa-check"></i> Cadastro de 1 curso</li>
             <li><i class="fas fa-check"></i> Cadastro de 1 professor</li>
             <li><i class="fas fa-check"></i> Emissão de até 5 certificados</li>
-            <li><i class="fas fa-check"></i> 10 autenticações</li>
             <li><i class="fas fa-check"></i> Modelo padrão</li>
             <li><i class="fas fa-check"></i> Válido por 7 dias</li>
           </ul>
-          <button type="button" class="btn btn-primary btn-outline" data-bs-toggle="modal" data-bs-target="#acquisitionModal" 
+          <button type="button" class="btn btn-primary btn-outline" data-plan-id="1" data-bs-toggle="modal" data-bs-target="#acquisitionModal" 
              data-auth="login">Começar teste gratuito
           </button>
         </div>
@@ -152,12 +154,11 @@
             <li><i class="fas fa-check"></i> Cadastro de até 2 cursos</li>
             <li><i class="fas fa-check"></i> Cadastro de até 2 professores</li>
             <li><i class="fas fa-check"></i> Emissão de até 10 certificados</li>
-            <li><i class="fas fa-check"></i> 50 autenticações/mês</li>
             <li><i class="fas fa-check"></i> Modelo padrão</li>
             <li><i class="fas fa-check"></i> Relatórios básicos</li>
             <li><i class="fas fa-check"></i> Válido por 15 dias</li>
           </ul>
-          <button type="button" class="btn btn-primary btn-outline" data-bs-toggle="modal" data-bs-target="#acquisitionModal"
+          <button type="button" class="btn btn-primary btn-outline" data-plan-id="2" data-bs-toggle="modal" data-bs-target="#acquisitionModal"
             data-auth="register">Comprar
           </button>
         </div>
@@ -172,14 +173,12 @@
             <li><i class="fas fa-check"></i> Cadastro de até 10 cursos</li>
             <li><i class="fas fa-check"></i> Cadastro de até 10 professores</li>
             <li><i class="fas fa-check"></i> Emissão de até 10 certificados</li>
-            <li><i class="fas fa-check"></i> 200 autenticações/mês</li>
             <li><i class="fas fa-check"></i> Modelos padrão</li>
             <li><i class="fas fa-check"></i> Relatórios avançados</li>
             <li><i class="fas fa-check"></i> Dashboard completo</li>
-            <li><i class="fas fa-check"></i> Suporte prioritário</li>
-            <li><i class="fas fa-check"></i> Cancele quando quiser</li>
+            <li><i class="fas fa-check"></i> Suporte técnico</li>
           </ul>
-          <button type="button" class="btn btn-primary btn-outline" data-bs-toggle="modal" data-bs-target="#acquisitionModal"
+          <button type="button" class="btn btn-primary btn-outline" data-plan-id="3"  data-bs-toggle="modal" data-bs-target="#acquisitionModal"
             data-auth="register">Comprar
           </button>
         </div>
@@ -193,14 +192,13 @@
             <li><i class="fas fa-check"></i> Cursos ilimitados</li>
             <li><i class="fas fa-check"></i> Professores ilimitados</li>
             <li><i class="fas fa-check"></i> Certificados ilimitados</li>
-            <li><i class="fas fa-check"></i> 2000 autenticações/mês</li>
             <li><i class="fas fa-check"></i> Modelos personalizados</li>
             <li><i class="fas fa-check"></i> Relatórios avançados</li>
             <li><i class="fas fa-check"></i> Dashboard avançado</li>
             <li><i class="fas fa-check"></i> API de integração</li>
-            <li><i class="fas fa-check"></i> Suporte dedicado</li>
+            <li><i class="fas fa-check"></i> Suporte prioritário</li>
           </ul>
-          <button type="button" class="btn btn-primary btn-outline" data-bs-toggle="modal" data-bs-target="#acquisitionModal"
+          <button type="button" class="btn btn-primary btn-outline" data-plan-id="4" data-bs-toggle="modal" data-bs-target="#acquisitionModal"
             data-auth="register">Comprar
           </button>
         </div>
@@ -242,7 +240,7 @@
                 <input type="password" class="form-control" v-model="formData.password" :class="{ 'is-invalid': errors.password }"required minlength="8">
                 <div class="invalid-feedback">{{ errors.password }}</div>
               </div>
-
+              <input type="hidden"   name="planId" :value="planId">
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                 <button type="submit" class="btn btn-primary">Assinar</button>

@@ -34,22 +34,22 @@ public class Subscriptions {
 //    private Long idPlan;
 
     @Enumerated(EnumType.STRING)
-    private StatusSubscription statusSubscription;
+    private StatusSubscription statusSubscription;  // Status da assinatura PENDING, ACTIVE, EXPIRED, CANCELED
 
     @Enumerated(EnumType.STRING)
-    private BillingType billingType;
+    private BillingType billingType;        // tipo de cobrança MANUAL OU RECOURRING
 
-    private Instant currentPeriodStarts;
-    private Instant currentPeriodend;
-    private Instant nextBillingAt;
-    private Instant schudledPlanChangeAt;
+    private Instant currentPeriodStarts;    // Data do início da assinatura do pacote atual
+    private Instant currentPeriodEnd;       // Data do término da assinatura do pacote atual
+    private Instant nextBillingAt;          //
+    private Instant schudledPlanChangeAt;   // Data para mudança do pacore
 
     // Integração Mercado Pago
 
-    private String mercadoPagoPreapprovalId;
-    private String mercadoPagoCustommerId;
-    private Instant createdAt;
-    private Instant canceledAt;
+    private String mercadoPagoPreapprovalId;    //
+    private String mercadoPagoCustommerId;      //
+    private Instant createdAt;                  // Data de criação da assinatura
+    private Instant canceledAt;                 // Data de cancelamento da assinatura
 
     @ManyToOne
     @JoinColumn(name = "id_instituition")

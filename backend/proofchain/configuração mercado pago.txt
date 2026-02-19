@@ -1,0 +1,13 @@
+criação entidades
+Payments
+
+atualização de entidades
+Plans
+Instituitin
+Subscriptions
+UsageCounters
+
+Criação Enum
+BillingType  // se pagamento é recursivo ou manual
+StatusPayment // status do pagamento 
+

@@ -22,9 +22,11 @@ public class UsageCounters {
 
     @OneToOne
     private Subscriptions Subscriptions;
-    private Integer certificatesIssues;
-    private Integer monthLimit;
-    private Instant periodStart;
-    private Instant periodEnd;
-    private Instant updatedAt;
+    private Integer certificatesIssues;     // Número de certificados emitidos
+    private Integer courses;                // Número de cursos cadastrados
+    private Integer instructors;            // Número de instrutores cadastrados
+//    private Integer monthLimit;
+    private Instant periodStart;            // Início do período
+    private Instant periodEnd;              // Final do período
+//    private Instant updatedAt;              //
 }
