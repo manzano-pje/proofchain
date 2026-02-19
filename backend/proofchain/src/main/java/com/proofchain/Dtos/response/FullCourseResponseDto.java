@@ -1,5 +1,6 @@
 package com.proofchain.Dtos.response;
 
+import com.proofchain.identities.Course;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,9 +12,14 @@ import java.time.Instant;
 @NoArgsConstructor
 @Getter
 @Setter
-public class CourseResponseDto {
+public class FullCourseResponseDto {
 
     private String name;
     private String description;
     private int hours;
+    private Instant createdAt;
+    private Instant updatedAt;
+
+    public FullCourseResponseDto(Course course) {
+    }
 }

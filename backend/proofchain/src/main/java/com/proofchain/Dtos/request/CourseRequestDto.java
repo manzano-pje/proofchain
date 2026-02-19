@@ -11,7 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class CourseDto {
+public class CourseRequestDto {
 
     @Column(nullable = false, unique = true)
     private String name;

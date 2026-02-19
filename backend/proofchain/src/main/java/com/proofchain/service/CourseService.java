@@ -1,6 +1,7 @@
 package com.proofchain.service;
 
-import com.proofchain.Dtos.request.CourseDto;
+import com.proofchain.Dtos.request.CourseRequestDto;
+import com.proofchain.Dtos.response.FullCourseResponseDto;
 import com.proofchain.configuration.FormatarTexto;
 import com.proofchain.exceptions.BusinessRuleException;
 import com.proofchain.exceptions.ResourceNotFoundException;
@@ -14,7 +15,9 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static java.time.Instant.now;
 
@@ -27,7 +30,7 @@ public class CourseService {
     private final InstituitionRepository instituitionRepository;
     private final CourseRepository courseRepository;
 
-    public void createCourse(CourseDto newCourse)  {
+    public void createCourse(CourseRequestDto newCourse)  {
 
         // 🔑 Instituição vem do TOKEN, não do request
         Long institutionId = SecurityUtils.getInstitutionId();
@@ -52,14 +55,14 @@ public class CourseService {
         courseRepository.save(course);
     }
 
-    public void updateCourse(CourseDto courseDto){
+    public void updateCourse(String name, CourseRequestDto courseDto){
         // 🔑 Instituição vem do TOKEN, não do request
         Long institutionId = SecurityUtils.getInstitutionId();
 
         Instituition institution = instituitionRepository.findByidInstituition(institutionId)
                 .orElseThrow(() ->new ResourceNotFoundException("Instituição não encontrada"));
 
-        Optional<Course> courseOptional = courseRepository.findByName(courseDto.getName());
+        Optional<Course> courseOptional = courseRepository.findByName(name);
         if(courseOptional.isEmpty()){
             throw new BusinessRuleException("Curso não cadatrado.");
         }
@@ -72,5 +75,22 @@ public class CourseService {
         course.setUpdatedAt(now());
         course.setCreatedAt(courseOptional.get().getCreatedAt());
         courseRepository.save(course);
+    }
+
+    public List<FullCourseResponseDto> listAllCourses(){
+        // 🔑 Instituição vem do TOKEN, não do request
+        Long institutionId = SecurityUtils.getInstitutionId();
+
+        Instituition institution = instituitionRepository.findByidInstituition(institutionId)
+                .orElseThrow(() ->new ResourceNotFoundException("Instituição não encontrada"));
+
+        List<Course> courseList = courseRepository.findAll();
+        if(courseList.isEmpty()){
+            throw new ResourceNotFoundException("Não existem cursos cadastrados.");
+        }
+        return courseList.stream()
+                .map(FullCourseResponseDto::new)
+                .collect(Collectors
+                        .toList());
     }
 }
