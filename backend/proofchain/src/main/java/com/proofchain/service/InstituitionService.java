@@ -7,9 +7,13 @@ import com.proofchain.configuration.ModelMapperConfig;
 import com.proofchain.exceptions.BusinessRuleException;
 import com.proofchain.exceptions.ResourceNotFoundException;
 import com.proofchain.identities.Instituition;
+import com.proofchain.identities.Plans;
+import com.proofchain.identities.Subscriptions;
 import com.proofchain.identities.User;
+import com.proofchain.identities.enums.StatusSubscription;
 import com.proofchain.identities.enums.UserRole;
 import com.proofchain.repository.InstituitionRepository;
+import com.proofchain.repository.SubscriptionRepository;
 import com.proofchain.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,6 +33,7 @@ public class InstituitionService {
     private final UserRepository userRepository;
     private final ModelMapperConfig mapper;
     private final PasswordEncoder passwordEncoder;
+    private final SubscriptionRepository subscriptionRepository;
 
     public void createInstituition(NewInstituitionRequestDto newInstituitionRequestDto) {
         if(newInstituitionRequestDto.getCnpj() == null || (newInstituitionRequestDto.getCnpj().length() != 14)){
@@ -52,23 +57,34 @@ public class InstituitionService {
             throw new BusinessRuleException("E-mail já cadastrado");
         }
 
+        ///////// CRIA INSTITUIÇÃO /////////
         Instituition instituition = new Instituition();
         instituition.setCnpj(newInstituitionRequestDto.getCnpj());
         instituition.setNameInstituition(newInstituitionRequestDto.getName());
         instituition.setEmailInstituition(newInstituitionRequestDto.getEmail());
 
+        ///////// CRIA USUÁRIO /////////
         User user = new User();
         user.setName(newInstituitionRequestDto.getName());
         user.setEmail(newInstituitionRequestDto.getEmail());
         user.setPassword(passwordEncoder.encode(newInstituitionRequestDto.getPassword()));
-        user.setRole((UserRole.role_super_admin));
+        user.setRole((UserRole.ROLE_SUPER_ADMIN));
         user.setCreateAt(now());
         user.setActive(true);
         user.setInstituition(instituition);
 
         instituition.getListUsers().add(user);
 
+        ///////// CRIA ASSINATURA /////////
+        Plans plans = new Plans();
+        Subscriptions subscription = new Subscriptions();
+        subscription.setInstituition(instituition);
+        subscription.setPlans(plans);
+        subscription.setStatusSubscription(StatusSubscription.PENDING);
+        subscription.setCreatedAt(now());
+
         instituitionRepository.save(instituition);
+        subscriptionRepository.save(subscription);
     }
 
     public void updateInstituition(String cnpj, InstituitionRequestDto instituitionRequestDto){

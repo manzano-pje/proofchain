@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.Instant;
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,9 +20,11 @@ public class UsageCounters {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idUsageCounter;
 
-    @ManyToOne
-    @JoinColumn(name = "id_subscription")
+    @OneToOne
     private Subscriptions Subscriptions;
-
-    private Long usageCount;
+    private Integer certificatesIssues;
+    private Integer monthLimit;
+    private Instant periodStart;
+    private Instant periodEnd;
+    private Instant updatedAt;
 }

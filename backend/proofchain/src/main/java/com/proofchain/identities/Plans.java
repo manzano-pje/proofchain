@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,11 +24,17 @@ public class Plans {
 
     private String name;
     private double price;
-    private int durationDays;
-    private boolean isReccurent;
+//    private int durationDays;
+//    private boolean isReccurent;
     private boolean isActive;
+    private Instant createdAt;
+    private BillingTypes billingTypes;
+    private Integer monthlyCertificateLimit;
 
     @OneToMany(mappedBy = "idPlan")
     private List<FeaturePlan> featurePlans = new ArrayList<>();
+
+    @OneToMany
+    List<Subscriptions> subscriptionsList;
 
 }
