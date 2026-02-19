@@ -9,8 +9,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class CourseReturnDto {
+public class CourseResponseDto {
 
     private String name;
     private String description;
+    private int hours;
 }

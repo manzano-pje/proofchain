@@ -11,7 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class CourseRequestDto {
+public class CourseDto {
 
     @Column(nullable = false, unique = true)
     private String name;
@@ -19,4 +19,5 @@ public class CourseRequestDto {
     @Column(nullable = false)
     @Size(max = 200)
     private String description;
+    private int hours;
 }
