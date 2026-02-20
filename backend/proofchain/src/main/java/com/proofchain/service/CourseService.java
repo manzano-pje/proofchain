@@ -36,7 +36,7 @@ public class CourseService {
         Long institutionId = SecurityUtils.getInstitutionId();
         Instituition institution = validations.validateInstituition(institutionId);
 
-        validations.validateCourseExist(newCourse.getName(), institution.getIdInstituition());
+        validations.validateCourseExist(newCourse.getName(), institution.getId());
 
         if(newCourse.getHours()<=0){
             throw new ValidationException("Quantidade de horas precisa ser maior que 0");
@@ -55,7 +55,7 @@ public class CourseService {
         Long institutionId = SecurityUtils.getInstitutionId();
         Instituition institution = validations.validateInstituition(institutionId);
 
-        Optional<Course> courseOpt = validations.validateCourseNoExist(courseDto.getName(), institution.getIdInstituition());
+        Optional<Course> courseOpt = validations.validateCourseNoExist(courseDto.getName(), institution.getId());
 
         Course course = new Course();
         course.setIdCourse(courseOpt.get().getIdCourse());

@@ -25,13 +25,13 @@ public class Validations {
 
     // 🔑 Instituição vem do TOKEN, não do request
     public Instituition validateInstituition(Long institutionId) {;
-        Instituition institution = instituitionRepository.findByidInstituition(institutionId)
+        Instituition institution = instituitionRepository.findByid(institutionId)
                 .orElseThrow(() -> new ResourceNotFoundException("Instituição não encontrada"));
         return institution;
     }
 
     public Optional<Course>validateCourseExist(String name, Long idInstituition){
-        Optional<Course> courseOptional = courseRepository.findByNameAndInstituition(name,idInstituition);
+        Optional<Course> courseOptional = courseRepository.findByNameAndInstituitionId(name,idInstituition);
         if(courseOptional.isPresent()){
             throw new BusinessRuleException("Curso já cadatrado.");
         }
@@ -39,7 +39,7 @@ public class Validations {
     }
 
     public Optional<Course>validateCourseNoExist(String name, Long idInstituition){
-        Optional<Course> courseOptional = courseRepository.findByNameAndInstituition(name,idInstituition);
+        Optional<Course> courseOptional = courseRepository.findByNameAndInstituitionId(name,idInstituition);
         if(courseOptional.isEmpty()){
             throw new ResourceNotFoundException("Este curso não está cadatrado.");
         }
@@ -47,7 +47,7 @@ public class Validations {
     }
 
     public Optional<User> validateUserExist(String email, Long idInstituition){
-        Optional<User> userOptional = userRepository.findByEmailAndInstituition(email, idInstituition) ;
+        Optional<User> userOptional = userRepository.findByEmailAndInstituitionId(email, idInstituition) ;
         if(userOptional.isPresent()){
             throw new BusinessRuleException("Usuário já cadastrado");
         }
@@ -55,7 +55,7 @@ public class Validations {
     }
 
     public Optional<User> validateUserNotExist(String email, Long idInstituition) {
-        Optional<User> userOptional = userRepository.findByEmailAndInstituition(email, idInstituition);
+        Optional<User> userOptional = userRepository.findByEmailAndInstituitionId(email, idInstituition);
         if (userOptional.isEmpty()) {
             throw new ResourceNotFoundException("Usuário não cadastrado");
         }

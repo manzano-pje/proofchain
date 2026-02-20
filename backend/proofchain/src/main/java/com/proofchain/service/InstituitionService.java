@@ -66,8 +66,8 @@ public class InstituitionService {
         ///////// CRIA INSTITUIÇÃO /////////
         Instituition instituition = new Instituition();
         instituition.setCnpj(newInstituitionRequestDto.getCnpj());
-        instituition.setNameInstituition(newInstituitionRequestDto.getName());
-        instituition.setEmailInstituition(newInstituitionRequestDto.getEmail());
+        instituition.setName(newInstituitionRequestDto.getName());
+        instituition.setEmail(newInstituitionRequestDto.getEmail());
 
         ///////// CRIA USUÁRIO /////////
         User user = new User();
@@ -133,7 +133,7 @@ public class InstituitionService {
     public void updateInstituition(String cnpj, InstituitionRequestDto instituitionRequestDto){
 
         Long institutionId = SecurityUtils.getInstitutionId();
-        Instituition institution = validations.validateInstituition(institutionId);
+        validations.validateInstituition(institutionId);
 
         Optional<Instituition> instituitionOptional = instituitionRepository.findByCnpj(cnpj);
         if(instituitionOptional.isEmpty()){
@@ -141,15 +141,15 @@ public class InstituitionService {
         }
 
         Instituition instituition = new Instituition();
-        instituition.setIdInstituition(instituitionOptional.get().getIdInstituition());
-        instituition.setAddressInstituition(instituitionRequestDto.addressInstituition());
-        instituition.setNumberInstituition(instituitionRequestDto.numberInstituition());
-        instituition.setComplementInstituition(instituitionRequestDto.complementInstituition());
-        instituition.setNeighborhoodInstituition(instituitionRequestDto.neighborhoodInstituition());
-        instituition.setCityInstituition(instituition.getCityInstituition());
-        instituition.setStateInstituition(instituitionRequestDto.stateInstituition());
-        instituition.setPostalCodeInstituition(instituition.getPostalCodeInstituition());
-        instituition.setPhoneInstituition(instituition.getPhoneInstituition());
+        instituition.setId (instituitionOptional.get().getId());
+        instituition.setAddress (instituitionRequestDto.address());
+        instituition.setNumber (instituitionRequestDto.number());
+        instituition.setComplement (instituitionRequestDto.complement());
+        instituition.setNeighborhood (instituitionRequestDto.neighborhood());
+        instituition.setCity (instituitionRequestDto.city());
+        instituition.setState (instituitionRequestDto.state());
+        instituition.setPostalCode (instituitionRequestDto.postalCode());
+        instituition.setPhone (instituitionRequestDto.phone());
 
         instituitionRepository.save(instituition);
     }
@@ -157,7 +157,7 @@ public class InstituitionService {
     public InstituitionReturnDto getOneInstituition(String cnpj){
 
         Long institutionId = SecurityUtils.getInstitutionId();
-        Instituition institution = validations.validateInstituition(institutionId);
+        validations.validateInstituition(institutionId);
 
         Optional<Instituition> instituitionOptional = instituitionRepository.findByCnpj(cnpj);
         if(instituitionOptional.isEmpty()){
@@ -171,7 +171,7 @@ public class InstituitionService {
     public void deleteInstituition(String cnpj){
 
         Long institutionId = SecurityUtils.getInstitutionId();
-        Instituition institution = validations.validateInstituition(institutionId);
+        validations.validateInstituition(institutionId);
 
         Optional<Instituition> instituitionOptional = instituitionRepository.findByCnpj(cnpj);
         if(instituitionOptional.isEmpty()){
