@@ -140,7 +140,7 @@
             <li><i class="fas fa-check"></i> Modelo padrão</li>
             <li><i class="fas fa-check"></i> Válido por 7 dias</li>
           </ul>
-          <button type="button" class="btn btn-primary btn-outline" data-plan-id="1" data-bs-toggle="modal" data-bs-target="#acquisitionModal" 
+          <button type="button" class="btn btn-primary btn-outline" @click="selecionaOpcao(1)" data-bs-toggle="modal" data-bs-target="#acquisitionModal" 
              data-auth="login">Começar teste gratuito
           </button>
         </div>
@@ -158,7 +158,7 @@
             <li><i class="fas fa-check"></i> Relatórios básicos</li>
             <li><i class="fas fa-check"></i> Válido por 15 dias</li>
           </ul>
-          <button type="button" class="btn btn-primary btn-outline" data-plan-id="2" data-bs-toggle="modal" data-bs-target="#acquisitionModal"
+          <button type="button" class="btn btn-primary btn-outline" @click="selecionaOpcao(2)" data-bs-toggle="modal" data-bs-target="#acquisitionModal"
             data-auth="register">Comprar
           </button>
         </div>
@@ -178,7 +178,7 @@
             <li><i class="fas fa-check"></i> Dashboard completo</li>
             <li><i class="fas fa-check"></i> Suporte técnico</li>
           </ul>
-          <button type="button" class="btn btn-primary btn-outline" data-plan-id="3"  data-bs-toggle="modal" data-bs-target="#acquisitionModal"
+          <button type="button" class="btn btn-primary btn-outline" @click="selecionaOpcao(3)"  data-bs-toggle="modal" data-bs-target="#acquisitionModal"
             data-auth="register">Comprar
           </button>
         </div>
@@ -198,8 +198,9 @@
             <li><i class="fas fa-check"></i> API de integração</li>
             <li><i class="fas fa-check"></i> Suporte prioritário</li>
           </ul>
-          <button type="button" class="btn btn-primary btn-outline" data-plan-id="4" data-bs-toggle="modal" data-bs-target="#acquisitionModal"
-            data-auth="register">Comprar
+          <button type="button" class="btn btn-primary btn-outline"  
+            data-bs-toggle="modal" data-bs-target="#acquisitionModal"
+            data-auth="register" @click="selecionaOpcao(4)">Comprar
           </button>
         </div>
       </div>
@@ -239,8 +240,9 @@
                 <label for="password" class="col-form-label">Senha:</label>
                 <input type="password" class="form-control" v-model="formData.password" :class="{ 'is-invalid': errors.password }"required minlength="8">
                 <div class="invalid-feedback">{{ errors.password }}</div>
+                <input type="hidden" v-model="formData.planId">
               </div>
-              <input type="hidden"   name="planId" :value="planId">
+              
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                 <button type="submit" class="btn btn-primary">Assinar</button>
@@ -265,8 +267,15 @@ declare const bootstrap: any
     cnpj: '',
     userName: '',
     email: '',
-    password: ''
+    password: '',
+    planId: 0
   })
+
+  function selecionaOpcao(id: number){
+    formData.planId = id;
+    console.log("Id recebido = " , id)
+  }
+  
 
   const errors = reactive({
     cnpj: '',
@@ -355,12 +364,19 @@ declare const bootstrap: any
         cnpj: formData.cnpj,
         userName: formData.userName,
         email: formData.email,
-        password: formData.password
+        password: formData.password,
+        idPlan: formData.planId
       })
     })
 
     const data = await response.json()
     console.log('Resposta da API:', data)
+    console.log(formData.name)
+    console.log(formData.cnpj)
+    console.log(formData.userName)
+    console.log(formData.email)
+    console.log(formData.password)
+    console.log(formData.planId)
 
     if (!response.ok) {
       throw new Error('Erro ao cadastrar instituição')
