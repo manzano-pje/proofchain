@@ -11,6 +11,7 @@ import com.proofchain.identities.Instituition;
 import com.proofchain.repository.CourseRepository;
 import com.proofchain.repository.InstituitionRepository;
 import com.proofchain.security.SecurityUtils;
+import com.proofchain.util.Validations;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -29,19 +30,14 @@ public class CourseService {
     private final ModelMapper mapper;
     private final InstituitionRepository instituitionRepository;
     private final CourseRepository courseRepository;
+    private final Validations validations;
 
     public void createCourse(CourseRequestDto newCourse)  {
-
-        // 🔑 Instituição vem do TOKEN, não do request
         Long institutionId = SecurityUtils.getInstitutionId();
+        Instituition institution = validations.validateInstituition(institutionId);
 
-        Instituition institution = instituitionRepository.findByidInstituition(institutionId)
-                .orElseThrow(() ->new ResourceNotFoundException("Instituição não encontrada"));
+        validations.validateCourseExist(newCourse.getName(), institution.getIdInstituition());
 
-        Optional<Course> courseOptional = courseRepository.findByName(newCourse.getName());
-        if(courseOptional.isPresent()){
-            throw new BusinessRuleException("Curso já cadatrado.");
-        }
         if(newCourse.getHours()<=0){
             throw new ValidationException("Quantidade de horas precisa ser maior que 0");
         }
@@ -56,34 +52,25 @@ public class CourseService {
     }
 
     public void updateCourse(String name, CourseRequestDto courseDto){
-        // 🔑 Instituição vem do TOKEN, não do request
         Long institutionId = SecurityUtils.getInstitutionId();
+        Instituition institution = validations.validateInstituition(institutionId);
 
-        Instituition institution = instituitionRepository.findByidInstituition(institutionId)
-                .orElseThrow(() ->new ResourceNotFoundException("Instituição não encontrada"));
-
-        Optional<Course> courseOptional = courseRepository.findByName(name);
-        if(courseOptional.isEmpty()){
-            throw new BusinessRuleException("Curso não cadatrado.");
-        }
+        Optional<Course> courseOpt = validations.validateCourseNoExist(courseDto.getName(), institution.getIdInstituition());
 
         Course course = new Course();
-        course.setIdCourse(courseOptional.get().getIdCourse());
+        course.setIdCourse(courseOpt.get().getIdCourse());
         course.setName(FormatarTexto.formatarString(course.getName()));
         course.setDescription(FormatarTexto.formatarString(course.getDescription()));
         course.setHours(course.getHours());
         course.setUpdatedAt(now());
-        course.setCreatedAt(courseOptional.get().getCreatedAt());
+        course.setCreatedAt(courseOpt.get().getCreatedAt());
         courseRepository.save(course);
     }
 
     public List<FullCourseResponseDto> listAllCourses(){
-        // 🔑 Instituição vem do TOKEN, não do request
         Long institutionId = SecurityUtils.getInstitutionId();
-
-        Instituition institution = instituitionRepository.findByidInstituition(institutionId)
-                .orElseThrow(() ->new ResourceNotFoundException("Instituição não encontrada"));
-
+        Instituition institution = validations.validateInstituition(institutionId);
+        
         List<Course> courseList = courseRepository.findAll();
         if(courseList.isEmpty()){
             throw new ResourceNotFoundException("Não existem cursos cadastrados.");
