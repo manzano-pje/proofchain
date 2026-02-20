@@ -16,6 +16,8 @@ import com.proofchain.identities.enums.UserRole;
 import com.proofchain.repository.InstituitionRepository;
 import com.proofchain.repository.SubscriptionRepository;
 import com.proofchain.repository.UserRepository;
+import com.proofchain.security.SecurityUtils;
+import com.proofchain.util.Validations;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -37,6 +39,7 @@ public class InstituitionService {
     private final ModelMapperConfig mapper;
     private final PasswordEncoder passwordEncoder;
     private final SubscriptionRepository subscriptionRepository;
+    private final Validations validations;
 
     public void createInstituition(NewInstituitionRequestDto newInstituitionRequestDto) {
         if(newInstituitionRequestDto.getCnpj() == null || (newInstituitionRequestDto.getCnpj().length() != 14)){
@@ -128,6 +131,10 @@ public class InstituitionService {
     }
 
     public void updateInstituition(String cnpj, InstituitionRequestDto instituitionRequestDto){
+
+        Long institutionId = SecurityUtils.getInstitutionId();
+        Instituition institution = validations.validateInstituition(institutionId);
+
         Optional<Instituition> instituitionOptional = instituitionRepository.findByCnpj(cnpj);
         if(instituitionOptional.isEmpty()){
             throw new ResourceNotFoundException("Instituição não encontrada.");
@@ -147,18 +154,11 @@ public class InstituitionService {
         instituitionRepository.save(instituition);
     }
 
-    public List<InstituitionReturnDto> getAllInstituition(){
-        List<Instituition> instituitionList = instituitionRepository.findAll();
-        if(instituitionList.isEmpty()){
-            throw new ResourceNotFoundException("Não existem instituições cadastradas.");
-        }
-
-        return instituitionList.stream()
-                .map(InstituitionReturnDto::new)
-                .collect(Collectors.toList());
-    }
-
     public InstituitionReturnDto getOneInstituition(String cnpj){
+
+        Long institutionId = SecurityUtils.getInstitutionId();
+        Instituition institution = validations.validateInstituition(institutionId);
+
         Optional<Instituition> instituitionOptional = instituitionRepository.findByCnpj(cnpj);
         if(instituitionOptional.isEmpty()){
             throw new ResourceNotFoundException("Instituição não encontrada.");
@@ -169,10 +169,27 @@ public class InstituitionService {
     }
 
     public void deleteInstituition(String cnpj){
+
+        Long institutionId = SecurityUtils.getInstitutionId();
+        Instituition institution = validations.validateInstituition(institutionId);
+        
         Optional<Instituition> instituitionOptional = instituitionRepository.findByCnpj(cnpj);
         if(instituitionOptional.isEmpty()){
             throw new ResourceNotFoundException("Instituição não encontrada.");
         }
         instituitionRepository.deleteByCnpj(cnpj);
+    }
+
+    // Somente para administrador da plataforma
+    public List<InstituitionReturnDto> getAllInstituition(){
+
+        List<Instituition> instituitionList = instituitionRepository.findAll();
+        if(instituitionList.isEmpty()){
+            throw new ResourceNotFoundException("Não existem instituições cadastradas.");
+        }
+
+        return instituitionList.stream()
+                .map(InstituitionReturnDto::new)
+                .collect(Collectors.toList());
     }
 }

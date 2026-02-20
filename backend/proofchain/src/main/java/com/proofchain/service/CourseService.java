@@ -70,7 +70,7 @@ public class CourseService {
     public List<FullCourseResponseDto> listAllCourses(){
         Long institutionId = SecurityUtils.getInstitutionId();
         Instituition institution = validations.validateInstituition(institutionId);
-        
+
         List<Course> courseList = courseRepository.findAll();
         if(courseList.isEmpty()){
             throw new ResourceNotFoundException("Não existem cursos cadastrados.");
