@@ -172,7 +172,7 @@ public class InstituitionService {
 
         Long institutionId = SecurityUtils.getInstitutionId();
         Instituition institution = validations.validateInstituition(institutionId);
-        
+
         Optional<Instituition> instituitionOptional = instituitionRepository.findByCnpj(cnpj);
         if(instituitionOptional.isEmpty()){
             throw new ResourceNotFoundException("Instituição não encontrada.");

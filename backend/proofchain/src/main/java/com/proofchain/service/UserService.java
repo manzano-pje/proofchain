@@ -11,6 +11,7 @@ import com.proofchain.identities.User;
 import com.proofchain.repository.InstituitionRepository;
 import com.proofchain.repository.UserRepository;
 import com.proofchain.security.SecurityUtils;
+import com.proofchain.util.Validations;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -29,19 +30,15 @@ public class UserService {
     private final InstituitionRepository instituitionRepository;
     private final PasswordEncoder passwordEncoder;
     private final ModelMapperConfig mapper;
+    private final Validations validations;
 
-    public void createUser(UserRequestDto newUser) {
+    public UserReturnDto createUser(UserRequestDto newUser) {
         // 🔑 Instituição vem do TOKEN, não do request
         Long institutionId = SecurityUtils.getInstitutionId();
-
-        Instituition institution = instituitionRepository.findByidInstituition(institutionId)
-            .orElseThrow(() ->new ResourceNotFoundException("Instituição não encontrada"));
+        Instituition institution = validations.validateInstituition(institutionId);
 
         // Valida se usuário já existe
-        Optional<User> userOptional = userRepository.findByEmail(newUser.getEmail());
-        if(userOptional.isPresent()){
-            throw new BusinessRuleException("Usuário já cadastrado");
-        }
+        validations.validateUserExist(newUser.getEmail(), institutionId);
 
         // Cria usuário
         User user = new User();
@@ -50,22 +47,19 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(newUser.getPassword()));
         user.setCreateAt(now());
         user.setActive(true);
-        userRepository.save(user);
+        user = userRepository.save(user);
+
+        return mapper.modelMapper().map(user, UserReturnDto.class);
     }
-    
 
     public UserReturnDto getUser(String email) {
         // 🔑 Instituição vem do TOKEN, não do request
         Long institutionId = SecurityUtils.getInstitutionId();
-
-        Instituition institution = instituitionRepository.findByidInstituition(institutionId)
-                .orElseThrow(() ->new ResourceNotFoundException("Instituição não encontrada"));
+        Instituition institution = validations.validateInstituition(institutionId);
 
         // Valida se usuário não existe
-        Optional<User> userOptional = userRepository.findByEmail(email);
-        if(userOptional.isEmpty()){
-            throw new ResourceNotFoundException("Usuário não cadastrado");
-        }
+        Optional<User> userOptional = validations.validateUserNotExist(email, institutionId);
+
         UserReturnDto user = mapper.modelMapper().map(userOptional.get(), UserReturnDto.class);
         return user;
     }
@@ -73,9 +67,7 @@ public class UserService {
     public List<UserReturnDto> getAllUser(){
         // 🔑 Instituição vem do TOKEN, não do request
         Long institutionId = SecurityUtils.getInstitutionId();
-
-        Instituition institution = instituitionRepository.findByidInstituition(institutionId)
-                .orElseThrow(() ->new ResourceNotFoundException("Instituição não encontrada"));
+        Instituition institution = validations.validateInstituition(institutionId);
 
         List<User> userList = userRepository.findAll();
         if(userList.isEmpty()){
@@ -87,17 +79,12 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-    public void updateUser(String email, UserUpdateDto userUpadte){
+    public UserReturnDto updateUser(String email, UserUpdateDto userUpadte){
         // 🔑 Instituição vem do TOKEN, não do request
         Long institutionId = SecurityUtils.getInstitutionId();
+        Instituition institution = validations.validateInstituition(institutionId);
 
-        Instituition institution = instituitionRepository.findByidInstituition(institutionId)
-                .orElseThrow(() ->new ResourceNotFoundException("Instituição não encontrada"));
-
-        Optional<User> userOptional = userRepository.findByEmail(email);
-        if(userOptional.isEmpty()){
-            throw new ResourceNotFoundException("Usuário não cadastrado");
-        }
+        Optional<User> userOptional = validations.validateUserNotExist(email, institutionId);
 
         User user = new User();
         user.setId(userOptional.get().getId());
@@ -105,20 +92,17 @@ public class UserService {
         user.setRole(userUpadte.getRole());
         user.setActive(userUpadte.isActive());
         user.setUpdateAt(now());         
-        userRepository.save(user);
+        user = userRepository.save(user);
+
+        return mapper.modelMapper().map(user, UserReturnDto.class);
     }
 
     public void deleteUSer(String email){
         // 🔑 Instituição vem do TOKEN, não do request
         Long institutionId = SecurityUtils.getInstitutionId();
+        Instituition institution = validations.validateInstituition(institutionId);
 
-        Instituition institution = instituitionRepository.findByidInstituition(institutionId)
-                .orElseThrow(() ->new ResourceNotFoundException("Instituição não encontrada"));
-
-        Optional<User> userOptional = userRepository.findByEmail(email);
-        if(userOptional.isEmpty()){
-            throw new ResourceNotFoundException("Usuário não cadastrado");
-        }
+        Optional<User> userOptional = validations.validateUserNotExist(email, institutionId);
         userRepository.deleteByEmail(email);
     }
 }
