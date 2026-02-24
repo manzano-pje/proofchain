@@ -36,8 +36,8 @@ jobs:
 
       # 5️⃣ Build da imagem Docker
       - name: Build Docker image
-        run: docker build -t seu_usuario/proofchain-api:latest .
+        run: docker build -t proofchain/proofchain-api:latest .
 
       # 6️⃣ Enviar imagem para Docker Hub
       - name: Push Docker image
-        run: docker push seu_usuario/proofchain-api:latest
+        run: docker push proofchain/proofchain-api:latest
