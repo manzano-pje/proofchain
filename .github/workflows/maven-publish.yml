@@ -6,7 +6,7 @@ name: Build and Push Docker Image
 # Dispara sempre que fizer push na branch main
 on:
   push:
-    branches: [ main ]
+    branches: [ master ]
 
 jobs:
   build:
