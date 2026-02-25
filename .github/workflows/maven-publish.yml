@@ -25,6 +25,8 @@ jobs:
 
       # 3️⃣ Build do JAR com Maven
       - name: Build JAR
+      #   run: mvn clean package -DskipTests
+        working-directory: backend/proofchain
         run: mvn clean package -DskipTests
 
       # 4️⃣ Login no Docker Hub
