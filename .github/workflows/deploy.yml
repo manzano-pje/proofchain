@@ -1,0 +1,44 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build Docker image
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/proofchain-api .
+
+      - name: Push Docker image
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/proofchain-api
+
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            docker stop proofchain-api || true
+            docker rm proofchain-api || true
+            docker pull ${{ secrets.DOCKER_USERNAME }}/proofchain-api
+            docker run -d -p 80:8080 \
+              --name proofchain-api \
+              -e SPRING_PROFILES_ACTIVE=prod \
+              -e DATABASE_URL=SEU_RDS_ENDPOINT \
+              -e DB_USER=SEU_USER \
+              -e DB_PASSWORD=SEU_PASSWORD \
+              ${{ secrets.DOCKER_USERNAME }}/proofchain-api
