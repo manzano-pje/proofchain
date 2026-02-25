@@ -38,4 +38,12 @@ public class Plans {
     @OneToMany
     List<Subscriptions> subscriptionsList;
 
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }
