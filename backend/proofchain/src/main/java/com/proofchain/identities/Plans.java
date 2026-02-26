@@ -25,8 +25,6 @@ public class Plans {
 
     private String name;
     private double price;
-//    private int durationDays;
-//    private boolean isReccurent;
     private boolean isActive;
     private Instant createdAt;
     private BillingType billingType;
