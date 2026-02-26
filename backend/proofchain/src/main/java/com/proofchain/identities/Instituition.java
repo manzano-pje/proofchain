@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.validator.constraints.br.CNPJ;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -21,11 +22,11 @@ import java.util.UUID;
 public class Instituition {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idInstituition;
+    private Long id;
 
     @Column(unique = true)
     @Size(min = 5, max = 100)
-    private String nameInstituition;
+    private String name;
 
 //    @Column(nullable = false)
     @CNPJ
@@ -33,22 +34,24 @@ public class Instituition {
 
     @Email
 //    @Column(nullable = false)
-    private String emailInstituition;
+    private String email;
 
-    private String addressInstituition;
-    private Integer numberInstituition;
-    private String complementInstituition;
-    private String neighborhoodInstituition;
-    private String cityInstituition;
+    private String address;
+    private Integer number;
+    private String complement;
+    private String neighborhood;
+    private String city;
 
     @Size(min = 2, max = 2)
-    private String stateInstituition;
+    private String state;
 
     @Pattern(regexp = "\\d{5}-\\d{3}",message = "O cep deve ser no fornato XXXXX-XXX")
-    private String postalCodeInstituition;
+    private String postalCode;
 
     @Pattern(regexp = "\\(\\d{2}\\) \\d{5}-\\d{4}", message = "O telefone deve estar no formato (XX) XXXXX-XXXX")
-    private String phoneInstituition;
+    private String phone;
+
+    private Instant createdAt;
 
 
     ///// RELACIONAMENTO /////

@@ -16,7 +16,6 @@ import java.time.Instant;
 @Setter
 public class UserReturnDto {
 
-    private Long idUser;
     private String name;
     private String email;
     private UserRole role;
@@ -24,6 +23,5 @@ public class UserReturnDto {
     private Instant createAt;
     private Instant updateAt;
 
-    public UserReturnDto(User user) {
-    }
+    public UserReturnDto(User user) {}
 }

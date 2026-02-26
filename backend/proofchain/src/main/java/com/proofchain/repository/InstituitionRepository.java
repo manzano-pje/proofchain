@@ -10,7 +10,7 @@ import java.util.UUID;
 @Repository
 public interface InstituitionRepository extends JpaRepository<Instituition, Long> {
 
-    Optional<Instituition> findByidInstituition(Long institutionId);
+    Optional<Instituition> findByid(Long institutionId);
     Optional<Instituition> findByCnpj(String cnpj);
     void deleteByCnpj(String cnpj);
 }

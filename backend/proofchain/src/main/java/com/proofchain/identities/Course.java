@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.time.Instant;
 import java.util.List;
 
 @Entity
@@ -28,6 +29,10 @@ public class Course {
 
     @Column(nullable = false)
     private int hours;
+
+    @Column(nullable = false)
+    private Instant createdAt;
+    private Instant updatedAt;
 
     /////RELACIONAMENTO /////
 

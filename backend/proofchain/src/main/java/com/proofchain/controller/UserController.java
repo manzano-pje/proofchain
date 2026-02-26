@@ -24,10 +24,14 @@ public class UserController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/register")
-    public ResponseEntity<Void> createUser(@RequestBody UserRequestDto user) {
-        userService.createUser(user);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    public ResponseEntity<UserRequestDto> createUser(@RequestBody UserRequestDto user) {
+        UserReturnDto usder = userService.createUser(user);
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(user);
+
     }
+
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/{email}")
@@ -44,17 +48,17 @@ public class UserController {
 
     @PreAuthorize("hasRole('ROLE_USER','ROLE_ADMIN')")
     @PatchMapping("/update/{email}")
-    public ResponseEntity<Void> updateUser(@PathVariable String email,
+    public ResponseEntity<UserReturnDto> updateUser(@PathVariable String email,
                                            @RequestBody UserUpdateDto userUpdateDto){
-        userService.updateUser(email, userUpdateDto);
-        return ResponseEntity.ok().build();
+        UserReturnDto user = userService.updateUser(email, userUpdateDto);
+        return ResponseEntity.ok().body(user);
     }
 
     @PreAuthorize("hasHole('ROLE_ADMIN')")
     @DeleteMapping("/delete/{email}")
-    public ResponseEntity<Void> deleteUSer(@PathVariable String email){
+    public ResponseEntity<String> deleteUser(@PathVariable String email){
         userService.deleteUSer(email);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body("Usuário apagado com sucesso.");
     }
 
 }

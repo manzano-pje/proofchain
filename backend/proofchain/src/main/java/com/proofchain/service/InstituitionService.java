@@ -7,14 +7,23 @@ import com.proofchain.configuration.ModelMapperConfig;
 import com.proofchain.exceptions.BusinessRuleException;
 import com.proofchain.exceptions.ResourceNotFoundException;
 import com.proofchain.identities.Instituition;
+import com.proofchain.identities.Plans;
+import com.proofchain.identities.Subscriptions;
 import com.proofchain.identities.User;
+import com.proofchain.identities.enums.BillingType;
+import com.proofchain.identities.enums.StatusSubscription;
 import com.proofchain.identities.enums.UserRole;
 import com.proofchain.repository.InstituitionRepository;
+import com.proofchain.repository.SubscriptionRepository;
 import com.proofchain.repository.UserRepository;
+import com.proofchain.security.SecurityUtils;
+import com.proofchain.util.Validations;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -29,6 +38,8 @@ public class InstituitionService {
     private final UserRepository userRepository;
     private final ModelMapperConfig mapper;
     private final PasswordEncoder passwordEncoder;
+    private final SubscriptionRepository subscriptionRepository;
+    private final Validations validations;
 
     public void createInstituition(NewInstituitionRequestDto newInstituitionRequestDto) {
         if(newInstituitionRequestDto.getCnpj() == null || (newInstituitionRequestDto.getCnpj().length() != 14)){
@@ -52,57 +63,102 @@ public class InstituitionService {
             throw new BusinessRuleException("E-mail já cadastrado");
         }
 
+        ///////// CRIA INSTITUIÇÃO /////////
         Instituition instituition = new Instituition();
         instituition.setCnpj(newInstituitionRequestDto.getCnpj());
-        instituition.setNameInstituition(newInstituitionRequestDto.getName());
-        instituition.setEmailInstituition(newInstituitionRequestDto.getEmail());
+        instituition.setName(newInstituitionRequestDto.getName());
+        instituition.setEmail(newInstituitionRequestDto.getEmail());
 
+        ///////// CRIA USUÁRIO /////////
         User user = new User();
         user.setName(newInstituitionRequestDto.getName());
         user.setEmail(newInstituitionRequestDto.getEmail());
         user.setPassword(passwordEncoder.encode(newInstituitionRequestDto.getPassword()));
-        user.setRole((UserRole.role_super_admin));
+        user.setRole((UserRole.ROLE_SUPER_ADMIN));
         user.setCreateAt(now());
         user.setActive(true);
         user.setInstituition(instituition);
 
         instituition.getListUsers().add(user);
 
+        ///////// CRIA ASSINATURA /////////
+        BillingType billingType = null;
+        Instant periodStart ;
+        Instant periodEnd ;
+        Instant nextBilling;
+        int idPlan = newInstituitionRequestDto.getIdPlan();
+        Plans plans = new Plans();
+        Subscriptions subscription = new Subscriptions();
+
+        switch(idPlan){
+            case 1:
+                billingType = subscription.getBillingType().MANUAL;
+                periodStart = now();
+                periodEnd = now().plus(7, ChronoUnit.DAYS);
+                break;
+            case 2:
+                billingType = subscription.getBillingType().MANUAL;
+                periodStart = now();
+                periodEnd = now().plus(15, ChronoUnit.DAYS);
+                break;
+            case 3:
+                billingType = subscription.getBillingType().RECURRING;
+                periodStart = now();
+                periodEnd = now().plus(30, ChronoUnit.DAYS);
+                nextBilling =  now().plus(30, ChronoUnit.DAYS);
+                break;
+            case 4:
+                billingType = subscription.getBillingType().RECURRING;
+                periodStart = now();
+                periodEnd = now().plus(30, ChronoUnit.DAYS);
+                nextBilling =  now().plus(30, ChronoUnit.DAYS);
+                break;
+            default:
+                throw new ResourceNotFoundException("Plano inválido.");
+        }
+
+        subscription.setInstituition(instituition);
+        subscription.setPlans(plans);
+        subscription.setStatusSubscription(StatusSubscription.PENDING);
+        subscription.setBillingType(billingType);
+        subscription.setCurrentPeriodStarts(null);
+        subscription.setCurrentPeriodEnd(null);
+        subscription.setCreatedAt(now());
+
         instituitionRepository.save(instituition);
+        subscriptionRepository.save(subscription);
+
     }
 
     public void updateInstituition(String cnpj, InstituitionRequestDto instituitionRequestDto){
+
+        Long institutionId = SecurityUtils.getInstitutionId();
+        validations.validateInstituition(institutionId);
+
         Optional<Instituition> instituitionOptional = instituitionRepository.findByCnpj(cnpj);
         if(instituitionOptional.isEmpty()){
             throw new ResourceNotFoundException("Instituição não encontrada.");
         }
 
         Instituition instituition = new Instituition();
-        instituition.setIdInstituition(instituitionOptional.get().getIdInstituition());
-        instituition.setAddressInstituition(instituitionRequestDto.addressInstituition());
-        instituition.setNumberInstituition(instituitionRequestDto.numberInstituition());
-        instituition.setComplementInstituition(instituitionRequestDto.complementInstituition());
-        instituition.setNeighborhoodInstituition(instituitionRequestDto.neighborhoodInstituition());
-        instituition.setCityInstituition(instituition.getCityInstituition());
-        instituition.setStateInstituition(instituitionRequestDto.stateInstituition());
-        instituition.setPostalCodeInstituition(instituition.getPostalCodeInstituition());
-        instituition.setPhoneInstituition(instituition.getPhoneInstituition());
+        instituition.setId (instituitionOptional.get().getId());
+        instituition.setAddress (instituitionRequestDto.address());
+        instituition.setNumber (instituitionRequestDto.number());
+        instituition.setComplement (instituitionRequestDto.complement());
+        instituition.setNeighborhood (instituitionRequestDto.neighborhood());
+        instituition.setCity (instituitionRequestDto.city());
+        instituition.setState (instituitionRequestDto.state());
+        instituition.setPostalCode (instituitionRequestDto.postalCode());
+        instituition.setPhone (instituitionRequestDto.phone());
 
         instituitionRepository.save(instituition);
     }
 
-    public List<InstituitionReturnDto> getAllInstituition(){
-        List<Instituition> instituitionList = instituitionRepository.findAll();
-        if(instituitionList.isEmpty()){
-            throw new ResourceNotFoundException("Não existem instituições cadastradas.");
-        }
-
-        return instituitionList.stream()
-                .map(InstituitionReturnDto::new)
-                .collect(Collectors.toList());
-    }
-
     public InstituitionReturnDto getOneInstituition(String cnpj){
+
+        Long institutionId = SecurityUtils.getInstitutionId();
+        validations.validateInstituition(institutionId);
+
         Optional<Instituition> instituitionOptional = instituitionRepository.findByCnpj(cnpj);
         if(instituitionOptional.isEmpty()){
             throw new ResourceNotFoundException("Instituição não encontrada.");
@@ -113,10 +169,27 @@ public class InstituitionService {
     }
 
     public void deleteInstituition(String cnpj){
+
+        Long institutionId = SecurityUtils.getInstitutionId();
+        validations.validateInstituition(institutionId);
+
         Optional<Instituition> instituitionOptional = instituitionRepository.findByCnpj(cnpj);
         if(instituitionOptional.isEmpty()){
             throw new ResourceNotFoundException("Instituição não encontrada.");
         }
         instituitionRepository.deleteByCnpj(cnpj);
+    }
+
+    // Somente para administrador da plataforma
+    public List<InstituitionReturnDto> getAllInstituition(){
+
+        List<Instituition> instituitionList = instituitionRepository.findAll();
+        if(instituitionList.isEmpty()){
+            throw new ResourceNotFoundException("Não existem instituições cadastradas.");
+        }
+
+        return instituitionList.stream()
+                .map(InstituitionReturnDto::new)
+                .collect(Collectors.toList());
     }
 }

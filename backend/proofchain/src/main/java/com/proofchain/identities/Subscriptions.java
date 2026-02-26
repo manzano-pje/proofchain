@@ -1,5 +1,6 @@
 package com.proofchain.identities;
 
+import com.proofchain.identities.enums.BillingType;
 import com.proofchain.identities.enums.StatusSubscription;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -33,10 +34,22 @@ public class Subscriptions {
 //    private Long idPlan;
 
     @Enumerated(EnumType.STRING)
-    private StatusSubscription StatusSubscription;
-    private Instant startsAt;
-    private Instant expiresAt;
-    private Instant createdAt;
+    private StatusSubscription statusSubscription;  // Status da assinatura PENDING, ACTIVE, EXPIRED, CANCELED
+
+    @Enumerated(EnumType.STRING)
+    private BillingType billingType;        // tipo de cobrança MANUAL OU RECOURRING
+
+    private Instant currentPeriodStarts;    // Data do início da assinatura do pacote atual
+    private Instant currentPeriodEnd;       // Data do término da assinatura do pacote atual
+    private Instant nextBillingAt;          //
+    private Instant schudledPlanChangeAt;   // Data para mudança do pacore
+
+    // Integração Mercado Pago
+
+    private String mercadoPagoPreapprovalId;    //
+    private String mercadoPagoCustommerId;      //
+    private Instant createdAt;                  // Data de criação da assinatura
+    private Instant canceledAt;                 // Data de cancelamento da assinatura
 
     @ManyToOne
     @JoinColumn(name = "id_instituition")
@@ -45,4 +58,15 @@ public class Subscriptions {
     @ManyToOne
     @JoinColumn(name = "id_plan")
     private Plans plans;
+
+    @ManyToOne
+    @JoinColumn(name = "id_schedulePlan")
+    private Plans schedulePlan; // mudança no próximo ciclo
+
+    @ManyToOne
+    @JoinColumn(name = "id_payment")
+    private Payments payments;
+
+    @OneToOne
+    private  UsageCounters usageCounters;
 }

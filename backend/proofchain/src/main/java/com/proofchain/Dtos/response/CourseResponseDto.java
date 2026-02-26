@@ -1,23 +1,19 @@
-package com.proofchain.Dtos.request;
+package com.proofchain.Dtos.response;
 
-import jakarta.persistence.Column;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.Instant;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class CourseRequestDto {
+public class CourseResponseDto {
 
-    @Column(nullable = false, unique = true)
     private String name;
-
-    @Column(nullable = false)
-    @Size(max = 200)
     private String description;
     private int hours;
 }
