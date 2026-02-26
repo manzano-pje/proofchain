@@ -253,11 +253,22 @@
       </div>
     </div>  
   </section> 
+  <ResponseModal
+    :title="modalTitle"
+    :message="modalMessage"
+    :type="modalType"
+  />
 </template>
 
 
 <script setup lang="ts">
 import { reactive } from 'vue'
+import ResponseModal from '@/components/ResponseModal.vue'
+import { ref } from 'vue'
+
+const modalTitle = ref('')
+const modalMessage = ref('')
+const modalType = ref('success')
 
 declare const bootstrap: any
 
@@ -370,18 +381,28 @@ declare const bootstrap: any
     })
 
     const data = await response.json()
-    console.log('Resposta da API:', data)
-    console.log(formData.name)
-    console.log(formData.cnpj)
-    console.log(formData.userName)
-    console.log(formData.email)
-    console.log(formData.password)
-    console.log(formData.planId)
 
-    if (!response.ok) {
-      throw new Error('Erro ao cadastrar instituição')
+    switch (response.status) {
+      case 200:
+        openResponseModal('Sucesso', data.message, 'success')
+        break
+
+      case 409:
+        openResponseModal('Conflito', data.message, 'warning')
+        break
+
+      case 404:
+        openResponseModal('Não encontrado', data.message, 'info')
+        break
+
+      case 500:
+        openResponseModal('Erro interno', data.message, 'danger')
+        break
+
+      default:
+        openResponseModal('Erro', 'Erro inesperado.', 'danger')
     }
-
+    
     const modalElement = document.getElementById('acquisitionModal')
 
   if (modalElement) {
@@ -395,6 +416,16 @@ declare const bootstrap: any
   } catch (error) {
     console.error('Erro:', error)
   }
+  function openResponseModal(title: string, message: string, type: string) {
+  modalTitle.value = title
+  modalMessage.value = message
+  modalType.value = type
+
+  const modal = new bootstrap.Modal(
+    document.getElementById('responseModal')
+  )
+  modal.show()
+}
     
 }
 </script>
