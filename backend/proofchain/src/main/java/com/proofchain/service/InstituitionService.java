@@ -14,7 +14,6 @@ import com.proofchain.identities.enums.BillingType;
 import com.proofchain.identities.enums.StatusSubscription;
 import com.proofchain.identities.enums.UserRole;
 import com.proofchain.repository.InstituitionRepository;
-import com.proofchain.repository.PlansRepository;
 import com.proofchain.repository.SubscriptionRepository;
 import com.proofchain.repository.UserRepository;
 import com.proofchain.security.SecurityUtils;
@@ -41,7 +40,6 @@ public class InstituitionService {
     private final PasswordEncoder passwordEncoder;
     private final SubscriptionRepository subscriptionRepository;
     private final Validations validations;
-    private final PlansRepository plansRepository;;
 
     public void createInstituition(NewInstituitionRequestDto newInstituitionRequestDto) {
         if(newInstituitionRequestDto.getCnpj() == null || (newInstituitionRequestDto.getCnpj().length() != 14)){
@@ -89,11 +87,11 @@ public class InstituitionService {
         Instant periodStart ;
         Instant periodEnd ;
         Instant nextBilling;
-        Long idPlan = newInstituitionRequestDto.getIdPlan();
-        Optional<Plans> plans = plansRepository.findById(idPlan);
+        int idPlan = newInstituitionRequestDto.getIdPlan();
+        Plans plans = new Plans();
         Subscriptions subscription = new Subscriptions();
 
-        switch(idPlan.intValue()){
+        switch(idPlan){
             case 1:
                 billingType = subscription.getBillingType().MANUAL;
                 periodStart = now();
@@ -121,7 +119,7 @@ public class InstituitionService {
         }
 
         subscription.setInstituition(instituition);
-        subscription.setPlans(plans.get());
+        subscription.setPlans(plans);
         subscription.setStatusSubscription(StatusSubscription.PENDING);
         subscription.setBillingType(billingType);
         subscription.setCurrentPeriodStarts(null);

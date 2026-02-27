@@ -54,24 +54,24 @@ public class GlobalExceptionHandler {
     }
 
 
-////     500 - Erro inesperado
-//    @ExceptionHandler(Exception.class)
-//    public ResponseEntity<ResponseError> handleGeneric(
-//            Exception ex,
-//            HttpServletRequest request
-//    ) throws Exception {
-//        String path = request.getRequestURI();
-//
-//        // 🚫 Não interceptar Swagger / OpenAPI
-//        if (path.startsWith("/v3/api-docs")
-//                || path.startsWith("/swagger-ui")) {
-//            throw ex;
-//        }
-//
-//        return ResponseEntity
-//                .status(HttpStatus.INTERNAL_SERVER_ERROR)
-//                .body(new ResponseError("Erro interno do servidor", 500));
-//    }
+//     500 - Erro inesperado
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ResponseError> handleGeneric(
+            Exception ex,
+            HttpServletRequest request
+    ) throws Exception {
+        String path = request.getRequestURI();
+
+        // 🚫 Não interceptar Swagger / OpenAPI
+        if (path.startsWith("/v3/api-docs")
+                || path.startsWith("/swagger-ui")) {
+            throw ex;
+        }
+
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ResponseError("Erro interno do servidor", 500));
+    }
 
     
 }

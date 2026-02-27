@@ -24,5 +24,5 @@ public class NewInstituitionRequestDto {
     private String email;
     @Size(min=8)
     private String password;
-    private Long idPlan;
+    private int idPlan;
 }
