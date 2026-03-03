@@ -41,7 +41,7 @@ public class InstituitionService {
     private final PasswordEncoder passwordEncoder;
     private final SubscriptionRepository subscriptionRepository;
     private final Validations validations;
-    private final PlansRepository plansRepository;;
+    private final PlansRepository plansRepository;
 
     public void createInstituition(NewInstituitionRequestDto newInstituitionRequestDto) {
         if(newInstituitionRequestDto.getCnpj() == null || (newInstituitionRequestDto.getCnpj().length() != 14)){
@@ -89,11 +89,13 @@ public class InstituitionService {
         Instant periodStart ;
         Instant periodEnd ;
         Instant nextBilling;
-        Long idPlan = newInstituitionRequestDto.getIdPlan();
+        int idPlan = newInstituitionRequestDto.getIdPlan();
+
         Optional<Plans> plans = plansRepository.findById(idPlan);
         Subscriptions subscription = new Subscriptions();
 
-        switch(idPlan.intValue()){
+
+        switch(idPlan){
             case 1:
                 billingType = subscription.getBillingType().MANUAL;
                 periodStart = now();
