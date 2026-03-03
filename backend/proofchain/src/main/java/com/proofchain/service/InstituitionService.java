@@ -70,6 +70,7 @@ public class InstituitionService {
         instituition.setCnpj(newInstituitionRequestDto.getCnpj());
         instituition.setName(newInstituitionRequestDto.getName());
         instituition.setEmail(newInstituitionRequestDto.getEmail());
+        instituition.setCreatedAt(now());
 
         ///////// CRIA USUÁRIO /////////
         User user = new User();
