@@ -33,7 +33,8 @@ build/
 .vscode/
 
 ### GERAL ###
-../ssh-key-2026-02-18.key.pub
-../../documentos/ssh-key-2026-02-18.key
+../../documentos/*
+../frontend/backup/*
+../frontend/src/@components/*
 
 
