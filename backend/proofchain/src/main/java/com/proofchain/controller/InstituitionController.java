@@ -5,6 +5,7 @@ import com.proofchain.Dtos.response.ApiResponse;
 import com.proofchain.Dtos.response.InstituitionReturnDto;
 import com.proofchain.Dtos.request.NewInstituitionRequestDto;
 import com.proofchain.service.InstituitionService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,25 +23,19 @@ public class InstituitionController {
     public final InstituitionService instituitionService;
 
     @PostMapping
-    public ResponseEntity<ApiResponse> createInstituition(@RequestBody NewInstituitionRequestDto newInstituitionRequestDto){
+    public ResponseEntity<String> createInstituition(@RequestBody NewInstituitionRequestDto newInstituitionRequestDto){
         instituitionService.createInstituition(newInstituitionRequestDto);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(new ApiResponse(
-                        true,
-                       "Instituição cadastrada com sucesso.",
-                        null));
+        ResponseEntity retorno = ResponseEntity.status(HttpStatus.CREATED)
+                .body("Instituição cadastrada com sucesso.");
+        return retorno;
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PatchMapping("/update/{cnpj}")
-    public ResponseEntity<ApiResponse> updateInstituition(@PathVariable String cnpj, @RequestBody InstituitionRequestDto instituitionRequestDto){
-
+    public ResponseEntity<String> updateInstituition(@Valid @PathVariable String cnpj, @RequestBody InstituitionRequestDto instituitionRequestDto){
         instituitionService.updateInstituition(cnpj, instituitionRequestDto);
         return ResponseEntity.status(HttpStatus.OK)
-                .body(new ApiResponse(
-                        true,
-                        "Instituição alterada com sucesso.",
-                        null));
+                .body("Instituição atualizada com sucesso.");
     }
 
     @PreAuthorize("hasRole('ROLE_SUPER_ADMIN')")
@@ -57,14 +52,9 @@ public class InstituitionController {
 
     @PreAuthorize("hasRole('ROLE_SUPER_ADMIN', 'ROLE_ADMIN')")
     @DeleteMapping("/delete/{cnpj}")
-    public ResponseEntity<ApiResponse> deleteInstituition(@PathVariable String cnpj){
+    public ResponseEntity<String> deleteInstituition(@PathVariable String cnpj){
         instituitionService.deleteInstituition(cnpj);
         return ResponseEntity.status(HttpStatus.OK)
-                .body(new ApiResponse(
-                        true,
-                        "Instituição excluída com sucesso.",
-                        null));
-
+                .body("Instituição apagada com sucesso.");
     }
-
 }

@@ -25,25 +25,16 @@ public class Plans {
 
     private String name;
     private double price;
-//    private int durationDays;
-//    private boolean isReccurent;
+    private int durationDays;
     private boolean isActive;
     private Instant createdAt;
-    private BillingType billingType;
-    private Integer monthlyCertificateLimit;
+    private BillingType billingType;            // MANUAL, RECURRING
+    private Integer monthlyCertificateLimit;    // Limite de certificados mensais
 
     @OneToMany(mappedBy = "idPlan")
-    private List<FeaturePlan> featurePlans = new ArrayList<>();
+    private List<FeaturePlan> featurePlans = new ArrayList<>(); // Lista de features
 
     @OneToMany
     List<Subscriptions> subscriptionsList;
 
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }

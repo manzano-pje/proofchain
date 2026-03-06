@@ -94,7 +94,6 @@ public class InstituitionService {
         Optional<Plans> plans = plansRepository.findById(idPlan);
         Subscriptions subscription = new Subscriptions();
 
-
         switch(idPlan){
             case 1:
                 billingType = subscription.getBillingType().MANUAL;
@@ -132,7 +131,6 @@ public class InstituitionService {
 
         instituitionRepository.save(instituition);
         subscriptionRepository.save(subscription);
-
     }
 
     public void updateInstituition(String cnpj, InstituitionRequestDto instituitionRequestDto){
