@@ -1,9 +1,9 @@
 package com.proofchain.Dtos.request;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.proofchain.identities.enums.BillingType;
+import lombok.*;
+
+import java.time.Instant;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -11,9 +11,16 @@ import lombok.Setter;
 @Setter
 public class PlansRequestDto {
 
+    @NonNull
     private String name;
+    @NonNull
     private double price;
+    @NonNull
     private int durationDays;
-    private boolean isReccurent;
+    @NonNull
     private boolean isActive;
+    @NonNull
+    private BillingType billingType; // MANUAL, RECURRING
+    @NonNull
+    private Integer monthlyCertificateLimit;
 }

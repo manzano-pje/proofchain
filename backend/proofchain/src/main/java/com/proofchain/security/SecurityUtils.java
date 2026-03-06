@@ -12,11 +12,22 @@ public class SecurityUtils {
     public static Long getInstitutionId() {
 
         Authentication auth =
-                SecurityContextHolder.getContext().getAuthentication();
-        Claims claims = (Claims) auth.getDetails();
+                SecurityContextHolder
+                        .getContext()
+                        .getAuthentication();
+//        Claims claims = (Claims) auth.getDetails();
 
+        if (auth == null) {
+            return null;
+        }
+
+        Object details = auth.getDetails();
+
+        if (!(details instanceof Claims claims)) {
+            return null;
+        }
         return Long.valueOf(
-                claims.get("institution_id", String.class)
+                claims.get("institution_id").toString()
         );
     }
 

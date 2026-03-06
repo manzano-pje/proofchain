@@ -61,9 +61,12 @@ function selecionaOpcao(id: number) {
 }
 
 const errors = reactive({
+  name: '',
   cnpj: '',
+  userName: '',
   email: '',
-  password: ''
+  password: '',
+  planId: 0
 })
 
 function validateCNPJ(cnpj: string): boolean {
@@ -110,21 +113,31 @@ function validatePassword(password: string): boolean {
   return regex.test(password)
 }
 
+
 function closeAcquisitionModal() {
   const modalElement = document.getElementById('acquisitionModal')
   if (modalElement) {
     const modalInstance =
       bootstrap.Modal.getInstance(modalElement) ||
       new bootstrap.Modal(modalElement)
+      formData.name = ''
+      formData.cnpj = ''
+      formData.userName = ''
+      formData.email = ''
+      formData.password = ''
+      formData.planId = 0
     modalInstance.hide()
   }
 }
 
 async function submitForm() {
+  errors.name = ''
   errors.cnpj = ''
+  errors.userName = ''
   errors.email = ''
   errors.password = ''
-
+  errors.planId = 0
+  
   let isValid = true
 
   if (!validateCNPJ(formData.cnpj)) {
@@ -173,24 +186,32 @@ async function submitForm() {
 
     let message = 'Resposta inesperada do servidor.'
     try {
+      console.log("STATUS DA RESPOSTA:", response.status)
       const data = await response.json()
       if (data?.message) message = data.message
+      console.log("RESPOSTA DO BACKEND:", data)
     } catch {
+       console.error("ERRO NA REQUISIÇÃO:", error)
       // resposta não é JSON (ex.: HTML de erro)
     }
 
     switch (response.status) {
       case 200:
+      case 201:
         closeAcquisitionModal()
         openResponseModal('Sucesso', message, 'success')
         break
-      case 409:
+      case 403:
         closeAcquisitionModal()
-        openResponseModal('Conflito', message, 'warning')
+        openResponseModal('Proibido', message, 'warning')
         break
       case 404:
         closeAcquisitionModal()
         openResponseModal('Não encontrado', message, 'info')
+        break  
+      case 409:
+        // closeAcquisitionModal()
+        openResponseModal('Conflito', message, 'warning')
         break
       case 500:
         closeAcquisitionModal()
