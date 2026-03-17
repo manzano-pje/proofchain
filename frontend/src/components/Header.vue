@@ -10,31 +10,33 @@ const toggleMenu = () => {
 }
 </script>
 
-<template>    
-<header id="home" class="container">
-    <div class="header-content logo">
-    <!-- <RouterLink to="/" class="logo"> -->
-        <a href="#home" @click="isMenuOpen = false"><img :src="logo" alt="ProofChain Logo" /></a>
-    <!-- </RouterLink> -->
+<template>
+    <header id="home" class="container">
+        <div class="header-content logo">
+            <!-- <RouterLink to="/" class="logo"> -->
+            <a href="#home" @click="isMenuOpen = false"><img :src="logo" alt="ProofChain Logo" /></a>
+            <!-- </RouterLink> -->
 
-    <button class="mobile-toggle" @click="toggleMenu" aria-label="Toggle navigation">
-        <i class="fas fa-bars"></i>
-    </button>
+            <button class="mobile-toggle" @click="toggleMenu" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
 
-    <nav :class="{open: isMenuOpen}">
-        <ul>
-            <li><a href="#recursos" @click="isMenuOpen = false">Recursos</a></li>
-            <li><a href="#funcionamento" @click="isMenuOpen = false">Como funciona</a></li>
-            <li><a href="#planos" @click="isMenuOpen = false">Planos</a></li>
-            <li><a href="#validacao" class="btn btn-outline" @click="isMenuOpen = false">Autenticador</a></li>
-            <li><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Login</button></li>
-        </ul>
+            <nav :class="{ open: isMenuOpen }">
+                <ul>
+                    <li><a href="#recursos" @click="isMenuOpen = false">Recursos</a></li>
+                    <li><a href="#funcionamento" @click="isMenuOpen = false">Como funciona</a></li>
+                    <li><a href="#planos" @click="isMenuOpen = false">Planos</a></li>
+                    <li><a href="#validacao" class="btn btn-outline" @click="isMenuOpen = false">Autenticador</a></li>
+                    <li>
+                        <button type="button" class="btn btn-primary" @click="$router.push('/login')"
+                            data-bs-target="Login.vue">Login</button></li>
+                </ul>
 
-            <!-- Button trigger modal -->
-    
-    </nav>
-    </div>
-</header>
+                <!-- Button trigger modal -->
+
+            </nav>
+        </div>
+    </header>
 </template>
 
 <style scoped>
@@ -45,7 +47,8 @@ const toggleMenu = () => {
     padding: 16px 20px;
     z-index: 1000;
     position: relative;
-    height: 80px; /* placeholder height to prevent layout shift */
+    height: 80px;
+    /* placeholder height to prevent layout shift */
 }
 
 .header-content {
@@ -56,7 +59,7 @@ const toggleMenu = () => {
     height: 80px;
     padding: 0 20px;
     background-color: var(--white);
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -150,7 +153,7 @@ nav a:hover {
         width: 70%;
         height: 100vh;
         background-color: var(--white);
-        box-shadow: -2px 0 10px rgba(0,0,0,0.2);
+        box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
         padding-top: 80px;
         transition: right 0.3s ease-in-out;
         z-index: 1000;

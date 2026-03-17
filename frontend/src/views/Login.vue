@@ -1,6 +1,14 @@
 <template>
-  <div class="login-container">
+  <div class="login-container" >
+    <div class="login-imagem">
+      <img class="imagem" src="../assets/img/imagem-login.png" alt="Imagem de escudo com cadeados" />    
+    </div>
     <div class="login-box">
+      <div class="form-logo">
+        <a href="../">
+          <img class="imagem" src="../assets/img/logo-horizontal.png" alt="Imagem logotipo Proofchain" />    
+        </a>
+      </div>
       <h2>Login</h2>
       <form @submit.prevent="handleLogin">
         <div class="form-group">
@@ -10,8 +18,7 @@
             v-model="email" 
             type="email" 
             required 
-            placeholder="seu@email.com"
-          />
+            placeholder="seu@email.com"/>
         </div>
         
         <div class="form-group">
@@ -56,21 +63,45 @@ const handleLogin = () => {
 </script>
 
 <style scoped>
+
 .login-container {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 80vh;
-  padding: 20px;
+  height: 100vh;
+  width: 100vw;
+      background-color: blue;
 }
 
-.login-box {
-  background: var(--white);
-  padding: 40px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+ .login-imagem{
+    width: 50%;
+    height: 100%;
+
+ }
+
+ .login-imagem img{
+   width: 100%;  
+   height: 100%; 
+   object-fit: cover;
+ }
+
+ .form-logo {
   width: 100%;
-  max-width: 400px;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 40px;
+ }
+
+ .form-logo img{
+  width: 200px;
+ }
+
+.login-box {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-self: center;
+  background: var(--green-light);
+  padding: 60px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);  
 }
 
 h2 {
@@ -92,11 +123,12 @@ label {
 
 input {
   width: 100%;
-  padding: 12px;
-  border: 1px solid var(--gray-medium);
+  padding: 3px;
+  border: 1px solid var(--green);
   border-radius: 8px;
   font-size: 1rem;
   transition: border-color 0.3s;
+  box-shadow: 4px 4px 12px rgba(0,0,0,0.1);
 }
 
 input:focus {
@@ -105,10 +137,11 @@ input:focus {
 }
 
 .btn {
-  width: 100%;
-  padding: 12px;
+  width: 20%;
+  padding: 7px;
   margin-top: 10px;
   font-size: 1.1rem;
+  justify-content: center;
 }
 
 .error-message {

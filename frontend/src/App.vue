@@ -1,16 +1,18 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router' 
+import { useRoute } from 'vue-router'
 import Header from './components/Header.vue'
 import Footer from './components/Footer.vue'
+const route = useRoute()
 </script>
 
 <template>
   <div class="app-layout">
-    <Header />
+    <Header v-if="!route.meta.hideLayout"/>
     <main>
       <RouterView />
     </main>
-    <Footer />
+    <Footer v-if="!route.meta.hideLayout" />
   </div>
 </template>
 

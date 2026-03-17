@@ -1,7 +1,7 @@
 package com.proofchain.controller;
 
 import com.proofchain.Dtos.request.InstituitionRequestDto;
-import com.proofchain.Dtos.response.ApiResponse;
+
 import com.proofchain.Dtos.response.InstituitionReturnDto;
 import com.proofchain.Dtos.request.NewInstituitionRequestDto;
 import com.proofchain.service.InstituitionService;

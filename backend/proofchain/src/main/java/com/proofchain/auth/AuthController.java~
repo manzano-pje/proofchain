@@ -1,5 +1,7 @@
 package com.proofchain.auth;
 
+import com.proofchain.Dtos.request.AuthRequest;
+import com.proofchain.Dtos.response.AuthResponseDto;
 import com.proofchain.security.JwtService;
 import com.proofchain.user.UserDetailsImpl;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/auth")
 public class AuthController {
 
-
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
 
@@ -26,7 +27,7 @@ public class AuthController {
 
     // Endpoint de login
     @RequestMapping("/login")
-    public AuthResponse login (@RequestBody AuthRequest authRequest){
+    public AuthResponseDto login (@RequestBody AuthRequest authRequest){
         // cria objeto de autenticação com e-mail e password
         Authentication authentication =
                 authenticationManager.authenticate(
@@ -42,7 +43,7 @@ public class AuthController {
         // GEra Token JWT
         String token = jwtService.generateToken(userDetails.getUser());
 
-        return new AuthResponse(token);
+        return new AuthResponseDto(token);
     }
 }
 

@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
 
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -15,18 +16,18 @@ const router = createRouter({
       // divisão de código em nível de rota
       // isso gera um chunk separado (About.[hash].js) para esta rota
       // que é carregado sob demanda quando a rota é visitada.
-      component: () => import('../views/Dashboard.vue'),
+      component: () => import('../views/Dashboard.vue')
     },
-    // {
-    //   path: '/Login',
-    //   name: 'Login',
-    //   // divisão de código em nível de rota
-    //   // isso gera um chunk separado (About.[hash].js) para esta rota
-    //   // que é carregado sob demanda quando a rota é visitada.
-    //   component: () => import('../views/Login.vue'),
-    // },
-
-  ],
+    {
+      path: '/Login',
+      name: 'Login',
+      meta:{hideLayout:true},
+      // divisão de código em nível de rota
+      // isso gera um chunk separado (About.[hash].js) para esta rota
+      // que é carregado sob demanda quando a rota é visitada.
+      component: () => import('../views/Login.vue')
+    }
+  ]
 })
 
 export default router

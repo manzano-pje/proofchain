@@ -1,15 +1,12 @@
-package com.proofchain.auth;
+package com.proofchain.Dtos.response;
 
 // DTO resposta do login
 
-public class AuthResponse {
+public class AuthResponseDto {
 
     private String token;
 
-    public AuthResponse(String token){
-        this.token = token;
-    }
-
+    public AuthResponseDto(String token){this.token = token;}
     public String getToken(){
         return token;
     }

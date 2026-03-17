@@ -27,7 +27,6 @@ import static java.time.Instant.now;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final InstituitionRepository instituitionRepository;
     private final PasswordEncoder passwordEncoder;
     private final ModelMapperConfig mapper;
     private final Validations validations;

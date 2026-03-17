@@ -27,8 +27,6 @@ import static java.time.Instant.now;
 @Service
 public class CourseService {
 
-    private final ModelMapper mapper;
-    private final InstituitionRepository instituitionRepository;
     private final CourseRepository courseRepository;
     private final Validations validations;
 
