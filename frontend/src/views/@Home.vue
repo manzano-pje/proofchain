@@ -272,22 +272,20 @@ const modalType = ref('success')
 
 declare const bootstrap: any
 
+const formData = reactive({
+  name: '',
+  cnpj: '',
+  userName: '',
+  email: '',
+  password: '',
+  planId: 0
+})
 
-  const formData = reactive({
-    name: '',
-    cnpj: '',
-    userName: '',
-    email: '',
-    password: '',
-    planId: 0
-  })
-
-  function selecionaOpcao(id: number){
-    formData.planId = id;
-    console.log("Id recebido = " , id)
-  }
+function selecionaOpcao(id: number){
+  formData.planId = id;
+  console.log("Id recebido = " , id)
+}
   
-
   const errors = reactive({
     cnpj: '',
     email: '',
@@ -413,8 +411,9 @@ declare const bootstrap: any
     modalInstance.hide()
   }
 
-  } catch (error) {
-    console.error('Erro:', error)
+    } catch (error) {
+      console.error('Erro:', error)
+    }
   }
   function openResponseModal(title: string, message: string, type: string) {
   modalTitle.value = title
@@ -427,7 +426,6 @@ declare const bootstrap: any
   modal.show()
 }
     
-}
 </script>
 
 <!-- <script setup lang="ts">

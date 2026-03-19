@@ -10,7 +10,7 @@
         </a>
       </div>
       <h2>Login</h2>
-      <form @submit.prevent="handleLogin">
+      <form @submit.prevent="submitForm">
         <div class="form-group">
           <label for="email">Email</label>
           <input 
@@ -32,10 +32,15 @@
           />
         </div>
 
-        <button type="submit" class="btn btn-primary">Entrar</button>
+          <button type="button" class="btn btn-primary btn-outline" @click="" 
+            data-bs-toggle="modal" data-bs-target="#acquisitionModal"
+            data-auth="register">Entrar
+          </button>
+
+        <!-- <button type="submit" class="btn btn-primary">Entrar</button> -->
       </form>
-      <div v-if="errorMessage" class="error-message">
-        {{ errorMessage }}
+      <div v-if="formData" class="error-message">
+        {{ formData }}
       </div>
     </div>
   </div>
@@ -43,23 +48,77 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { reactive } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
 const email = ref('')
 const password = ref('')
-const errorMessage = ref('')
 
-const handleLogin = () => {
-    // Simulação de login simples
-    if (email.value && password.value) {
-        // Em um app real, aqui chamaria o serviço de auth
-        console.log('Login attempt:', email.value)
-        router.push('/dashboard')
-    } else {
-        errorMessage.value = 'Por favor, preencha todos os campos.'
-    }
+const formData = reactive({
+  email: '',
+  password: ''
+})
+
+function validateEmail(email: string): boolean {
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  return regex.test(email)
 }
+
+function validatePassword(password: string): boolean {
+  const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/
+  return regex.test(password)
+}
+
+async function submitForm() {
+  
+  formData.email = ''
+  formData.password = ''
+
+  let isValid = true
+
+  if (!validateEmail(formData.email)) {
+    formData.email = 'E-mail inválido'
+    isValid = false
+  }
+
+  if (!validatePassword(formData.password)) {
+    formData.password =
+      'A senha deve ter no mínimo 8 caracteres, letras e números'
+    isValid = false
+  }
+
+// Envio dos dados para a API
+  try {
+    const response = await fetch('http://localhost:8080/auth', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email: formData.email,
+        password: formData.password       
+      })
+    })
+
+    const data = await response.json()
+
+    // switch (response.status) {
+    //   case 404:
+    //     openResponseModal('Não encontrado', data.message, 'info')
+    //     break
+
+    //   case 500:
+    //     openResponseModal('Erro interno', data.message, 'danger')
+    //     break
+
+    //   default:
+    //     openResponseModal('Erro', 'Erro inesperado.', 'danger')
+    // }
+    
+  } catch (error) {
+    console.error('Erro:', error)
+  }
 </script>
 
 <style scoped>
