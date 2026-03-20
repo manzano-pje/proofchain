@@ -91,7 +91,8 @@ public class InstituitionService {
         Instant nextBilling;
         int idPlan = newInstituitionRequestDto.getIdPlan();
 
-        Optional<Plans> plans = plansRepository.findById(idPlan);
+        Plans plans = plansRepository.findById(idPlan)
+                .orElseThrow(() -> new ResourceNotFoundException("Plano não encontrado no banco de dados."));
         Subscriptions subscription = new Subscriptions();
 
         switch(idPlan){
@@ -122,7 +123,7 @@ public class InstituitionService {
         }
 
         subscription.setInstituition(instituition);
-        subscription.setPlans(plans.get());
+        subscription.setPlans(plans);
         subscription.setStatusSubscription(StatusSubscription.PENDING);
         subscription.setBillingType(billingType);
         subscription.setCurrentPeriodStarts(null);
@@ -144,7 +145,7 @@ public class InstituitionService {
         }
 
         Instituition instituition = new Instituition();
-        instituition.setId (instituitionOptional.get().getId());
+        instituition.setId (instituitionOptional.orElseThrow(() -> new ResourceNotFoundException("Instituição não encontrada.")).getId());
         instituition.setAddress (instituitionRequestDto.address());
         instituition.setNumber (instituitionRequestDto.number());
         instituition.setComplement (instituitionRequestDto.complement());

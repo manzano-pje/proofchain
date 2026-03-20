@@ -56,12 +56,12 @@ public class CourseService {
         Optional<Course> courseOpt = validations.validateCourseNoExist(courseDto.getName(), institution.getId());
 
         Course course = new Course();
-        course.setIdCourse(courseOpt.get().getIdCourse());
+        course.setIdCourse(courseOpt.orElseThrow(() -> new ResourceNotFoundException("Curso não encontrado.")).getIdCourse());
         course.setName(FormatarTexto.formatarString(course.getName()));
         course.setDescription(FormatarTexto.formatarString(course.getDescription()));
         course.setHours(course.getHours());
         course.setUpdatedAt(now());
-        course.setCreatedAt(courseOpt.get().getCreatedAt());
+        course.setCreatedAt(courseOpt.orElseThrow().getCreatedAt());
         courseRepository.save(course);
     }
 

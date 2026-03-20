@@ -205,6 +205,10 @@ async function submitForm() {
         closeAcquisitionModal()
         openResponseModal('Proibido', message, 'warning')
         break
+      case 400:
+        closeAcquisitionModal()
+        openResponseModal('Dados inválidos', message, 'warning')
+        break  
       case 404:
         closeAcquisitionModal()
         openResponseModal('Não encontrado', message, 'info')

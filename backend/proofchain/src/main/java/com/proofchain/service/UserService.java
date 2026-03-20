@@ -59,7 +59,7 @@ public class UserService {
         // Valida se usuário não existe
         Optional<User> userOptional = validations.validateUserNotExist(email, institutionId);
 
-        UserReturnDto user = mapper.modelMapper().map(userOptional.get(), UserReturnDto.class);
+        UserReturnDto user = mapper.modelMapper().map(userOptional.orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado.")), UserReturnDto.class);
         return user;
     }
 
@@ -86,7 +86,7 @@ public class UserService {
         Optional<User> userOptional = validations.validateUserNotExist(email, institutionId);
 
         User user = new User();
-        user.setId(userOptional.get().getId());
+        user.setId(userOptional.orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado.")).getId());
         user.setName(userUpadte.getName());
         user.setRole(userUpadte.getRole());
         user.setActive(userUpadte.isActive());
