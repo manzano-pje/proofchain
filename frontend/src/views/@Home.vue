@@ -365,7 +365,7 @@ declare const bootstrap: any
 
     // Envio dos dados para a API
      try {
-    const response = await fetch('http://localhost:8080/instituition', {
+    const response = await fetch('http://localhost:8080//api/v1/instituition', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

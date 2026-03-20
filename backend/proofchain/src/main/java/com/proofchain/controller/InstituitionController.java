@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/instituition")
+@RequestMapping("/api/v1/instituition")
 @CrossOrigin(origins = "*") // importante para o Vue acessar
 public class InstituitionController {
 

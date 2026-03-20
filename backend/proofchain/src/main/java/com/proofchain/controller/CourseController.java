@@ -16,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 //@NoArgsConstructor
 @RestController
-@RequestMapping("/course")
+@RequestMapping("/api/v1course")
 public class CourseController {
 
     private final CourseService coursService;
