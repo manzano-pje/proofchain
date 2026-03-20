@@ -379,9 +379,10 @@ function selecionaOpcao(id: number){
     })
 
     const data = await response.json()
-
-    switch (response.status) {
+    alert(`${data.status}: ${data.message}`)
+    switch (data.status) {
       case 200:
+      case 201:
         openResponseModal('Sucesso', data.message, 'success')
         break
 
@@ -404,6 +405,11 @@ function selecionaOpcao(id: number){
     const modalElement = document.getElementById('acquisitionModal')
 
   if (modalElement) {
+    const active = document.activeElement
+
+    if (active instanceof HTMLElement) {
+      active.blur()
+    }
     // @ts-ignore
     const modalInstance = bootstrap.Modal.getInstance(modalElement) 
       || new bootstrap.Modal(modalElement)

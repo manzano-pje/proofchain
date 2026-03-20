@@ -13,6 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @AllArgsConstructor
@@ -23,11 +24,10 @@ public class InstituitionController {
     public final InstituitionService instituitionService;
 
     @PostMapping
-    public ResponseEntity<String> createInstituition(@RequestBody NewInstituitionRequestDto newInstituitionRequestDto){
+    public ResponseEntity<Object> createInstituition(@RequestBody NewInstituitionRequestDto newInstituitionRequestDto){
         instituitionService.createInstituition(newInstituitionRequestDto);
-        ResponseEntity retorno = ResponseEntity.status(HttpStatus.CREATED)
-                .body("Instituição cadastrada com sucesso.");
-        return retorno;
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(Map.of("message", "Instituição cadastrada com sucesso."));
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")

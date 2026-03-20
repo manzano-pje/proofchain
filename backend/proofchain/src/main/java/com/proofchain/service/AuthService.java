@@ -28,7 +28,7 @@ public class AuthService {
             throw new ValidationException("Usuário ou senha inválidos!");
         }
 
-        if(!passwordEncoder.matches(userOptional.get().getPassword(),authRequestDto.getPassword())){
+        if(!passwordEncoder.matches(authRequestDto.getPassword(), userOptional.get().getPassword())){
             throw new ValidationException("Usuário ou senha inválidos!");
         }
         return jwtService.generateToken(userOptional.get());

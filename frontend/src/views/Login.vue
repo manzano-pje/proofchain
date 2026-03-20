@@ -32,33 +32,19 @@
           />
         </div>
 
-          <button type="button" class="btn btn-primary btn-outline" @click="" 
-            data-bs-toggle="modal" data-bs-target="#acquisitionModal"
-            data-auth="register">Entrar
-          </button>
-
-        <!-- <button type="submit" class="btn btn-primary">Entrar</button> -->
+        <button type="submit" class="btn btn-primary">Entrar</button>
       </form>
-      <div v-if="formData" class="error-message">
-        {{ formData }}
-      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { reactive } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
 const email = ref('')
 const password = ref('')
-
-const formData = reactive({
-  email: '',
-  password: ''
-})
 
 function validateEmail(email: string): boolean {
   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -71,20 +57,16 @@ function validatePassword(password: string): boolean {
 }
 
 async function submitForm() {
-  
-  formData.email = ''
-  formData.password = ''
-
+ 
   let isValid = true
 
-  if (!validateEmail(formData.email)) {
-    formData.email = 'E-mail inválido'
+  if (!validateEmail(email.value)) {
+    console.log('E-mail inválido')
     isValid = false
   }
 
-  if (!validatePassword(formData.password)) {
-    formData.password =
-      'A senha deve ter no mínimo 8 caracteres, letras e números'
+  if (!validatePassword(password.value)) {
+    console.log('Senha inválida')
     isValid = false
   }
 
@@ -92,33 +74,37 @@ async function submitForm() {
   try {
     const response = await fetch('http://localhost:8080/auth', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
+      headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
-        email: formData.email,
-        password: formData.password       
+        email: email.value,
+        password: password.value       
       })
     })
 
     const data = await response.json()
 
-    // switch (response.status) {
-    //   case 404:
-    //     openResponseModal('Não encontrado', data.message, 'info')
-    //     break
+    switch (response.status) {
+      case 401:
+        alert(data.message)
+        // console.log('Não autorizado', data.message, 'info')
+        break
 
-    //   case 500:
-    //     openResponseModal('Erro interno', data.message, 'danger')
-    //     break
+      case 404:
+        console.log('Não encontrado', data.message, 'info')
+        break
 
-    //   default:
-    //     openResponseModal('Erro', 'Erro inesperado.', 'danger')
-    // }
+      case 500:
+        console.log('Erro interno', data.message, 'danger')
+        break
+
+      default:
+        console.log('Erro', 'Erro inesperado.', 'danger')
+    }
     
   } catch (error) {
     console.error('Erro:', error)
   }
+}
 </script>
 
 <style scoped>

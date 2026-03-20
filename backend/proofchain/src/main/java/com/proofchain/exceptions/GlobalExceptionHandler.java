@@ -15,7 +15,15 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    // 401 - Senha ou email inválido
+    @ExceptionHandler(ValidationException.class)
+    public ResponseEntity<ResponseError> handleNotFound(
+            ValidationException ex) {
 
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(new ResponseError(ex.getMessage(), 401));
+    }
 
     // 404 - Recurso não encontrado
     @ExceptionHandler(ResourceNotFoundException.class)
