@@ -1,6 +1,7 @@
 package com.proofchain.service;
 
 import com.proofchain.Dtos.request.CourseRequestDto;
+import com.proofchain.Dtos.response.CourseResponse;
 import com.proofchain.Dtos.response.FullCourseResponse;
 import com.proofchain.configuration.FormatarTexto;
 import com.proofchain.exceptions.ResourceNotFoundException;
@@ -50,6 +51,21 @@ public class CourseService {
         courseRepository.save(course);
     }
 
+    public List<FullCourseResponse> listAllCourses(){
+        Long institutionId = SecurityUtils.getInstitutionId();
+        Instituition institution = validations.validateInstituition(institutionId);
+
+        List<Course> courseList = courseRepository.findAll();
+        if(courseList.isEmpty()){
+            throw new ResourceNotFoundException("Não existem cursos cadastrados.");
+        }
+        return courseList.stream()
+                .map(FullCourseResponse::new)
+                .collect(Collectors
+                        .toList());
+    }
+
+
     public void updateCourse(String name, CourseRequestDto courseDto){
         Long institutionId = SecurityUtils.getInstitutionId();
         Instituition institution = validations.validateInstituition(institutionId);
@@ -66,17 +82,4 @@ public class CourseService {
         courseRepository.save(course);
     }
 
-    public List<FullCourseResponse> listAllCourses(){
-        Long institutionId = SecurityUtils.getInstitutionId();
-        Instituition institution = validations.validateInstituition(institutionId);
-
-        List<Course> courseList = courseRepository.findAll();
-        if(courseList.isEmpty()){
-            throw new ResourceNotFoundException("Não existem cursos cadastrados.");
-        }
-        return courseList.stream()
-                .map(FullCourseResponse::new)
-                .collect(Collectors
-                        .toList());
-    }
 }
