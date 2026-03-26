@@ -1,7 +1,7 @@
 package com.proofchain.service;
 
 import com.proofchain.Dtos.request.InstituitionRequestDto;
-import com.proofchain.Dtos.response.InstituitionReturnDto;
+import com.proofchain.Dtos.response.InstituitionReturn;
 import com.proofchain.Dtos.request.NewInstituitionRequestDto;
 import com.proofchain.configuration.ModelMapperConfig;
 import com.proofchain.exceptions.BusinessRuleException;
@@ -158,7 +158,7 @@ public class InstituitionService {
         instituitionRepository.save(instituition);
     }
 
-    public InstituitionReturnDto getOneInstituition(String cnpj){
+    public InstituitionReturn getOneInstituition(String cnpj){
 
         Long institutionId = SecurityUtils.getInstitutionId();
         validations.validateInstituition(institutionId);
@@ -167,9 +167,8 @@ public class InstituitionService {
         if(instituitionOptional.isEmpty()){
             throw new ResourceNotFoundException("Instituição não encontrada.");
         }
-        InstituitionReturnDto instituition = new InstituitionReturnDto();
-        instituition = mapper.modelMapper().map(instituitionOptional, InstituitionReturnDto.class);
-        return instituition;
+
+        return  mapper.modelMapper().map(instituitionOptional, InstituitionReturn.class);
     }
 
     public void deleteInstituition(String cnpj){
@@ -185,7 +184,7 @@ public class InstituitionService {
     }
 
     // Somente para administrador da plataforma
-    public List<InstituitionReturnDto> getAllInstituition(){
+    public List<InstituitionReturn> getAllInstituition(){
 
         List<Instituition> instituitionList = instituitionRepository.findAll();
         if(instituitionList.isEmpty()){
@@ -193,7 +192,7 @@ public class InstituitionService {
         }
 
         return instituitionList.stream()
-                .map(InstituitionReturnDto::new)
+                .map(InstituitionReturn::new)
                 .collect(Collectors.toList());
     }
 }

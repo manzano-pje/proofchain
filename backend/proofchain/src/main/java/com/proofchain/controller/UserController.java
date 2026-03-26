@@ -1,7 +1,7 @@
 package com.proofchain.controller;
 
 import com.proofchain.Dtos.request.UserRequestDto;
-import com.proofchain.Dtos.response.UserReturnDto;
+import com.proofchain.Dtos.response.UserReturn;
 import com.proofchain.Dtos.request.UserUpdateDto;
 import com.proofchain.repository.UserRepository;
 import com.proofchain.service.UserService;
@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/user")
+@RequestMapping("/api/v1/user")
 public class UserController {
 
     private final UserService userService;
@@ -25,7 +25,7 @@ public class UserController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/register")
     public ResponseEntity<UserRequestDto> createUser(@RequestBody UserRequestDto user) {
-        UserReturnDto usder = userService.createUser(user);
+        UserReturn usder = userService.createUser(user);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(user);
@@ -35,22 +35,22 @@ public class UserController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/{email}")
-    public ResponseEntity<UserReturnDto> getUser(@PathVariable String email) {
-        UserReturnDto user = userService.getUser(email);
+    public ResponseEntity<UserReturn> getUser(@PathVariable String email) {
+        UserReturn user = userService.getUser(email);
         return ResponseEntity.ok(user);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping
-    public List<UserReturnDto> getAllUser(){
+    public List<UserReturn> getAllUser(){
         return userService.getAllUser();
     }
 
     @PreAuthorize("hasRole('ROLE_USER','ROLE_ADMIN')")
     @PatchMapping("/update/{email}")
-    public ResponseEntity<UserReturnDto> updateUser(@PathVariable String email,
-                                           @RequestBody UserUpdateDto userUpdateDto){
-        UserReturnDto user = userService.updateUser(email, userUpdateDto);
+    public ResponseEntity<UserReturn> updateUser(@PathVariable String email,
+                                                 @RequestBody UserUpdateDto userUpdateDto){
+        UserReturn user = userService.updateUser(email, userUpdateDto);
         return ResponseEntity.ok().body(user);
     }
 

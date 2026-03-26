@@ -1,8 +1,7 @@
 package com.proofchain.controller;
 
 import com.proofchain.Dtos.request.InstituitionRequestDto;
-import com.proofchain.Dtos.response.ApiResponse;
-import com.proofchain.Dtos.response.InstituitionReturnDto;
+import com.proofchain.Dtos.response.InstituitionReturn;
 import com.proofchain.Dtos.request.NewInstituitionRequestDto;
 import com.proofchain.service.InstituitionService;
 import jakarta.validation.Valid;
@@ -16,7 +15,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/instituition")
+@RequestMapping("/api/v1/instituition")
 @CrossOrigin(origins = "*") // importante para o Vue acessar
 public class InstituitionController {
 
@@ -40,13 +39,13 @@ public class InstituitionController {
 
     @PreAuthorize("hasRole('ROLE_SUPER_ADMIN')")
     @GetMapping
-    public List<InstituitionReturnDto> getAllInstituition(){
+    public List<InstituitionReturn> getAllInstituition(){
         return instituitionService.getAllInstituition();
     }
 
     @PreAuthorize("hasRole('ROLE_SUPER_ADMIN')")
     @GetMapping("/get/{cnpj}")
-    public InstituitionReturnDto getOneInstituition(@PathVariable String cnpj){
+    public InstituitionReturn getOneInstituition(@PathVariable String cnpj){
         return instituitionService.getOneInstituition(cnpj);
     }
 

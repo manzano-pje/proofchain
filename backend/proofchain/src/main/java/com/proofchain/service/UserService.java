@@ -1,10 +1,9 @@
 package com.proofchain.service;
 
 import com.proofchain.Dtos.request.UserRequestDto;
-import com.proofchain.Dtos.response.UserReturnDto;
+import com.proofchain.Dtos.response.UserReturn;
 import com.proofchain.Dtos.request.UserUpdateDto;
 import com.proofchain.configuration.ModelMapperConfig;
-import com.proofchain.exceptions.BusinessRuleException;
 import com.proofchain.exceptions.ResourceNotFoundException;
 import com.proofchain.identities.Instituition;
 import com.proofchain.identities.User;
@@ -32,7 +31,7 @@ public class UserService {
     private final ModelMapperConfig mapper;
     private final Validations validations;
 
-    public UserReturnDto createUser(UserRequestDto newUser) {
+    public UserReturn createUser(UserRequestDto newUser) {
         // 🔑 Instituição vem do TOKEN, não do request
         Long institutionId = SecurityUtils.getInstitutionId();
         Instituition institution = validations.validateInstituition(institutionId);
@@ -49,10 +48,10 @@ public class UserService {
         user.setActive(true);
         user = userRepository.save(user);
 
-        return mapper.modelMapper().map(user, UserReturnDto.class);
+        return mapper.modelMapper().map(user, UserReturn.class);
     }
 
-    public UserReturnDto getUser(String email) {
+    public UserReturn getUser(String email) {
         // 🔑 Instituição vem do TOKEN, não do request
         Long institutionId = SecurityUtils.getInstitutionId();
         Instituition institution = validations.validateInstituition(institutionId);
@@ -60,11 +59,11 @@ public class UserService {
         // Valida se usuário não existe
         Optional<User> userOptional = validations.validateUserNotExist(email, institutionId);
 
-        UserReturnDto user = mapper.modelMapper().map(userOptional.orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado.")), UserReturnDto.class);
+        UserReturn user = mapper.modelMapper().map(userOptional.orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado.")), UserReturn.class);
         return user;
     }
 
-    public List<UserReturnDto> getAllUser(){
+    public List<UserReturn> getAllUser(){
         // 🔑 Instituição vem do TOKEN, não do request
         Long institutionId = SecurityUtils.getInstitutionId();
         Instituition institution = validations.validateInstituition(institutionId);
@@ -75,11 +74,13 @@ public class UserService {
         }
 
         return userList.stream()
-                .map(UserReturnDto::new)
+                .map(UserReturn::new)
                 .collect(Collectors.toList());
     }
 
-    public UserReturnDto updateUser(String email, UserUpdateDto userUpadte){
+
+
+    public UserReturn updateUser(String email, UserUpdateDto userUpadte){
         // 🔑 Instituição vem do TOKEN, não do request
         Long institutionId = SecurityUtils.getInstitutionId();
         Instituition institution = validations.validateInstituition(institutionId);
@@ -94,7 +95,7 @@ public class UserService {
         user.setUpdateAt(now());         
         user = userRepository.save(user);
 
-        return mapper.modelMapper().map(user, UserReturnDto.class);
+        return mapper.modelMapper().map(user, UserReturn.class);
     }
 
     public void deleteUSer(String email){

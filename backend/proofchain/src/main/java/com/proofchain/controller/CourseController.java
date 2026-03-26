@@ -1,9 +1,8 @@
 package com.proofchain.controller;
 
 import com.proofchain.Dtos.request.CourseRequestDto;
-import com.proofchain.Dtos.response.CourseResponseDto;
-import com.proofchain.Dtos.response.FullCourseResponseDto;
-import com.proofchain.identities.Course;
+import com.proofchain.Dtos.response.CourseResponse;
+import com.proofchain.Dtos.response.FullCourseResponse;
 import com.proofchain.service.CourseService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,17 +15,17 @@ import java.util.List;
 @AllArgsConstructor
 //@NoArgsConstructor
 @RestController
-@RequestMapping("/course")
+@RequestMapping("/api/v1course")
 public class CourseController {
 
     private final CourseService coursService;
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
-    public ResponseEntity<CourseResponseDto> createCourse(@RequestBody CourseRequestDto newCourse){
+    public ResponseEntity<CourseResponse> createCourse(@RequestBody CourseRequestDto newCourse){
         coursService.createCourse(newCourse);
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(new CourseResponseDto(
+                .body(new CourseResponse(
                         newCourse.getName(),
                         newCourse.getDescription(),
                         newCourse.getHours()));
@@ -34,11 +33,11 @@ public class CourseController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN', 'ROLE_USER')")
     @PatchMapping("/update/{name}")
-    public ResponseEntity<CourseResponseDto>updateCourse(@PathVariable String name,
-                                            @RequestBody CourseRequestDto courseDto) {
+    public ResponseEntity<CourseResponse>updateCourse(@PathVariable String name,
+                                                      @RequestBody CourseRequestDto courseDto) {
         coursService.updateCourse(name, courseDto);
         return ResponseEntity.status(HttpStatus.OK)
-                .body(new CourseResponseDto(
+                .body(new CourseResponse(
                         courseDto.getName(),
                         courseDto.getDescription(),
                         courseDto.getHours()));
@@ -46,7 +45,7 @@ public class CourseController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN', 'ROLE_USER')")
     @GetMapping
-    public List<FullCourseResponseDto> listAllCourses(){
+    public List<FullCourseResponse> listAllCourses(){
       return coursService.listAllCourses();
     }
 
