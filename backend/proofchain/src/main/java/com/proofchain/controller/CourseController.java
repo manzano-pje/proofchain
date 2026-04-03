@@ -12,10 +12,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 @AllArgsConstructor
 //@NoArgsConstructor
 @RestController
-@RequestMapping("/api/v1course")
+@RequestMapping("/api/v1/course")
 public class CourseController {
 
     private final CourseService coursService;
@@ -32,6 +33,18 @@ public class CourseController {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN', 'ROLE_USER')")
+    @GetMapping
+    public List<FullCourseResponse> listAllCourses(){
+        return coursService.listAllCourses();
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN', 'ROLE_USER')")
+    @GetMapping("/{name}")
+    public CourseResponse listOneCourse(@PathVariable String name){
+        return coursService.listOneCourse(name);
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN', 'ROLE_USER')")
     @PatchMapping("/update/{name}")
     public ResponseEntity<CourseResponse>updateCourse(@PathVariable String name,
                                                       @RequestBody CourseRequestDto courseDto) {
@@ -43,10 +56,6 @@ public class CourseController {
                         courseDto.getHours()));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN', 'ROLE_USER')")
-    @GetMapping
-    public List<FullCourseResponse> listAllCourses(){
-      return coursService.listAllCourses();
-    }
+
 
 }

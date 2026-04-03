@@ -65,6 +65,16 @@ public class CourseService {
                         .toList());
     }
 
+    public CourseResponse listOneCourse(String name){
+        Long institutionId = SecurityUtils.getInstitutionId();
+        Instituition institution = validations.validateInstituition(institutionId);
+
+        Optional<Course> courseOptional = courseRepository.findByNameAndInstituitionId(name, SecurityUtils.getInstitutionId());
+        if(courseOptional.isEmpty()){
+            throw new ResourceNotFoundException("Curso não encontrado.");
+        }
+        return new CourseResponse(courseOptional.get());
+    }
 
     public void updateCourse(String name, CourseRequestDto courseDto){
         Long institutionId = SecurityUtils.getInstitutionId();

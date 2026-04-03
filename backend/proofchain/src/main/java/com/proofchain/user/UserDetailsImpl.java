@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.List;
 
 // Classe que ensina o Spring Security como é o user
+
 public class UserDetailsImpl implements UserDetails {
 
     private User user;

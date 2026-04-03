@@ -2,16 +2,12 @@ package com.proofchain.service;
 
 import com.proofchain.Dtos.request.PlansRequestDto;
 import com.proofchain.exceptions.BusinessRuleException;
-import com.proofchain.identities.Instituition;
 import com.proofchain.identities.Plans;
-import com.proofchain.identities.enums.BillingType;
 import com.proofchain.repository.PlansRepository;
-import com.proofchain.security.SecurityUtils;
 import com.proofchain.util.Validations;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.util.Optional;
 
 import static java.time.Instant.now;
