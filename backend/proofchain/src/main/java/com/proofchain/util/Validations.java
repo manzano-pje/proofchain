@@ -1,15 +1,14 @@
 package com.proofchain.util;
 
-import com.proofchain.exceptions.BusinessRuleException;
+import com.proofchain.course.domain.exception.BusinessRuleException;
 import com.proofchain.exceptions.ResourceNotFoundException;
-import com.proofchain.identities.Course;
-import com.proofchain.identities.Instituition;
-import com.proofchain.identities.User;
-import com.proofchain.repository.CourseRepository;
-import com.proofchain.repository.InstituitionRepository;
-import com.proofchain.repository.UserRepository;
+import com.proofchain.course.domain.model.Course;
+import com.proofchain.instituition.Institution;
+import com.proofchain.user.User;
+import com.proofchain.course.infrastructure.repository.CourseRepository;
+import com.proofchain.instituition.InstitutionRepository;
+import com.proofchain.user.UserRepository;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -18,44 +17,44 @@ import java.util.Optional;
 @Component
 public class Validations {
 
-    private final InstituitionRepository instituitionRepository;
+    private final InstitutionRepository institutionRepository;
     private final CourseRepository courseRepository;
     private final UserRepository userRepository;
 
 
     // 🔑 Instituição vem do TOKEN, não do request
-    public Instituition validateInstituition(Long institutionId) {;
-        Instituition institution = instituitionRepository.findByid(institutionId)
+    public Institution validateinstitution(Long institutionId) {;
+        Institution institution = institutionRepository.findById(institutionId)
                 .orElseThrow(() -> new ResourceNotFoundException("Instituição não encontrada"));
         return institution;
     }
 
-    public Optional<Course>validateCourseExist(String name, Long idInstituition){
-        Optional<Course> courseOptional = courseRepository.findByNameAndInstituitionId(name,idInstituition);
+    public Optional<Course>validateCourseExist(String name, Long idinstitution){
+        Optional<Course> courseOptional = courseRepository.findByNameAndInstitutionId(name,idinstitution);
         if(courseOptional.isPresent()){
             throw new BusinessRuleException("Curso já cadatrado.");
         }
         return courseOptional;
     }
 
-    public Optional<Course>validateCourseNoExist(String name, Long idInstituition){
-        Optional<Course> courseOptional = courseRepository.findByNameAndInstituitionId(name,idInstituition);
+    public Optional<Course>validateCourseNoExist(String name, Long idinstitution){
+        Optional<Course> courseOptional = courseRepository.findByNameAndInstitutionId(name,idinstitution);
         if(courseOptional.isEmpty()){
             throw new ResourceNotFoundException("Este curso não está cadatrado.");
         }
         return courseOptional;
     }
 
-    public Optional<User> validateUserExist(String email, Long idInstituition){
-        Optional<User> userOptional = userRepository.findByEmailAndInstituitionId(email, idInstituition) ;
+    public Optional<User> validateUserExist(String email, Long idinstitution){
+        Optional<User> userOptional = userRepository.findByNameAndInstitutionId(email, idinstitution) ;
         if(userOptional.isPresent()){
             throw new BusinessRuleException("Usuário já cadastrado");
         }
         return userOptional;
     }
 
-    public Optional<User> validateUserNotExist(String email, Long idInstituition) {
-        Optional<User> userOptional = userRepository.findByEmailAndInstituitionId(email, idInstituition);
+    public Optional<User> validateUserNotExist(String email, Long idinstitution) {
+        Optional<User> userOptional = userRepository.findByNameAndInstitutionId(email, idinstitution);
         if (userOptional.isEmpty()) {
             throw new ResourceNotFoundException("Usuário não cadastrado");
         }
