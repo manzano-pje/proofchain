@@ -1,6 +1,6 @@
 package com.proofchain.subscription.dto.request;
 
-import com.proofchain.instituition.Institution;
+import com.proofchain.instituition.Instituition;
 import com.proofchain.plan.Plans;
 import com.proofchain.identities.enums.StatusSubscription;
 import lombok.AllArgsConstructor;
@@ -20,7 +20,7 @@ public class SubscriptionDto {
     private Instant startsAt;
     private Instant expiresAt;
     private Instant createdAt;
-    private Institution institution;
+    private Instituition instituition;
     private Plans plans;
 
 }

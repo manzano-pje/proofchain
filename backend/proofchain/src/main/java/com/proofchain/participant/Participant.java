@@ -2,7 +2,7 @@ package com.proofchain.participant;
 
 import com.proofchain.course.domain.model.Course;
 import com.proofchain.user.User;
-import com.proofchain.instituition.Institution;
+import com.proofchain.instituition.Instituition;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
@@ -67,8 +67,8 @@ public class Participant extends User {
     @ManyToMany(mappedBy = "participants")
     private List<Course> courses;
 
-    // EM Institution
+    // EM Instituition
     @ManyToOne
     @JoinColumn(name = "institution_id")
-    private Institution institution;
+    private Instituition instituition;
 }

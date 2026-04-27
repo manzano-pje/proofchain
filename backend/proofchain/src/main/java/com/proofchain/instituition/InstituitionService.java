@@ -34,9 +34,9 @@ import static java.time.Instant.now;
 
 @Service
 @AllArgsConstructor
-public class InstitutionService {
+public class InstituitionService {
 
-    private final InstitutionRepository institutionRepository;
+    private final InstituitionRepository instituitionRepository;
     private final UserRepository userRepository;
     private final ModelMapperConfig mapper;
     private final PasswordEncoder passwordEncoder;
@@ -55,7 +55,7 @@ public class InstitutionService {
             throw new BusinessRuleException("E-mail inválido");
         }
 
-        Optional<Institution> institutionOptional = institutionRepository.findByCnpj(newinstitutionRequestDto.getCnpj());
+        Optional<Instituition> institutionOptional = instituitionRepository.findByCnpj(newinstitutionRequestDto.getCnpj());
         if(institutionOptional.isPresent()){
             throw new BusinessRuleException("Instituição já cadastrada");
         }
@@ -67,11 +67,11 @@ public class InstitutionService {
         }
 
         ///////// CRIA INSTITUIÇÃO /////////
-        Institution institution = new Institution();
-        institution.setCnpj(newinstitutionRequestDto.getCnpj());
-        institution.setName(newinstitutionRequestDto.getName());
-        institution.setEmail(newinstitutionRequestDto.getEmail());
-        institution.setCreatedAt(now());
+        Instituition instituition = new Instituition();
+        instituition.setCnpj(newinstitutionRequestDto.getCnpj());
+        instituition.setName(newinstitutionRequestDto.getName());
+        instituition.setEmail(newinstitutionRequestDto.getEmail());
+        instituition.setCreatedAt(now());
 
         ///////// CRIA USUÁRIO /////////
         User user = new User();
@@ -81,9 +81,9 @@ public class InstitutionService {
         user.setRole((UserRole.ROLE_SUPER_ADMIN));
         user.setCreateAt(now());
         user.setActive(true);
-        user.setInstitution(institution);
+        user.setInstituition(instituition);
 
-        institution.getListUsers().add(user);
+        instituition.getListUsers().add(user);
 
         ///////// CRIA ASSINATURA /////////
         BillingType billingType = null;
@@ -125,7 +125,7 @@ public class InstitutionService {
                 throw new ResourceNotFoundException("Plano inválido.");
         }
 
-        subscription.setInstitution(institution);
+        subscription.setInstituition(instituition);
         subscription.setPlans(plans.get());
         subscription.setStatusSubscription(StatusSubscription.PENDING);
         subscription.setBillingType(billingType);
@@ -133,40 +133,40 @@ public class InstitutionService {
         subscription.setCurrentPeriodEnd(null);
         subscription.setCreatedAt(now());
 
-        institutionRepository.save(institution);
+        instituitionRepository.save(instituition);
         subscriptionRepository.save(subscription);
     }
 
     public void updateinstitution(String cnpj, InstitutionRequestDto institutionRequestDto){
 
-        Long institutionId = SecurityUtils.getInstitutionId();
+        Long institutionId = SecurityUtils.getInstituitionId();
         validations.validateinstitution(institutionId);
 
-        Optional<Institution> institutionOptional = institutionRepository.findByCnpj(cnpj);
+        Optional<Instituition> institutionOptional = instituitionRepository.findByCnpj(cnpj);
         if(institutionOptional.isEmpty()){
             throw new ResourceNotFoundException("Instituição não encontrada.");
         }
 
-        Institution institution = new Institution();
-        institution.setId (institutionOptional.orElseThrow(() -> new ResourceNotFoundException("Instituição não encontrada.")).getId());
-        institution.setAddress (institutionRequestDto.address());
-        institution.setNumber (institutionRequestDto.number());
-        institution.setComplement (institutionRequestDto.complement());
-        institution.setNeighborhood (institutionRequestDto.neighborhood());
-        institution.setCity (institutionRequestDto.city());
-        institution.setState (institutionRequestDto.state());
-        institution.setPostalCode (institutionRequestDto.postalCode());
-        institution.setPhone (institutionRequestDto.phone());
+        Instituition instituition = new Instituition();
+        instituition.setId (institutionOptional.orElseThrow(() -> new ResourceNotFoundException("Instituição não encontrada.")).getId());
+        instituition.setAddress (institutionRequestDto.address());
+        instituition.setNumber (institutionRequestDto.number());
+        instituition.setComplement (institutionRequestDto.complement());
+        instituition.setNeighborhood (institutionRequestDto.neighborhood());
+        instituition.setCity (institutionRequestDto.city());
+        instituition.setState (institutionRequestDto.state());
+        instituition.setPostalCode (institutionRequestDto.postalCode());
+        instituition.setPhone (institutionRequestDto.phone());
 
-        institutionRepository.save(institution);
+        instituitionRepository.save(instituition);
     }
 
     public InstitutionReturn getOneinstitution(String cnpj){
 
-        Long institutionId = SecurityUtils.getInstitutionId();
+        Long institutionId = SecurityUtils.getInstituitionId();
         validations.validateinstitution(institutionId);
 
-        Optional<Institution> institutionOptional = institutionRepository.findByCnpj(cnpj);
+        Optional<Instituition> institutionOptional = instituitionRepository.findByCnpj(cnpj);
         if(institutionOptional.isEmpty()){
             throw new ResourceNotFoundException("Instituição não encontrada.");
         }
@@ -176,25 +176,25 @@ public class InstitutionService {
 
     public void deleteinstitution(String cnpj){
 
-        Long institutionId = SecurityUtils.getInstitutionId();
+        Long institutionId = SecurityUtils.getInstituitionId();
         validations.validateinstitution(institutionId);
 
-        Optional<Institution> institutionOptional = institutionRepository.findByCnpj(cnpj);
+        Optional<Instituition> institutionOptional = instituitionRepository.findByCnpj(cnpj);
         if(institutionOptional.isEmpty()){
             throw new ResourceNotFoundException("Instituição não encontrada.");
         }
-        institutionRepository.deleteByCnpj(cnpj);
+        instituitionRepository.deleteByCnpj(cnpj);
     }
 
     // Somente para administrador da plataforma
     public List<InstitutionReturn> getAllinstitution(){
 
-        List<Institution> institutionList = institutionRepository.findAll();
-        if(institutionList.isEmpty()){
+        List<Instituition> instituitionList = instituitionRepository.findAll();
+        if(instituitionList.isEmpty()){
             throw new ResourceNotFoundException("Não existem instituições cadastradas.");
         }
 
-        return institutionList.stream()
+        return instituitionList.stream()
                 .map(InstitutionReturn::new)
                 .collect(Collectors.toList());
     }

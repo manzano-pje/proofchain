@@ -6,9 +6,9 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface InstitutionRepository extends JpaRepository<Institution, Long> {
+public interface InstituitionRepository extends JpaRepository<Instituition, Long> {
 
-//    Optional<Institution> findByid(Long instituitionId);
-    Optional<Institution> findByCnpj(String cnpj);
+//    Optional<Instituition> findByid(Long instituitionId);
+    Optional<Instituition> findByCnpj(String cnpj);
     void deleteByCnpj(String cnpj);
 }

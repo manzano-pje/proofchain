@@ -1,35 +1,38 @@
 package com.proofchain.course.application.handler;
 
 import com.proofchain.course.application.command.UpdateCourseCommand;
+import com.proofchain.course.domain.exception.CourseIsRegisteredException;
+import com.proofchain.course.domain.exception.CourseNotFoundException;
+import com.proofchain.course.domain.exception.InstrituitionNotFoundException;
 import com.proofchain.course.domain.model.Course;
 import com.proofchain.course.infrastructure.repository.CourseRepository;
-import com.proofchain.exceptions.ResourceNotFoundException;
-import com.proofchain.exceptions.ValidationException;
-import com.proofchain.instituition.Institution;
-import com.proofchain.instituition.InstitutionRepository;
+import com.proofchain.instituition.Instituition;
+import com.proofchain.instituition.InstituitionRepository;
 import com.proofchain.security.SecurityUtils;
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Component;
 
 @AllArgsConstructor
+@Component
 public class UpdateCourseHandler {
 
-    private final InstitutionRepository institutionRepository;
+    private final InstituitionRepository instituitionRepository;
     private final CourseRepository courseRepository;
 
     public Course updateCourse(Long id, UpdateCourseCommand command) {
-        Long institutionId = SecurityUtils.getInstitutionId();
+        Long institutionId = SecurityUtils.getInstituitionId();
         assert institutionId != null;
 
-        Institution institution = institutionRepository.findById(institutionId)
-                .orElseThrow(() -> new ResourceNotFoundException("Instituição não encontrada"));
+        Instituition instituition = instituitionRepository.findById(institutionId)
+                .orElseThrow(InstrituitionNotFoundException::new);
 
         Course course = courseRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Curso não encontrado"));
+                .orElseThrow(CourseNotFoundException::new);
 
-        boolean exist = courseRepository.existsByNameAndInstitutionId(command.getName(), institution.getId());
+        boolean exist = courseRepository.existsByNameAndInstitutionId(command.getName(), instituition.getId());
 
         if (exist && !course.getName().equals(command.getName())) {
-            throw new ValidationException("Curso já cadastrado");
+            throw new CourseIsRegisteredException();
         }
 
         course.updateCourse(

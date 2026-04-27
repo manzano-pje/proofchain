@@ -1,8 +1,8 @@
 package com.proofchain.instructor;
 
 import com.proofchain.course.domain.model.Course;
+import com.proofchain.instituition.Instituition;
 import com.proofchain.user.User;
-import com.proofchain.instituition.Institution;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -31,8 +31,8 @@ public class Instructor extends User {
     @OneToMany(mappedBy = "instructor")
     private List<Course> courses;
 
-    // EM Institution
+    // EM Instituition
     @ManyToOne
     @JoinColumn(name = "institution_id")
-    private Institution institution;
+    private Instituition instituition;
 }

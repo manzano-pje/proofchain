@@ -1,6 +1,6 @@
 package com.proofchain.certificate.model;
 
-import com.proofchain.instituition.Institution;
+import com.proofchain.instituition.Instituition;
 import com.proofchain.participant.Participant;
 import com.proofchain.identities.enums.AuthenticationStatus;
 import jakarta.persistence.*;
@@ -36,7 +36,7 @@ public class CertificateAuthentication {
     // Qual instituição realizou ou registrou a autenticação (opcional, mas útil para auditoria)
     @ManyToOne(optional = false)
     @JoinColumn(name = "institution_id")
-    private Institution institution;
+    private Instituition instituition;
 
     // Qual usuário autenticou (participante)
     @ManyToOne(optional = false)

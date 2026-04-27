@@ -2,7 +2,6 @@ package com.proofchain.instituition;
 
 import com.proofchain.certificate.model.Certificate;
 import com.proofchain.course.domain.model.Course;
-import com.proofchain.exceptions.ResourceNotFoundException;
 import com.proofchain.instructor.Instructor;
 import com.proofchain.participant.Participant;
 import com.proofchain.user.User;
@@ -24,7 +23,7 @@ import java.util.List;
 @Setter
 @ToString
 @Table(name = "tb_instituitions")
-public class Institution {
+public class Instituition {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -62,35 +61,35 @@ public class Institution {
     ///// RELACIONAMENTO /////
 
     // Courses
-    @OneToMany(mappedBy = "institution",
+    @OneToMany(mappedBy = "instituition",
                cascade = CascadeType.ALL,
                orphanRemoval = true)
     @ToString.Exclude
     private List<Course> listCourses = new ArrayList<>();
 
     // Useres
-    @OneToMany(mappedBy = "institution",
+    @OneToMany(mappedBy = "instituition",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
     @ToString.Exclude
     private List<User> listUsers = new ArrayList<>();
 
     // Instructor
-    @OneToMany(mappedBy = "institution",
+    @OneToMany(mappedBy = "instituition",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
     @ToString.Exclude
     private List<Instructor> listInstructors = new ArrayList<>();
 
     // Participants
-    @OneToMany(mappedBy = "institution",
+    @OneToMany(mappedBy = "instituition",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
     @ToString.Exclude
     private List<Participant> listParticipants = new ArrayList<>();
 
     // Instructor
-    @OneToMany(mappedBy = "institution")
+    @OneToMany(mappedBy = "instituition")
     @ToString.Exclude
     private List<Certificate> listCertificates = new ArrayList<>();
 }

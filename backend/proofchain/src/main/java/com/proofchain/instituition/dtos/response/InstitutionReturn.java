@@ -1,6 +1,6 @@
 package com.proofchain.instituition.dtos.response;
 
-import com.proofchain.instituition.Institution;
+import com.proofchain.instituition.Instituition;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
@@ -25,19 +25,19 @@ public record InstitutionReturn(
         @Pattern(regexp = "\\(\\d{2}\\) \\d{5}-\\d{4}", message = "O telefone deve estar no formato (XX) XXXXX-XXXX")
         String phoneInstituition
    ){
-        public InstitutionReturn(Institution institution){
-                this(institution.getId(),
-                        institution.getName(),
-                        institution.getCnpj(),
-                        institution.getEmail(),
-                        institution.getAddress(),
-                        institution.getNumber(),
-                        institution.getComplement(),
-                        institution.getNeighborhood(),
-                        institution.getCity(),
-                        institution.getState(),
-                        institution.getPostalCode(),
-                        institution.getPhone()
+        public InstitutionReturn(Instituition instituition){
+                this(instituition.getId(),
+                        instituition.getName(),
+                        instituition.getCnpj(),
+                        instituition.getEmail(),
+                        instituition.getAddress(),
+                        instituition.getNumber(),
+                        instituition.getComplement(),
+                        instituition.getNeighborhood(),
+                        instituition.getCity(),
+                        instituition.getState(),
+                        instituition.getPostalCode(),
+                        instituition.getPhone()
                 );
         }
 }

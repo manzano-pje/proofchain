@@ -9,7 +9,7 @@ import static java.lang.String.valueOf;
 public class SecurityUtils {
 
     // Retorna o ID da instituição do usuário logado
-    public static Long getInstitutionId() {
+    public static Long getInstituitionId() {
 
         Authentication auth =
                 SecurityContextHolder
@@ -27,7 +27,7 @@ public class SecurityUtils {
             return null;
         }
         return Long.valueOf(
-                claims.get("institution_id").toString()
+                claims.get("instituition_id").toString()
         );
     }
 

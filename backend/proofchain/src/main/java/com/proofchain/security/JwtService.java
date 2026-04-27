@@ -30,7 +30,7 @@ public class JwtService {
 
                 // Claim da instituição (tenat)
                 .claim("tenant_id",
-                        user.getInstitution().getId().toString())
+                        user.getInstituition().getId().toString())
 
                 // Claim do papel do usuário
                 .claim("role", user.getRole().name())

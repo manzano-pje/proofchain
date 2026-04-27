@@ -16,9 +16,9 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("/api/v1/instituition")
 @CrossOrigin(origins = "*") // importante para o Vue acessar
-public class InstitutionController {
+public class InstituitionController {
 
-    public final InstitutionService instituitionService;
+    public final InstituitionService instituitionService;
 
     @PostMapping
     public ResponseEntity<String> createInstituition(@RequestBody NewInstitutionRequestDto newInstitutionRequestDto){

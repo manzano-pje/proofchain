@@ -20,7 +20,7 @@ public class PlansService {
     public void createPlan(PlansRequestDto plansRequestDto){
         // 🔑 Instituição vem do TOKEN, não do request
 //        Long institutionId = SecurityUtils.getInstitutionId();
-//        Institution institution = validations.validateInstituition(institutionId);
+//        Instituition institution = validations.validateInstituition(institutionId);
 
         Optional<Plans> plansOptional = plansRepository.findByName(plansRequestDto.getName());
         if (plansOptional.isPresent()){
