@@ -1,0 +1,429 @@
+ O volume na unidade E ‚ ssd secundario
+ O N£mero de S‚rie do Volume ‚ 72F8-9311
+
+ Pasta de E:\Biblioteca\documentos\proofchain\backend\proofchain\src\main\java\com\proofchain
+
+24/04/2026  17:41    <DIR>          .
+24/04/2026  17:41    <DIR>          ..
+03/04/2026  14:23    <DIR>          auth
+20/04/2026  15:13    <DIR>          certificate
+22/04/2026  10:57    <DIR>          course
+21/04/2026  23:59             5.411 course.txt
+20/04/2026  15:06    <DIR>          Dtos
+22/04/2026  10:59    <DIR>          exceptions
+20/04/2026  15:07    <DIR>          featurePlan
+20/04/2026  15:04    <DIR>          identities
+22/04/2026  10:59    <DIR>          instituition
+20/04/2026  15:45    <DIR>          instructor
+20/04/2026  15:45    <DIR>          participant
+20/04/2026  15:07    <DIR>          payment
+22/04/2026  10:59    <DIR>          plan
+22/04/2026  02:00    <DIR>          plataform
+24/04/2026  17:41                 0 proofchain.txt
+06/02/2026  18:09               328 ProofchainApplication.java
+20/04/2026  15:07    <DIR>          security
+20/04/2026  15:07    <DIR>          subscription
+20/04/2026  15:07    <DIR>          usageCounter
+22/04/2026  02:01    <DIR>          user
+22/04/2026  10:59    <DIR>          util
+               3 arquivo(s)          5.739 bytes
+
+ Pasta de E:\Biblioteca\documentos\proofchain\backend\proofchain\src\main\java\com\proofchain\auth
+
+03/04/2026  14:23    <DIR>          .
+03/04/2026  14:23    <DIR>          ..
+03/04/2026  14:23             1.903 AuthController.java
+03/04/2026  14:23               612 AuthRequest.java
+20/03/2026  19:01               424 AuthResponse.java
+               3 arquivo(s)          2.939 bytes
+
+ Pasta de E:\Biblioteca\documentos\proofchain\backend\proofchain\src\main\java\com\proofchain\certificate
+
+20/04/2026  15:13    <DIR>          .
+20/04/2026  15:13    <DIR>          ..
+20/04/2026  15:12    <DIR>          dto
+20/04/2026  15:13    <DIR>          exception
+20/04/2026  15:45    <DIR>          model
+               0 arquivo(s)              0 bytes
+
+ Pasta de E:\Biblioteca\documentos\proofchain\backend\proofchain\src\main\java\com\proofchain\certificate\dto
+
+20/04/2026  15:12    <DIR>          .
+20/04/2026  15:12    <DIR>          ..
+               0 arquivo(s)              0 bytes
+
+ Pasta de E:\Biblioteca\documentos\proofchain\backend\proofchain\src\main\java\com\proofchain\certificate\exception
+
+20/04/2026  15:13    <DIR>          .
+20/04/2026  15:13    <DIR>          ..
+               0 arquivo(s)              0 bytes
+
+ Pasta de E:\Biblioteca\documentos\proofchain\backend\proofchain\src\main\java\com\proofchain\certificate\model
+
+20/04/2026  15:45    <DIR>          .
+20/04/2026  15:45    <DIR>          ..
+20/04/2026  15:45             1.582 Certificate.java
+20/04/2026  15:14             1.366 CertificateAuthentication.java
+               2 arquivo(s)          2.948 bytes
+
+ Pasta de E:\Biblioteca\documentos\proofchain\backend\proofchain\src\main\java\com\proofchain\course
+
+22/04/2026  10:57    <DIR>          .
+22/04/2026  10:57    <DIR>          ..
+21/04/2026  23:47    <DIR>          application
+21/04/2026  23:46    <DIR>          domain
+21/04/2026  23:47    <DIR>          infrastructure
+21/04/2026  23:48    <DIR>          interfaces
+               0 arquivo(s)              0 bytes
+
+ Pasta de E:\Biblioteca\documentos\proofchain\backend\proofchain\src\main\java\com\proofchain\course\application
+
+21/04/2026  23:47    <DIR>          .
+21/04/2026  23:47    <DIR>          ..
+22/04/2026  12:48    <DIR>          command
+22/04/2026  14:12    <DIR>          handler
+               0 arquivo(s)              0 bytes
+
+ Pasta de E:\Biblioteca\documentos\proofchain\backend\proofchain\src\main\java\com\proofchain\course\application\command
+
+22/04/2026  12:48    <DIR>          .
+22/04/2026  12:48    <DIR>          ..
+22/04/2026  11:27               488 CreateCourseCommand.java
+21/04/2026  23:53                93 DeleteCourseCommand.java
+22/04/2026  10:57                94 ListAllCourseCommand.java
+22/04/2026  10:57                94 ListOneCourseCommand.java
+22/04/2026  12:48               505 UpdateCourseCommand.java
+               5 arquivo(s)          1.274 bytes
+
+ Pasta de E:\Biblioteca\documentos\proofchain\backend\proofchain\src\main\java\com\proofchain\course\application\handler
+
+22/04/2026  14:12    <DIR>          .
+22/04/2026  14:12    <DIR>          ..
+22/04/2026  11:04             1.682 CreateCourseHandler.java
+21/04/2026  23:52                93 DeleteCourseHandler.java
+22/04/2026  10:56             1.004 ListAllCourseHandler.java
+22/04/2026  10:57               927 ListOneCourseHandler.java
+22/04/2026  14:12             1.743 UpdateCourseHandler.java
+               5 arquivo(s)          5.449 bytes
+
+ Pasta de E:\Biblioteca\documentos\proofchain\backend\proofchain\src\main\java\com\proofchain\course\domain
+
+21/04/2026  23:46    <DIR>          .
+21/04/2026  23:46    <DIR>          ..
+20/04/2026  15:45    <DIR>          event
+22/04/2026  10:59    <DIR>          exception
+22/04/2026  12:48    <DIR>          model
+               0 arquivo(s)              0 bytes
+
+ Pasta de E:\Biblioteca\documentos\proofchain\backend\proofchain\src\main\java\com\proofchain\course\domain\event
+
+20/04/2026  15:45    <DIR>          .
+20/04/2026  15:45    <DIR>          ..
+               0 arquivo(s)              0 bytes
+
+ Pasta de E:\Biblioteca\documentos\proofchain\backend\proofchain\src\main\java\com\proofchain\course\domain\exception
+
+22/04/2026  10:59    <DIR>          .
+22/04/2026  10:59    <DIR>          ..
+22/04/2026  10:59               203 BusinessRuleException.java
+               1 arquivo(s)            203 bytes
+
+ Pasta de E:\Biblioteca\documentos\proofchain\backend\proofchain\src\main\java\com\proofchain\course\domain\model
+
+22/04/2026  12:48    <DIR>          .
+22/04/2026  12:48    <DIR>          ..
+22/04/2026  12:48             2.742 Course.java
+               1 arquivo(s)          2.742 bytes
+
+ Pasta de E:\Biblioteca\documentos\proofchain\backend\proofchain\src\main\java\com\proofchain\course\infrastructure
+
+21/04/2026  23:47    <DIR>          .
+21/04/2026  23:47    <DIR>          ..
+22/04/2026  00:54    <DIR>          repository
+               0 arquivo(s)              0 bytes
+
+ Pasta de E:\Biblioteca\documentos\proofchain\backend\proofchain\src\main\java\com\proofchain\course\infrastructure\repository
+
+22/04/2026  00:54    <DIR>          .
+22/04/2026  00:54    <DIR>          ..
+22/04/2026  00:54               506 CourseRepository.java
+               1 arquivo(s)            506 bytes
+
+ Pasta de E:\Biblioteca\documentos\proofchain\backend\proofchain\src\main\java\com\proofchain\course\interfaces
+
+21/04/2026  23:48    <DIR>          .
+21/04/2026  23:48    <DIR>          ..
+22/04/2026  13:07    <DIR>          controller
+21/04/2026  23:54    <DIR>          dto
+               0 arquivo(s)              0 bytes
+
+ Pasta de E:\Biblioteca\documentos\proofchain\backend\proofchain\src\main\java\com\proofchain\course\interfaces\controller
+
+22/04/2026  13:07    <DIR>          .
+22/04/2026  13:07    <DIR>          ..
+22/04/2026  13:07             2.602 CourseController.java
+               1 arquivo(s)          2.602 bytes
+
+ Pasta de E:\Biblioteca\documentos\proofchain\backend\proofchain\src\main\java\com\proofchain\course\interfaces\dto
+
+21/04/2026  23:54    <DIR>          .
+21/04/2026  23:54    <DIR>          ..
+22/04/2026  00:28    <DIR>          request
+21/04/2026  23:54    <DIR>          response
+               0 arquivo(s)              0 bytes
+
+ Pasta de E:\Biblioteca\documentos\proofchain\backend\proofchain\src\main\java\com\proofchain\course\interfaces\dto\request
+
+22/04/2026  00:28    <DIR>          .
+22/04/2026  00:28    <DIR>          ..
+22/04/2026  00:28               479 CourseRequestDto.java
+               1 arquivo(s)            479 bytes
+
+ Pasta de E:\Biblioteca\documentos\proofchain\backend\proofchain\src\main\java\com\proofchain\course\interfaces\dto\response
+
+21/04/2026  23:54    <DIR>          .
+21/04/2026  23:54    <DIR>          ..
+21/04/2026  23:54               411 CourseResponse.java
+21/04/2026  23:54               567 FullCourseResponse.java
+               2 arquivo(s)            978 bytes
+
+ Pasta de E:\Biblioteca\documentos\proofchain\backend\proofchain\src\main\java\com\proofchain\Dtos
+
+20/04/2026  15:06    <DIR>          .
+20/04/2026  15:06    <DIR>          ..
+20/04/2026  15:05    <DIR>          response
+               0 arquivo(s)              0 bytes
+
+ Pasta de E:\Biblioteca\documentos\proofchain\backend\proofchain\src\main\java\com\proofchain\Dtos\response
+
+20/04/2026  15:05    <DIR>          .
+20/04/2026  15:05    <DIR>          ..
+20/03/2026  19:43               147 ApiResponse.java
+               1 arquivo(s)            147 bytes
+
+ Pasta de E:\Biblioteca\documentos\proofchain\backend\proofchain\src\main\java\com\proofchain\exceptions
+
+22/04/2026  10:59    <DIR>          .
+22/04/2026  10:59    <DIR>          ..
+22/04/2026  10:59             2.960 GlobalExceptionHandler.java
+20/03/2026  19:43               194 ResourceNotFoundException.java
+20/04/2026  15:37               268 ResponseError.java
+20/03/2026  19:43               185 ValidationException.java
+               4 arquivo(s)          3.607 bytes
+
+ Pasta de E:\Biblioteca\documentos\proofchain\backend\proofchain\src\main\java\com\proofchain\featurePlan
+
+20/04/2026  15:07    <DIR>          .
+20/04/2026  15:07    <DIR>          ..
+20/04/2026  15:07               507 FeaturePlan.java
+               1 arquivo(s)            507 bytes
+
+ Pasta de E:\Biblioteca\documentos\proofchain\backend\proofchain\src\main\java\com\proofchain\identities
+
+20/04/2026  15:04    <DIR>          .
+20/04/2026  15:04    <DIR>          ..
+20/03/2026  19:43    <DIR>          enums
+               0 arquivo(s)              0 bytes
+
+ Pasta de E:\Biblioteca\documentos\proofchain\backend\proofchain\src\main\java\com\proofchain\identities\enums
+
+20/03/2026  19:43    <DIR>          .
+20/03/2026  19:43    <DIR>          ..
+20/03/2026  19:43               123 AuthenticationStatus.java
+20/03/2026  19:43               102 BillingType.java
+20/03/2026  19:43               119 StatusPayment.java
+20/03/2026  19:43               136 StatusSubscription.java
+20/03/2026  19:43               127 UserRole.java
+               5 arquivo(s)            607 bytes
+
+ Pasta de E:\Biblioteca\documentos\proofchain\backend\proofchain\src\main\java\com\proofchain\instituition
+
+22/04/2026  10:59    <DIR>          .
+22/04/2026  10:59    <DIR>          ..
+20/04/2026  14:58    <DIR>          dtos
+22/04/2026  00:59             2.721 Institution.java
+20/04/2026  15:07             2.406 InstitutionController.java
+20/04/2026  15:07               436 InstitutionRepository.java
+22/04/2026  10:59             8.554 InstitutionService.java
+               4 arquivo(s)         14.117 bytes
+
+ Pasta de E:\Biblioteca\documentos\proofchain\backend\proofchain\src\main\java\com\proofchain\instituition\dtos
+
+20/04/2026  14:58    <DIR>          .
+20/04/2026  14:58    <DIR>          ..
+20/04/2026  15:07    <DIR>          request
+20/04/2026  15:07    <DIR>          response
+               0 arquivo(s)              0 bytes
+
+ Pasta de E:\Biblioteca\documentos\proofchain\backend\proofchain\src\main\java\com\proofchain\instituition\dtos\request
+
+20/04/2026  15:07    <DIR>          .
+20/04/2026  15:07    <DIR>          ..
+20/04/2026  15:07               643 InstitutionRequestDto.java
+20/04/2026  15:07               685 NewInstitutionRequestDto.java
+               2 arquivo(s)          1.328 bytes
+
+ Pasta de E:\Biblioteca\documentos\proofchain\backend\proofchain\src\main\java\com\proofchain\instituition\dtos\response
+
+20/04/2026  15:07    <DIR>          .
+20/04/2026  15:07    <DIR>          ..
+20/04/2026  15:07             1.597 InstitutionReturn.java
+               1 arquivo(s)          1.597 bytes
+
+ Pasta de E:\Biblioteca\documentos\proofchain\backend\proofchain\src\main\java\com\proofchain\instructor
+
+20/04/2026  15:45    <DIR>          .
+20/04/2026  15:45    <DIR>          ..
+20/04/2026  15:45               805 Instructor.java
+               1 arquivo(s)            805 bytes
+
+ Pasta de E:\Biblioteca\documentos\proofchain\backend\proofchain\src\main\java\com\proofchain\participant
+
+20/04/2026  15:45    <DIR>          .
+20/04/2026  15:45    <DIR>          ..
+20/04/2026  15:45             1.738 Participant.java
+               1 arquivo(s)          1.738 bytes
+
+ Pasta de E:\Biblioteca\documentos\proofchain\backend\proofchain\src\main\java\com\proofchain\payment
+
+20/04/2026  15:07    <DIR>          .
+20/04/2026  15:07    <DIR>          ..
+20/04/2026  15:07               878 Payments.java
+               1 arquivo(s)            878 bytes
+
+ Pasta de E:\Biblioteca\documentos\proofchain\backend\proofchain\src\main\java\com\proofchain\plan
+
+22/04/2026  10:59    <DIR>          .
+22/04/2026  10:59    <DIR>          ..
+20/04/2026  15:06    <DIR>          dto
+20/04/2026  15:07             1.114 Plans.java
+20/04/2026  15:07               998 PlansController.java
+20/04/2026  15:07               316 PlansRepository.java
+22/04/2026  10:59             1.569 PlansService.java
+               4 arquivo(s)          3.997 bytes
+
+ Pasta de E:\Biblioteca\documentos\proofchain\backend\proofchain\src\main\java\com\proofchain\plan\dto
+
+20/04/2026  15:06    <DIR>          .
+20/04/2026  15:06    <DIR>          ..
+20/04/2026  15:07    <DIR>          request
+               0 arquivo(s)              0 bytes
+
+ Pasta de E:\Biblioteca\documentos\proofchain\backend\proofchain\src\main\java\com\proofchain\plan\dto\request
+
+20/04/2026  15:07    <DIR>          .
+20/04/2026  15:07    <DIR>          ..
+20/04/2026  15:07               517 PlansRequestDto.java
+               1 arquivo(s)            517 bytes
+
+ Pasta de E:\Biblioteca\documentos\proofchain\backend\proofchain\src\main\java\com\proofchain\plataform
+
+22/04/2026  02:00    <DIR>          .
+22/04/2026  02:00    <DIR>          ..
+22/04/2026  02:01    <DIR>          domain
+               0 arquivo(s)              0 bytes
+
+ Pasta de E:\Biblioteca\documentos\proofchain\backend\proofchain\src\main\java\com\proofchain\plataform\domain
+
+22/04/2026  02:01    <DIR>          .
+22/04/2026  02:01    <DIR>          ..
+22/04/2026  02:01               735 CorsConfig.java
+22/04/2026  02:01               390 ModelMapperConfig.java
+20/03/2026  19:43               779 OpenApiConfig.~java
+22/04/2026  02:01    <DIR>          text
+               3 arquivo(s)          1.904 bytes
+
+ Pasta de E:\Biblioteca\documentos\proofchain\backend\proofchain\src\main\java\com\proofchain\plataform\domain\text
+
+22/04/2026  02:01    <DIR>          .
+22/04/2026  02:01    <DIR>          ..
+22/04/2026  02:01             1.308 textNormalize.java
+               1 arquivo(s)          1.308 bytes
+
+ Pasta de E:\Biblioteca\documentos\proofchain\backend\proofchain\src\main\java\com\proofchain\security
+
+20/04/2026  15:07    <DIR>          .
+20/04/2026  15:07    <DIR>          ..
+03/04/2026  14:23             2.711 JwtAuthenticationFilter.java
+20/04/2026  15:07             1.700 JwtService.java
+20/04/2026  15:07             3.535 SecurityConfig.java
+26/03/2026  19:36             1.145 SecurityUtils.java
+               4 arquivo(s)          9.091 bytes
+
+ Pasta de E:\Biblioteca\documentos\proofchain\backend\proofchain\src\main\java\com\proofchain\subscription
+
+20/04/2026  15:07    <DIR>          .
+20/04/2026  15:07    <DIR>          ..
+20/04/2026  15:06    <DIR>          dto
+20/04/2026  15:07               258 SubscriptionRepository.java
+20/04/2026  15:07             2.328 Subscriptions.java
+               2 arquivo(s)          2.586 bytes
+
+ Pasta de E:\Biblioteca\documentos\proofchain\backend\proofchain\src\main\java\com\proofchain\subscription\dto
+
+20/04/2026  15:06    <DIR>          .
+20/04/2026  15:06    <DIR>          ..
+20/04/2026  15:07    <DIR>          request
+               0 arquivo(s)              0 bytes
+
+ Pasta de E:\Biblioteca\documentos\proofchain\backend\proofchain\src\main\java\com\proofchain\subscription\dto\request
+
+20/04/2026  15:07    <DIR>          .
+20/04/2026  15:07    <DIR>          ..
+20/04/2026  15:07               651 SubscriptionDto.java
+               1 arquivo(s)            651 bytes
+
+ Pasta de E:\Biblioteca\documentos\proofchain\backend\proofchain\src\main\java\com\proofchain\usageCounter
+
+20/04/2026  15:07    <DIR>          .
+20/04/2026  15:07    <DIR>          ..
+20/04/2026  15:07             1.004 UsageCounters.java
+               1 arquivo(s)          1.004 bytes
+
+ Pasta de E:\Biblioteca\documentos\proofchain\backend\proofchain\src\main\java\com\proofchain\user
+
+22/04/2026  02:01    <DIR>          .
+22/04/2026  02:01    <DIR>          ..
+20/04/2026  15:05    <DIR>          dto
+20/04/2026  15:07             1.121 User.java
+20/04/2026  15:07             2.088 UserController.java
+20/04/2026  15:07             1.669 UserDetailsImpl.java
+20/04/2026  15:07             1.079 UserDetailsServiceImpl.java
+20/04/2026  15:07               434 UserRepository.java
+22/04/2026  02:01             4.347 UserService.java
+               6 arquivo(s)         10.738 bytes
+
+ Pasta de E:\Biblioteca\documentos\proofchain\backend\proofchain\src\main\java\com\proofchain\user\dto
+
+20/04/2026  15:05    <DIR>          .
+20/04/2026  15:05    <DIR>          ..
+20/04/2026  15:07    <DIR>          request
+20/04/2026  15:07    <DIR>          response
+               0 arquivo(s)              0 bytes
+
+ Pasta de E:\Biblioteca\documentos\proofchain\backend\proofchain\src\main\java\com\proofchain\user\dto\request
+
+20/04/2026  15:07    <DIR>          .
+20/04/2026  15:07    <DIR>          ..
+20/04/2026  15:07               709 UserRequestDto.java
+20/04/2026  15:07               571 UserUpdateDto.java
+               2 arquivo(s)          1.280 bytes
+
+ Pasta de E:\Biblioteca\documentos\proofchain\backend\proofchain\src\main\java\com\proofchain\user\dto\response
+
+20/04/2026  15:07    <DIR>          .
+20/04/2026  15:07    <DIR>          ..
+20/04/2026  15:07               603 UserReturn.java
+               1 arquivo(s)            603 bytes
+
+ Pasta de E:\Biblioteca\documentos\proofchain\backend\proofchain\src\main\java\com\proofchain\util
+
+22/04/2026  10:59    <DIR>          .
+22/04/2026  10:59    <DIR>          ..
+03/04/2026  14:23               159 TestJwtFactory.java
+22/04/2026  10:59             2.597 Validations.java
+               2 arquivo(s)          2.756 bytes
+
+     Total de Arquivos na Lista:
+              74 arquivo(s)         87.625 bytes
+             149 pasta(s)   205.931.163.648 bytes dispon¡veis
