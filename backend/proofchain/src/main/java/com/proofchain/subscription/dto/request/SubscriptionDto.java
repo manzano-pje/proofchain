@@ -20,7 +20,7 @@ public class SubscriptionDto {
     private Instant startsAt;
     private Instant expiresAt;
     private Instant createdAt;
-    private Institution institution;
+    private Instituition instituition;
     private Plans plans;
 
 }

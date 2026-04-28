@@ -1,8 +1,8 @@
 package com.proofchain.course.domain.model;
 
 import com.proofchain.certificate.model.Certificate;
+import com.proofchain.instituition.Instituition;
 import com.proofchain.exceptions.ValidationException;
-import com.proofchain.instituition.Institution;
 import com.proofchain.instructor.Instructor;
 import com.proofchain.participant.Participant;
 import com.proofchain.plataform.domain.text.textNormalize;
@@ -44,13 +44,13 @@ public class Course {
     public static Course create(String name,
                                 String description,
                                 int hours,
-                                Institution institution) {
+                                Instituition instituition) {
 
         if (hours <= 0) {
             throw new ValidationException("Horas devem ser maior que zero");
         }
 
-        if (institution == null) {
+        if (instituition == null) {
             throw new ValidationException("Instituição obrigatória");
         }
 
@@ -59,7 +59,7 @@ public class Course {
         course.description = textNormalize.normalize(description);
         course.hours = hours;
         course.createdAt = Instant.now();
-        course.institution = institution;
+        course.instituition = instituition;
 
         return course;
     }
@@ -72,11 +72,11 @@ public class Course {
 
     /////RELACIONAMENTO /////
 
-    // Institution
+    // Instituition
     @ManyToOne
     @JoinColumn(name = "instituition_id",
                 nullable = false)
-    private Institution institution;
+    private Instituition instituition;
 
     // Instrutor
     @ManyToOne(cascade = CascadeType.ALL)
