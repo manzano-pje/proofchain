@@ -1,13 +1,13 @@
 package com.proofchain.user;
 
-import com.proofchain.user.dto.request.UserRequestDto;
-import com.proofchain.user.dto.response.UserReturn;
-import com.proofchain.user.dto.request.UserUpdateDto;
-import com.proofchain.plataform.domain.ModelMapperConfig;
 import com.proofchain.exceptions.ResourceNotFoundException;
 import com.proofchain.instituition.Institution;
 import com.proofchain.instituition.InstitutionRepository;
+import com.proofchain.plataform.domain.ModelMapperConfig;
 import com.proofchain.security.SecurityUtils;
+import com.proofchain.user.dto.request.UserRequestDto;
+import com.proofchain.user.dto.request.UserUpdateDto;
+import com.proofchain.user.dto.response.UserReturn;
 import com.proofchain.util.Validations;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;

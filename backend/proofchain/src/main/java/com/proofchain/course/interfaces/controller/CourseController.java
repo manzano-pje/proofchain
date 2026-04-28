@@ -1,10 +1,8 @@
 package com.proofchain.course.interfaces.controller;
 
-import com.proofchain.course.CourseService;
 import com.proofchain.course.application.command.CreateCourseCommand;
 import com.proofchain.course.application.command.UpdateCourseCommand;
-import com.proofchain.course.application.handler.CreateCourseHandler;
-import com.proofchain.course.application.handler.UpdateCourseHandler;
+import com.proofchain.course.application.handler.*;
 import com.proofchain.course.domain.model.Course;
 import com.proofchain.course.interfaces.dto.request.CourseRequestDto;
 import com.proofchain.course.interfaces.dto.response.CourseResponse;
@@ -26,12 +24,14 @@ import java.util.List;
 public class CourseController {
 
     private final UpdateCourseHandler updateCourseHandler;
-
     private final CreateCourseHandler createCourseHandler;
+    private final ListAllCourseHandler listAllCourses;
+    private final ListOneCourseHandler listOneCourse;
+    private final DeleteCourseHandler deleteCourse;
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
-    public ResponseEntity<Void> createCourse(@RequestBody CourseRequestDto dto) {
+    public ResponseEntity<Void> createCourse(@Valid @RequestBody CourseRequestDto dto) {
         CreateCourseCommand command = new CreateCourseCommand(dto);
         createCourseHandler.handle(command);
         return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -40,13 +40,14 @@ public class CourseController {
     @PreAuthorize("hasRole('ROLE_ADMIN', 'ROLE_USER')")
     @GetMapping
     public List<FullCourseResponse> listAllCourses(){
-        return coursService.listAllCourses();
+        return listAllCourses.listAllCourses();
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN', 'ROLE_USER')")
     @GetMapping("/{name}")
     public CourseResponse listOneCourse(@PathVariable String name){
-        return coursService.listOneCourse(name);
+
+        return listOneCourse.listOneCourse(name);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")

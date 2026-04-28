@@ -3,7 +3,9 @@ package com.proofchain.user;
 import com.proofchain.identities.enums.UserRole;
 import com.proofchain.instituition.Institution;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.Instant;

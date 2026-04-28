@@ -2,7 +2,6 @@ package com.proofchain.instituition;
 
 import com.proofchain.certificate.model.Certificate;
 import com.proofchain.course.domain.model.Course;
-import com.proofchain.exceptions.ResourceNotFoundException;
 import com.proofchain.instructor.Instructor;
 import com.proofchain.participant.Participant;
 import com.proofchain.user.User;

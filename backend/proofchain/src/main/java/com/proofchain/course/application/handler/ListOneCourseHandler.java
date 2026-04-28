@@ -1,14 +1,25 @@
 package com.proofchain.course.application.handler;
 
 import com.proofchain.course.domain.model.Course;
+import com.proofchain.course.infrastructure.repository.CourseRepository;
 import com.proofchain.course.interfaces.dto.response.CourseResponse;
 import com.proofchain.exceptions.ResourceNotFoundException;
 import com.proofchain.instituition.Institution;
 import com.proofchain.security.SecurityUtils;
+import com.proofchain.util.Validations;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Component
+@AllArgsConstructor
 public class ListOneCourseHandler {
+
+    private final Validations validations;
+    private final CourseRepository courseRepository;
+
     public CourseResponse listOneCourse(String name){
         Long institutionId = SecurityUtils.getInstitutionId();
         Institution institution = validations.validateinstitution(institutionId);

@@ -4,9 +4,11 @@ package com.proofchain.security;
 // Geração e validação de token
 
 import com.proofchain.user.User;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import lombok.AllArgsConstructor;
-import io.jsonwebtoken.*;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;

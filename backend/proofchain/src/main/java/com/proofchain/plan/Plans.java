@@ -1,8 +1,8 @@
 package com.proofchain.plan;
 
 import com.proofchain.featurePlan.FeaturePlan;
-import com.proofchain.subscription.Subscriptions;
 import com.proofchain.identities.enums.BillingType;
+import com.proofchain.subscription.Subscriptions;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

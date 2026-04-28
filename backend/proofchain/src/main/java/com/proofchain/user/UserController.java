@@ -1,8 +1,8 @@
 package com.proofchain.user;
 
 import com.proofchain.user.dto.request.UserRequestDto;
-import com.proofchain.user.dto.response.UserReturn;
 import com.proofchain.user.dto.request.UserUpdateDto;
+import com.proofchain.user.dto.response.UserReturn;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

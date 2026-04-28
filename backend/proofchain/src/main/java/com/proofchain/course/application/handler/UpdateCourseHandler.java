@@ -9,7 +9,10 @@ import com.proofchain.instituition.Institution;
 import com.proofchain.instituition.InstitutionRepository;
 import com.proofchain.security.SecurityUtils;
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
+@Component
 @AllArgsConstructor
 public class UpdateCourseHandler {
 

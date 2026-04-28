@@ -1,12 +1,12 @@
 package com.proofchain.util;
 
 import com.proofchain.course.domain.exception.BusinessRuleException;
-import com.proofchain.exceptions.ResourceNotFoundException;
 import com.proofchain.course.domain.model.Course;
-import com.proofchain.instituition.Institution;
-import com.proofchain.user.User;
 import com.proofchain.course.infrastructure.repository.CourseRepository;
+import com.proofchain.exceptions.ResourceNotFoundException;
+import com.proofchain.instituition.Institution;
 import com.proofchain.instituition.InstitutionRepository;
+import com.proofchain.user.User;
 import com.proofchain.user.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
