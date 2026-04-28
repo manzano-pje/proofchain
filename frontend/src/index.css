@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap";
+@tailwind base; @tailwind components; @tailwind utilities;
+
+body { @apply bg-light text-dark font-sans antialiased; }
+
+@layer components {
+  .btn-primary { @apply bg-primary hover:bg-primaryHover text-white font-semibold px-6 py-3 rounded-2xl transition-all shadow-sm hover:shadow-md active:scale-[0.98] disabled:opacity-50; }
+  .btn-secondary { @apply bg-white border border-gray-200 text-dark font-semibold px-6 py-3 rounded-2xl hover:bg-gray-50 transition-all; }
+  .input-field { @apply w-full px-4 py-3 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary; }
+  .card { @apply bg-white rounded-2xl shadow-sm border border-gray-100 p-6; }
+}

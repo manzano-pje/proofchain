@@ -2,7 +2,7 @@ package com.proofchain.subscription;
 
 import com.proofchain.identities.enums.BillingType;
 import com.proofchain.identities.enums.StatusSubscription;
-import com.proofchain.instituition.Institution;
+import com.proofchain.instituition.Instituition;
 import com.proofchain.payment.Payments;
 import com.proofchain.plan.Plans;
 import com.proofchain.usageCounter.UsageCounters;
@@ -57,7 +57,7 @@ public class Subscriptions {
 
     @ManyToOne
     @JoinColumn(name = "id_instituition")
-    private Institution institution;
+    private Instituition instituition;
 
     @ManyToOne
     @JoinColumn(name = "id_plan")

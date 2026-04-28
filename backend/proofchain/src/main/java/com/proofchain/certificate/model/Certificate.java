@@ -1,7 +1,7 @@
 package com.proofchain.certificate.model;
 
 import com.proofchain.course.domain.model.Course;
-import com.proofchain.instituition.Institution;
+import com.proofchain.instituition.Instituition;
 import com.proofchain.instructor.Instructor;
 import com.proofchain.participant.Participant;
 import jakarta.persistence.*;
@@ -48,7 +48,7 @@ public class Certificate {
     // Instituição
     @ManyToOne(optional = false)
     @JoinColumn(name = "instituition_id")
-    private Institution institution;
+    private Instituition instituition;
 
     // Instrutor
     @ManyToOne(optional = false)

@@ -30,7 +30,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     /*
 🔧 Versão mais otimizada (sênior):
-- Query trazendo User + Institution
+- Query trazendo User + Instituition
 - Cache por email
 Motivo: menos acessos ao banco
 */

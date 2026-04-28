@@ -1,7 +1,7 @@
 package com.proofchain.user;
 
 import com.proofchain.identities.enums.UserRole;
-import com.proofchain.instituition.Institution;
+import com.proofchain.instituition.Instituition;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -46,9 +46,9 @@ public class User {
 
     /////// RELACIONAMENTO ///////
 
-    // EM Institution
+    // EM Instituition
     @ManyToOne
-    @JoinColumn(name = "institution_id")
-    private Institution institution;
+    @JoinColumn(name = "instituition_id")
+    private Instituition instituition;
 
 }
