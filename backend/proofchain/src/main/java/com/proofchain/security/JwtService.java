@@ -3,7 +3,7 @@ package com.proofchain.security;
 
 // Geração e validação de token
 
-import com.proofchain.identities.User;
+import com.proofchain.user.User;
 import io.jsonwebtoken.security.Keys;
 import lombok.AllArgsConstructor;
 import io.jsonwebtoken.*;

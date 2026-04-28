@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import java.util.HashMap;
 import java.util.Map;
 
-public record ResponseError(
+public record ResponseError (
         String message,
         Integer code
 ) {}

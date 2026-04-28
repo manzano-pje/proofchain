@@ -1,0 +1,29 @@
+package com.proofchain.user.dto.response;
+
+import com.proofchain.user.User;
+import com.proofchain.identities.enums.UserRole;
+
+import java.time.Instant;
+
+
+public record UserReturn(
+
+    String name,
+    String email,
+    UserRole role,
+    boolean active,
+    Instant createAt,
+    Instant updateAt
+){
+    public UserReturn(User user)
+    {
+        this(
+                user.getName(),
+                user.getEmail(),
+                user.getRole(),
+                user.isActive(),
+                user.getCreateAt(),
+                user.getUpdateAt()
+        );
+    }
+}
