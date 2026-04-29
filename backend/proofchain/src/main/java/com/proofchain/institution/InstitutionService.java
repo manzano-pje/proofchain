@@ -134,10 +134,38 @@ public class InstitutionService {
         subscriptionRepository.save(subscription);
     }
 
+    // Somente para administrador da plataforma
+    public List<InstitutionReturn> getAllinstitution(){
+
+        List<Institution> institutionList = institutionRepository.findAll();
+        if(institutionList.isEmpty()){
+            throw new ResourceNotFoundException("Não existem instituições cadastradas.");
+        }
+
+        return institutionList.stream()
+                .map(InstitutionReturn::new)
+                .collect(Collectors.toList());
+    }
+
+    public InstitutionReturn getOneinstitution(String cnpj){
+
+//        Long institutionId = SecurityUtils.getInstitutionId();
+//        validations.validateinstitution(institutionId);
+
+        Optional<Institution> institutionOptional = institutionRepository.findByCnpj(cnpj);
+        if(institutionOptional.isEmpty()){
+            throw new ResourceNotFoundException("Instituição não encontrada.");
+        }
+
+        InstitutionReturn retorno =mapper.modelMapper()
+                .map(institutionOptional, InstitutionReturn.class);
+        return  retorno;
+    }
+
     public void updateinstitution(String cnpj, InstitutionReques institutionReques){
 
-        Long institutionId = SecurityUtils.getInstitutionId();
-        validations.validateinstitution(institutionId);
+//        Long institutionId = SecurityUtils.getInstitutionId();
+//        validations.validateinstitution(institutionId);
 
         Optional<Institution> institutionOptional = institutionRepository.findByCnpj(cnpj);
         if(institutionOptional.isEmpty()){
@@ -158,18 +186,6 @@ public class InstitutionService {
         institutionRepository.save(institution);
     }
 
-    public InstitutionReturn getOneinstitution(String cnpj){
-
-        Long institutionId = SecurityUtils.getInstitutionId();
-        validations.validateinstitution(institutionId);
-
-        Optional<Institution> institutionOptional = institutionRepository.findByCnpj(cnpj);
-        if(institutionOptional.isEmpty()){
-            throw new ResourceNotFoundException("Instituição não encontrada.");
-        }
-
-        return  mapper.modelMapper().map(institutionOptional, InstitutionReturn.class);
-    }
 
     public void deleteinstitution(String cnpj){
 
@@ -183,16 +199,5 @@ public class InstitutionService {
         institutionRepository.deleteByCnpj(cnpj);
     }
 
-    // Somente para administrador da plataforma
-    public List<InstitutionReturn> getAllinstitution(){
 
-        List<Institution> institutionList = institutionRepository.findAll();
-        if(institutionList.isEmpty()){
-            throw new ResourceNotFoundException("Não existem instituições cadastradas.");
-        }
-
-        return institutionList.stream()
-                .map(InstitutionReturn::new)
-                .collect(Collectors.toList());
-    }
 }

@@ -16,9 +16,9 @@ public class PlansRequestDto {
     @NonNull
     private Integer durationDays;
     @NonNull
-    private boolean isActive;
-    @NonNull
     private BillingType billingType; // MANUAL, RECURRING
     @NonNull
     private Integer monthlyCertificateLimit;
+    @NonNull
+    private boolean isActive;
 }

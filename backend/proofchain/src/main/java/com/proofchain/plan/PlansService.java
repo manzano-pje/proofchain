@@ -21,8 +21,8 @@ public class PlansService {
 
     public void createPlan(PlansRequestDto plansRequestDto){
         // 🔑 Instituição vem do TOKEN, não do request
-        Long institutionId = SecurityUtils.getInstitutionId();
-        Institution institution = validations.validateinstitution(institutionId);
+//        Long institutionId = SecurityUtils.getInstitutionId();
+//        Institution institution = validations.validateinstitution(institutionId);
 
         Optional<Plans> plansOptional = plansRepository.findByName(plansRequestDto.getName());
         if (plansOptional.isPresent()){

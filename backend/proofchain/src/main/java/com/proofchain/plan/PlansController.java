@@ -18,7 +18,7 @@ public class PlansController {
 
     private final PlansService plansService;
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
     public ResponseEntity<String> signaturePlan( @RequestBody PlansRequestDto PlansRequestDto){
         plansService.createPlan(PlansRequestDto);
