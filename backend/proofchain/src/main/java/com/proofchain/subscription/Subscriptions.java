@@ -38,14 +38,14 @@ public class Subscriptions {
 //    private Long idPlan;
 
     @Enumerated(EnumType.STRING)
-    private StatusSubscription statusSubscription;  // Status da assinatura PENDING, ACTIVE, EXPIRED, CANCELED
+    private StatusSubscription status;    // Status da assinatura PENDING, ACTIVE, EXPIRED, CANCELED
 
     @Enumerated(EnumType.STRING)
     private BillingType billingType;        // tipo de cobrança MANUAL OU RECOURRING
 
     private Instant currentPeriodStarts;    // Data do início da assinatura do pacote atual
     private Instant currentPeriodEnd;       // Data do término da assinatura do pacote atual
-    private Instant nextBillingAt;          //
+    private Instant nextBillingAt;          // Data da próxima cobrannça
     private Instant schudledPlanChangeAt;   // Data para mudança do pacore
 
     // Integração Mercado Pago

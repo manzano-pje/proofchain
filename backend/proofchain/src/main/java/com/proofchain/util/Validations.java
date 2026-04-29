@@ -31,7 +31,7 @@ public class Validations {
     }
 
     public Optional<Course>validateCourseExist(Long id, Long idinstitution){
-        Optional<Course> courseOptional = courseRepository.findByIdCourseAndInstitutionId(id,idinstitution);
+        Optional<Course> courseOptional = courseRepository.findByIdAndInstitutionId(id,idinstitution);
         if(courseOptional.isPresent()){
             throw new CourseIsRegisteredException();
         }
@@ -39,7 +39,7 @@ public class Validations {
     }
 
     public Optional<Course>validateCourseNoExist(Long id, Long idinstitution){
-        Optional<Course> courseOptional = courseRepository.findByIdCourseAndInstitutionId(id,idinstitution);
+        Optional<Course> courseOptional = courseRepository.findByIdAndInstitutionId(id,idinstitution);
         if(courseOptional.isEmpty()){
             throw new CourseNotFoundException();
         }
@@ -47,7 +47,7 @@ public class Validations {
     }
 
     public Optional<User> validateUserExist(String email, Long idinstitution){
-        Optional<User> userOptional = userRepository.findByNameAndInstituitionId(email, idinstitution) ;
+        Optional<User> userOptional = userRepository.findByNameAndInstitutionId(email, idinstitution) ;
         if(userOptional.isPresent()){
             throw new BusinessRuleException("Usuário já cadastrado");
         }
@@ -55,7 +55,7 @@ public class Validations {
     }
 
     public Optional<User> validateUserNotExist(String email, Long idinstitution) {
-        Optional<User> userOptional = userRepository.findByNameAndInstituitionId(email, idinstitution);
+        Optional<User> userOptional = userRepository.findByNameAndInstitutionId(email, idinstitution);
         if (userOptional.isEmpty()) {
             throw new ResourceNotFoundException("Usuário não cadastrado");
         }

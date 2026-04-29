@@ -20,7 +20,7 @@ public class UpdateCourseHandler {
     private final CourseRepository courseRepository;
 
     public Course updateCourse(Long id, UpdateCourseCommand command) {
-        Long institutionId = SecurityUtils.getInstituitionId();
+        Long institutionId = SecurityUtils.getInstitutionId();
         assert institutionId != null;
 
         Institution institution = institutionRepository.findById(institutionId)
@@ -29,7 +29,7 @@ public class UpdateCourseHandler {
         Course course = courseRepository.findById(id)
                 .orElseThrow(CourseNotFoundException::new);
 
-        boolean exist = courseRepository.existsByIdCourseAndInstitutionId(command.getId(), institution.getId());
+        boolean exist = courseRepository.existsByIdAndInstitutionId(command.getId(), institution.getId());
 
         if (exist && !course.getName().equals(command.getName())) {
             throw new CourseIsRegisteredException();

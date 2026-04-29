@@ -27,7 +27,7 @@ public class Plans {
 
     private String name;
     private double price;
-    private int durationDays;
+    private Integer durationDays;
     private boolean isActive;
     private Instant createdAt;
     private BillingType billingType;            // MANUAL, RECURRING

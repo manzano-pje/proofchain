@@ -25,7 +25,7 @@ public class CreateCourseHandler {
         assert institutionId != null;
         Institution institution = institutionRepository.findById(institutionId)
                 .orElseThrow(InstitutionNotFoundException::new);
-        boolean exist = courseRepository.existsByIdCourseAndInstitutionId(command.getId(), institution.getId());
+        boolean exist = courseRepository.existsByIdAndInstitutionId(command.getId(), institution.getId());
         if (exist) {
             throw new ValidationException("Curso já cadastrado");
         }

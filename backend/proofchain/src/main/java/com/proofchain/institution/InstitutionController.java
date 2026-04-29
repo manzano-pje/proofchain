@@ -1,6 +1,6 @@
 package com.proofchain.institution;
 
-import com.proofchain.institution.dtos.request.InstitutionRequestDto;
+import com.proofchain.institution.dtos.request.InstitutionReques;
 import com.proofchain.institution.dtos.request.NewInstitutionRequestDto;
 import com.proofchain.institution.dtos.response.InstitutionReturn;
 import jakarta.validation.Valid;
@@ -30,8 +30,8 @@ public class InstitutionController {
     @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("/update/{cnpj}")
     public ResponseEntity<String> updateInstitution(@Valid @PathVariable String cnpj,
-                                                    @Valid @RequestBody InstitutionRequestDto institutionRequestDto){
-        institutionService.updateinstitution(cnpj, institutionRequestDto);
+                                                    @Valid @RequestBody InstitutionReques institutionReques){
+        institutionService.updateinstitution(cnpj, institutionReques);
         return ResponseEntity.status(HttpStatus.OK)
                 .body("Instituição atualizada com sucesso.");
     }

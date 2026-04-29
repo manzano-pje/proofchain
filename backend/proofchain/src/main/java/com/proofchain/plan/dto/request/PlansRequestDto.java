@@ -14,11 +14,11 @@ public class PlansRequestDto {
     @NonNull
     private double price;
     @NonNull
-    private int durationDays;
-    @NonNull
-    private boolean isActive;
+    private Integer durationDays;
     @NonNull
     private BillingType billingType; // MANUAL, RECURRING
     @NonNull
     private Integer monthlyCertificateLimit;
+    @NonNull
+    private boolean isActive;
 }
