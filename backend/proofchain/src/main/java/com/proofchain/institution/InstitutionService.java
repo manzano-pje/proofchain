@@ -142,8 +142,8 @@ public class InstitutionService {
             throw new ResourceNotFoundException("Não existem instituições cadastradas.");
         }
 
-        return institutionList.stream()
-                .map(InstitutionReturn::new)
+            return institutionList.stream()
+                .map(InstitutionReturn::from)
                 .collect(Collectors.toList());
     }
 
@@ -157,9 +157,8 @@ public class InstitutionService {
             throw new ResourceNotFoundException("Instituição não encontrada.");
         }
 
-        InstitutionReturn retorno =mapper.modelMapper()
-                .map(institutionOptional, InstitutionReturn.class);
-        return  retorno;
+        InstitutionReturn retorno = InstitutionReturn.from(institutionOptional.get());
+        return retorno;
     }
 
     public void updateinstitution(String cnpj, InstitutionReques institutionReques){
