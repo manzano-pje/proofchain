@@ -1,11 +1,7 @@
 package com.proofchain.instructor;
 
 import com.proofchain.course.domain.model.Course;
-<<<<<<< HEAD
-import com.proofchain.instituition.Institution;
-=======
 import com.proofchain.instituition.Instituition;
->>>>>>> master
 import com.proofchain.user.User;
 import jakarta.persistence.*;
 import lombok.*;

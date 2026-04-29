@@ -2,10 +2,7 @@ package com.proofchain.course.interfaces.controller;
 
 import com.proofchain.course.application.command.CreateCourseCommand;
 import com.proofchain.course.application.command.UpdateCourseCommand;
-import com.proofchain.course.application.handler.CreateCourseHandler;
-import com.proofchain.course.application.handler.ListAllCourseHandler;
-import com.proofchain.course.application.handler.ListOneCourseHandler;
-import com.proofchain.course.application.handler.UpdateCourseHandler;
+import com.proofchain.course.application.handler.*;
 import com.proofchain.course.domain.model.Course;
 import com.proofchain.course.interfaces.dto.request.CourseRequestDto;
 import com.proofchain.course.interfaces.dto.response.CourseResponse;
@@ -41,23 +38,14 @@ public class CourseController {
     @PreAuthorize("hasRole('ROLE_ADMIN', 'ROLE_USER')")
     @GetMapping
     public List<FullCourseResponse> listAllCourses(){
-<<<<<<< HEAD
         return listAllCourses.listAllCourses();
-=======
-        return listAllCourseHandler.listAllCourses();
->>>>>>> master
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN', 'ROLE_USER')")
-    @GetMapping("/{name}")
-    public CourseResponse listOneCourse(@PathVariable String name){
-<<<<<<< HEAD
-
-        return listOneCourse.listOneCourse(name);
-=======
-        return listOneCourseHandler.listOneCourse(name);
->>>>>>> master
-    }
+    @GetMapping("/{id}")
+    public CourseResponse listOneCourse(@PathVariable Long id){
+        return listOneCourse.listOneCourse(id);
+   }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @PatchMapping("/update/{id}")

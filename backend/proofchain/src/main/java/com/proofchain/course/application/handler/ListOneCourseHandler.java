@@ -18,10 +18,10 @@ public class ListOneCourseHandler {
     private final Validations validations;
     private final CourseRepository courseRepository;
 
-    public CourseResponse listOneCourse(String name){
-        Long institutionId = SecurityUtils.getInstitutionId();
-        Institution institution = validations.validateinstitution(institutionId);
-        Optional<Course> courseOptional = courseRepository.findByNameAndInstitutionId(name, SecurityUtils.getInstituitionId());
+    public CourseResponse listOneCourse(Long id){
+        Long institutionId = SecurityUtils.getInstituitionId();
+        Instituition institution = validations.validateinstitution(institutionId);
+        Optional<Course> courseOptional = courseRepository.findByIdCourseAndInstituitionId(id, SecurityUtils.getInstituitionId());
         if(courseOptional.isEmpty()){
             throw new CourseNotFoundException();
         }

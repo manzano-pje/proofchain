@@ -29,7 +29,7 @@ public class UpdateCourseHandler {
         Course course = courseRepository.findById(id)
                 .orElseThrow(CourseNotFoundException::new);
 
-        boolean exist = courseRepository.existsByNameAndInstitutionId(command.getName(), instituition.getId());
+        boolean exist = courseRepository.existsByIdCourseAndInstituitionId(command.getId(), instituition.getId());
 
         if (exist && !course.getName().equals(command.getName())) {
             throw new CourseIsRegisteredException();
