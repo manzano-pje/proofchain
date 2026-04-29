@@ -1,7 +1,7 @@
 package com.proofchain.user;
 
 import com.proofchain.identities.enums.UserRole;
-import com.proofchain.instituition.Instituition;
+import com.proofchain.institution.Institution;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,17 +23,17 @@ public class User {
     private Long id;
 
 
-//    @Column(nullable = false)
+    @Column(nullable = false)
     private String name;
 
-//    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true)
     private String email;
 
-//    @Column(nullable = false)
+    @Column(nullable = false)
     private String password;
 
     @Enumerated(EnumType.STRING)
-//    @Column(nullable = false)
+    @Column(nullable = false)
     private UserRole role;
 
 
@@ -49,6 +49,6 @@ public class User {
     // EM Instituition
     @ManyToOne
     @JoinColumn(name = "instituition_id")
-    private Instituition instituition;
+    private Institution institution;
 
 }

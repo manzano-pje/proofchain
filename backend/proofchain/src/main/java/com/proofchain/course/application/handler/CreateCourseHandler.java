@@ -1,12 +1,12 @@
 package com.proofchain.course.application.handler;
 
 import com.proofchain.course.application.command.CreateCourseCommand;
-import com.proofchain.course.domain.exception.InstrituitionNotFoundException;
 import com.proofchain.course.domain.model.Course;
 import com.proofchain.course.infrastructure.repository.CourseRepository;
 import com.proofchain.exceptions.ValidationException;
-import com.proofchain.instituition.Instituition;
-import com.proofchain.instituition.InstituitionRepository;
+import com.proofchain.institution.Institution;
+import com.proofchain.institution.InstitutionRepository;
+import com.proofchain.institution.exception.InstitutionNotFoundException;
 import com.proofchain.security.SecurityUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -18,14 +18,14 @@ import static java.time.Instant.now;
 public class CreateCourseHandler {
 
     private final CourseRepository courseRepository;
-    private final InstituitionRepository instituitionRepository;
+    private final InstitutionRepository institutionRepository;
 
     public void handle(CreateCourseCommand command) {
-        Long institutionId = SecurityUtils.getInstituitionId();
+        Long institutionId = SecurityUtils.getInstitutionId();
         assert institutionId != null;
-        Instituition instituition = instituitionRepository.findById(institutionId)
-                .orElseThrow(InstrituitionNotFoundException::new);
-        boolean exist = courseRepository.existsByIdCourseAndInstituitionId(command.getId(), instituition.getId());
+        Institution institution = institutionRepository.findById(institutionId)
+                .orElseThrow(InstitutionNotFoundException::new);
+        boolean exist = courseRepository.existsByIdCourseAndInstitutionId(command.getId(), institution.getId());
         if (exist) {
             throw new ValidationException("Curso já cadastrado");
         }
@@ -34,7 +34,7 @@ public class CreateCourseHandler {
                 command.getName(),
                 command.getDescription(),
                 command.getHours(),
-                instituition
+                institution
         );
         course.setCreatedAt(now());
         courseRepository.save(course);

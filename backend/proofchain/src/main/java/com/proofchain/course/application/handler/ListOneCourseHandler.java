@@ -4,7 +4,8 @@ import com.proofchain.course.domain.exception.CourseNotFoundException;
 import com.proofchain.course.domain.model.Course;
 import com.proofchain.course.infrastructure.repository.CourseRepository;
 import com.proofchain.course.interfaces.dto.response.CourseResponse;
-import com.proofchain.instituition.Instituition;
+import com.proofchain.institution.Instituition;
+import com.proofchain.institution.Institution;
 import com.proofchain.security.SecurityUtils;
 import com.proofchain.util.Validations;
 import lombok.AllArgsConstructor;
@@ -19,9 +20,9 @@ public class ListOneCourseHandler {
     private final CourseRepository courseRepository;
 
     public CourseResponse listOneCourse(Long id){
-        Long institutionId = SecurityUtils.getInstituitionId();
-        Instituition institution = validations.validateinstitution(institutionId);
-        Optional<Course> courseOptional = courseRepository.findByIdCourseAndInstituitionId(id, SecurityUtils.getInstituitionId());
+        Long institutionId = SecurityUtils.getInstitutionId();
+        Institution institution = validations.validateinstitution(institutionId);
+        Optional<Course> courseOptional = courseRepository.findByIdCourseAndInstitutionId(id, SecurityUtils.getInstitutionId());
         if(courseOptional.isEmpty()){
             throw new CourseNotFoundException();
         }
