@@ -21,13 +21,11 @@ public class CreateCourseHandler {
     private final InstituitionRepository instituitionRepository;
 
     public void handle(CreateCourseCommand command) {
-
         Long institutionId = SecurityUtils.getInstituitionId();
         assert institutionId != null;
         Instituition instituition = instituitionRepository.findById(institutionId)
                 .orElseThrow(InstrituitionNotFoundException::new);
-
-        boolean exist = courseRepository.existsByNameAndInstitutionId(command.getName(), instituition.getId());
+        boolean exist = courseRepository.existsByIdCourseAndInstituitionId(command.getId(), instituition.getId());
         if (exist) {
             throw new ValidationException("Curso já cadastrado");
         }
@@ -39,7 +37,6 @@ public class CreateCourseHandler {
                 instituition
         );
         course.setCreatedAt(now());
-
         courseRepository.save(course);
     }
 }

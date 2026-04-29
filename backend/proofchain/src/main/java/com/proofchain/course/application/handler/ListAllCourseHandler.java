@@ -7,17 +7,18 @@ import com.proofchain.exceptions.ResourceNotFoundException;
 import com.proofchain.instituition.Instituition;
 import com.proofchain.security.SecurityUtils;
 import com.proofchain.util.Validations;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
+@AllArgsConstructor
 public class ListAllCourseHandler {
-
 
     private Validations validations;
     private CourseRepository courseRepository;
+
 
     public List<FullCourseResponse> listAllCourses(){
         Long institutionId = SecurityUtils.getInstituitionId();

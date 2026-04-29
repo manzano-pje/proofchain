@@ -1,0 +1,7 @@
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
+import { Card } from "./Dashboard"; // reutiliza ou crie local
+const MOCK_DATA = [{ name: "Jan", certs: 40 }, { name: "Fev", certs: 65 }, { name: "Mar", certs: 45 }, { name: "Abr", certs: 80 }];
+export default function Reports() {
+  return (<div className="space-y-6"><h1 className="text-2xl font-bold">Relatórios & Métricas</h1><div className="card"><h3 className="font-semibold mb-4">Emissões Mensais</h3><div className="h-64 w-full"><ResponsiveContainer width="100%" height="100%"><BarChart data={MOCK_DATA}><XAxis dataKey="name"/><YAxis/><Tooltip/><Bar dataKey="certs" fill="#16A34A" radius={[4,4,0,0]}/></BarChart></ResponsiveContainer></div></div><div className="grid md:grid-cols-2 gap-4"><div className="card"><h3 className="font-semibold mb-2">Taxa de Validação</h3><p className="text-3xl font-bold text-primary">98.5%</p><p className="text-sm text-gray-500 mt-1">Certificados verificados com sucesso</p></div><div className="card"><h3 className="font-semibold mb-2">Tempo Médio de Emissão</h3><p className="text-3xl font-bold text-dark">2.4s</p><p className="text-sm text-gray-500 mt-1">Do clique ao registro na rede</p></div></div></div>);
+}
+// Nota: Instale `recharts` se quiser usar: `npm i recharts`

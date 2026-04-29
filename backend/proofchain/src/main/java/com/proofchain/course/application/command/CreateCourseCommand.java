@@ -5,11 +5,13 @@ import lombok.Getter;
 
 @Getter
 public class CreateCourseCommand {
+    private final Long id;
     private final String name;
     private final String description;
     private final int hours;
 
-    public CreateCourseCommand(CourseRequestDto dto) {
+    public CreateCourseCommand(CourseRequestDto dto){
+        this.id = dto.getId();
         this.name = dto.getName();
         this.description = dto.getDescription();
         this.hours = dto.getHours();

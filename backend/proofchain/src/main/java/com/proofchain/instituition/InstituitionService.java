@@ -1,24 +1,21 @@
 package com.proofchain.instituition;
 
-import com.proofchain.instituition.dtos.request.InstitutionRequestDto;
-import com.proofchain.instituition.dtos.request.NewInstitutionRequestDto;
-
-import com.proofchain.instituition.dtos.response.InstitutionReturn;
-
-import com.proofchain.plataform.domain.ModelMapperConfig;
 import com.proofchain.course.domain.exception.BusinessRuleException;
 import com.proofchain.exceptions.ResourceNotFoundException;
-import com.proofchain.plan.Plans;
-import com.proofchain.subscription.Subscriptions;
-import com.proofchain.user.User;
 import com.proofchain.identities.enums.BillingType;
 import com.proofchain.identities.enums.StatusSubscription;
 import com.proofchain.identities.enums.UserRole;
-
+import com.proofchain.instituition.dtos.request.InstitutionRequestDto;
+import com.proofchain.instituition.dtos.request.NewInstitutionRequestDto;
+import com.proofchain.instituition.dtos.response.InstitutionReturn;
+import com.proofchain.plan.Plans;
 import com.proofchain.plan.PlansRepository;
-import com.proofchain.subscription.SubscriptionRepository;
-import com.proofchain.user.UserRepository;
+import com.proofchain.plataform.domain.ModelMapperConfig;
 import com.proofchain.security.SecurityUtils;
+import com.proofchain.subscription.SubscriptionRepository;
+import com.proofchain.subscription.Subscriptions;
+import com.proofchain.user.User;
+import com.proofchain.user.UserRepository;
 import com.proofchain.util.Validations;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;

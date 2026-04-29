@@ -1,7 +1,7 @@
 package com.proofchain.user.dto.response;
 
-import com.proofchain.user.User;
 import com.proofchain.identities.enums.UserRole;
+import com.proofchain.user.User;
 
 import java.time.Instant;
 

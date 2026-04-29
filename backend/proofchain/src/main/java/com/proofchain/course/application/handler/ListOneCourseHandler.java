@@ -7,21 +7,21 @@ import com.proofchain.course.interfaces.dto.response.CourseResponse;
 import com.proofchain.instituition.Instituition;
 import com.proofchain.security.SecurityUtils;
 import com.proofchain.util.Validations;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
-
 import java.util.Optional;
 
 @Component
+@AllArgsConstructor
 public class ListOneCourseHandler {
 
-    private Validations validations;
-    private CourseRepository courseRepository;
+    private final Validations validations;
+    private final CourseRepository courseRepository;
 
-    public  CourseResponse listOneCourse(String name){
+    public CourseResponse listOneCourse(Long id){
         Long institutionId = SecurityUtils.getInstituitionId();
-        Instituition instituition = validations.validateinstitution(institutionId);
-
-        Optional<Course> courseOptional = courseRepository.findByNameAndInstitutionId(name, SecurityUtils.getInstituitionId());
+        Instituition institution = validations.validateinstitution(institutionId);
+        Optional<Course> courseOptional = courseRepository.findByIdCourseAndInstituitionId(id, SecurityUtils.getInstituitionId());
         if(courseOptional.isEmpty()){
             throw new CourseNotFoundException();
         }

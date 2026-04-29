@@ -1,6 +1,5 @@
 package com.proofchain.course.interfaces.dto.request;
 
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,7 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CourseRequestDto {
-
+    private Long id;
     @Size(max = 100)
     private String name;
     @Size(max = 200)

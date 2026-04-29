@@ -2,10 +2,10 @@ package com.proofchain.course.domain.model;
 
 import com.proofchain.certificate.model.Certificate;
 import com.proofchain.instituition.Instituition;
-import com.proofchain.plataform.domain.text.textNormalize;
 import com.proofchain.exceptions.ValidationException;
 import com.proofchain.instructor.Instructor;
 import com.proofchain.participant.Participant;
+import com.proofchain.plataform.domain.text.textNormalize;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;

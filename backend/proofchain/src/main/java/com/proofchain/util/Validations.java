@@ -25,22 +25,21 @@ public class Validations {
 
 
     // 🔑 Instituição vem do TOKEN, não do request
-    public Instituition validateinstitution(Long institutionId) {;
-        Instituition instituition = instituitionRepository.findById(institutionId)
+    public Instituition validateinstitution(Long institutionId) {
+        return instituitionRepository.findById(institutionId)
                 .orElseThrow(() -> new ResourceNotFoundException("Instituição não encontrada"));
-        return instituition;
     }
 
-    public Optional<Course>validateCourseExist(String name, Long idinstitution){
-        Optional<Course> courseOptional = courseRepository.findByNameAndInstitutionId(name,idinstitution);
+    public Optional<Course>validateCourseExist(Long id, Long idinstitution){
+        Optional<Course> courseOptional = courseRepository.findByIdCourseAndInstituitionId(id,idinstitution);
         if(courseOptional.isPresent()){
             throw new CourseIsRegisteredException();
         }
         return courseOptional;
     }
 
-    public Optional<Course>validateCourseNoExist(String name, Long idinstitution){
-        Optional<Course> courseOptional = courseRepository.findByNameAndInstitutionId(name,idinstitution);
+    public Optional<Course>validateCourseNoExist(Long id, Long idinstitution){
+        Optional<Course> courseOptional = courseRepository.findByIdCourseAndInstituitionId(id,idinstitution);
         if(courseOptional.isEmpty()){
             throw new CourseNotFoundException();
         }

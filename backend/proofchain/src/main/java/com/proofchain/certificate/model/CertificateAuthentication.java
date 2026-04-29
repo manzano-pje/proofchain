@@ -1,10 +1,11 @@
 package com.proofchain.certificate.model;
 
+import com.proofchain.identities.enums.AuthenticationStatus;
 import com.proofchain.instituition.Instituition;
 import com.proofchain.participant.Participant;
-import com.proofchain.identities.enums.AuthenticationStatus;
 import jakarta.persistence.*;
 import lombok.*;
+
 import java.time.Instant;
 
 @Entity
@@ -42,7 +43,5 @@ public class CertificateAuthentication {
     @ManyToOne(optional = false)
     @JoinColumn(name = "participant_id")
     private Participant participant;
-
-
 
 }

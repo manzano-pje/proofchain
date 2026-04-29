@@ -2,10 +2,7 @@ package com.proofchain.course.interfaces.controller;
 
 import com.proofchain.course.application.command.CreateCourseCommand;
 import com.proofchain.course.application.command.UpdateCourseCommand;
-import com.proofchain.course.application.handler.CreateCourseHandler;
-import com.proofchain.course.application.handler.ListAllCourseHandler;
-import com.proofchain.course.application.handler.ListOneCourseHandler;
-import com.proofchain.course.application.handler.UpdateCourseHandler;
+import com.proofchain.course.application.handler.*;
 import com.proofchain.course.domain.model.Course;
 import com.proofchain.course.interfaces.dto.request.CourseRequestDto;
 import com.proofchain.course.interfaces.dto.response.CourseResponse;
@@ -20,19 +17,19 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @AllArgsConstructor
-//@NoArgsConstructor
 @RestController
 @RequestMapping("/api/v1/course")
 public class CourseController {
 
     private final UpdateCourseHandler updateCourseHandler;
-    private final ListOneCourseHandler listOneCourseHandler;
-    private final ListAllCourseHandler listAllCourseHandler;
     private final CreateCourseHandler createCourseHandler;
+    private final ListAllCourseHandler listAllCourses;
+    private final ListOneCourseHandler listOneCourse;
+    private final DeleteCourseHandler deleteCourse;
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
-    public ResponseEntity<Void> createCourse(@RequestBody CourseRequestDto dto) {
+    public ResponseEntity<Void> createCourse(@Valid @RequestBody CourseRequestDto dto) {
         CreateCourseCommand command = new CreateCourseCommand(dto);
         createCourseHandler.handle(command);
         return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -41,14 +38,14 @@ public class CourseController {
     @PreAuthorize("hasRole('ROLE_ADMIN', 'ROLE_USER')")
     @GetMapping
     public List<FullCourseResponse> listAllCourses(){
-        return listAllCourseHandler.listAllCourses();
+        return listAllCourses.listAllCourses();
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN', 'ROLE_USER')")
-    @GetMapping("/{name}")
-    public CourseResponse listOneCourse(@PathVariable String name){
-        return listOneCourseHandler.listOneCourse(name);
-    }
+    @GetMapping("/{id}")
+    public CourseResponse listOneCourse(@PathVariable Long id){
+        return listOneCourse.listOneCourse(id);
+   }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @PatchMapping("/update/{id}")

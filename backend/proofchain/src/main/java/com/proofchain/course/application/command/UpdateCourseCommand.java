@@ -7,11 +7,13 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UpdateCourseCommand {
+    private Long id;
     private  String name;
     private  String description;
     private  int hours;
 
     public UpdateCourseCommand(CourseRequestDto dto) {
+        this.id = dto.getId();
         this.name = dto.getName();
         this.description = dto.getDescription();
         this.hours = dto.getHours();
