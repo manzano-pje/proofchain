@@ -6,8 +6,6 @@ import com.proofchain.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
-
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,20 +14,23 @@ import java.util.List;
 @Setter
 @ToString
 @Table(name = "tb_instructors")
-public class Instructor extends User {
+public class Instructor  {
+
+    @Id
+    private Long id;
 
     @Column(nullable = false)
-    private Long instructorNumber;
+    private Long number;
 
-    @Column(nullable = false, unique = true)
-    private Long idCourse;
+    @OneToOne
+    @MapsId
+    @JoinColumn(name = "user_id")
+    private User user;
 
+    @ManyToOne
+    private Course course;
 
     /////// RELACIONAMENTO ///////
-
-    // course
-    @OneToMany(mappedBy = "instructor")
-    private List<Course> courses;
 
     // EM Instituition
     @ManyToOne

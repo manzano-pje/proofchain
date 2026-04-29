@@ -18,7 +18,7 @@ public class UsageCounters {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idUsageCounter;
+    private Long id;
 
     @OneToOne
     private com.proofchain.subscription.Subscriptions Subscriptions;

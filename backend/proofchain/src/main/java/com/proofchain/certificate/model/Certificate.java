@@ -7,6 +7,7 @@ import com.proofchain.participant.Participant;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.Instant;
 import java.time.LocalDate;
 
 @Entity
@@ -17,9 +18,7 @@ import java.time.LocalDate;
 @ToString
 @Table(
         name = "tb_certificates",
-        uniqueConstraints = {
-                @UniqueConstraint(columnNames = {"course_id", "participant_id"})
-        }
+        uniqueConstraints = {@UniqueConstraint(columnNames = {"course_id", "participant_id"})        }
 )
 
 public class Certificate {
@@ -27,16 +26,14 @@ public class Certificate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     // Cryptographic proof (off-chain / on-chain)
     @Column(nullable = false, unique = true, length = 64)
     private String hash;
-
-    private LocalDate issuedDate;
-    private LocalDate initialDateCourse;
-    private LocalDate finishDateCourse;
-    private LocalDate revokedDate;
-    private LocalDate expiredDate;
+    private Instant issuedDate;         // Data de emissão
+    private Instant initialDateCourse;  // Data do início do curso
+    private Instant finishDateCourse;   // Data do final do curso
+    private Instant revokedDate;        // Data em que o certificado foi cancelado
+    private Instant expiredDate;        // Data em que o certificado expira
 
     ///// RELACIONAMENTO /////
 

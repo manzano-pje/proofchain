@@ -14,7 +14,7 @@ public class PlansRequestDto {
     @NonNull
     private double price;
     @NonNull
-    private int durationDays;
+    private Integer durationDays;
     @NonNull
     private boolean isActive;
     @NonNull

@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
 
@@ -36,11 +37,10 @@ public class User {
     @Column(nullable = false)
     private UserRole role;
 
-
     @CreationTimestamp
     private Instant createAt;
 
-    @CreationTimestamp
+    @UpdateTimestamp
     private Instant updateAt;
     private boolean isActive;
 

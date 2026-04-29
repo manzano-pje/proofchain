@@ -27,7 +27,7 @@ public class CourseController {
     private final ListOneCourseHandler listOneCourse;
     private final DeleteCourseHandler deleteCourse;
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<Void> createCourse(@Valid @RequestBody CourseRequestDto dto) {
         CreateCourseCommand command = new CreateCourseCommand(dto);
@@ -35,13 +35,13 @@ public class CourseController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN', 'ROLE_USER')")
+    @PreAuthorize("hasRole('ADMIN', 'USER')")
     @GetMapping
     public List<FullCourseResponse> listAllCourses(){
         return listAllCourses.listAllCourses();
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN', 'ROLE_USER')")
+    @PreAuthorize("hasRole('ADMIN', 'USER')")
     @GetMapping("/{id}")
     public CourseResponse listOneCourse(@PathVariable Long id){
         return listOneCourse.listOneCourse(id);

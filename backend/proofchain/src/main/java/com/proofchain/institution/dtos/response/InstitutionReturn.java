@@ -5,24 +5,21 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 public record InstitutionReturn(
-        Long idInstitution,
-        String nameInstitution,
+        Long id,
+        String name,
         String cnpj,
-        String emailInstitution,
-        String addressInstitution,
-        int numberInstitution,
-        String complementInstitution,
-        String neighborhoodInstitution,
-        String cityInstitution,
-
+        String email,
+        String address,
+        Integer number,
+        String complement,
+        String neighborhood,
+        String city,
         @Size(min = 2, max = 2)
-        String stateInstitution,
-
+        String state,
         @Pattern(regexp = "\\d{5}-\\d{3}",message = "O cep deve ser no fornato XXXXX-XXX")
-        String postalCodeInstitution,
-
+        String postalCode,
         @Pattern(regexp = "\\(\\d{2}\\) \\d{5}-\\d{4}", message = "O telefone deve estar no formato (XX) XXXXX-XXXX")
-        String phoneInstitution
+        String phone
    ){
         public InstitutionReturn(Institution institution){
                 this(institution.getId(),
