@@ -5,10 +5,10 @@ import com.proofchain.course.domain.exception.CourseIsRegisteredException;
 import com.proofchain.course.domain.exception.CourseNotFoundException;
 import com.proofchain.exceptions.ResourceNotFoundException;
 import com.proofchain.course.domain.model.Course;
-import com.proofchain.instituition.Instituition;
+import com.proofchain.institution.Institution;
 import com.proofchain.user.User;
 import com.proofchain.course.infrastructure.repository.CourseRepository;
-import com.proofchain.instituition.InstituitionRepository;
+import com.proofchain.institution.InstitutionRepository;
 import com.proofchain.user.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -19,19 +19,19 @@ import java.util.Optional;
 @Component
 public class Validations {
 
-    private final InstituitionRepository instituitionRepository;
+    private final InstitutionRepository institutionRepository;
     private final CourseRepository courseRepository;
     private final UserRepository userRepository;
 
 
     // 🔑 Instituição vem do TOKEN, não do request
-    public Instituition validateinstitution(Long institutionId) {
-        return instituitionRepository.findById(institutionId)
+    public Institution validateinstitution(Long institutionId) {
+        return institutionRepository.findById(institutionId)
                 .orElseThrow(() -> new ResourceNotFoundException("Instituição não encontrada"));
     }
 
     public Optional<Course>validateCourseExist(Long id, Long idinstitution){
-        Optional<Course> courseOptional = courseRepository.findByIdCourseAndInstituitionId(id,idinstitution);
+        Optional<Course> courseOptional = courseRepository.findByIdCourseAndInstitutionId(id,idinstitution);
         if(courseOptional.isPresent()){
             throw new CourseIsRegisteredException();
         }
@@ -39,7 +39,7 @@ public class Validations {
     }
 
     public Optional<Course>validateCourseNoExist(Long id, Long idinstitution){
-        Optional<Course> courseOptional = courseRepository.findByIdCourseAndInstituitionId(id,idinstitution);
+        Optional<Course> courseOptional = courseRepository.findByIdCourseAndInstitutionId(id,idinstitution);
         if(courseOptional.isEmpty()){
             throw new CourseNotFoundException();
         }

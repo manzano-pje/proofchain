@@ -7,7 +7,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 public class SecurityUtils {
 
     // Retorna o ID da instituição do usuário logado
-    public static Long getInstituitionId() {
+    public static Long getInstitutionId() {
 
         Authentication auth =
                 SecurityContextHolder
@@ -25,7 +25,7 @@ public class SecurityUtils {
             return null;
         }
         return Long.valueOf(
-                claims.get("instituition_id").toString()
+                claims.get("institution_id").toString()
         );
     }
 

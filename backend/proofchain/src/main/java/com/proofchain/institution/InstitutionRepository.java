@@ -1,4 +1,4 @@
-package com.proofchain.instituition;
+package com.proofchain.institution;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -6,9 +6,9 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface InstituitionRepository extends JpaRepository<Instituition, Long> {
+public interface InstitutionRepository extends JpaRepository<Institution, Long> {
 
 //    Optional<Instituition> findByid(Long instituitionId);
-    Optional<Instituition> findByCnpj(String cnpj);
+    Optional<Institution> findByCnpj(String cnpj);
     void deleteByCnpj(String cnpj);
 }

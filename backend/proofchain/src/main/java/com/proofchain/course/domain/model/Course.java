@@ -1,8 +1,8 @@
 package com.proofchain.course.domain.model;
 
 import com.proofchain.certificate.model.Certificate;
-import com.proofchain.instituition.Instituition;
 import com.proofchain.exceptions.ValidationException;
+import com.proofchain.institution.Institution;
 import com.proofchain.instructor.Instructor;
 import com.proofchain.participant.Participant;
 import com.proofchain.plataform.domain.text.textNormalize;
@@ -18,7 +18,6 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
 @Table(name = "tb_courses")
 public class Course {
 
@@ -44,13 +43,13 @@ public class Course {
     public static Course create(String name,
                                 String description,
                                 int hours,
-                                Instituition instituition) {
+                                Institution institution) {
 
         if (hours <= 0) {
             throw new ValidationException("Horas devem ser maior que zero");
         }
 
-        if (instituition == null) {
+        if (institution == null) {
             throw new ValidationException("Instituição obrigatória");
         }
 
@@ -59,7 +58,7 @@ public class Course {
         course.description = textNormalize.normalize(description);
         course.hours = hours;
         course.createdAt = Instant.now();
-        course.instituition = instituition;
+        course.institution = institution;
 
         return course;
     }
@@ -74,9 +73,9 @@ public class Course {
 
     // Instituition
     @ManyToOne
-    @JoinColumn(name = "instituition_id",
+    @JoinColumn(name = "institution_id",
                 nullable = false)
-    private Instituition instituition;
+    private Institution institution;
 
     // Instrutor
     @ManyToOne(cascade = CascadeType.ALL)

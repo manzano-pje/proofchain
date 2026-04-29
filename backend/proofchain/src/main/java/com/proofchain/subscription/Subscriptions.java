@@ -2,7 +2,7 @@ package com.proofchain.subscription;
 
 import com.proofchain.identities.enums.BillingType;
 import com.proofchain.identities.enums.StatusSubscription;
-import com.proofchain.instituition.Instituition;
+import com.proofchain.institution.Institution;
 import com.proofchain.payment.Payments;
 import com.proofchain.plan.Plans;
 import com.proofchain.usageCounter.UsageCounters;
@@ -56,8 +56,8 @@ public class Subscriptions {
     private Instant canceledAt;                 // Data de cancelamento da assinatura
 
     @ManyToOne
-    @JoinColumn(name = "id_instituition")
-    private Instituition instituition;
+    @JoinColumn(name = "id_institution")
+    private Institution institution;
 
     @ManyToOne
     @JoinColumn(name = "id_plan")

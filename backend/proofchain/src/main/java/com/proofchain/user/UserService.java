@@ -1,7 +1,7 @@
 package com.proofchain.user;
 
 import com.proofchain.exceptions.ResourceNotFoundException;
-import com.proofchain.instituition.Instituition;
+import com.proofchain.institution.Institution;
 import com.proofchain.plataform.domain.ModelMapperConfig;
 import com.proofchain.security.SecurityUtils;
 import com.proofchain.user.dto.request.UserRequestDto;
@@ -29,16 +29,16 @@ public class UserService {
 
     public UserReturn createUser(UserRequestDto newUser) {
         // 🔑 Instituição vem do TOKEN, não do request
-        Long instituitionId = SecurityUtils.getInstituitionId();
-        Instituition instituition = validations.validateinstitution(instituitionId);
+        Long institutionId = SecurityUtils.getInstitutionId();
+        Institution institution = validations.validateinstitution(institutionId);
 
         // Valida se usuário já existe
-        validations.validateUserExist(newUser.getEmail(), instituitionId);
+        validations.validateUserExist(newUser.getEmail(), institutionId);
 
         // Cria usuário
         User user = new User();
         user = mapper.modelMapper().map(newUser, User.class);
-        user.setInstituition(instituition);
+        user.setInstitution(institution);
         user.setPassword(passwordEncoder.encode(newUser.getPassword()));
         user.setCreateAt(now());
         user.setActive(true);
@@ -49,11 +49,11 @@ public class UserService {
 
     public UserReturn getUser(String email) {
         // 🔑 Instituição vem do TOKEN, não do request
-        Long instituitionId = SecurityUtils.getInstituitionId();
-        Instituition instituition = validations.validateinstitution(instituitionId);;
+        Long institutionId = SecurityUtils.getInstitutionId();
+        Institution institution = validations.validateinstitution(institutionId);;
 
         // Valida se usuário não existe
-        Optional<User> userOptional = validations.validateUserNotExist(email, instituitionId);
+        Optional<User> userOptional = validations.validateUserNotExist(email, institutionId);
 
         UserReturn user = mapper.modelMapper().map(userOptional.orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado.")), UserReturn.class);
         return user;
@@ -61,8 +61,8 @@ public class UserService {
 
     public List<UserReturn> getAllUser(){
         // 🔑 Instituição vem do TOKEN, não do request
-        Long instituitionId = SecurityUtils.getInstituitionId();
-        Instituition instituition = validations.validateinstitution(instituitionId);
+        Long institutionId = SecurityUtils.getInstitutionId();
+        Institution institution = validations.validateinstitution(institutionId);
 
         List<User> userList = userRepository.findAll();
         if(userList.isEmpty()){
@@ -76,10 +76,10 @@ public class UserService {
 
     public UserReturn updateUser(String email, UserUpdateDto userUpadte){
         // 🔑 Instituição vem do TOKEN, não do request
-        Long instituitionId = SecurityUtils.getInstituitionId();
-        Instituition instituition = validations.validateinstitution(instituitionId);
+        Long institutionId = SecurityUtils.getInstitutionId();
+        Institution instituition = validations.validateinstitution(institutionId);
 
-        Optional<User> userOptional = validations.validateUserNotExist(email, instituitionId);
+        Optional<User> userOptional = validations.validateUserNotExist(email, institutionId);
 
         User user = new User();
         user.setId(userOptional.orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado.")).getId());
@@ -94,10 +94,10 @@ public class UserService {
 
     public void deleteUSer(String email){
         // 🔑 Instituição vem do TOKEN, não do request
-        Long instituitionId = SecurityUtils.getInstituitionId();
-        Instituition instituition = validations.validateinstitution(instituitionId);
+        Long institutionId = SecurityUtils.getInstitutionId();
+        Institution institution = validations.validateinstitution(institutionId);
 
-        Optional<User> userOptional = validations.validateUserNotExist(email, instituitionId);
+        Optional<User> userOptional = validations.validateUserNotExist(email, institutionId);
         userRepository.deleteByEmail(email);
     }
 }

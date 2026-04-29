@@ -1,7 +1,7 @@
 package com.proofchain.instructor;
 
 import com.proofchain.course.domain.model.Course;
-import com.proofchain.instituition.Instituition;
+import com.proofchain.institution.Institution;
 import com.proofchain.user.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -34,5 +34,5 @@ public class Instructor extends User {
     // EM Instituition
     @ManyToOne
     @JoinColumn(name = "institution_id")
-    private Instituition instituition;
+    private Institution institution;
 }
