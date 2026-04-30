@@ -5,13 +5,12 @@ import com.proofchain.exceptions.ResourceNotFoundException;
 import com.proofchain.identities.enums.BillingType;
 import com.proofchain.identities.enums.StatusSubscription;
 import com.proofchain.identities.enums.UserRole;
-import com.proofchain.institution.dtos.request.InstitutionReques;
+import com.proofchain.institution.dtos.request.InstitutionRequest;
 import com.proofchain.institution.dtos.request.NewInstitutionRequestDto;
 import com.proofchain.institution.dtos.response.InstitutionReturn;
 import com.proofchain.plan.Plans;
 import com.proofchain.plan.PlansRepository;
 import com.proofchain.plataform.domain.ModelMapperConfig;
-import com.proofchain.security.SecurityUtils;
 import com.proofchain.subscription.SubscriptionRepository;
 import com.proofchain.subscription.Subscriptions;
 import com.proofchain.user.User;
@@ -20,14 +19,13 @@ import com.proofchain.util.Validations;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import static java.time.Instant.now;
 
 @Service
 @AllArgsConstructor
@@ -52,7 +50,7 @@ public class InstitutionService {
             throw new BusinessRuleException("E-mail inválido");
         }
 
-        Optional<Institution> institutionOptional = institutionRepository.findByCnpj(newinstitutionRequestDto.getCnpj());
+        Optional<Institution> institutionOptional = institutionRepository.findByCnpjAndDeletedAtIsNull(newinstitutionRequestDto.getCnpj());
         if(institutionOptional.isPresent()){
             throw new BusinessRuleException("Instituição já cadastrada");
         }
@@ -68,7 +66,7 @@ public class InstitutionService {
         institution.setCnpj(newinstitutionRequestDto.getCnpj());
         institution.setName(newinstitutionRequestDto.getName());
         institution.setEmail(newinstitutionRequestDto.getEmail());
-        institution.setCreatedAt(now());
+        institution.setCreatedAt(Instant.now());
 
         ///////// CRIA USUÁRIO /////////
         User user = new User();
@@ -76,7 +74,7 @@ public class InstitutionService {
         user.setEmail(newinstitutionRequestDto.getEmail());
         user.setPassword(passwordEncoder.encode(newinstitutionRequestDto.getPassword()));
         user.setRole((UserRole.SUPER_ADMIN));
-        user.setCreateAt(now());
+        user.setCreateAt(Instant.now());
         user.setActive(true);
         user.setInstitution(institution);
 
@@ -98,25 +96,25 @@ public class InstitutionService {
         switch(idPlan){
             case 1:
                 billingType = subscription.getBillingType().MANUAL;
-                periodStart = now();
-                periodEnd = now().plus(7, ChronoUnit.DAYS);
+                periodStart = Instant.now();
+                periodEnd = Instant.now().plus(7, ChronoUnit.DAYS);
                 break;
             case 2:
                 billingType = subscription.getBillingType().MANUAL;
-                periodStart = now();
-                periodEnd = now().plus(15, ChronoUnit.DAYS);
+                periodStart = Instant.now();
+                periodEnd = Instant.now().plus(15, ChronoUnit.DAYS);
                 break;
             case 3:
                 billingType = subscription.getBillingType().RECURRING;
-                periodStart = now();
-                periodEnd = now().plus(30, ChronoUnit.DAYS);
-                nextBilling =  now().plus(30, ChronoUnit.DAYS);
+                periodStart = Instant.now();
+                periodEnd = Instant.now().plus(30, ChronoUnit.DAYS);
+                nextBilling =  Instant.now().plus(30, ChronoUnit.DAYS);
                 break;
             case 4:
                 billingType = subscription.getBillingType().RECURRING;
-                periodStart = now();
-                periodEnd = now().plus(30, ChronoUnit.DAYS);
-                nextBilling =  now().plus(30, ChronoUnit.DAYS);
+                periodStart = Instant.now();
+                periodEnd = Instant.now().plus(30, ChronoUnit.DAYS);
+                nextBilling =  Instant.now().plus(30, ChronoUnit.DAYS);
                 break;
             default:
                 throw new ResourceNotFoundException("Plano inválido.");
@@ -128,7 +126,7 @@ public class InstitutionService {
         subscription.setBillingType(billingType);
         subscription.setCurrentPeriodStarts(null);
         subscription.setCurrentPeriodEnd(null);
-        subscription.setCreatedAt(now());
+        subscription.setCreatedAt(Instant.now());
 
         institutionRepository.save(institution);
         subscriptionRepository.save(subscription);
@@ -142,8 +140,8 @@ public class InstitutionService {
             throw new ResourceNotFoundException("Não existem instituições cadastradas.");
         }
 
-        return institutionList.stream()
-                .map(InstitutionReturn::new)
+            return institutionList.stream()
+                .map(InstitutionReturn::from)
                 .collect(Collectors.toList());
     }
 
@@ -157,46 +155,32 @@ public class InstitutionService {
             throw new ResourceNotFoundException("Instituição não encontrada.");
         }
 
-        InstitutionReturn retorno =mapper.modelMapper()
-                .map(institutionOptional, InstitutionReturn.class);
-        return  retorno;
+        InstitutionReturn retorno = InstitutionReturn.from(institutionOptional.get());
+        return retorno;
     }
 
-    public void updateinstitution(String cnpj, InstitutionReques institutionReques){
+    public void updateinstitution(String cnpj, InstitutionRequest institutionRequest){
 
 //        Long institutionId = SecurityUtils.getInstitutionId();
 //        validations.validateinstitution(institutionId);
 
-        Optional<Institution> institutionOptional = institutionRepository.findByCnpj(cnpj);
-        if(institutionOptional.isEmpty()){
-            throw new ResourceNotFoundException("Instituição não encontrada.");
-        }
+        Institution institution = institutionRepository.findByCnpj(cnpj)
+                .orElseThrow(() -> new ResourceNotFoundException("Instituição não encontrada."));
 
-        Institution institution = new Institution();
-        institution.setId (institutionOptional.orElseThrow(() -> new ResourceNotFoundException("Instituição não encontrada.")).getId());
-        institution.setAddress (institutionReques.address());
-        institution.setNumber (institutionReques.number());
-        institution.setComplement (institutionReques.complement());
-        institution.setNeighborhood (institutionReques.neighborhood());
-        institution.setCity (institutionReques.city());
-        institution.setState (institutionReques.state());
-        institution.setPostalCode (institutionReques.postalCode());
-        institution.setPhone (institutionReques.phone());
-
+        institution.updateFrom(institutionRequest);
         institutionRepository.save(institution);
     }
 
-
+    @Transactional
     public void deleteinstitution(String cnpj){
 
-        Long institutionId = SecurityUtils.getInstitutionId();
-        validations.validateinstitution(institutionId);
+//        Long institutionId = SecurityUtils.getInstitutionId();
+//        validations.validateinstitution(institutionId);
 
-        Optional<Institution> institutionOptional = institutionRepository.findByCnpj(cnpj);
-        if(institutionOptional.isEmpty()){
-            throw new ResourceNotFoundException("Instituição não encontrada.");
-        }
-        institutionRepository.deleteByCnpj(cnpj);
+        Institution institution = institutionRepository.findByCnpjAndDeletedAtIsNull(cnpj)
+         .orElseThrow(() -> new ResourceNotFoundException("Instituição não encontrada."));
+        institution.setDeletedAt(Instant.now());
+
     }
 
 

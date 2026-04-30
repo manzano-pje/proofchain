@@ -3,7 +3,7 @@ package com.proofchain.institution.dtos.request;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
-public record InstitutionReques(
+public record InstitutionRequest(
         String address,
         Integer number,
         String complement,
