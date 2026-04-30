@@ -2,8 +2,10 @@ package com.proofchain.institution;
 
 import com.proofchain.certificate.model.Certificate;
 import com.proofchain.course.domain.model.Course;
+import com.proofchain.institution.dtos.request.InstitutionRequest;
 import com.proofchain.instructor.Instructor;
 import com.proofchain.participant.Participant;
+import com.proofchain.subscription.Subscriptions;
 import com.proofchain.user.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -54,9 +56,8 @@ public class Institution {
 
     @Pattern(regexp = "\\(\\d{2}\\) \\d{5}-\\d{4}", message = "O telefone deve estar no formato (XX) XXXXX-XXXX")
     private String phone;
-
     private Instant createdAt;
-
+    private Instant deletedAt;
 
     ///// RELACIONAMENTO /////
 
@@ -66,6 +67,13 @@ public class Institution {
                orphanRemoval = true)
     @ToString.Exclude
     private List<Course> listCourses = new ArrayList<>();
+
+    // Subscriptions
+    @OneToMany(mappedBy = "institution",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    @ToString.Exclude
+    private List<Subscriptions> subscriptions = new ArrayList<>();
 
     // Useres
     @OneToMany(mappedBy = "institution",
@@ -92,4 +100,18 @@ public class Institution {
     @OneToMany(mappedBy = "institution")
     @ToString.Exclude
     private List<Certificate> listCertificates = new ArrayList<>();
+
+    // UPDATE
+
+    public void updateFrom(InstitutionRequest request) {
+        this.address = request.address();
+        this.number = request.number();
+        this.complement = request.complement();
+        this.neighborhood = request.neighborhood();
+        this.city = request.city();
+        this.state = request.state();
+        this.postalCode = request.postalCode();
+        this.phone = request.phone();
+    }
+
 }

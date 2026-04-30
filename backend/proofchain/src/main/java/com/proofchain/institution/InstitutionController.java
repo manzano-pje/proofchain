@@ -1,6 +1,6 @@
 package com.proofchain.institution;
 
-import com.proofchain.institution.dtos.request.InstitutionReques;
+import com.proofchain.institution.dtos.request.InstitutionRequest;
 import com.proofchain.institution.dtos.request.NewInstitutionRequestDto;
 import com.proofchain.institution.dtos.response.InstitutionReturn;
 import jakarta.validation.Valid;
@@ -27,28 +27,29 @@ public class InstitutionController {
                 .body("Instituição cadastrada com sucesso.");
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("/update/{cnpj}")
     public ResponseEntity<String> updateInstitution(@Valid @PathVariable String cnpj,
-                                                    @Valid @RequestBody InstitutionReques institutionReques){
-        institutionService.updateinstitution(cnpj, institutionReques);
+                                                    @Valid @RequestBody InstitutionRequest institutionRequest){
+        institutionService.updateinstitution(cnpj, institutionRequest);
         return ResponseEntity.status(HttpStatus.OK)
                 .body("Instituição atualizada com sucesso.");
     }
 
-    @PreAuthorize("hasRole('SUPER_ADMIN')")
+//    @PreAuthorize("hasRole('SUPER_ADMIN')")
     @GetMapping
     public List<InstitutionReturn> getAllInstitution(){
+
         return institutionService.getAllinstitution();
     }
 
-    @PreAuthorize("hasRole('SUPER_ADMIN')")
+//    @PreAuthorize("hasRole('SUPER_ADMIN')")
     @GetMapping("/get/{cnpj}")
     public InstitutionReturn getOneInstitution(@PathVariable String cnpj){
         return institutionService.getOneinstitution(cnpj);
     }
 
-    @PreAuthorize("hasRole('SUPER_ADMIN', 'ROLE_ADMIN')")
+//    @PreAuthorize("hasRole('SUPER_ADMIN', 'ROLE_ADMIN')")
     @DeleteMapping("/delete/{cnpj}")
     public ResponseEntity<String> deleteInstitution(@PathVariable String cnpj){
         institutionService.deleteinstitution(cnpj);
