@@ -50,10 +50,18 @@ public class InstitutionService {
             throw new BusinessRuleException("E-mail inválido");
         }
 
-        Optional<Institution> institutionOptional = institutionRepository.findByCnpjAndDeletedAtIsNull(newinstitutionRequestDto.getCnpj());
-        if(institutionOptional.isPresent()){
-            throw new BusinessRuleException("Instituição já cadastrada");
+        // Validação da instituição
+        Optional<Institution> institutionOptional = institutionRepository.findByCnpj(newinstitutionRequestDto.getCnpj())
+
+        // Valida de instituição está inativa. Se estiver, ativa
+        if(!institutionOptional.isEmpty() && institutionOptional.get().getDeletedAt() == null) {
+            throw new BusinessRuleException("Instituição já cadastrado");
         }
+        if(!institutionOptional.isEmpty() && institutionOptional.get().getDeletedAt() != null) {
+            institutionOptional.setDeletedAt(null);
+            institutionRepository.save(institution);
+        }
+
 
         // Valida se usuário já existe
         Optional<User> userOptional = userRepository.findByEmail(newinstitutionRequestDto.getEmail());
