@@ -1,11 +1,10 @@
 package com.proofchain.user.interfaces.controller;
 
-import com.proofchain.user.UserService;
+import com.proofchain.user.applications.command.CreateUserCommand;
 import com.proofchain.user.applications.handler.*;
 import com.proofchain.user.interfaces.dto.request.UserRequestDto;
 import com.proofchain.user.interfaces.dto.request.UserUpdateDto;
 import com.proofchain.user.interfaces.dto.response.UserReturn;
-import com.proofchain.user.infrastructure.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,12 +13,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/v1/user")
 public class UserController {
-
 
     private final CreateUserHandler createUser;
     private final DeleteUserHandler deleteUser;
@@ -29,10 +26,10 @@ public class UserController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/register")
-    public ResponseEntity<UserRequestDto> createUser(@RequestBody UserRequestDto user) {
-        UserReturn usder = createUser.createUser(user);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(user);
+    public ResponseEntity<UserReturn> createUser(@RequestBody UserRequestDto user) {
+        CreateUserCommand command = new CreateUserCommand(user);
+        UserReturn response = createUser.createUser(command);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
