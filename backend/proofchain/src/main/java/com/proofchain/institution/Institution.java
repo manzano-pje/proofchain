@@ -58,6 +58,7 @@ public class Institution {
     private String phone;
     private Instant createdAt;
     private Instant deletedAt;
+    private Boolean active;
 
     ///// RELACIONAMENTO /////
 

@@ -51,17 +51,19 @@ public class InstitutionService {
         }
 
         // Validação da instituição
-        Optional<Institution> institutionOptional = institutionRepository.findByCnpj(newinstitutionRequestDto.getCnpj())
+        Optional<Institution> institutionOptional = institutionRepository.findByCnpj(newinstitutionRequestDto.getCnpj());
 
         // Valida de instituição está inativa. Se estiver, ativa
         if(!institutionOptional.isEmpty() && institutionOptional.get().getDeletedAt() == null) {
             throw new BusinessRuleException("Instituição já cadastrado");
         }
         if(!institutionOptional.isEmpty() && institutionOptional.get().getDeletedAt() != null) {
-            institutionOptional.setDeletedAt(null);
+            Institution institution = institutionOptional.get();
+            institution.setDeletedAt(null);
+            institution.setActive(true);
             institutionRepository.save(institution);
+            return;
         }
-
 
         // Valida se usuário já existe
         Optional<User> userOptional = userRepository.findByEmail(newinstitutionRequestDto.getEmail());
