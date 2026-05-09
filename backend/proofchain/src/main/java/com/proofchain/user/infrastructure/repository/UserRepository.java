@@ -1,5 +1,6 @@
-package com.proofchain.user;
+package com.proofchain.user.infrastructure.repository;
 
+import com.proofchain.user.domain.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

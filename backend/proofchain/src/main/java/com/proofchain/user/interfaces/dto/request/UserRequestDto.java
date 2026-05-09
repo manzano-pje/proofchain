@@ -1,4 +1,4 @@
-package com.proofchain.user.dto.request;
+package com.proofchain.user.interfaces.dto.request;
 
 import com.proofchain.identities.enums.UserRole;
 import jakarta.persistence.EnumType;

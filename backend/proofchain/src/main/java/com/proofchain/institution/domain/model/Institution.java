@@ -6,7 +6,7 @@ import com.proofchain.institution.interfaces.dtos.request.InstitutionRequest;
 import com.proofchain.instructor.Instructor;
 import com.proofchain.participant.Participant;
 import com.proofchain.subscription.Subscriptions;
-import com.proofchain.user.User;
+import com.proofchain.user.domain.model.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;

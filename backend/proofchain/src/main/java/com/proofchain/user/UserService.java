@@ -4,9 +4,11 @@ import com.proofchain.exceptions.ResourceNotFoundException;
 import com.proofchain.institution.domain.model.Institution;
 import com.proofchain.plataform.domain.ModelMapperConfig;
 import com.proofchain.security.SecurityUtils;
-import com.proofchain.user.dto.request.UserRequestDto;
-import com.proofchain.user.dto.request.UserUpdateDto;
-import com.proofchain.user.dto.response.UserReturn;
+import com.proofchain.user.domain.model.User;
+import com.proofchain.user.interfaces.dto.request.UserRequestDto;
+import com.proofchain.user.interfaces.dto.request.UserUpdateDto;
+import com.proofchain.user.interfaces.dto.response.UserReturn;
+import com.proofchain.user.infrastructure.repository.UserRepository;
 import com.proofchain.util.Validations;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -47,7 +49,7 @@ public class UserService {
         return mapper.modelMapper().map(user, UserReturn.class);
     }
 
-    public UserReturn getUser(String email) {
+    public UserReturn listOneUser(String email) {
         // 🔑 Instituição vem do TOKEN, não do request
         Long institutionId = SecurityUtils.getInstitutionId();
         Institution institution = validations.validateinstitution(institutionId);;
@@ -59,7 +61,7 @@ public class UserService {
         return user;
     }
 
-    public List<UserReturn> getAllUser(){
+    public List<UserReturn> listAllUser(){
         // 🔑 Instituição vem do TOKEN, não do request
         Long institutionId = SecurityUtils.getInstitutionId();
         Institution institution = validations.validateinstitution(institutionId);

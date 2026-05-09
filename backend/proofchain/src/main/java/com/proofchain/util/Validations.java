@@ -6,10 +6,10 @@ import com.proofchain.course.domain.exception.CourseNotFoundException;
 import com.proofchain.exceptions.ResourceNotFoundException;
 import com.proofchain.course.domain.model.Course;
 import com.proofchain.institution.domain.model.Institution;
-import com.proofchain.user.User;
+import com.proofchain.user.domain.model.User;
 import com.proofchain.course.infrastructure.repository.CourseRepository;
 import com.proofchain.institution.infrastructure.repository.InstitutionRepository;
-import com.proofchain.user.UserRepository;
+import com.proofchain.user.infrastructure.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
