@@ -1,6 +1,5 @@
 package com.proofchain.institution.interfaces.controller;
 
-import com.proofchain.institution.InstitutionService;
 import com.proofchain.institution.application.handler.*;
 import com.proofchain.institution.interfaces.dtos.request.InstitutionRequest;
 import com.proofchain.institution.interfaces.dtos.request.NewInstitutionRequestDto;
@@ -19,7 +18,6 @@ import java.util.List;
 @CrossOrigin(origins = "*") // importante para o Vue acessar
 public class InstitutionController {
 
-    public final InstitutionService institutionService;
     private final CreateInstitutionHandler createInstitution;
     private final DeleteInstitutionHandler deleteInstitution;
     private ListAllInstitutionHandler listAllInstitution;
@@ -37,7 +35,7 @@ public class InstitutionController {
     @PatchMapping("/update/{cnpj}")
     public ResponseEntity<String> updateInstitution(@Valid @PathVariable String cnpj,
                                                     @Valid @RequestBody InstitutionRequest institutionRequest){
-        institutionService.updateinstitution(cnpj, institutionRequest);
+        updateInstitution.updateinstitution(cnpj, institutionRequest);
         return ResponseEntity.status(HttpStatus.OK)
                 .body("Instituição atualizada com sucesso.");
     }

@@ -1,8 +1,11 @@
-package com.proofchain.user;
+package com.proofchain.user.interfaces.controller;
 
-import com.proofchain.user.dto.request.UserRequestDto;
-import com.proofchain.user.dto.request.UserUpdateDto;
-import com.proofchain.user.dto.response.UserReturn;
+import com.proofchain.user.UserService;
+import com.proofchain.user.applications.handler.*;
+import com.proofchain.user.interfaces.dto.request.UserRequestDto;
+import com.proofchain.user.interfaces.dto.request.UserUpdateDto;
+import com.proofchain.user.interfaces.dto.response.UserReturn;
+import com.proofchain.user.infrastructure.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,46 +20,46 @@ import java.util.List;
 @RequestMapping("/api/v1/user")
 public class UserController {
 
-    private final UserService userService;
-    private final UserRepository userRepository;
+
+    private final CreateUserHandler createUser;
+    private final DeleteUserHandler deleteUser;
+    private final ListAllUserHandler listAllUser;
+    private final ListOneUserHandler listOneUser;
+    private final UpdateUserHandler updateUser;
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/register")
     public ResponseEntity<UserRequestDto> createUser(@RequestBody UserRequestDto user) {
-        UserReturn usder = userService.createUser(user);
-
+        UserReturn usder = createUser.createUser(user);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(user);
-
     }
-
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/{email}")
-    public ResponseEntity<UserReturn> getUser(@PathVariable String email) {
-        UserReturn user = userService.getUser(email);
+    public ResponseEntity<UserReturn> listOneUser(@PathVariable String email) {
+        UserReturn user = listOneUser.listOneUser(email);
         return ResponseEntity.ok(user);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping
-    public List<UserReturn> getAllUser(){
-        return userService.getAllUser();
+    public List<UserReturn> listAllUser(){
+        return listAllUser.listAllUser();
     }
 
     @PreAuthorize("hasRole('ROLE_USER','ROLE_ADMIN')")
     @PatchMapping("/update/{email}")
     public ResponseEntity<UserReturn> updateUser(@PathVariable String email,
                                                  @RequestBody UserUpdateDto userUpdateDto){
-        UserReturn user = userService.updateUser(email, userUpdateDto);
+        UserReturn user = updateUser.updateUser(email, userUpdateDto);
         return ResponseEntity.ok().body(user);
     }
 
     @PreAuthorize("hasHole('ROLE_ADMIN')")
     @DeleteMapping("/delete/{email}")
     public ResponseEntity<String> deleteUser(@PathVariable String email){
-        userService.deleteUSer(email);
+        deleteUser.deleteUSer(email);
         return ResponseEntity.ok().body("Usuário apagado com sucesso.");
     }
-
 }

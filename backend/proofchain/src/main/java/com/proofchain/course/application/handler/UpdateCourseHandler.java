@@ -7,7 +7,7 @@ import com.proofchain.course.domain.model.Course;
 import com.proofchain.course.infrastructure.repository.CourseRepository;
 import com.proofchain.institution.domain.model.Institution;
 import com.proofchain.institution.infrastructure.repository.InstitutionRepository;
-import com.proofchain.institution.exception.InstitutionNotFoundException;
+import com.proofchain.institution.domain.exception.InstitutionNotFoundException;
 import com.proofchain.security.SecurityUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;

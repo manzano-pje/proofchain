@@ -3,7 +3,7 @@ package com.proofchain.security;
 
 // Geração e validação de token
 
-import com.proofchain.user.User;
+import com.proofchain.user.domain.model.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
