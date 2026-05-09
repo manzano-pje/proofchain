@@ -28,7 +28,7 @@ public class InstitutionController {
 
     @PostMapping
     public ResponseEntity<String> createInstitution(@RequestBody NewInstitutionRequestDto newInstitutionRequestDto){
-        institutionService.createinstitution(newInstitutionRequestDto);
+        createInstitution.createinstitution(newInstitutionRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body("Instituição cadastrada com sucesso.");
     }
@@ -46,13 +46,13 @@ public class InstitutionController {
     @GetMapping
     public List<InstitutionReturn> getAllInstitution(){
 
-        return institutionService.getAllinstitution();
+        return listAllInstitution.getAllinstitution();
     }
 
 //    @PreAuthorize("hasRole('SUPER_ADMIN')")
     @GetMapping("/get/{cnpj}")
     public InstitutionReturn getOneInstitution(@PathVariable String cnpj){
-        return institutionService.getOneinstitution(cnpj);
+        return listOneInstitution.getOneinstitution(cnpj);
     }
 
 //    @PreAuthorize("hasRole('SUPER_ADMIN', 'ROLE_ADMIN')")
