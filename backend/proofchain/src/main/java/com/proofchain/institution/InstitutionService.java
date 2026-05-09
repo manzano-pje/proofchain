@@ -50,9 +50,19 @@ public class InstitutionService {
             throw new BusinessRuleException("E-mail inválido");
         }
 
-        Optional<Institution> institutionOptional = institutionRepository.findByCnpjAndDeletedAtIsNull(newinstitutionRequestDto.getCnpj());
-        if(institutionOptional.isPresent()){
-            throw new BusinessRuleException("Instituição já cadastrada");
+        // Validação da instituição
+        Optional<Institution> institutionOptional = institutionRepository.findByCnpj(newinstitutionRequestDto.getCnpj());
+
+        // Valida de instituição está inativa. Se estiver, ativa
+        if(!institutionOptional.isEmpty() && institutionOptional.get().getDeletedAt() == null) {
+            throw new BusinessRuleException("Instituição já cadastrado");
+        }
+        if(!institutionOptional.isEmpty() && institutionOptional.get().getDeletedAt() != null) {
+            Institution institution = institutionOptional.get();
+            institution.setDeletedAt(null);
+            institution.setActive(true);
+            institutionRepository.save(institution);
+            return;
         }
 
         // Valida se usuário já existe
@@ -135,7 +145,7 @@ public class InstitutionService {
     // Somente para administrador da plataforma
     public List<InstitutionReturn> getAllinstitution(){
 
-        List<Institution> institutionList = institutionRepository.findAll();
+        List<Institution> institutionList = institutionRepository.findAllByDeletedAtIsNull();
         if(institutionList.isEmpty()){
             throw new ResourceNotFoundException("Não existem instituições cadastradas.");
         }
@@ -150,13 +160,11 @@ public class InstitutionService {
 //        Long institutionId = SecurityUtils.getInstitutionId();
 //        validations.validateinstitution(institutionId);
 
-        Optional<Institution> institutionOptional = institutionRepository.findByCnpj(cnpj);
+        Optional<Institution> institutionOptional = institutionRepository.findByCnpjAndDeletedAtIsNull(cnpj);
         if(institutionOptional.isEmpty()){
             throw new ResourceNotFoundException("Instituição não encontrada.");
         }
-
-        InstitutionReturn retorno = InstitutionReturn.from(institutionOptional.get());
-        return retorno;
+        return InstitutionReturn.from(institutionOptional.get());
     }
 
     public void updateinstitution(String cnpj, InstitutionRequest institutionRequest){
@@ -164,7 +172,7 @@ public class InstitutionService {
 //        Long institutionId = SecurityUtils.getInstitutionId();
 //        validations.validateinstitution(institutionId);
 
-        Institution institution = institutionRepository.findByCnpj(cnpj)
+        Institution institution = institutionRepository.findByCnpjAndDeletedAtIsNull(cnpj)
                 .orElseThrow(() -> new ResourceNotFoundException("Instituição não encontrada."));
 
         institution.updateFrom(institutionRequest);

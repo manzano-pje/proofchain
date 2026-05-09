@@ -27,8 +27,6 @@ public class SecurityConfig {
 
     private JwtService jwtService;
 
-
-
     // 🔹 Expõe o AuthenticationManager para uso no controller
     @Bean
     public AuthenticationManager authenticationManager(

@@ -22,7 +22,9 @@ public record InstitutionReturn(
     String postalCode,
     @Pattern(regexp = "\\(\\d{2}\\) \\d{5}-\\d{4}", message = "O telefone deve estar no formato (XX) XXXXX-XXXX")
     String phone,
-    Instant createdAt
+    Instant createdAt,
+    Instant DeletedAt,
+    Boolean active
    ){
     public static InstitutionReturn from(Institution institution){
            return new InstitutionReturn(
@@ -38,7 +40,9 @@ public record InstitutionReturn(
                     institution.getState(),
                     institution.getPostalCode(),
                     institution.getPhone(),
-                    institution.getCreatedAt()
+                    institution.getCreatedAt(),
+                    institution.getDeletedAt(),
+                    institution.getActive()
             );
     }
 }
