@@ -1,7 +1,7 @@
 package com.proofchain.subscription.dto.request;
 
 import com.proofchain.identities.enums.StatusSubscription;
-import com.proofchain.institution.Institution;
+import com.proofchain.institution.domain.model.Institution;
 import com.proofchain.plan.Plans;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

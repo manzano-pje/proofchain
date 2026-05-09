@@ -1,7 +1,7 @@
 package com.proofchain.user;
 
 import com.proofchain.exceptions.ResourceNotFoundException;
-import com.proofchain.institution.Institution;
+import com.proofchain.institution.domain.model.Institution;
 import com.proofchain.plataform.domain.ModelMapperConfig;
 import com.proofchain.security.SecurityUtils;
 import com.proofchain.user.dto.request.UserRequestDto;

@@ -1,14 +1,13 @@
 package com.proofchain.certificate.model;
 
 import com.proofchain.course.domain.model.Course;
-import com.proofchain.institution.Institution;
+import com.proofchain.institution.domain.model.Institution;
 import com.proofchain.instructor.Instructor;
 import com.proofchain.participant.Participant;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.Instant;
-import java.time.LocalDate;
 
 @Entity
 @AllArgsConstructor

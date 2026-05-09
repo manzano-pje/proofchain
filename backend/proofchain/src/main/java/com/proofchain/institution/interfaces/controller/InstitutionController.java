@@ -1,13 +1,14 @@
-package com.proofchain.institution;
+package com.proofchain.institution.interfaces.controller;
 
-import com.proofchain.institution.dtos.request.InstitutionRequest;
-import com.proofchain.institution.dtos.request.NewInstitutionRequestDto;
-import com.proofchain.institution.dtos.response.InstitutionReturn;
+import com.proofchain.institution.InstitutionService;
+import com.proofchain.institution.application.handler.*;
+import com.proofchain.institution.interfaces.dtos.request.InstitutionRequest;
+import com.proofchain.institution.interfaces.dtos.request.NewInstitutionRequestDto;
+import com.proofchain.institution.interfaces.dtos.response.InstitutionReturn;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,10 +20,15 @@ import java.util.List;
 public class InstitutionController {
 
     public final InstitutionService institutionService;
+    private final CreateInstitutionHandler createInstitution;
+    private final DeleteInstitutionHandler deleteInstitution;
+    private ListAllInstitutionHandler listAllInstitution;
+    private ListOneInstitutionHandler listOneInstitution;
+    private UpdateInstitutionHandler updateInstitution;
 
     @PostMapping
     public ResponseEntity<String> createInstitution(@RequestBody NewInstitutionRequestDto newInstitutionRequestDto){
-        institutionService.createinstitution(newInstitutionRequestDto);
+        createInstitution.createinstitution(newInstitutionRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body("Instituição cadastrada com sucesso.");
     }
@@ -40,19 +46,19 @@ public class InstitutionController {
     @GetMapping
     public List<InstitutionReturn> getAllInstitution(){
 
-        return institutionService.getAllinstitution();
+        return listAllInstitution.getAllinstitution();
     }
 
 //    @PreAuthorize("hasRole('SUPER_ADMIN')")
     @GetMapping("/get/{cnpj}")
     public InstitutionReturn getOneInstitution(@PathVariable String cnpj){
-        return institutionService.getOneinstitution(cnpj);
+        return listOneInstitution.getOneinstitution(cnpj);
     }
 
 //    @PreAuthorize("hasRole('SUPER_ADMIN', 'ROLE_ADMIN')")
     @DeleteMapping("/delete/{cnpj}")
     public ResponseEntity<String> deleteInstitution(@PathVariable String cnpj){
-        institutionService.deleteinstitution(cnpj);
+        deleteInstitution.deleteinstitution(cnpj);
         return ResponseEntity.status(HttpStatus.OK)
                 .body("Instituição apagada com sucesso.");
     }

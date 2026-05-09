@@ -1,4 +1,4 @@
-package com.proofchain.institution;
+package com.proofchain.institution.application.handler;
 
 import com.proofchain.course.domain.exception.BusinessRuleException;
 import com.proofchain.exceptions.ResourceNotFoundException;
@@ -6,10 +6,8 @@ import com.proofchain.identities.enums.BillingType;
 import com.proofchain.identities.enums.StatusSubscription;
 import com.proofchain.identities.enums.UserRole;
 import com.proofchain.institution.domain.model.Institution;
-import com.proofchain.institution.interfaces.dtos.request.InstitutionRequest;
-import com.proofchain.institution.interfaces.dtos.request.NewInstitutionRequestDto;
-import com.proofchain.institution.interfaces.dtos.response.InstitutionReturn;
 import com.proofchain.institution.infrastructure.repository.InstitutionRepository;
+import com.proofchain.institution.interfaces.dtos.request.NewInstitutionRequestDto;
 import com.proofchain.plan.Plans;
 import com.proofchain.plan.PlansRepository;
 import com.proofchain.plataform.domain.ModelMapperConfig;
@@ -20,18 +18,15 @@ import com.proofchain.user.UserRepository;
 import com.proofchain.util.Validations;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
-@Service
+@Component
 @AllArgsConstructor
-public class InstitutionService {
+public class CreateInstitutionHandler {
 
     private final InstitutionRepository institutionRepository;
     private final UserRepository userRepository;
@@ -143,55 +138,4 @@ public class InstitutionService {
         institutionRepository.save(institution);
         subscriptionRepository.save(subscription);
     }
-
-    // Somente para administrador da plataforma
-    public List<InstitutionReturn> getAllinstitution(){
-
-        List<Institution> institutionList = institutionRepository.findAllByDeletedAtIsNull();
-        if(institutionList.isEmpty()){
-            throw new ResourceNotFoundException("Não existem instituições cadastradas.");
-        }
-
-            return institutionList.stream()
-                .map(InstitutionReturn::from)
-                .collect(Collectors.toList());
-    }
-
-    public InstitutionReturn getOneinstitution(String cnpj){
-
-//        Long institutionId = SecurityUtils.getInstitutionId();
-//        validations.validateinstitution(institutionId);
-
-        Optional<Institution> institutionOptional = institutionRepository.findByCnpjAndDeletedAtIsNull(cnpj);
-        if(institutionOptional.isEmpty()){
-            throw new ResourceNotFoundException("Instituição não encontrada.");
-        }
-        return InstitutionReturn.from(institutionOptional.get());
-    }
-
-    public void updateinstitution(String cnpj, InstitutionRequest institutionRequest){
-
-//        Long institutionId = SecurityUtils.getInstitutionId();
-//        validations.validateinstitution(institutionId);
-
-        Institution institution = institutionRepository.findByCnpjAndDeletedAtIsNull(cnpj)
-                .orElseThrow(() -> new ResourceNotFoundException("Instituição não encontrada."));
-
-        institution.updateFrom(institutionRequest);
-        institutionRepository.save(institution);
-    }
-
-    @Transactional
-    public void deleteinstitution(String cnpj){
-
-//        Long institutionId = SecurityUtils.getInstitutionId();
-//        validations.validateinstitution(institutionId);
-
-        Institution institution = institutionRepository.findByCnpjAndDeletedAtIsNull(cnpj)
-         .orElseThrow(() -> new ResourceNotFoundException("Instituição não encontrada."));
-        institution.setDeletedAt(Instant.now());
-
-    }
-
-
 }
