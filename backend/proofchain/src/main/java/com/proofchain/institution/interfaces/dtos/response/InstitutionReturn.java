@@ -1,6 +1,6 @@
-package com.proofchain.institution.dtos.response;
+package com.proofchain.institution.interfaces.dtos.response;
 
-import com.proofchain.institution.Institution;
+import com.proofchain.institution.domain.model.Institution;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 

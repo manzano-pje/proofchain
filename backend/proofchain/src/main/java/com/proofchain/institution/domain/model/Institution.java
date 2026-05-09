@@ -1,8 +1,8 @@
-package com.proofchain.institution;
+package com.proofchain.institution.domain.model;
 
 import com.proofchain.certificate.model.Certificate;
 import com.proofchain.course.domain.model.Course;
-import com.proofchain.institution.dtos.request.InstitutionRequest;
+import com.proofchain.institution.interfaces.dtos.request.InstitutionRequest;
 import com.proofchain.instructor.Instructor;
 import com.proofchain.participant.Participant;
 import com.proofchain.subscription.Subscriptions;

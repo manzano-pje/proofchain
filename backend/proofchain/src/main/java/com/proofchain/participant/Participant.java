@@ -1,7 +1,7 @@
 package com.proofchain.participant;
 
 import com.proofchain.course.domain.model.Course;
-import com.proofchain.institution.Institution;
+import com.proofchain.institution.domain.model.Institution;
 import com.proofchain.user.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;

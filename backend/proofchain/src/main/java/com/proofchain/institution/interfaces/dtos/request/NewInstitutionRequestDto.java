@@ -1,4 +1,4 @@
-package com.proofchain.institution.dtos.request;
+package com.proofchain.institution.interfaces.dtos.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
