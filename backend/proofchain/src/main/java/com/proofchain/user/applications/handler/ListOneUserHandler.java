@@ -1,14 +1,16 @@
 package com.proofchain.user.applications.handler;
 
-import com.proofchain.exceptions.ResourceNotFoundException;
+import com.proofchain.institution.domain.exception.InstitutionNotAutorizedException;
+import com.proofchain.institution.domain.exception.InstitutionNotFoundException;
 import com.proofchain.institution.domain.model.Institution;
-import com.proofchain.plataform.domain.ModelMapperConfig;
+import com.proofchain.institution.infrastructure.repository.InstitutionRepository;
 import com.proofchain.security.SecurityUtils;
+import com.proofchain.user.domain.exception.UserNotFoundException;
 import com.proofchain.user.domain.model.User;
 import com.proofchain.user.infrastructure.repository.UserRepository;
 import com.proofchain.user.interfaces.dto.response.UserReturn;
-import com.proofchain.util.Validations;
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -17,20 +19,26 @@ import java.util.Optional;
 @AllArgsConstructor
 public class ListOneUserHandler {
 
-    private final Validations validations;
-    private final ModelMapperConfig mapper;
+    private final InstitutionRepository institutionRepository;
+    private final UserRepository userRepository;
+    private final ModelMapper mapper;
 
     public UserReturn listOneUser(String email) {
         // 🔑 Instituição vem do TOKEN, não do request
         Long institutionId = SecurityUtils.getInstitutionId();
-        Institution institution = validations.validateinstitution(institutionId);;
+        if (institutionId == null){
+            throw new InstitutionNotAutorizedException();
+        }
+        Institution institution = institutionRepository.findById(institutionId)
+                .orElseThrow(InstitutionNotFoundException::new);
 
-        // Valida se usuário não existe
-        Optional<User> userOptional = validations.validateUserNotExist(email, institutionId);
+        // Valida se usuário já existe
+        Optional<User> userOptional = userRepository.findByEmailAndInstitutionId(email, institutionId) ;
+        if(userOptional.isEmpty()){
+            throw new UserNotFoundException();
+        }
 
-        UserReturn user = mapper.modelMapper()
-                .map(userOptional.orElseThrow(() ->
-                        new ResourceNotFoundException("Usuário não encontrado.")), UserReturn.class);
-        return user;
+        return mapper.map(userOptional, UserReturn.class);
+
     }
 }

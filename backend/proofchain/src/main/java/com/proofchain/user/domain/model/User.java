@@ -1,10 +1,7 @@
 package com.proofchain.user.domain.model;
 
-import ch.qos.logback.classic.encoder.JsonEncoder;
-import com.proofchain.course.domain.model.Course;
 import com.proofchain.identities.enums.UserRole;
 import com.proofchain.institution.domain.model.Institution;
-import com.proofchain.user.infrastructure.repository.UserRepository;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -74,8 +71,6 @@ public class User {
         user.setActive(isActive);
         return user;
     }
-
-
 
 
     /////// RELACIONAMENTO ///////

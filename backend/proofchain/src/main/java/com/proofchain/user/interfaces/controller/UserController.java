@@ -25,7 +25,7 @@ public class UserController {
     private final ListOneUserHandler listOneUser;
     private final UpdateUserHandler updateUser;
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @PostMapping("/register")
     public ResponseEntity<UserReturn> createUser(@RequestBody UserRequestDto user) {
         CreateUserCommand command = new CreateUserCommand(user);
@@ -33,7 +33,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @GetMapping("/{email}")
     public ResponseEntity<UserReturn> listOneUser(@PathVariable String email) {
         UserReturn user = listOneUser.listOneUser(email);
