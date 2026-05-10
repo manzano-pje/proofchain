@@ -39,8 +39,8 @@ public class CreateUserHandler {
                 .orElseThrow(InstitutionNotFoundException::new);
 
         // Valida se usuário já existe
-        Optional<User> userOptional = userRepository.findByNameAndInstitutionId(command.getName(), institutionId) ;
-        if(userOptional.isPresent()){
+        boolean existUSer = userRepository.existByNameAndInstitutionId(command.getName(), institutionId) ;
+        if(existUSer){
             throw new UserRegisteredException();
         }
 

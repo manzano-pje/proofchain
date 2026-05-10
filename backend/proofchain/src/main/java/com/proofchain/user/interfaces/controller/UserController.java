@@ -1,6 +1,7 @@
 package com.proofchain.user.interfaces.controller;
 
 import com.proofchain.user.applications.command.CreateUserCommand;
+import com.proofchain.user.applications.command.UpdateUserCommand;
 import com.proofchain.user.applications.handler.*;
 import com.proofchain.user.interfaces.dto.request.UserRequestDto;
 import com.proofchain.user.interfaces.dto.request.UserUpdateDto;
@@ -45,18 +46,19 @@ public class UserController {
         return listAllUser.listAllUser();
     }
 
-    @PreAuthorize("hasRole('ROLE_USER','ROLE_ADMIN')")
-    @PatchMapping("/update/{email}")
-    public ResponseEntity<UserReturn> updateUser(@PathVariable String email,
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
+    @PatchMapping("/update/{id}")
+    public ResponseEntity<UserReturn> updateUser(@PathVariable Long id,
                                                  @RequestBody UserUpdateDto userUpdateDto){
-        UserReturn user = updateUser.updateUser(email, userUpdateDto);
+        UpdateUserCommand command = new UpdateUserCommand(userUpdateDto);
+        UserReturn user = updateUser.updateUser(id, command);
         return ResponseEntity.ok().body(user);
     }
 
     @PreAuthorize("hasHole('ROLE_ADMIN')")
-    @DeleteMapping("/delete/{email}")
-    public ResponseEntity<String> deleteUser(@PathVariable String email){
-        deleteUser.deleteUSer(email);
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteUser(@PathVariable Long id){
+        deleteUser.deleteUSer(id);
         return ResponseEntity.ok().body("Usuário apagado com sucesso.");
     }
 }

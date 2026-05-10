@@ -25,7 +25,6 @@ public class CourseController {
     private final CreateCourseHandler createCourseHandler;
     private final ListAllCourseHandler listAllCourses;
     private final ListOneCourseHandler listOneCourse;
-    private final DeleteCourseHandler deleteCourse;
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping

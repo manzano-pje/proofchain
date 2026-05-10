@@ -59,6 +59,21 @@ public class User {
         return user;
     }
 
+    public static User update(Long id,
+                              String name,
+                              String email,
+                              UserRole role,
+                              Boolean isActive
+    ) {
+
+        User user = new User();
+        user.setId(id);
+        user.setName(name);
+        user.setEmail(email);
+        user.setRole(role);
+        user.setActive(isActive);
+        return user;
+    }
 
 
 

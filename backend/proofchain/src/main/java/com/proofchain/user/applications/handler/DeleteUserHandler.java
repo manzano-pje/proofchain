@@ -1,7 +1,9 @@
 package com.proofchain.user.applications.handler;
 
+import com.proofchain.institution.domain.exception.InstitutionNotFoundException;
 import com.proofchain.institution.domain.model.Institution;
 import com.proofchain.security.SecurityUtils;
+import com.proofchain.user.domain.exception.UserNotFoundException;
 import com.proofchain.user.domain.model.User;
 import com.proofchain.user.infrastructure.repository.UserRepository;
 import com.proofchain.util.Validations;
@@ -17,12 +19,18 @@ public class DeleteUserHandler {
     private final UserRepository userRepository;
     private final Validations validations;
 
-    public void deleteUSer(String email){
+    public void deleteUSer(Long id){
         // 🔑 Instituição vem do TOKEN, não do request
         Long institutionId = SecurityUtils.getInstitutionId();
-        Institution institution = validations.validateinstitution(institutionId);
+        boolean existInstitution = userRepository.existsById(institutionId);
+        if (!existInstitution){
+            throw new InstitutionNotFoundException();
+        }
 
-        Optional<User> userOptional = validations.validateUserNotExist(email, institutionId);
-        userRepository.deleteByEmail(email);
+        boolean existUser = userRepository.existByIdAndInstitutionId(id, institutionId);
+        if (!existUser){
+            throw new UserNotFoundException();
+        }
+        userRepository.deleteById(id);
     }
 }
