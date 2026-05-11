@@ -59,7 +59,6 @@ public class Course {
         course.hours = hours;
         course.createdAt = Instant.now();
         course.institution = institution;
-
         return course;
     }
 

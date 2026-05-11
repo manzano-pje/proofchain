@@ -10,12 +10,11 @@ import com.proofchain.institution.infrastructure.repository.InstitutionRepositor
 import com.proofchain.institution.interfaces.dtos.request.NewInstitutionRequestDto;
 import com.proofchain.plan.Plans;
 import com.proofchain.plan.PlansRepository;
-import com.proofchain.plataform.domain.ModelMapperConfig;
 import com.proofchain.subscription.SubscriptionRepository;
 import com.proofchain.subscription.Subscriptions;
+import com.proofchain.user.domain.exception.UserRegisteredException;
 import com.proofchain.user.domain.model.User;
 import com.proofchain.user.infrastructure.repository.UserRepository;
-import com.proofchain.util.Validations;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -30,10 +29,8 @@ public class CreateInstitutionHandler {
 
     private final InstitutionRepository institutionRepository;
     private final UserRepository userRepository;
-    private final ModelMapperConfig mapper;
     private final PasswordEncoder passwordEncoder;
     private final SubscriptionRepository subscriptionRepository;
-    private final Validations validations;
     private final PlansRepository plansRepository;
 
     public void createinstitution(NewInstitutionRequestDto newinstitutionRequestDto) {
@@ -51,10 +48,10 @@ public class CreateInstitutionHandler {
         Optional<Institution> institutionOptional = institutionRepository.findByCnpj(newinstitutionRequestDto.getCnpj());
 
         // Valida de instituição está inativa. Se estiver, ativa
-        if(!institutionOptional.isEmpty() && institutionOptional.get().getDeletedAt() == null) {
+        if(institutionOptional.isPresent() && institutionOptional.get().getDeletedAt() == null) {
             throw new BusinessRuleException("Instituição já cadastrado");
         }
-        if(!institutionOptional.isEmpty() && institutionOptional.get().getDeletedAt() != null) {
+        if(institutionOptional.isPresent() && institutionOptional.get().getDeletedAt() != null) {
             Institution institution = institutionOptional.get();
             institution.setDeletedAt(null);
             institution.setActive(true);
@@ -63,9 +60,9 @@ public class CreateInstitutionHandler {
         }
 
         // Valida se usuário já existe
-        Optional<User> userOptional = userRepository.findByEmail(newinstitutionRequestDto.getEmail());
-        if(userOptional.isPresent()){
-            throw new BusinessRuleException("E-mail já cadastrado");
+       boolean existUser = userRepository.existsByEmail(newinstitutionRequestDto.getEmail());
+        if(existUser){
+            throw new UserRegisteredException();
         }
 
         ///////// CRIA INSTITUIÇÃO /////////

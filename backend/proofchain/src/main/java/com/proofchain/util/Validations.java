@@ -46,20 +46,13 @@ public class Validations {
         return courseOptional;
     }
 
-    public Optional<User> validateUserExist(String email, Long idinstitution){
-        Optional<User> userOptional = userRepository.findByNameAndInstitutionId(email, idinstitution) ;
-        if(userOptional.isPresent()){
-            throw new BusinessRuleException("Usuário já cadastrado");
-        }
-        return userOptional;
-    }
 
-    public Optional<User> validateUserNotExist(String email, Long idinstitution) {
-        Optional<User> userOptional = userRepository.findByNameAndInstitutionId(email, idinstitution);
-        if (userOptional.isEmpty()) {
-            throw new ResourceNotFoundException("Usuário não cadastrado");
-        }
-        return userOptional;
-    }
+//    public Optional<User> validateUserNotExist(String email, Long idinstitution) {
+//        Optional<User> userOptional = userRepository.findByNameAndInstitutionId(email, idinstitution);
+//        if (userOptional.isEmpty()) {
+//            throw new ResourceNotFoundException("Usuário não cadastrado");
+//        }
+//        return userOptional;
+//    }
 
 }

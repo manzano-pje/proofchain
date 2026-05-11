@@ -1,18 +1,15 @@
 package com.proofchain.user.applications.handler;
 
-import com.proofchain.exceptions.ResourceNotFoundException;
-import com.proofchain.institution.domain.model.Institution;
+import com.proofchain.institution.domain.exception.InstitutionNotFoundException;
+import com.proofchain.institution.infrastructure.repository.InstitutionRepository;
 import com.proofchain.security.SecurityUtils;
+import com.proofchain.user.applications.command.UpdateUserCommand;
+import com.proofchain.user.domain.exception.UserNotFoundException;
 import com.proofchain.user.domain.model.User;
 import com.proofchain.user.infrastructure.repository.UserRepository;
-import com.proofchain.user.interfaces.dto.request.UserUpdateDto;
 import com.proofchain.user.interfaces.dto.response.UserReturn;
-import com.proofchain.util.Validations;
 import lombok.AllArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
-
-import java.util.Optional;
 
 import static java.time.Instant.now;
 
@@ -20,26 +17,33 @@ import static java.time.Instant.now;
 @AllArgsConstructor
 public class UpdateUserHandler {
 
-    private final Validations validations;
     private final UserRepository userRepository;
-    private final ModelMapper mapper;
+    private final InstitutionRepository institutionRepository;
 
-    public UserReturn updateUser(String email, UserUpdateDto userUpadte){
+    public UserReturn updateUser(Long id, UpdateUserCommand command){
         // 🔑 Instituição vem do TOKEN, não do request
         Long institutionId = SecurityUtils.getInstitutionId();
-        Institution instituition = validations.validateinstitution(institutionId);
+        boolean existInstitution = institutionRepository.existsById(institutionId);
+        if (!existInstitution){
+            throw new InstitutionNotFoundException();
+        }
 
-        Optional<User> userOptional = validations.validateUserNotExist(email, institutionId);
+        boolean existUser = userRepository.existsByIdAndInstitutionId(id, institutionId);
+        if (!existUser){
+            throw new UserNotFoundException();
+        }
 
-        User user = new User();
-        user.setId(userOptional.orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado.")).getId());
-        user.setName(userUpadte.getName());
-        user.setRole(userUpadte.getRole());
-        user.setActive(userUpadte.isActive());
+        User user = User.update(
+            id,
+            command.getName(),
+            command.getEmail(),
+            command.getRole(),
+            command.isActive()
+            );
         user.setUpdateAt(now());
         user = userRepository.save(user);
 
-        return mapper.map(user, UserReturn.class);
+        return new UserReturn(user);
     }
 
 }
