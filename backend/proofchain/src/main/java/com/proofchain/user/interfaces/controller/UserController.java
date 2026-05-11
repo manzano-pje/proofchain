@@ -25,28 +25,28 @@ public class UserController {
     private final ListOneUserHandler listOneUser;
     private final UpdateUserHandler updateUser;
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/register")
-    public ResponseEntity<UserReturn> createUser(@RequestBody UserRequestDto user) {
+    public ResponseEntity<Void> createUser(@RequestBody UserRequestDto user) {
         CreateUserCommand command = new CreateUserCommand(user);
-        UserReturn response = createUser.createUser(command);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        createUser.createUser(command);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @GetMapping("/{email}")
     public ResponseEntity<UserReturn> listOneUser(@PathVariable String email) {
         UserReturn user = listOneUser.listOneUser(email);
         return ResponseEntity.ok(user);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @GetMapping
     public List<UserReturn> listAllUser(){
         return listAllUser.listAllUser();
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("/update/{id}")
     public ResponseEntity<UserReturn> updateUser(@PathVariable Long id,
                                                  @RequestBody UserUpdateDto userUpdateDto){

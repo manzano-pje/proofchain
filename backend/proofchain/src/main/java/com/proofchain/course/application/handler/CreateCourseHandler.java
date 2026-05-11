@@ -1,12 +1,12 @@
 package com.proofchain.course.application.handler;
 
 import com.proofchain.course.application.command.CreateCourseCommand;
+import com.proofchain.course.domain.exception.CourseIsRegisteredException;
 import com.proofchain.course.domain.model.Course;
 import com.proofchain.course.infrastructure.repository.CourseRepository;
-import com.proofchain.exceptions.ValidationException;
+import com.proofchain.institution.domain.exception.InstitutionNotFoundException;
 import com.proofchain.institution.domain.model.Institution;
 import com.proofchain.institution.infrastructure.repository.InstitutionRepository;
-import com.proofchain.institution.domain.exception.InstitutionNotFoundException;
 import com.proofchain.security.SecurityUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -28,7 +28,7 @@ public class CreateCourseHandler {
                 .orElseThrow(InstitutionNotFoundException::new);
         boolean exist = courseRepository.existsByIdAndInstitutionId(command.getId(), institution.getId());
         if (exist) {
-            throw new ValidationException("Curso já cadastrado");
+            throw new CourseIsRegisteredException();
         }
 
         Course course = Course.create(

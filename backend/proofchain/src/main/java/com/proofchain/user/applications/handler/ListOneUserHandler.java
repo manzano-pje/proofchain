@@ -2,7 +2,6 @@ package com.proofchain.user.applications.handler;
 
 import com.proofchain.institution.domain.exception.InstitutionNotAutorizedException;
 import com.proofchain.institution.domain.exception.InstitutionNotFoundException;
-import com.proofchain.institution.domain.model.Institution;
 import com.proofchain.institution.infrastructure.repository.InstitutionRepository;
 import com.proofchain.security.SecurityUtils;
 import com.proofchain.user.domain.exception.UserNotFoundException;
@@ -29,16 +28,16 @@ public class ListOneUserHandler {
         if (institutionId == null){
             throw new InstitutionNotAutorizedException();
         }
-        Institution institution = institutionRepository.findById(institutionId)
-                .orElseThrow(InstitutionNotFoundException::new);
+        boolean existInstitution = institutionRepository.existsByIdAndDeletedAtIsNull(institutionId);
+                if(!existInstitution){
+                    throw new InstitutionNotFoundException();
+                }
 
         // Valida se usuário já existe
         Optional<User> userOptional = userRepository.findByEmailAndInstitutionId(email, institutionId) ;
         if(userOptional.isEmpty()){
             throw new UserNotFoundException();
         }
-
         return mapper.map(userOptional, UserReturn.class);
-
     }
 }

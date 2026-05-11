@@ -1,6 +1,7 @@
 package com.proofchain.user.applications.handler;
 
 import com.proofchain.institution.domain.exception.InstitutionNotFoundException;
+import com.proofchain.institution.infrastructure.repository.InstitutionRepository;
 import com.proofchain.security.SecurityUtils;
 import com.proofchain.user.applications.command.UpdateUserCommand;
 import com.proofchain.user.domain.exception.UserNotFoundException;
@@ -17,16 +18,17 @@ import static java.time.Instant.now;
 public class UpdateUserHandler {
 
     private final UserRepository userRepository;
+    private final InstitutionRepository institutionRepository;
 
     public UserReturn updateUser(Long id, UpdateUserCommand command){
         // 🔑 Instituição vem do TOKEN, não do request
         Long institutionId = SecurityUtils.getInstitutionId();
-        boolean existInstitution = userRepository.existsById(institutionId);
+        boolean existInstitution = institutionRepository.existsById(institutionId);
         if (!existInstitution){
             throw new InstitutionNotFoundException();
         }
 
-        boolean existUser = userRepository.existByIdAndInstitutionId(id, institutionId);
+        boolean existUser = userRepository.existsByIdAndInstitutionId(id, institutionId);
         if (!existUser){
             throw new UserNotFoundException();
         }
