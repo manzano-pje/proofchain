@@ -12,8 +12,8 @@ public record UserReturn(
     String email,
     UserRole role,
     boolean active,
-    Instant createAt,
-    Instant updateAt
+    Instant createAt
+//    Instant updateAt
 ){
     public UserReturn(User user)
     {
@@ -22,8 +22,8 @@ public record UserReturn(
                 user.getEmail(),
                 user.getRole(),
                 user.isActive(),
-                user.getCreateAt(),
-                user.getUpdateAt()
+                user.getCreateAt()
+//                user.getUpdateAt()
         );
     }
 }
