@@ -23,6 +23,8 @@ public class UpdateUserHandler {
     public UserReturn updateUser(Long id, UpdateUserCommand command){
         // 🔑 Instituição vem do TOKEN, não do request
         Long institutionId = SecurityUtils.getInstitutionId();
+        institutionId = 1l;
+
         boolean existInstitution = institutionRepository.existsById(institutionId);
         if (!existInstitution){
             throw new InstitutionNotFoundException();

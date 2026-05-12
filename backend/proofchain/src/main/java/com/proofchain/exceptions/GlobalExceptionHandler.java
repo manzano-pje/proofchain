@@ -1,6 +1,8 @@
 package com.proofchain.exceptions;
 
 import com.proofchain.course.domain.exception.BusinessRuleException;
+import com.proofchain.user.domain.exception.UserNotFoundException;
+import com.proofchain.user.domain.exception.UserRegisteredException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -50,6 +52,15 @@ public class GlobalExceptionHandler {
                 .body(new ResponseError(ex.getMessage(), 404));
     }
 
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ResponseError> UserNotFound(
+            UserNotFoundException ex) {
+
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(new ResponseError(ex.getMessage(), 404));
+    }
+
     // 409 - Conflito / regra de negócio
     @ExceptionHandler(BusinessRuleException.class)
     public ResponseEntity<ResponseError> handleBusinessRule(
@@ -59,25 +70,36 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.CONFLICT)
                 .body(new ResponseError(ex.getMessage(), 409));
     }
-//
+
+    @ExceptionHandler(UserRegisteredException.class)
+    public ResponseEntity<ResponseError> UserRegistered(
+    UserRegisteredException ex) {
+
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(new ResponseError(ex.getMessage(), 409));
+    }
+
+
+    //
 ////     500 - Erro inesperado
-//    @ExceptionHandler(Exception.class)
-//    public ResponseEntity<ResponseError> handleGeneric(
-//            Exception ex,
-//            HttpServletRequest request
-//    ) throws Exception {
-//        String path = request.getRequestURI();
-//
-//        // 🚫 Não interceptar Swagger / OpenAPI
-//        if (path.startsWith("/v3/api-docs")
-//                || path.startsWith("/swagger-ui")) {
-//            throw ex;
-//        }
-//
-//        return ResponseEntity
-//                .status(HttpStatus.INTERNAL_SERVER_ERROR)
-//                .body(new ResponseError("Erro interno do servidor", 500));
-//    }
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ResponseError> handleGeneric(
+            Exception ex,
+            HttpServletRequest request
+    ) throws Exception {
+        String path = request.getRequestURI();
+
+        // 🚫 Não interceptar Swagger / OpenAPI
+        if (path.startsWith("/v3/api-docs")
+                || path.startsWith("/swagger-ui")) {
+            throw ex;
+        }
+
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ResponseError("Erro interno do servidor", 500));
+    }
 
     
 }

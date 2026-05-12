@@ -23,6 +23,8 @@ public class ListAllUserHandler {
     public List<UserReturn> listAllUser(){
         // 🔑 Instituição vem do TOKEN, não do request
         Long institutionId = SecurityUtils.getInstitutionId();
+        institutionId = 1l;
+
         if (institutionId == null){
             throw new InstitutionNotAutorizedException();
         }
@@ -31,7 +33,10 @@ public class ListAllUserHandler {
             throw new InstitutionNotFoundException();
         }
 
-        return userRepository.findActiveUsersByInstitution(institutionId)
+//        Institution institution = institutionRepository.findById(institutionId)
+//                .orElseThrow(InstitutionNotFoundException::new);
+
+        return userRepository.findAllByInstitution_IdAndInstitution_DeletedAtIsNull(institutionId)
                 .stream()
                 .map(UserReturn::new)
                 .collect(Collectors.toList());

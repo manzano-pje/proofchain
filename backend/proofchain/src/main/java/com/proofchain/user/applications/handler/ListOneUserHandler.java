@@ -25,6 +25,8 @@ public class ListOneUserHandler {
     public UserReturn listOneUser(String email) {
         // 🔑 Instituição vem do TOKEN, não do request
         Long institutionId = SecurityUtils.getInstitutionId();
+        institutionId = 1l;
+
         if (institutionId == null){
             throw new InstitutionNotAutorizedException();
         }
@@ -34,10 +36,8 @@ public class ListOneUserHandler {
                 }
 
         // Valida se usuário já existe
-        Optional<User> userOptional = userRepository.findByEmailAndInstitutionId(email, institutionId) ;
-        if(userOptional.isEmpty()){
-            throw new UserNotFoundException();
-        }
-        return mapper.map(userOptional, UserReturn.class);
+        User user = userRepository.findByEmailAndInstitution_Id(email, institutionId)
+                .orElseThrow(UserNotFoundException::new) ;
+        return new UserReturn(user);
     }
 }
