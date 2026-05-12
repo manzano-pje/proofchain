@@ -30,19 +30,13 @@ public class UpdateUserHandler {
             throw new InstitutionNotFoundException();
         }
 
-        boolean existUser = userRepository.existsByIdAndInstitutionId(id, institutionId);
-        if (!existUser){
-            throw new UserNotFoundException();
-        }
+        User user = userRepository.findByIdAndInstitution_Id(id, institutionId)
+                .orElseThrow(UserNotFoundException::new);
 
-        User user = User.update(
-            id,
-            command.getName(),
-            command.getEmail(),
-            command.getRole(),
-            command.isActive()
-            );
-        user.setUpdateAt(now());
+        user.setName(command.getName());
+        user.setEmail(command.getEmail());
+        user.setRole(command.getRole());
+        user.setActive(command.isActive());
         user = userRepository.save(user);
 
         return new UserReturn(user);
