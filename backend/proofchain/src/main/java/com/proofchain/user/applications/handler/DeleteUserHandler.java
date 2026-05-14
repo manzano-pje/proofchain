@@ -23,7 +23,6 @@ public class DeleteUserHandler {
     public void deleteUSer(Long id){
         // 🔑 Instituição vem do TOKEN, não do request
         Long institutionId = SecurityUtils.getInstitutionId();
-        institutionId = 1l;
         boolean existInstitution = institutionRepository.existsById(institutionId);
         if (!existInstitution){
             throw new InstitutionNotFoundException();

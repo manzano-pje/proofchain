@@ -26,7 +26,7 @@ public class UpdateCourseHandler {
         Institution institution = institutionRepository.findById(institutionId)
                 .orElseThrow(InstitutionNotFoundException::new);
 
-        Course course = courseRepository.findById(id)
+        Course course = courseRepository.findByIdAndInstitutionId(id, institutionId)
                 .orElseThrow(CourseNotFoundException::new);
 
         boolean exist = courseRepository.existsByIdAndInstitutionId(command.getId(), institution.getId());

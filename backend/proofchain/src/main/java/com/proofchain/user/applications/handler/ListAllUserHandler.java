@@ -23,7 +23,6 @@ public class ListAllUserHandler {
     public List<UserReturn> listAllUser(){
         // 🔑 Instituição vem do TOKEN, não do request
         Long institutionId = SecurityUtils.getInstitutionId();
-        institutionId = 1l;
 
         if (institutionId == null){
             throw new InstitutionNotAutorizedException();

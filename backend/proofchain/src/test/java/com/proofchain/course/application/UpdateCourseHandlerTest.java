@@ -73,7 +73,7 @@ public class UpdateCourseHandlerTest {
                     .thenReturn(Optional.of(institution));
 
             // Quando buscar curso com cursoID e institutionId retornar curse fake
-            when(courseRepository.findById(command.getId()))
+            when(courseRepository.findByIdAndInstitutionId(command.getId(), institution.getId()))
                     .thenReturn(Optional.of(course));
 
             // Action
@@ -120,7 +120,7 @@ public class UpdateCourseHandlerTest {
             when(institutionRepository.findById(1L))
                     .thenReturn(Optional.of(institution));
 
-            when(courseRepository.findById(command.getId()))
+            when(courseRepository.findByIdAndInstitutionId(command.getId(), institution.getId()))
                     .thenReturn(Optional.empty());
 
             assertThrows(

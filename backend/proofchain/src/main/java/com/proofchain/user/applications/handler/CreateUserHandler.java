@@ -32,8 +32,7 @@ public class CreateUserHandler {
 
     public void createUser(CreateUserCommand command) {
         // 🔑 Instituição vem do TOKEN, não do request
-//        Long institutionId = SecurityUtils.getInstitutionId();
-        Long institutionId = 1l;
+        Long institutionId = SecurityUtils.getInstitutionId();
         if (institutionId == null){
             throw new InstitutionNotAutorizedException();
         }
