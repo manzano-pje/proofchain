@@ -3,6 +3,7 @@ package com.proofchain.course.application;
 import com.proofchain.course.application.command.UpdateCourseCommand;
 import com.proofchain.course.application.handler.ListOneCourseHandler;
 import com.proofchain.course.application.handler.UpdateCourseHandler;
+import com.proofchain.course.domain.exception.CourseNotFoundException;
 import com.proofchain.course.domain.model.Course;
 import com.proofchain.course.infrastructure.repository.CourseRepository;
 import com.proofchain.institution.domain.exception.InstitutionNotFoundException;
@@ -62,16 +63,16 @@ public class ListOneCourseHandlerTest {
             security.when(com.proofchain.security.SecurityUtils::getInstitutionId)
                     .thenReturn(1L);
 
-            when(institutionRepository.findById(1L))
-                    .thenReturn(Optional.of(institution));
+            when(institutionRepository.existsByIdAndDeletedAtIsNull(1L))
+                    .thenReturn(true);
 
-            when(courseRepository.findByIdAndInstitutionIdAndDeletedAtIsNull(1L, 1L))
+            when(courseRepository.findByIdAndInstitutionId(1L, 1L))
                     .thenReturn(Optional.of(course));
 
             handler.listOneCourse(1l);
 
             verify(courseRepository, times(1))
-                    .findByIdAndInstitutionIdAndDeletedAtIsNull(1l, 1l);
+                    .findByIdAndInstitutionId(1l, 1l);
 
         }
     }
@@ -86,8 +87,8 @@ public class ListOneCourseHandlerTest {
             security.when(com.proofchain.security.SecurityUtils::getInstitutionId)
                     .thenReturn(1L);
 
-            when(institutionRepository.findById(1L))
-                    .thenReturn(Optional.empty());
+            when(institutionRepository.existsByIdAndDeletedAtIsNull(1L))
+                    .thenReturn(false);
 
             assertThrows(InstitutionNotFoundException.class, ()->handler.listOneCourse(1L));
 
@@ -104,6 +105,13 @@ public class ListOneCourseHandlerTest {
             security.when(com.proofchain.security.SecurityUtils::getInstitutionId)
                     .thenReturn(1L);
 
+            when(institutionRepository.existsByIdAndDeletedAtIsNull(1L))
+                    .thenReturn(true);
 
+            when(courseRepository.findByIdAndInstitutionId(1L, 1L))
+                    .thenReturn(Optional.empty());
+
+            assertThrows(CourseNotFoundException.class, () -> handler.listOneCourse(1L));
         }
+    }
 }

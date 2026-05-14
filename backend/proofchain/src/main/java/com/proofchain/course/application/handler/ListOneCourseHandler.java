@@ -23,10 +23,12 @@ public class ListOneCourseHandler {
 
     public CourseResponse listOneCourse(Long id){
         Long institutionId = SecurityUtils.getInstitutionId();
-        Institution institution = institutionRepository.findById(institutionId)
-                .orElseThrow(InstitutionNotFoundException::new);
+        boolean existInstitution = institutionRepository.existsByIdAndDeletedAtIsNull(institutionId);
+        if(!existInstitution) {
+            throw new InstitutionNotFoundException();
+        }
 
-        Optional<Course> courseOptional = courseRepository.findByIdAndInstitutionIdAndDeletedAtIsNull(id, SecurityUtils.getInstitutionId());
+        Optional<Course> courseOptional = courseRepository.findByIdAndInstitutionId(id, SecurityUtils.getInstitutionId());
         if(courseOptional.isEmpty()){
             throw new CourseNotFoundException();
         }
