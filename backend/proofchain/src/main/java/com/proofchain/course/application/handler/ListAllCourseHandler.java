@@ -4,7 +4,9 @@ import com.proofchain.course.domain.model.Course;
 import com.proofchain.course.infrastructure.repository.CourseRepository;
 import com.proofchain.course.interfaces.dto.response.FullCourseResponse;
 import com.proofchain.exceptions.ResourceNotFoundException;
+import com.proofchain.institution.domain.exception.InstitutionNotFoundException;
 import com.proofchain.institution.domain.model.Institution;
+import com.proofchain.institution.infrastructure.repository.InstitutionRepository;
 import com.proofchain.security.SecurityUtils;
 import com.proofchain.util.Validations;
 import lombok.AllArgsConstructor;
@@ -16,15 +18,17 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class ListAllCourseHandler {
 
-    private Validations validations;
     private CourseRepository courseRepository;
-
+    private final InstitutionRepository institutionRepository;
 
     public List<FullCourseResponse> listAllCourses(){
         Long institutionId = SecurityUtils.getInstitutionId();
-        Institution institution = validations.validateinstitution(institutionId);
+        boolean existInstitution = institutionRepository.existsByIdAndDeletedAtIsNull(institutionId);
+        if(!existInstitution){
+            throw new InstitutionNotFoundException();
+        }
 
-        List<Course> courseList = courseRepository.findAll();
+        List<Course> courseList = courseRepository.findAllByInstitutionId(institutionId);
         if(courseList.isEmpty()){
             throw new ResourceNotFoundException("Não existem cursos cadastrados.");
         }
