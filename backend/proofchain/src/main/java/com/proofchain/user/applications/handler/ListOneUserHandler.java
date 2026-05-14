@@ -25,7 +25,6 @@ public class ListOneUserHandler {
     public UserReturn listOneUser(String email) {
         // 🔑 Instituição vem do TOKEN, não do request
         Long institutionId = SecurityUtils.getInstitutionId();
-        institutionId = 1l;
 
         if (institutionId == null){
             throw new InstitutionNotAutorizedException();

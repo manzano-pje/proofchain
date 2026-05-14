@@ -12,6 +12,7 @@ import com.proofchain.user.domain.model.User;
 import com.proofchain.user.infrastructure.repository.UserRepository;
 import com.proofchain.user.interfaces.dto.response.UserReturn;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -31,8 +32,7 @@ public class CreateUserHandler {
 
     public void createUser(CreateUserCommand command) {
         // 🔑 Instituição vem do TOKEN, não do request
-//        Long institutionId = SecurityUtils.getInstitutionId();
-        Long institutionId = 1l;
+        Long institutionId = SecurityUtils.getInstitutionId();
         if (institutionId == null){
             throw new InstitutionNotAutorizedException();
         }

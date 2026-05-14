@@ -1,10 +1,13 @@
 package com.proofchain.course.application.handler;
 
+import com.proofchain.course.domain.exception.CourseIsRegisteredException;
 import com.proofchain.course.domain.exception.CourseNotFoundException;
 import com.proofchain.course.domain.model.Course;
 import com.proofchain.course.infrastructure.repository.CourseRepository;
 import com.proofchain.course.interfaces.dto.response.CourseResponse;
+import com.proofchain.institution.domain.exception.InstitutionNotFoundException;
 import com.proofchain.institution.domain.model.Institution;
+import com.proofchain.institution.infrastructure.repository.InstitutionRepository;
 import com.proofchain.security.SecurityUtils;
 import com.proofchain.util.Validations;
 import lombok.AllArgsConstructor;
@@ -15,12 +18,16 @@ import java.util.Optional;
 @AllArgsConstructor
 public class ListOneCourseHandler {
 
-    private final Validations validations;
+    private final InstitutionRepository institutionRepository;
     private final CourseRepository courseRepository;
 
     public CourseResponse listOneCourse(Long id){
         Long institutionId = SecurityUtils.getInstitutionId();
-        Institution institution = validations.validateinstitution(institutionId);
+        boolean existInstitution = institutionRepository.existsByIdAndDeletedAtIsNull(institutionId);
+        if(!existInstitution) {
+            throw new InstitutionNotFoundException();
+        }
+
         Optional<Course> courseOptional = courseRepository.findByIdAndInstitutionId(id, SecurityUtils.getInstitutionId());
         if(courseOptional.isEmpty()){
             throw new CourseNotFoundException();
