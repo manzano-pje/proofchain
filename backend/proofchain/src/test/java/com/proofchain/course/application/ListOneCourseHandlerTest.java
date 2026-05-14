@@ -1,8 +1,6 @@
 package com.proofchain.course.application;
 
-import com.proofchain.course.application.command.UpdateCourseCommand;
 import com.proofchain.course.application.handler.ListOneCourseHandler;
-import com.proofchain.course.application.handler.UpdateCourseHandler;
 import com.proofchain.course.domain.exception.CourseNotFoundException;
 import com.proofchain.course.domain.model.Course;
 import com.proofchain.course.infrastructure.repository.CourseRepository;
@@ -10,7 +8,6 @@ import com.proofchain.institution.domain.exception.InstitutionNotFoundException;
 import com.proofchain.institution.domain.model.Institution;
 import com.proofchain.institution.infrastructure.repository.InstitutionRepository;
 import com.proofchain.security.SecurityUtils;
-import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,8 +15,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Optional;
 
@@ -40,6 +35,7 @@ public class ListOneCourseHandlerTest {
 
     private Institution institution;
     private Course course;
+
 
     @BeforeEach
     void setup(){
