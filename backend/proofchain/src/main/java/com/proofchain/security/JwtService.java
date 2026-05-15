@@ -3,10 +3,12 @@ package com.proofchain.security;
 
 // Geração e validação de token
 
-import com.proofchain.identities.User;
+import com.proofchain.user.domain.model.User;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import lombok.AllArgsConstructor;
-import io.jsonwebtoken.*;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -30,7 +32,7 @@ public class JwtService {
 
                 // Claim da instituição (tenat)
                 .claim("tenant_id",
-                        user.getInstituition().getId().toString())
+                        user.getInstitution().getId().toString())
 
                 // Claim do papel do usuário
                 .claim("role", user.getRole().name())

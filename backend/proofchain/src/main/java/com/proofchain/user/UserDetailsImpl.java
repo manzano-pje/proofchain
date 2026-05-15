@@ -1,7 +1,7 @@
 package com.proofchain.user;
 
 
-import com.proofchain.identities.User;
+import com.proofchain.user.domain.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.List;
 
 // Classe que ensina o Spring Security como é o user
+
 public class UserDetailsImpl implements UserDetails {
 
     private User user;

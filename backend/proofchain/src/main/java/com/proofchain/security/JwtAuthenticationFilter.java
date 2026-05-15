@@ -10,7 +10,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -50,19 +49,27 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        String token = header.substring(7);
-        Claims claims = jwtService.validateToken(token);
+        try {
+            String token = header.substring(7);
+            Claims claims = jwtService.validateToken(token);
 
-        String userId = claims.getSubject();
-        String role = claims.get("role", String.class);
+            String userId = claims.getSubject();
+            String role = claims.get("role", String.class);
 
-        Authentication auth =
-                new UsernamePasswordAuthenticationToken(
-                        userId,
-                        null,
-                        List.of(new SimpleGrantedAuthority("ROLE_" + role))
-                );
-        SecurityContextHolder.getContext().setAuthentication(auth);
+            Authentication auth =
+                    new UsernamePasswordAuthenticationToken(
+                            userId,
+                            null,
+                            List.of(new SimpleGrantedAuthority("ROLE_" + role))
+                    );
+
+            SecurityContextHolder.getContext().setAuthentication(auth);
+
+        } catch (Exception e) {
+            // 🔥 NÃO BLOQUEIA
+            System.out.println("Erro ao validar token: " + e.getMessage());
+        }
+
         filterChain.doFilter(request, response);
     }
 

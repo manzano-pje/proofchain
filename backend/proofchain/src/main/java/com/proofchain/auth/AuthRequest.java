@@ -4,7 +4,6 @@ package com.proofchain.auth;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import lombok.*;
 
 public class AuthRequest {
 
@@ -12,20 +11,15 @@ public class AuthRequest {
     @NotBlank
     // e-mail de login
     private String email;
-
     @NotBlank
     private String password;
 
     public String getEmail() {
         return email;
     }
-
     public String getPassword() {
         return password;
     }
-
-
-
 }
 
 /*
