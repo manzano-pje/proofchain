@@ -5,6 +5,7 @@ import com.proofchain.exceptions.ResourceNotFoundException;
 import com.proofchain.identities.enums.BillingType;
 import com.proofchain.identities.enums.StatusSubscription;
 import com.proofchain.identities.enums.UserRole;
+import com.proofchain.institution.domain.exception.InstitutionAlerdyExistException;
 import com.proofchain.institution.domain.model.Institution;
 import com.proofchain.institution.infrastructure.repository.InstitutionRepository;
 import com.proofchain.institution.interfaces.dtos.request.NewInstitutionRequestDto;
@@ -49,7 +50,7 @@ public class CreateInstitutionHandler {
 
         // Valida de instituição está inativa. Se estiver, ativa
         if(institutionOptional.isPresent() && institutionOptional.get().getDeletedAt() == null) {
-            throw new BusinessRuleException("Instituição já cadastrado");
+            throw new InstitutionAlerdyExistException();
         }
         if(institutionOptional.isPresent() && institutionOptional.get().getDeletedAt() != null) {
             Institution institution = institutionOptional.get();
@@ -61,6 +62,7 @@ public class CreateInstitutionHandler {
 
         // Valida se usuário já existe
        boolean existUser = userRepository.existsByEmail(newinstitutionRequestDto.getEmail());
+
         if(existUser){
             throw new UserRegisteredException();
         }
@@ -92,6 +94,7 @@ public class CreateInstitutionHandler {
         int idPlan = newinstitutionRequestDto.getIdPlan();
 
         Optional<Plans> plans = plansRepository.findById(idPlan);
+
         if (plans.isEmpty()) {
             throw new ResourceNotFoundException("Plano não encontrado no banco de dados.");
         }
