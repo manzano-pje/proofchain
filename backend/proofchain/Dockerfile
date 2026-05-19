@@ -5,20 +5,17 @@ WORKDIR /app
 COPY .mvn/ .mvn
 COPY mvnw pom.xml ./
 RUN chmod +x mvnw
-RUN ./mvnw dependency:go-offline
-
 COPY src ./src
-RUN ./mvnw clean package -DskipTests
+
+RUN ./mvnw dependency:go-offline
+RUN ./mvnw clean package spring-boot:repackage -DskipTests
 
 # -------- Runtime Stage --------
 FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 
 COPY --from=build /app/target/*.jar app.jar
-
-EXPOSE 8080
-
-ENTRYPOINT ["java","-XX:MaxRAMPercentage=75.0","-jar","app.jar"]
+ENTRYPOINT ["java","-jar","app.jar"]
 
 
 ## Build stage
