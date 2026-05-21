@@ -36,7 +36,7 @@ public class CreateUserHandler {
         if (institutionId == null){
             throw new InstitutionNotAutorizedException();
         }
-        Institution institution = institutionRepository.findById(institutionId)
+        Institution institution = institutionRepository.findByIdAndDeletedAtIsNull(institutionId)
                 .orElseThrow(InstitutionNotFoundException::new);
 
         // Valida se usuário já existe

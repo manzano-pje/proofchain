@@ -31,10 +31,6 @@ public class ListAllUserHandler {
         if (!existInstitution) {
             throw new InstitutionNotFoundException();
         }
-
-//        Institution institution = institutionRepository.findById(institutionId)
-//                .orElseThrow(InstitutionNotFoundException::new);
-
         return userRepository.findAllByInstitution_IdAndInstitution_DeletedAtIsNull(institutionId)
                 .stream()
                 .map(UserReturn::new)

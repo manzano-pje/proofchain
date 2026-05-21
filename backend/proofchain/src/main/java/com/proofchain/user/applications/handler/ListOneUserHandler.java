@@ -12,15 +12,12 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
-
 @Component
 @AllArgsConstructor
 public class ListOneUserHandler {
 
     private final InstitutionRepository institutionRepository;
     private final UserRepository userRepository;
-    private final ModelMapper mapper;
 
     public UserReturn listOneUser(String email) {
         // 🔑 Instituição vem do TOKEN, não do request
