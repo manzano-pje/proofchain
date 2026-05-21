@@ -4,6 +4,7 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 public record InstitutionRequest(
+        String name,
         String address,
         Integer number,
         String complement,

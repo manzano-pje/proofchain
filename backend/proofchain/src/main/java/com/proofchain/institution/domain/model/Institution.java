@@ -105,6 +105,7 @@ public class Institution {
     // UPDATE
 
     public void updateFrom(InstitutionRequest request) {
+        this.name = request.name();
         this.address = request.address();
         this.number = request.number();
         this.complement = request.complement();
