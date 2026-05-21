@@ -1,6 +1,6 @@
 package com.proofchain.plan;
 
-import com.proofchain.featurePlan.FeaturePlan;
+import com.proofchain.featurePlan.domain.model.FeaturePlan;
 import com.proofchain.identities.enums.BillingType;
 import com.proofchain.subscription.Subscriptions;
 import jakarta.persistence.*;
@@ -23,7 +23,7 @@ public class Plans {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     private String name;
     private double price;
