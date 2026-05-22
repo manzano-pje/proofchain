@@ -8,6 +8,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
+/**
+ * Descrição concisa da responsabilidade da classe.
+ * @author Arquiteto de Software Qwen
+ * @since 2023
+ */
 public class UpdateCourseCommand {
     private Long id;
     private  String name;
