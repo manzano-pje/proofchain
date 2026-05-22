@@ -68,12 +68,12 @@ public class CreateInstitutionTest {
                 "paulo",
                 "empresa@proofchain.com.br",
                 "admin1234",
-                1
+                1L
         );
 
         //Dados Plans1
         plan1 = new Plans();
-        plan1.setId(1);
+        plan1.setId(1L);
         plan1.setName("Free");
         plan1.setPrice(0);
         plan1.setDurationDays(10);
@@ -84,7 +84,7 @@ public class CreateInstitutionTest {
 
         //Dados Plans2
         plan2 = new Plans();
-        plan2.setId(2);
+        plan2.setId(2L);
         plan2.setName("Free");
         plan2.setPrice(0);
         plan2.setDurationDays(10);
@@ -210,7 +210,7 @@ public class CreateInstitutionTest {
         @Test
         void ShouldEncryptPasswordWhenCreatingInstitution(){
 
-            dto.setIdPlan(10);
+            dto.setIdPlan(10L);
 
             when(institutionRepository.findByCnpj(dto.getCnpj()))
                     .thenReturn(Optional.empty());

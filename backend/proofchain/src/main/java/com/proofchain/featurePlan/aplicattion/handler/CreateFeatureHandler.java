@@ -3,7 +3,7 @@ package com.proofchain.featurePlan.aplicattion.handler;
 import com.proofchain.featurePlan.aplicattion.command.CreateFeatureCommand;
 import com.proofchain.featurePlan.domain.exception.FeatureIsRegisteredException;
 import com.proofchain.featurePlan.domain.model.FeaturePlan;
-import com.proofchain.featurePlan.infrastructure.repository.FeatureRepository;
+import com.proofchain.featurePlan.infrastructure.repository.FeaturePlansRepository;
 import com.proofchain.institution.domain.exception.InstitutionNotFoundException;
 import com.proofchain.institution.infrastructure.repository.InstitutionRepository;
 import com.proofchain.plan.PlanNotFoundException;
@@ -14,14 +14,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class CreateFeatureHandler {
 
-    private FeatureRepository featureRepository;
+    private FeaturePlansRepository featurePlansRepository;
     private PlansRepository plansRepository;
     private InstitutionRepository institutionRepository;
 
     public void handler(CreateFeatureCommand command){
-        Long institutionId = SecurityUtils.getInstitutionId();
-        assert institutionId != null;
+//        Long institutionId = SecurityUtils.getInstitutionId();
+//        assert institutionId != null;
 
+        Long institutionId = 1L;
         boolean existInstitution = institutionRepository.existsByIdAndDeletedAtIsNull(institutionId);
         if(!existInstitution){
             throw new InstitutionNotFoundException();
@@ -32,7 +33,7 @@ public class CreateFeatureHandler {
             throw new PlanNotFoundException();
         }
 
-        boolean existFeature = featureRepository.existsByFeatureAndIdPlan(command.getFeature(), command.getIdPlan());
+        boolean existFeature = featurePlansRepository.existsByFeatureAndIdPlan(command.getFeature(), command.getIdPlan());
         if(existFeature){
             throw new FeatureIsRegisteredException();
         }
@@ -42,7 +43,6 @@ public class CreateFeatureHandler {
         feature.setFeature(command.getFeature());
         feature.setQuantity(command.getQuantity());
 
-        featureRepository.save(feature);
-
+        featurePlansRepository.save(feature);
     }
 }

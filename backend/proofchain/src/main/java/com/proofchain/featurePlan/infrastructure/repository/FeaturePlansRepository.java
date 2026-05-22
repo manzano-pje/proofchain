@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface FeatureRepository extends JpaRepository<FeaturePlan, Long> {
+public interface FeaturePlansRepository extends JpaRepository<FeaturePlan, Long> {
 
     boolean existsByFeatureAndIdPlan(FeaturePlansEnum feature, Long idPlan);
 }
