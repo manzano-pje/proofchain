@@ -32,7 +32,7 @@ public class CreateFeatureHandler {
             throw new PlanNotFoundException();
         }
 
-        boolean existFeature = featureRepository.existByFeatureAndIdPlan(command.getFeature(), command.getIdPlan());
+        boolean existFeature = featureRepository.existsByFeatureAndIdPlan(command.getFeature(), command.getIdPlan());
         if(existFeature){
             throw new FeatureIsRegisteredException();
         }

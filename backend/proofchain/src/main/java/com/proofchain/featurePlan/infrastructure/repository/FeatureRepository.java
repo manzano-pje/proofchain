@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface FeatureRepository extends JpaRepository<FeaturePlan, Long> {
 
-    boolean existByFeatureAndIdPlan(FeaturePlansEnum feature, Long idPlan);
+    boolean existsByFeatureAndIdPlan(FeaturePlansEnum feature, Long idPlan);
 }

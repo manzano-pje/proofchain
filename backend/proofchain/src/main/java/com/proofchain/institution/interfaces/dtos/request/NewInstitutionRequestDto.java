@@ -22,5 +22,5 @@ public class NewInstitutionRequestDto {
     @Size(min=8)
     private String password;
     @NonNull
-    private Integer idPlan;
+    private Long idPlan;
 }

@@ -91,7 +91,7 @@ public class CreateInstitutionHandler {
         Instant periodStart ;
         Instant periodEnd ;
         Instant nextBilling;
-        int idPlan = newinstitutionRequestDto.getIdPlan();
+        Long idPlan = newinstitutionRequestDto.getIdPlan();
 
         Optional<Plans> plans = plansRepository.findById(idPlan);
 
@@ -100,7 +100,7 @@ public class CreateInstitutionHandler {
         }
         Subscriptions subscription = new Subscriptions();
 
-        switch(idPlan){
+        switch(Math.toIntExact(idPlan)){
             case 1:
                 billingType = subscription.getBillingType().MANUAL;
                 periodStart = Instant.now();

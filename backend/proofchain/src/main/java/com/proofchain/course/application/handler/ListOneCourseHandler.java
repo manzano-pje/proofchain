@@ -14,12 +14,27 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import java.util.Optional;
 
+/**
+ * Handler for listing a single course by its ID.
+ * Author - Paulo Manzano
+ * version - 1.0
+ * since - 2024-06-01
+ */
+
+
 @Component
 @AllArgsConstructor
 public class ListOneCourseHandler {
 
     private final InstitutionRepository institutionRepository;
     private final CourseRepository courseRepository;
+
+
+    /**
+     * Lists a single course by its ID.
+     * @param id
+     * @return CourseResponse
+     */
 
     public CourseResponse listOneCourse(Long id){
         Long institutionId = SecurityUtils.getInstitutionId();
