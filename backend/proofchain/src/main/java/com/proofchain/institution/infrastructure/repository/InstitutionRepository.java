@@ -12,6 +12,7 @@ public interface InstitutionRepository extends JpaRepository<Institution, Long> 
 
     Optional<Institution> findByCnpjAndDeletedAtIsNull(String cnpj);
     Optional<Institution> findByCnpj(String cnpj);
+    Optional<Institution> findByIdAndDeletedAtIsNull(Long id);
     List<Institution> findAllByDeletedAtIsNull();
     boolean existsByIdAndDeletedAtIsNull(Long Id);
     boolean existsById(Long institutionId);
