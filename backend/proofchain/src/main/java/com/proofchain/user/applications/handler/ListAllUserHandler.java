@@ -2,9 +2,10 @@ package com.proofchain.user.applications.handler;
 
 import com.proofchain.institution.domain.exception.InstitutionNotAutorizedException;
 import com.proofchain.institution.domain.exception.InstitutionNotFoundException;
-import com.proofchain.institution.domain.model.Institution;
 import com.proofchain.institution.infrastructure.repository.InstitutionRepository;
 import com.proofchain.security.SecurityUtils;
+import com.proofchain.user.domain.exception.UserNotFoundException;
+import com.proofchain.user.domain.model.User;
 import com.proofchain.user.infrastructure.repository.UserRepository;
 import com.proofchain.user.interfaces.dto.response.UserReturn;
 import lombok.AllArgsConstructor;
@@ -35,7 +36,11 @@ public class ListAllUserHandler {
 //        Institution institution = institutionRepository.findById(institutionId)
 //                .orElseThrow(InstitutionNotFoundException::new);
 
-        return userRepository.findAllByInstitution_IdAndInstitution_DeletedAtIsNull(institutionId)
+        List<User> users = userRepository.findAllByUser_IdAndInstitution_DeletedAtIsNull(institutionId);
+        if(users.isEmpty()){
+            throw new UserNotFoundException();
+        }
+        return users
                 .stream()
                 .map(UserReturn::new)
                 .collect(Collectors.toList());
