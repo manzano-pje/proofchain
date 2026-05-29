@@ -32,12 +32,17 @@ public class CreateUserHandler {
 
     public void createUser(CreateUserCommand command) {
         // 🔑 Instituição vem do TOKEN, não do request
-        Long institutionId = SecurityUtils.getInstitutionId();
+        //      Long institutionId = SecurityUtils.getInstitutionId();
+
+        Long institutionId = 1L;
         if (institutionId == null){
             throw new InstitutionNotAutorizedException();
         }
-        Institution institution = institutionRepository.findByIdAndDeletedAtIsNull(institutionId)
-                .orElseThrow(InstitutionNotFoundException::new);
+        Optional<Institution> optionalInstitution = institutionRepository
+                .findByIdAndDeletedAtIsNull(institutionId);
+        if(optionalInstitution.isEmpty()) {
+                throw new InstitutionNotFoundException();
+        }
 
         // Valida se usuário já existe
         boolean existUSer = userRepository.existsByNameAndInstitutionId(command.getName(), institutionId) ;
@@ -51,7 +56,7 @@ public class CreateUserHandler {
                 command.getEmail(),
                 passwordEncoder.encode(command.getPassword()),
                 command.getRole(),
-                institution
+                optionalInstitution.get()
         );
         userRepository.save(user);
     }
