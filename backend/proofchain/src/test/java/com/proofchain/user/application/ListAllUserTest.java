@@ -4,7 +4,7 @@ import com.proofchain.identities.enums.UserRole;
 import com.proofchain.institution.domain.exception.InstitutionNotFoundException;
 import com.proofchain.institution.domain.model.Institution;
 import com.proofchain.institution.infrastructure.repository.InstitutionRepository;
-import com.proofchain.security.SecurityUtils;
+import com.proofchain.shared.security.SecurityUtils;
 import com.proofchain.user.applications.handler.ListAllUserHandler;
 import com.proofchain.user.domain.exception.UserNotFoundException;
 import com.proofchain.user.domain.model.User;
@@ -72,9 +72,9 @@ public class ListAllUserTest {
     public void ShouldListAllUserWhenSuccessfuly(){
 
         try(MockedStatic<SecurityUtils> security =
-                mockStatic(com.proofchain.security.SecurityUtils.class)) {
+                mockStatic(SecurityUtils.class)) {
 
-            security.when(com.proofchain.security.SecurityUtils::getInstitutionId)
+            security.when(SecurityUtils::getInstitutionId)
                     .thenReturn(1L);
             List<User> users =
                     List.of(user1, user2);
@@ -95,9 +95,9 @@ public class ListAllUserTest {
     @Test
     public void ShouldListAllUserWhenNotFound(){
         try(MockedStatic<SecurityUtils> security =
-                mockStatic(com.proofchain.security.SecurityUtils.class)){
+                mockStatic(SecurityUtils.class)){
 
-            security.when(com.proofchain.security.SecurityUtils::getInstitutionId)
+            security.when(SecurityUtils::getInstitutionId)
                     .thenReturn(1L);
 
             when(institutionRepository.existsByIdAndDeletedAtIsNull(1L))
@@ -114,9 +114,9 @@ public class ListAllUserTest {
     @Test
     public void ShouldListAllUserWhenInstitutionNotFound(){
         try(MockedStatic<SecurityUtils> security =
-                    mockStatic(com.proofchain.security.SecurityUtils.class)) {
+                    mockStatic(SecurityUtils.class)) {
 
-            security.when(com.proofchain.security.SecurityUtils::getInstitutionId)
+            security.when(SecurityUtils::getInstitutionId)
                     .thenReturn(1L);
 
             when(institutionRepository.existsByIdAndDeletedAtIsNull(1L))

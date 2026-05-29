@@ -1,17 +1,12 @@
 package com.proofchain.user.applications.handler;
 
 import com.proofchain.institution.domain.exception.InstitutionNotFoundException;
-import com.proofchain.institution.domain.model.Institution;
 import com.proofchain.institution.infrastructure.repository.InstitutionRepository;
-import com.proofchain.security.SecurityUtils;
+import com.proofchain.shared.security.SecurityUtils;
 import com.proofchain.user.domain.exception.UserNotFoundException;
-import com.proofchain.user.domain.model.User;
 import com.proofchain.user.infrastructure.repository.UserRepository;
-import com.proofchain.util.Validations;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
-
-import java.util.Optional;
 
 @Component
 @AllArgsConstructor

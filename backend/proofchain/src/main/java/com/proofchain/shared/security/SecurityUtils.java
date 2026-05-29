@@ -1,4 +1,4 @@
-package com.proofchain.security;
+package com.proofchain.shared.security;
 
 import io.jsonwebtoken.Claims;
 import org.springframework.security.core.Authentication;

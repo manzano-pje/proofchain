@@ -1,4 +1,4 @@
-package com.proofchain.exceptions;
+package com.proofchain.shared.exception;
 
 public record ResponseError (
         String message,

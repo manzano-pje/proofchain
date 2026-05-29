@@ -1,6 +1,6 @@
 package com.proofchain.auth;
 
-import com.proofchain.security.JwtService;
+import com.proofchain.shared.security.JwtService;
 import com.proofchain.user.UserDetailsImpl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

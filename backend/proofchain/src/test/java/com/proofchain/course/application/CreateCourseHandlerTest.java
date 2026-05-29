@@ -8,6 +8,7 @@ import com.proofchain.course.infrastructure.repository.CourseRepository;
 import com.proofchain.institution.domain.exception.InstitutionNotFoundException;
 import com.proofchain.institution.domain.model.Institution;
 import com.proofchain.institution.infrastructure.repository.InstitutionRepository;
+import com.proofchain.shared.security.SecurityUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -57,11 +58,11 @@ class CreateCourseHandlerTest {
         void shouldCreateCourseSuccessfully() {
 
             // Arrange
-            try (MockedStatic<com.proofchain.security.SecurityUtils> security =
-                         mockStatic(com.proofchain.security.SecurityUtils.class)) {
+            try (MockedStatic<SecurityUtils> security =
+                         mockStatic(SecurityUtils.class)) {
 
                 security.when(
-                        com.proofchain.security.SecurityUtils::getInstitutionId
+                        SecurityUtils::getInstitutionId
                 ).thenReturn(1L);
 
                 when(institutionRepository.findByIdAndDeletedAtIsNull(1L))
@@ -85,11 +86,11 @@ class CreateCourseHandlerTest {
         void shouldThrowExceptionWhenInstitutionNotFound() {
 
             // Arrange
-            try (MockedStatic<com.proofchain.security.SecurityUtils> security =
-                         mockStatic(com.proofchain.security.SecurityUtils.class)) {
+            try (MockedStatic<SecurityUtils> security =
+                         mockStatic(SecurityUtils.class)) {
 
                 security.when(
-                        com.proofchain.security.SecurityUtils::getInstitutionId
+                        SecurityUtils::getInstitutionId
                 ).thenReturn(1L);
 
                 when(institutionRepository.findByIdAndDeletedAtIsNull(1L))
@@ -107,11 +108,11 @@ class CreateCourseHandlerTest {
         void shouldThrowExceptionWhenCourseAlreadyExists() {
 
             // Arrange
-            try (MockedStatic<com.proofchain.security.SecurityUtils> security =
-                         mockStatic(com.proofchain.security.SecurityUtils.class)) {
+            try (MockedStatic<SecurityUtils> security =
+                         mockStatic(SecurityUtils.class)) {
 
                 security.when(
-                        com.proofchain.security.SecurityUtils::getInstitutionId
+                        SecurityUtils::getInstitutionId
                 ).thenReturn(1L);
 
                 when(institutionRepository.findByIdAndDeletedAtIsNull(1L))

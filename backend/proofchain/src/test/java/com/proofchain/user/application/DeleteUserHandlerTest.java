@@ -2,7 +2,7 @@ package com.proofchain.user.application;
 
 import com.proofchain.institution.domain.model.Institution;
 import com.proofchain.institution.infrastructure.repository.InstitutionRepository;
-import com.proofchain.security.SecurityUtils;
+import com.proofchain.shared.security.SecurityUtils;
 import com.proofchain.user.applications.handler.DeleteUserHandler;
 import com.proofchain.user.domain.model.User;
 import com.proofchain.user.infrastructure.repository.UserRepository;
@@ -43,9 +43,9 @@ public class DeleteUserHandlerTest {
     public void SoutchDeleteUserWhenSucessfuly(){
 
         MockedStatic<SecurityUtils> security =
-                mockStatic(com.proofchain.security.SecurityUtils.class);
+                mockStatic(SecurityUtils.class);
 
-        security.when(com.proofchain.security.SecurityUtils::getInstitutionId)
+        security.when(SecurityUtils::getInstitutionId)
                 .thenReturn(1L);
 
         when(institutionRepository.existsByIdAndDeletedAtIsNull(1L))

@@ -1,14 +1,13 @@
 package com.proofchain.course.application;
 
 import com.proofchain.course.application.handler.ListAllCourseHandler;
-import com.proofchain.course.domain.exception.CourseNotFoundException;
 import com.proofchain.course.domain.model.Course;
 import com.proofchain.course.infrastructure.repository.CourseRepository;
-import com.proofchain.exceptions.ResourceNotFoundException;
+import com.proofchain.shared.exception.ResourceNotFoundException;
 import com.proofchain.institution.domain.exception.InstitutionNotFoundException;
 import com.proofchain.institution.domain.model.Institution;
 import com.proofchain.institution.infrastructure.repository.InstitutionRepository;
-import com.proofchain.security.SecurityUtils;
+import com.proofchain.shared.security.SecurityUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -67,9 +66,9 @@ public class ListAllCourseHandlerTest {
     void ShouldListAllCoursesSucessfuly(){
         try(
             MockedStatic<SecurityUtils> security =
-                    mockStatic(com.proofchain.security.SecurityUtils.class)){
+                    mockStatic(SecurityUtils.class)){
 
-            security.when(com.proofchain.security.SecurityUtils::getInstitutionId)
+            security.when(SecurityUtils::getInstitutionId)
                     .thenReturn(1L);
 
             when(institutionRepository.existsByIdAndDeletedAtIsNull(1L))
@@ -89,10 +88,10 @@ public class ListAllCourseHandlerTest {
     void ShouldListAlCourseNotFoundInstitutioin() {
 
         try (MockedStatic<SecurityUtils> security =
-                     mockStatic(com.proofchain.security.SecurityUtils.class)) {
+                     mockStatic(SecurityUtils.class)) {
 
             // Identificação de instituição válida
-            security.when(com.proofchain.security.SecurityUtils::getInstitutionId)
+            security.when(SecurityUtils::getInstitutionId)
                     .thenReturn(1L);
 
             when(institutionRepository.existsByIdAndDeletedAtIsNull(1L))
@@ -107,9 +106,9 @@ public class ListAllCourseHandlerTest {
     void ShouldListAllCoursesNotFound(){
         try(
                 MockedStatic<SecurityUtils> security =
-                        mockStatic(com.proofchain.security.SecurityUtils.class)) {
+                        mockStatic(SecurityUtils.class)) {
 
-            security.when(com.proofchain.security.SecurityUtils::getInstitutionId)
+            security.when(SecurityUtils::getInstitutionId)
                     .thenReturn(1L);
 
             when(institutionRepository.existsByIdAndDeletedAtIsNull(1L))

@@ -1,16 +1,19 @@
 package com.proofchain.course.domain.model;
 
 import com.proofchain.certificate.model.Certificate;
-import com.proofchain.exceptions.ValidationException;
 import com.proofchain.institution.domain.model.Institution;
 import com.proofchain.instructor.Instructor;
 import com.proofchain.participant.Participant;
 import com.proofchain.plataform.domain.text.textNormalize;
+import com.proofchain.shared.domain.model.BaseEntity;
+import com.proofchain.shared.exception.ValidationException;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.time.Instant;
 import java.util.List;
 
 @Entity
@@ -18,14 +21,21 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name = "tb_courses")
-public class Course {
+@Table(
+        name = "tb_courses",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        columnNames = {"name", "institution_id"}
+                )
+        }
+)
+public class Course extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String name;
 
     @Column(nullable = false)
@@ -34,10 +44,6 @@ public class Course {
 
     @Column(nullable = false)
     private int hours;
-
-    @Column(nullable = false)
-    private Instant createdAt;
-    private Instant updatedAt;
 
 
     public static Course create(String name,
@@ -57,7 +63,6 @@ public class Course {
         course.name = textNormalize.normalize(name);
         course.description = textNormalize.normalize(description);
         course.hours = hours;
-        course.createdAt = Instant.now();
         course.institution = institution;
         return course;
     }

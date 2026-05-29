@@ -2,7 +2,7 @@ package com.proofchain.user;
 
 // Serviço uitlizado pelo Spring Security no login
 
-import com.proofchain.exceptions.ResourceNotFoundException;
+import com.proofchain.shared.exception.ResourceNotFoundException;
 import com.proofchain.user.domain.model.User;
 import com.proofchain.user.infrastructure.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;

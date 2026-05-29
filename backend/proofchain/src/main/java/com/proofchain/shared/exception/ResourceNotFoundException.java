@@ -1,4 +1,4 @@
-package com.proofchain.exceptions;
+package com.proofchain.shared.exception;
 
 public class ResourceNotFoundException extends RuntimeException{
     public ResourceNotFoundException(String message){
