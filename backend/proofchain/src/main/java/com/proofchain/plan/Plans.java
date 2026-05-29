@@ -29,7 +29,6 @@ public class Plans {
     private double price;
     private Integer durationDays;
     private boolean isActive;
-    private Instant createdAt;
     private BillingType billingType;            // MANUAL, RECURRING
     private Integer monthlyCertificateLimit;    // Limite de certificados mensais
 
@@ -38,5 +37,4 @@ public class Plans {
 
     @OneToMany
     List<Subscriptions> subscriptionsList;
-
 }

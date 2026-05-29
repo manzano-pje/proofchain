@@ -1,7 +1,5 @@
 package com.proofchain.institution.application.handler;
 
-import com.proofchain.course.domain.exception.BusinessRuleException;
-import com.proofchain.shared.exception.ResourceNotFoundException;
 import com.proofchain.identities.enums.BillingType;
 import com.proofchain.identities.enums.StatusSubscription;
 import com.proofchain.identities.enums.UserRole;
@@ -9,8 +7,11 @@ import com.proofchain.institution.domain.exception.InstitutionAlerdyExistExcepti
 import com.proofchain.institution.domain.model.Institution;
 import com.proofchain.institution.infrastructure.repository.InstitutionRepository;
 import com.proofchain.institution.interfaces.dtos.request.NewInstitutionRequestDto;
+import com.proofchain.plan.PlanNotFoundException;
 import com.proofchain.plan.Plans;
 import com.proofchain.plan.PlansRepository;
+import com.proofchain.shared.exception.BusinessException;
+import com.proofchain.shared.exception.NotFoundException;
 import com.proofchain.subscription.SubscriptionRepository;
 import com.proofchain.subscription.Subscriptions;
 import com.proofchain.user.domain.exception.UserRegisteredException;
@@ -36,13 +37,13 @@ public class CreateInstitutionHandler {
 
     public void createinstitution(NewInstitutionRequestDto newinstitutionRequestDto) {
         if(newinstitutionRequestDto.getCnpj() == null || (newinstitutionRequestDto.getCnpj().length() != 14)){
-            throw new BusinessRuleException("CNPJ inválido");
+            throw new BusinessException("CNPJ inválido");
         }
         if(newinstitutionRequestDto.getName() == null || newinstitutionRequestDto.getName().length() < 5){
-            throw new BusinessRuleException("Nome inválido");
+            throw new BusinessException("Nome inválido");
         }
         if(newinstitutionRequestDto.getEmail() == null){
-            throw new BusinessRuleException("E-mail inválido");
+            throw new BusinessException("E-mail inválido");
         }
 
         // Validação da instituição
@@ -96,7 +97,7 @@ public class CreateInstitutionHandler {
         Optional<Plans> plans = plansRepository.findById(idPlan);
 
         if (plans.isEmpty()) {
-            throw new ResourceNotFoundException("Plano não encontrado no banco de dados.");
+            throw new PlanNotFoundException();
         }
         Subscriptions subscription = new Subscriptions();
 
@@ -124,7 +125,7 @@ public class CreateInstitutionHandler {
                 nextBilling =  Instant.now().plus(30, ChronoUnit.DAYS);
                 break;
             default:
-                throw new ResourceNotFoundException("Plano inválido.");
+                throw new PlanNotFoundException();
         }
 
         subscription.setInstitution(institution);

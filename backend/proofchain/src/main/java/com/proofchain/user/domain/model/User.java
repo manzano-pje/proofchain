@@ -16,7 +16,6 @@ import static java.time.Instant.now;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "tb_users")
 public class User {

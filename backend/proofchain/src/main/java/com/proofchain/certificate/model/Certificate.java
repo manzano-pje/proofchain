@@ -17,7 +17,10 @@ import java.time.Instant;
 @ToString
 @Table(
         name = "tb_certificates",
-        uniqueConstraints = {@UniqueConstraint(columnNames = {"course_id", "participant_id"})        }
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames =
+                        {"course_id", "participant_id"})
+        }
 )
 
 public class Certificate {
@@ -27,7 +30,7 @@ public class Certificate {
 
     // Cryptographic proof (off-chain / on-chain)
     @Column(nullable = false, unique = true, length = 64)
-    private String hash;
+    private String  hash;
     private Instant issuedDate;         // Data de emissão
     private Instant initialDateCourse;  // Data do início do curso
     private Instant finishDateCourse;   // Data do final do curso

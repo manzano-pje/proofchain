@@ -1,0 +1,39 @@
+Tenho estas enttidades
+certificate
+course
+institution
+instructor
+participant
+plan
+siubscription
+user
+usageCounter
+payment
+featurePlan
+
+Quero montar mensagens padronizadas para os retornos específicos destas entidades. 
+posso ter 
+not found
+alerdy exist
+not authorized
+
+Exceptions específicas
+NotFoundException
+AlerdyExistsException
+
+
+
+
+
+
+
+exceptions gerais
+NotFoundException
+AlreadyExistsException
+ValidationException
+NotAuthorizedException
+AuthenticationException
+BusinessException
+InternalServerException
+ResourceLimitExceededException
+SubscriptionInactiveException

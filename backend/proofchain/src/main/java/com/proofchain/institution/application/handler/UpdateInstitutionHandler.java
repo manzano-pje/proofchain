@@ -1,6 +1,6 @@
 package com.proofchain.institution.application.handler;
 
-import com.proofchain.shared.exception.ResourceNotFoundException;
+import com.proofchain.institution.domain.exception.InstitutionNotFoundException;
 import com.proofchain.institution.domain.model.Institution;
 import com.proofchain.institution.infrastructure.repository.InstitutionRepository;
 import com.proofchain.institution.interfaces.dtos.request.InstitutionRequest;
@@ -19,7 +19,7 @@ public class UpdateInstitutionHandler {
 //        validations.validateinstitution(institutionId);
 
         Institution institution = institutionRepository.findByCnpjAndDeletedAtIsNull(cnpj)
-                .orElseThrow(() -> new ResourceNotFoundException("Instituição não encontrada."));
+                .orElseThrow(() -> new InstitutionNotFoundException());
 
         institution.updateFrom(institutionRequest);
         institutionRepository.save(institution);
