@@ -64,7 +64,7 @@ class CreateCourseHandlerTest {
                         com.proofchain.security.SecurityUtils::getInstitutionId
                 ).thenReturn(1L);
 
-                when(institutionRepository.findById(1L))
+                when(institutionRepository.findByIdAndDeletedAtIsNull(1L))
                         .thenReturn(Optional.of(institution));
 
                 when(courseRepository.existsByIdAndInstitutionId(
@@ -92,7 +92,7 @@ class CreateCourseHandlerTest {
                         com.proofchain.security.SecurityUtils::getInstitutionId
                 ).thenReturn(1L);
 
-                when(institutionRepository.findById(1L))
+                when(institutionRepository.findByIdAndDeletedAtIsNull(1L))
                         .thenReturn(Optional.empty());
 
                 // Act + Assert
@@ -114,7 +114,7 @@ class CreateCourseHandlerTest {
                         com.proofchain.security.SecurityUtils::getInstitutionId
                 ).thenReturn(1L);
 
-                when(institutionRepository.findById(1L))
+                when(institutionRepository.findByIdAndDeletedAtIsNull(1L))
                         .thenReturn(Optional.of(institution));
 
                 when(courseRepository.existsByIdAndInstitutionId(

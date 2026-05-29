@@ -1,0 +1,41 @@
+package com.bob.configuration;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.ai.chat.model.ChatModel;
+import org.springframework.ai.ollama.OllamaChatModel;
+import org.springframework.ai.ollama.api.OllamaApi;
+import org.springframework.ai.ollama.api.OllamaChatOptions;
+import org.springframework.web.client.RestClient;
+import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.client.ResponseErrorHandler;
+
+@Configuration
+public class AiConfig {
+
+    @Bean
+    public ChatModel chatModel(RestClient.Builder restClientBuilder,
+                               WebClient.Builder webClientBuilder,
+                               ResponseErrorHandler responseErrorHandler) {
+
+        // 1. Correção da API utilizando o padrão Builder oficial
+        OllamaApi ollamaApi = OllamaApi.builder()
+                .baseUrl("http://localhost:11434")
+                .restClientBuilder(restClientBuilder)
+                .webClientBuilder(webClientBuilder)
+                .responseErrorHandler(responseErrorHandler)
+                .build();
+
+        // 2. Correção das Opções removendo os prefixos "with"
+        OllamaChatOptions options = OllamaChatOptions.builder()
+                .model("proofchain")
+                .temperature(0.7) // Nota: O método atual geralmente aceita Double puro
+                .build();
+
+        // 3. Correção do modelo utilizando o construtor fluente
+        return OllamaChatModel.builder()
+                .ollamaApi(ollamaApi)
+                .defaultOptions(options)
+                .build();
+    }
+}

@@ -24,8 +24,9 @@ public class CreateCourseHandler {
         Long institutionId = SecurityUtils.getInstitutionId();
         assert institutionId != null;
 
-        Institution institution = institutionRepository.findById(institutionId)
+        Institution institution = institutionRepository.findByIdAndDeletedAtIsNull(institutionId)
                 .orElseThrow(InstitutionNotFoundException::new);
+
         boolean exist = courseRepository.existsByIdAndInstitutionId(command.getId(), institution.getId());
         if (exist) {
             throw new CourseIsRegisteredException();

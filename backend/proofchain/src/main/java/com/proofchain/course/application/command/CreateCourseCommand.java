@@ -7,6 +7,11 @@ import lombok.Setter;
 
 @Getter
 @AllArgsConstructor
+/**
+ * Descrição concisa da responsabilidade da classe.
+ * @author Arquiteto de Software Qwen
+ * @since 2023
+ */
 public class CreateCourseCommand {
     private final Long id;
     private final String name;

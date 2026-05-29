@@ -1,5 +1,6 @@
-package com.proofchain.featurePlan;
+package com.proofchain.featurePlan.domain.model;
 
+import com.proofchain.featurePlan.domain.model.enuns.FeaturePlansEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,7 +19,7 @@ public class FeaturePlan {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idFeature;
     private Long idPlan;
-    private String feature;
+    @Enumerated
+    private FeaturePlansEnum feature;
     private Integer quantity;
-
 }
