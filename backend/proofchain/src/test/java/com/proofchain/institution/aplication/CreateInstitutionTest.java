@@ -1,6 +1,6 @@
 package com.proofchain.institution.aplication;
 
-import com.proofchain.exceptions.ResourceNotFoundException;
+import com.proofchain.shared.exception.ResourceNotFoundException;
 import com.proofchain.identities.enums.BillingType;
 import com.proofchain.identities.enums.StatusSubscription;
 import com.proofchain.identities.enums.UserRole;

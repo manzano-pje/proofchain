@@ -80,7 +80,7 @@ import com.proofchain.course.domain.model.Course;
 import com.proofchain.course.infrastructure.repository.CourseRepository;
 import com.proofchain.institution.domain.model.Institution;
 import com.proofchain.institution.infrastructure.repository.InstitutionRepository;
-import com.proofchain.security.SecurityUtils;
+import com.proofchain.shared.security.SecurityUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -131,7 +131,7 @@ import com.proofchain.course.domain.model.Course;
 import com.proofchain.course.infrastructure.repository.CourseRepository;
 import com.proofchain.institution.domain.model.Institution;
 import com.proofchain.institution.infrastructure.repository.InstitutionRepository;
-import com.proofchain.security.SecurityUtils;
+import com.proofchain.shared.security.SecurityUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -151,7 +151,7 @@ public class UpdateCourseHandler {
 
         Course course = courseRepository.findByIdAndInstitutionId(id, institutionId)
                 .orElseThrow(() -> new CourseNotFoundException("The course with ID " + id + " was not found."));
-        
+
         boolean exist = courseRepository.existsByIdAndInstitutionId(command.getId(), institution.getId());
 
         if (exist && !course.getName().equals(command.getName())) {

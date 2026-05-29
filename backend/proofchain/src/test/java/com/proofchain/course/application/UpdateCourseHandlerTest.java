@@ -8,7 +8,7 @@ import com.proofchain.course.infrastructure.repository.CourseRepository;
 import com.proofchain.institution.domain.exception.InstitutionNotFoundException;
 import com.proofchain.institution.domain.model.Institution;
 import com.proofchain.institution.infrastructure.repository.InstitutionRepository;
-import com.proofchain.security.SecurityUtils;
+import com.proofchain.shared.security.SecurityUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -61,11 +61,11 @@ public class UpdateCourseHandlerTest {
         //assert
         // MockStatic controla os métodos estáticos da classe SecurityUtils
         try (MockedStatic<SecurityUtils> security =
-                     mockStatic(com.proofchain.security.SecurityUtils.class)) {
+                     mockStatic(SecurityUtils.class)) {
 
             // O que fazer quando chamar getInstitutionId()
             // no caso retorna 1L
-            security.when(com.proofchain.security.SecurityUtils::getInstitutionId
+            security.when(SecurityUtils::getInstitutionId
             ).thenReturn(1L);
 
             // Quando buscar instituição 1, retornar esta instituição fake
@@ -92,9 +92,9 @@ public class UpdateCourseHandlerTest {
         // MockStatic controla os métodos estáticos da classe SecurityUtils
         try(
             MockedStatic<SecurityUtils> security =
-                    mockStatic(com.proofchain.security.SecurityUtils.class)) {
+                    mockStatic(SecurityUtils.class)) {
 
-            security.when(com.proofchain.security.SecurityUtils::getInstitutionId
+            security.when(SecurityUtils::getInstitutionId
             ).thenReturn(1L);
 
             when(institutionRepository.findById(1L))
@@ -112,9 +112,9 @@ public class UpdateCourseHandlerTest {
 
         try(
                 MockedStatic<SecurityUtils> security =
-                        mockStatic(com.proofchain.security.SecurityUtils.class)) {
+                        mockStatic(SecurityUtils.class)) {
 
-            security.when(com.proofchain.security.SecurityUtils::getInstitutionId
+            security.when(SecurityUtils::getInstitutionId
             ).thenReturn(1L);
 
             when(institutionRepository.findById(1L))

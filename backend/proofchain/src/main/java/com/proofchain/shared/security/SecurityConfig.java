@@ -1,4 +1,4 @@
-package com.proofchain.security;
+package com.proofchain.shared.security;
 
 
 // Configuração do Spring Security 6

@@ -1,4 +1,4 @@
-package com.proofchain.exceptions;
+package com.proofchain.shared.exception;
 
 import com.proofchain.course.domain.exception.BusinessRuleException;
 import com.proofchain.user.domain.exception.UserNotFoundException;

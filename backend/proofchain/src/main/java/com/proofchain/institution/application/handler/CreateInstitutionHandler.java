@@ -1,7 +1,7 @@
 package com.proofchain.institution.application.handler;
 
 import com.proofchain.course.domain.exception.BusinessRuleException;
-import com.proofchain.exceptions.ResourceNotFoundException;
+import com.proofchain.shared.exception.ResourceNotFoundException;
 import com.proofchain.identities.enums.BillingType;
 import com.proofchain.identities.enums.StatusSubscription;
 import com.proofchain.identities.enums.UserRole;

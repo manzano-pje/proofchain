@@ -4,7 +4,7 @@ import com.proofchain.identities.enums.UserRole;
 import com.proofchain.institution.domain.exception.InstitutionNotFoundException;
 import com.proofchain.institution.domain.model.Institution;
 import com.proofchain.institution.infrastructure.repository.InstitutionRepository;
-import com.proofchain.security.SecurityUtils;
+import com.proofchain.shared.security.SecurityUtils;
 import com.proofchain.user.applications.command.CreateUserCommand;
 import com.proofchain.user.applications.handler.CreateUserHandler;
 import com.proofchain.user.domain.exception.UserRegisteredException;
@@ -19,7 +19,6 @@ import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.time.Instant;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -60,9 +59,9 @@ public class CreateUserHandlerTest {
     public void ShouldCreateUSerWhenSucessfuly(){
 
         try( MockedStatic<SecurityUtils> security =
-             mockStatic(com.proofchain.security.SecurityUtils.class)) {
+             mockStatic(SecurityUtils.class)) {
 
-            security.when(com.proofchain.security.SecurityUtils::getInstitutionId)
+            security.when(SecurityUtils::getInstitutionId)
                     .thenReturn(1L);
 
             when(institutionRepository.findByIdAndDeletedAtIsNull(1L))
@@ -84,9 +83,9 @@ public class CreateUserHandlerTest {
     @Test
     public void ShouldCreateUserWhenUserAlerdyExist(){
         try( MockedStatic<SecurityUtils> security =
-                     mockStatic(com.proofchain.security.SecurityUtils.class)) {
+                     mockStatic(SecurityUtils.class)) {
 
-            security.when(com.proofchain.security.SecurityUtils::getInstitutionId)
+            security.when(SecurityUtils::getInstitutionId)
                     .thenReturn(1L);
 
             when(institutionRepository.findByIdAndDeletedAtIsNull(1L))
@@ -104,9 +103,9 @@ public class CreateUserHandlerTest {
     @Test
     public void ShouldCreateUserWhenInstitutionNotFound(){
         try( MockedStatic<SecurityUtils> security =
-                mockStatic(com.proofchain.security.SecurityUtils.class)) {
+                mockStatic(SecurityUtils.class)) {
 
-            security.when(com.proofchain.security.SecurityUtils::getInstitutionId)
+            security.when(SecurityUtils::getInstitutionId)
                     .thenReturn(1L);
 
             when(institutionRepository.findByIdAndDeletedAtIsNull(1L))

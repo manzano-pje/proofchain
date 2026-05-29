@@ -1,4 +1,4 @@
-package com.proofchain.security;
+package com.proofchain.shared.security;
 
 
 // Geração e validação de token

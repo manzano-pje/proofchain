@@ -7,7 +7,7 @@ import com.proofchain.course.infrastructure.repository.CourseRepository;
 import com.proofchain.institution.domain.exception.InstitutionNotFoundException;
 import com.proofchain.institution.domain.model.Institution;
 import com.proofchain.institution.infrastructure.repository.InstitutionRepository;
-import com.proofchain.security.SecurityUtils;
+import com.proofchain.shared.security.SecurityUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -53,10 +53,10 @@ public class ListOneCourseHandlerTest {
     void ShouldListOneCourseSucessfully() {
 
         try (MockedStatic<SecurityUtils> security =
-                     mockStatic(com.proofchain.security.SecurityUtils.class)){
+                     mockStatic(SecurityUtils.class)){
 
             // Identificação de instituição válida
-            security.when(com.proofchain.security.SecurityUtils::getInstitutionId)
+            security.when(SecurityUtils::getInstitutionId)
                     .thenReturn(1L);
 
             when(institutionRepository.existsByIdAndDeletedAtIsNull(1L))
@@ -77,10 +77,10 @@ public class ListOneCourseHandlerTest {
     void ShouldListOneCourseNotFoundInstitutioin() {
 
         try (MockedStatic<SecurityUtils> security =
-                     mockStatic(com.proofchain.security.SecurityUtils.class)) {
+                     mockStatic(SecurityUtils.class)) {
 
             // Identificação de instituição válida
-            security.when(com.proofchain.security.SecurityUtils::getInstitutionId)
+            security.when(SecurityUtils::getInstitutionId)
                     .thenReturn(1L);
 
             when(institutionRepository.existsByIdAndDeletedAtIsNull(1L))
@@ -95,10 +95,10 @@ public class ListOneCourseHandlerTest {
     void ShouldListOneCourseNotFound() {
 
         try (MockedStatic<SecurityUtils> security =
-                     mockStatic(com.proofchain.security.SecurityUtils.class)) {
+                     mockStatic(SecurityUtils.class)) {
 
             // Identificação de instituição válida
-            security.when(com.proofchain.security.SecurityUtils::getInstitutionId)
+            security.when(SecurityUtils::getInstitutionId)
                     .thenReturn(1L);
 
             when(institutionRepository.existsByIdAndDeletedAtIsNull(1L))

@@ -1,6 +1,6 @@
 package com.proofchain.institution.aplication;
 
-import com.proofchain.exceptions.ResourceNotFoundException;
+import com.proofchain.shared.exception.ResourceNotFoundException;
 import com.proofchain.institution.application.handler.ListOneInstitutionHandler;
 import com.proofchain.institution.domain.model.Institution;
 import com.proofchain.institution.infrastructure.repository.InstitutionRepository;

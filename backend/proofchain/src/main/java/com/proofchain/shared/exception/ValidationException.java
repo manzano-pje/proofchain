@@ -1,4 +1,4 @@
-package com.proofchain.exceptions;
+package com.proofchain.shared.exception;
 
 public class ValidationException extends RuntimeException {
     public ValidationException(String message){
