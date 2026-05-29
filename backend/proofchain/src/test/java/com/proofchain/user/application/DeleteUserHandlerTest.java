@@ -1,4 +1,62 @@
 package com.proofchain.user.application;
 
+import com.proofchain.institution.domain.model.Institution;
+import com.proofchain.institution.infrastructure.repository.InstitutionRepository;
+import com.proofchain.security.SecurityUtils;
+import com.proofchain.user.applications.handler.DeleteUserHandler;
+import com.proofchain.user.domain.model.User;
+import com.proofchain.user.infrastructure.repository.UserRepository;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockedStatic;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import static org.mockito.Mockito.*;
+
+@ExtendWith(MockitoExtension.class)
 public class DeleteUserHandlerTest {
+
+    @Mock
+    private UserRepository userRepository;
+    @Mock
+    private InstitutionRepository institutionRepository;
+
+    @InjectMocks
+    private DeleteUserHandler deleteUserHandler;
+
+    private Institution institution;
+    private User user;
+
+    @BeforeEach
+    public void setup(){
+        institution = new Institution();
+        institution.setId(1L);
+
+        user = new User();
+        user.setId(1L);
+    }
+
+    @Test
+    public void SoutchDeleteUserWhenSucessfuly(){
+
+        MockedStatic<SecurityUtils> security =
+                mockStatic(com.proofchain.security.SecurityUtils.class);
+
+        security.when(com.proofchain.security.SecurityUtils::getInstitutionId)
+                .thenReturn(1L);
+
+        when(institutionRepository.existsByIdAndDeletedAtIsNull(1L))
+                .thenReturn(true);
+
+        when(userRepository.existsByIdAndInstitutionId(1L, 1L))
+                .thenReturn(true);
+
+        deleteUserHandler.deleteUSer(1L);
+
+        verify(userRepository, times(1))
+                .delete(user);
+    }
 }

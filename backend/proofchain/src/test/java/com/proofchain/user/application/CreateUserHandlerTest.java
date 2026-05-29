@@ -94,7 +94,7 @@ public class CreateUserHandlerTest {
 
             when(userRepository.existsByNameAndInstitutionId(command.getName(),1L))
                     .thenReturn(true);
-            
+
 
             assertThrows(UserRegisteredException.class,
                     ()-> handler.createUser(command));
