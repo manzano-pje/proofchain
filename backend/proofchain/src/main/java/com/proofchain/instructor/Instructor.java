@@ -28,6 +28,7 @@ public class Instructor  {
     private User user;
 
     @ManyToOne
+    @JoinColumn(name = "course_id")
     private Course course;
 
     /////// RELACIONAMENTO ///////

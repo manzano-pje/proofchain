@@ -1,6 +1,6 @@
 package com.proofchain.plan;
 
-import com.proofchain.course.domain.exception.BusinessRuleException;
+import com.proofchain.shared.exception.BusinessException;
 import com.proofchain.plan.dto.request.PlansRequestDto;
 import com.proofchain.shared.util.Validations;
 import lombok.AllArgsConstructor;
@@ -24,7 +24,7 @@ public class PlansService {
 
         Optional<Plans> plansOptional = plansRepository.findByName(plansRequestDto.getName());
         if (plansOptional.isPresent()){
-            throw new BusinessRuleException("Plano já cadastrado.");
+            throw new BusinessException("Plano já cadastrado.");
         }
         Plans plans = new Plans();
         plans.setName(plansRequestDto.getName());
@@ -33,7 +33,6 @@ public class PlansService {
         plans.setBillingType(plansRequestDto.getBillingType());     // MANUAL, RECURRING
         plans.setActive(plansRequestDto.isActive());
         plans.setMonthlyCertificateLimit(plansRequestDto.getMonthlyCertificateLimit()); // Limite de certificados mensais
-        plans.setCreatedAt(now());
         plansRepository.save(plans);
     }
 }

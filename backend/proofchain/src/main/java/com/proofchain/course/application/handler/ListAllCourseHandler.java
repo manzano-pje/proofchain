@@ -1,9 +1,9 @@
 package com.proofchain.course.application.handler;
 
+import com.proofchain.course.domain.exception.CourseNotFoundException;
 import com.proofchain.course.domain.model.Course;
 import com.proofchain.course.infrastructure.repository.CourseRepository;
 import com.proofchain.course.interfaces.dto.response.FullCourseResponse;
-import com.proofchain.shared.exception.ResourceNotFoundException;
 import com.proofchain.institution.domain.exception.InstitutionNotFoundException;
 import com.proofchain.institution.infrastructure.repository.InstitutionRepository;
 import com.proofchain.shared.security.SecurityUtils;
@@ -28,7 +28,7 @@ public class ListAllCourseHandler {
 
         List<Course> courseList = courseRepository.findAllByInstitutionId(institutionId);
         if(courseList.isEmpty()){
-            throw new ResourceNotFoundException("Não existem cursos cadastrados.");
+            throw new CourseNotFoundException();
         }
         return courseList.stream()
                 .map(FullCourseResponse::new)

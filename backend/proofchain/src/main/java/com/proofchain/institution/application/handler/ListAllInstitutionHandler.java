@@ -1,6 +1,6 @@
 package com.proofchain.institution.application.handler;
 
-import com.proofchain.shared.exception.ResourceNotFoundException;
+import com.proofchain.institution.domain.exception.InstitutionNotFoundException;
 import com.proofchain.institution.domain.model.Institution;
 import com.proofchain.institution.infrastructure.repository.InstitutionRepository;
 import com.proofchain.institution.interfaces.dtos.response.InstitutionReturn;
@@ -20,7 +20,7 @@ public class ListAllInstitutionHandler {
 
         List<Institution> institutionList = institutionRepository.findAllByDeletedAtIsNull();
         if(institutionList.isEmpty()){
-            throw new ResourceNotFoundException("Não existem instituições cadastradas.");
+            throw new InstitutionNotFoundException();
         }
         return institutionList.stream()
                 .map(InstitutionReturn::from)

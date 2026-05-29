@@ -1,6 +1,7 @@
 package com.proofchain.shared.exception;
 
-public record ResponseError (
-        String message,
-        Integer code
-) {}
+public class ResponseError extends BaseException{
+    public ResponseError(String message, Integer statusCode){
+        super(message, statusCode);
+    }
+}

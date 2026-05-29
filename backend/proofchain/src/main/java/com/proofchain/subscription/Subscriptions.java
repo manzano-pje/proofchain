@@ -33,7 +33,7 @@ public class Subscriptions {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idSubscription;
+    private Long id;
 //    private Long idInstituition;
 //    private Long idPlan;
 
@@ -52,23 +52,21 @@ public class Subscriptions {
 
     private String mercadoPagoPreapprovalId;    //
     private String mercadoPagoCustommerId;      //
-    private Instant createdAt;                  // Data de criação da assinatura
-    private Instant canceledAt;                 // Data de cancelamento da assinatura
 
     @ManyToOne
-    @JoinColumn(name = "id_institution")
+    @JoinColumn(name = "institution_id")
     private Institution institution;
 
     @ManyToOne
-    @JoinColumn(name = "id_plan")
+    @JoinColumn(name = "plan_id")
     private Plans plans;
 
     @ManyToOne
-    @JoinColumn(name = "id_schedulePlan")
+    @JoinColumn(name = "schedulePlan_id")
     private Plans schedulePlan; // mudança no próximo ciclo
 
     @ManyToOne
-    @JoinColumn(name = "id_payment")
+    @JoinColumn(name = "payment_id")
     private Payments payments;
 
     @OneToOne

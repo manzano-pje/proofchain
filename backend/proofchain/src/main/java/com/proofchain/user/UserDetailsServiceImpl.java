@@ -2,7 +2,7 @@ package com.proofchain.user;
 
 // Serviço uitlizado pelo Spring Security no login
 
-import com.proofchain.shared.exception.ResourceNotFoundException;
+import com.proofchain.user.domain.exception.UserNotFoundException;
 import com.proofchain.user.domain.model.User;
 import com.proofchain.user.infrastructure.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,6 +17,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private final UserRepository userRepository;
 
     public UserDetailsServiceImpl(UserRepository userRepository) {
+
         this.userRepository = userRepository;
     }
 
@@ -24,12 +25,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String email)  {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() ->
-                        new ResourceNotFoundException("Usuário não localizado"));
+                        new UserNotFoundException());
         return new UserDetailsImpl(user);
     }
 }
-
-
     /*
 🔧 Versão mais otimizada (sênior):
 - Query trazendo User + Instituition

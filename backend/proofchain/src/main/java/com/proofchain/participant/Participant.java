@@ -18,7 +18,6 @@ import java.util.List;
 
 @Getter
 @Setter
-@ToString
 @Table(name = "tb_participants")
 public class Participant extends User {
 
@@ -65,6 +64,7 @@ public class Participant extends User {
 
     // Course
     @ManyToMany(mappedBy = "participants")
+    @JoinColumn(name = "course_id")
     private List<Course> courses;
 
     // EM Instituition
