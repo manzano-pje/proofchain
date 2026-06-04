@@ -1,6 +1,5 @@
 package com.proofchain.institution.aplication;
 
-import com.proofchain.shared.exception.ResourceNotFoundException;
 import com.proofchain.identities.enums.BillingType;
 import com.proofchain.identities.enums.StatusSubscription;
 import com.proofchain.identities.enums.UserRole;
@@ -11,6 +10,7 @@ import com.proofchain.institution.infrastructure.repository.InstitutionRepositor
 import com.proofchain.institution.interfaces.dtos.request.NewInstitutionRequestDto;
 import com.proofchain.plan.Plans;
 import com.proofchain.plan.PlansRepository;
+import com.proofchain.shared.exception.ResourceNotFoundException;
 import com.proofchain.subscription.SubscriptionRepository;
 import com.proofchain.subscription.Subscriptions;
 import com.proofchain.user.domain.exception.UserRegisteredException;
@@ -80,7 +80,6 @@ public class CreateInstitutionTest {
         plan1.setActive(true);
         plan1.setBillingType(BillingType.MANUAL);
         plan1.setMonthlyCertificateLimit(5);
-        plan1.setCreatedAt(Instant.now());
 
         //Dados Plans2
         plan2 = new Plans();
@@ -91,7 +90,6 @@ public class CreateInstitutionTest {
         plan2.setActive(true);
         plan2.setBillingType(BillingType.MANUAL);
         plan2.setMonthlyCertificateLimit(5);
-        plan2.setCreatedAt(Instant.now());
 
         //Dados da lista plans
         List<Plans> plans = new ArrayList<>();
@@ -125,7 +123,6 @@ public class CreateInstitutionTest {
         subscriptions.setPlans(plan1);
         subscriptions.setStatus(StatusSubscription.PENDING);
         subscriptions.setBillingType(BillingType.MANUAL);
-        subscriptions.setCreatedAt(Instant.now());
     }
 
     @Nested
