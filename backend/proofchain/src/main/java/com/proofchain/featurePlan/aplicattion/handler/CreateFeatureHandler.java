@@ -8,6 +8,7 @@ import com.proofchain.institution.domain.exception.InstitutionNotFoundException;
 import com.proofchain.institution.infrastructure.repository.InstitutionRepository;
 import com.proofchain.plan.PlanNotFoundException;
 import com.proofchain.plan.PlansRepository;
+import com.proofchain.security.SecurityUtils;
 import org.springframework.stereotype.Component;
 
 @Component
