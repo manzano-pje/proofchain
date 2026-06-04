@@ -2,7 +2,7 @@ package com.proofchain.shared.util;
 
 import com.proofchain.course.domain.exception.CourseIsRegisteredException;
 import com.proofchain.course.domain.exception.CourseNotFoundException;
-import com.proofchain.shared.exception.ResourceNotFoundException;
+import com.proofchain.shared.exception.NotFoundException;
 import com.proofchain.course.domain.model.Course;
 import com.proofchain.institution.domain.model.Institution;
 import com.proofchain.course.infrastructure.repository.CourseRepository;
@@ -25,7 +25,7 @@ public class Validations {
     // 🔑 Instituição vem do TOKEN, não do request
     public Institution validateinstitution(Long institutionId) {
         return institutionRepository.findById(institutionId)
-                .orElseThrow(() -> new ResourceNotFoundException("Instituição não encontrada"));
+                .orElseThrow(() -> new NotFoundException("Instituição não encontrada"));
     }
 
     public Optional<Course>validateCourseExist(Long id, Long idinstitution){
