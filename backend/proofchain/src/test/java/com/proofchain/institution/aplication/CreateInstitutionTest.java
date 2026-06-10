@@ -1,6 +1,5 @@
 package com.proofchain.institution.aplication;
 
-import com.proofchain.shared.exception.NotFoundException;
 import com.proofchain.identities.enums.BillingType;
 import com.proofchain.identities.enums.StatusSubscription;
 import com.proofchain.identities.enums.UserRole;
@@ -11,6 +10,7 @@ import com.proofchain.institution.infrastructure.repository.InstitutionRepositor
 import com.proofchain.institution.interfaces.dtos.request.NewInstitutionRequestDto;
 import com.proofchain.plan.Plans;
 import com.proofchain.plan.PlansRepository;
+import com.proofchain.shared.exception.ResourceNotFoundException;
 import com.proofchain.subscription.SubscriptionRepository;
 import com.proofchain.subscription.Subscriptions;
 import com.proofchain.user.domain.exception.UserRegisteredException;

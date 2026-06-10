@@ -1,0 +1,22 @@
+components/
+├── atoms/
+│   ├── Botao.vue
+│   ├── IconCircle.vue
+│   ├── CheckItem.vue
+│   └── PassoFluxo.vue
+├── molecules/
+│   ├── CardPlanos.vue
+│   ├── BoxDeIcones.vue
+│   ├── FeatureItem.vue
+│   └── Cards.vue
+├── organisms/
+│   ├── HeroSection.vue
+│   ├── TrustBar.vue
+│   ├── CasosDeUsoSection.vue
+│   ├── PorQueContratarSection.vue
+│   ├── ComoFuncionaSection.vue
+│   ├── ValidacaoBox.vue
+│   ├── PlataformaSection.vue
+│   ├── PlanosSection.vue
+│   └── Footer.vue
+└── App.vue
