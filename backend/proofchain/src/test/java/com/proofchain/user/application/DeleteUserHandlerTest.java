@@ -9,6 +9,7 @@ import com.proofchain.user.infrastructure.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.platform.commons.function.Try;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
@@ -28,35 +29,33 @@ public class DeleteUserHandlerTest {
     private DeleteUserHandler deleteUserHandler;
 
     private Institution institution;
-    private User user;
 
     @BeforeEach
     public void setup(){
         institution = new Institution();
         institution.setId(1L);
 
-        user = new User();
-        user.setId(1L);
     }
 
     @Test
-    public void SoutchDeleteUserWhenSucessfuly(){
+    public void SoutchDeleteUserSucessfuly(){
 
-        MockedStatic<SecurityUtils> security =
-                mockStatic(SecurityUtils.class);
+        try(MockedStatic<SecurityUtils> security =
+                    mockStatic(SecurityUtils.class)){
 
-        security.when(SecurityUtils::getInstitutionId)
-                .thenReturn(1L);
+            security.when(() -> SecurityUtils.getInstitutionId())
+                    .thenReturn(1L);
 
-        when(institutionRepository.existsByIdAndDeletedAtIsNull(1L))
-                .thenReturn(true);
+            when(institutionRepository.existsByIdAndDeletedAtIsNull(1L))
+                    .thenReturn(true);
 
-        when(userRepository.existsByIdAndInstitutionId(1L, 1L))
-                .thenReturn(true);
+            when(userRepository.existsByIdAndInstitutionId(1L, 1L))
+                    .thenReturn(true);
 
-        deleteUserHandler.deleteUSer(1L);
+            deleteUserHandler.deleteUSer(1L);
 
-        verify(userRepository, times(1))
-                .delete(user);
+            verify(userRepository, times(1))
+                    .deleteById(1L);
+        }
     }
 }

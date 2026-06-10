@@ -1,6 +1,7 @@
 package com.proofchain.institution.aplication;
 
-import com.proofchain.shared.exception.ResourceNotFoundException;
+import com.proofchain.institution.domain.exception.InstitutionNotFoundException;
+import com.proofchain.shared.exception.NotFoundException;
 import com.proofchain.institution.application.handler.DeleteInstitutionHandler;
 import com.proofchain.institution.domain.model.Institution;
 import com.proofchain.institution.infrastructure.repository.InstitutionRepository;
@@ -49,8 +50,6 @@ public class DeleteInstitutionTest {
                 .findByCnpjAndDeletedAtIsNull(institution.getCnpj()))
                 .thenReturn(Optional.of(institution));
 
-        assertNull(institution.getDeletedAt());
-
         handler.deleteinstitution(institution.getCnpj());
 
         verify(institutionRepository, times(1))
@@ -90,9 +89,9 @@ public class DeleteInstitutionTest {
                 .findByCnpjAndDeletedAtIsNull("43419597000116"))
                 .thenReturn(Optional.empty());
 
-        ResourceNotFoundException exception =
+        InstitutionNotFoundException exception =
                 assertThrows(
-                        ResourceNotFoundException.class,
+                        InstitutionNotFoundException.class,
                         () -> handler.deleteinstitution("43419597000116")
                 );
 

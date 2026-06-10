@@ -39,6 +39,8 @@ class CreateCourseHandlerTest {
 
     @BeforeEach
     void setup() {
+        institution = new Institution();
+        institution.setId(1L);
 
         command = new CreateCourseCommand(
                 1L,
@@ -46,89 +48,82 @@ class CreateCourseHandlerTest {
                 "Curso Java",
                 40
         );
-
-        institution = new Institution();
-        institution.setId(1L);
     }
 
-    @Nested
-    class CreateCourse {
 
-        @Test
-        void shouldCreateCourseSuccessfully() {
+    @Test
+    void shouldCreateCourseSuccessfully() {
 
-            // Arrange
-            try (MockedStatic<SecurityUtils> security =
-                         mockStatic(SecurityUtils.class)) {
+        // Arrange
+        try (MockedStatic<SecurityUtils> security =
+                     mockStatic(SecurityUtils.class)) {
 
-                security.when(
-                        SecurityUtils::getInstitutionId
-                ).thenReturn(1L);
+            security.when(SecurityUtils::getInstitutionId
+            ).thenReturn(1L);
 
-                when(institutionRepository.findByIdAndDeletedAtIsNull(1L))
-                        .thenReturn(Optional.of(institution));
+            when(institutionRepository.findByIdAndDeletedAtIsNull(1L))
+                    .thenReturn(Optional.of(institution));
 
-                when(courseRepository.existsByIdAndInstitutionId(
-                        command.getId(),
-                        institution.getId()
-                )).thenReturn(false);
+            when(courseRepository.existsByIdAndInstitutionId(
+                    command.getId(),
+                    institution.getId()
+            )).thenReturn(false);
 
-                // Act
-                handler.handle(command);
+            // Act
+            handler.handle(command);
 
-                // Assert
-                verify(courseRepository, times(1))
-                        .save(any(Course.class));
-            }
+            // Assert
+            verify(courseRepository, times(1))
+                    .save(any(Course.class));
         }
+    }
 
-        @Test
-        void shouldThrowExceptionWhenInstitutionNotFound() {
+    @Test
+    void shouldThrowExceptionWhenInstitutionNotFound() {
 
-            // Arrange
-            try (MockedStatic<SecurityUtils> security =
-                         mockStatic(SecurityUtils.class)) {
+        // Arrange
+        try (MockedStatic<SecurityUtils> security =
+                     mockStatic(SecurityUtils.class)) {
 
-                security.when(
-                        SecurityUtils::getInstitutionId
-                ).thenReturn(1L);
+            security.when(
+                    SecurityUtils::getInstitutionId
+            ).thenReturn(1L);
 
-                when(institutionRepository.findByIdAndDeletedAtIsNull(1L))
-                        .thenReturn(Optional.empty());
+            when(institutionRepository.findByIdAndDeletedAtIsNull(1L))
+                    .thenReturn(Optional.empty());
 
-                // Act + Assert
-                assertThrows(
-                        InstitutionNotFoundException.class,
-                        () -> handler.handle(command)
-                );
-            }
+            // Act + Assert
+            assertThrows(
+                    InstitutionNotFoundException.class,
+                    () -> handler.handle(command)
+            );
         }
+    }
 
-        @Test
-        void shouldThrowExceptionWhenCourseAlreadyExists() {
+    @Test
+    void shouldThrowExceptionWhenCourseAlreadyExists() {
 
-            // Arrange
-            try (MockedStatic<SecurityUtils> security =
-                         mockStatic(SecurityUtils.class)) {
+        // Arrange
+        try (MockedStatic<SecurityUtils> security =
+                     mockStatic(SecurityUtils.class)) {
 
-                security.when(
-                        SecurityUtils::getInstitutionId
-                ).thenReturn(1L);
+            security.when(
+                    SecurityUtils::getInstitutionId
+            ).thenReturn(1L);
 
-                when(institutionRepository.findByIdAndDeletedAtIsNull(1L))
-                        .thenReturn(Optional.of(institution));
+            when(institutionRepository.findByIdAndDeletedAtIsNull(1L))
+                    .thenReturn(Optional.of(institution));
 
-                when(courseRepository.existsByIdAndInstitutionId(
-                        command.getId(),
-                        institution.getId()
-                )).thenReturn(true);
+            when(courseRepository.existsByIdAndInstitutionId(
+                    command.getId(),
+                    institution.getId()
+            )).thenReturn(true);
 
-                // Act + Assert
-                assertThrows(
-                        CourseIsRegisteredException.class,
-                        () -> handler.handle(command)
-                );
-            }
+            // Act + Assert
+            assertThrows(
+                    CourseIsRegisteredException.class,
+                    () -> handler.handle(command)
+            );
         }
     }
 }

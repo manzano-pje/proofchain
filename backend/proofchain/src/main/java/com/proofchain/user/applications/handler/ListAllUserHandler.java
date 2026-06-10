@@ -36,7 +36,7 @@ public class ListAllUserHandler {
 //        Institution institution = institutionRepository.findById(institutionId)
 //                .orElseThrow(InstitutionNotFoundException::new);
 
-        List<User> users = userRepository.findAllByUser_IdAndInstitution_DeletedAtIsNull(institutionId);
+        List<User> users = userRepository.findAllByInstitution_IdAndInstitution_DeletedAtIsNull(institutionId);
         if(users.isEmpty()){
             throw new UserNotFoundException();
         }

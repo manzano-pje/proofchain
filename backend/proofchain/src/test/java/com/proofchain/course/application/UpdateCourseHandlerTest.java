@@ -39,6 +39,9 @@ public class UpdateCourseHandlerTest {
 
     @BeforeEach
     void setup(){
+        institution = new Institution();
+        institution.setId(1L);
+
         course = new Course();
         course.setId(1L);
         course.setName("Java");
@@ -51,8 +54,6 @@ public class UpdateCourseHandlerTest {
                 "Curso de Lògica",
                 20
         );
-        institution = new Institution();
-        institution.setId(1L);
     }
 
     @Test
@@ -90,8 +91,7 @@ public class UpdateCourseHandlerTest {
 
         //assert
         // MockStatic controla os métodos estáticos da classe SecurityUtils
-        try(
-            MockedStatic<SecurityUtils> security =
+        try(MockedStatic<SecurityUtils> security =
                     mockStatic(SecurityUtils.class)) {
 
             security.when(SecurityUtils::getInstitutionId
@@ -110,8 +110,7 @@ public class UpdateCourseHandlerTest {
     @Test
     void ShouldThrouExceptionWhenCourseNotFound(){
 
-        try(
-                MockedStatic<SecurityUtils> security =
+        try(MockedStatic<SecurityUtils> security =
                         mockStatic(SecurityUtils.class)) {
 
             security.when(SecurityUtils::getInstitutionId

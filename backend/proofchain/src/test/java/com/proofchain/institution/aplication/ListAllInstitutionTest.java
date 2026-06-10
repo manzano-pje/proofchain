@@ -1,7 +1,7 @@
 package com.proofchain.institution.aplication;
 
-import com.proofchain.shared.exception.ResourceNotFoundException;
 import com.proofchain.institution.application.handler.ListAllInstitutionHandler;
+import com.proofchain.institution.domain.exception.InstitutionNotFoundException;
 import com.proofchain.institution.domain.model.Institution;
 import com.proofchain.institution.infrastructure.repository.InstitutionRepository;
 import com.proofchain.institution.interfaces.dtos.response.InstitutionReturn;
@@ -118,14 +118,14 @@ public class ListAllInstitutionTest {
         when(institutionRepository.findAllByDeletedAtIsNull())
                 .thenReturn(Collections.emptyList());
 
-        ResourceNotFoundException exception =
+        InstitutionNotFoundException exception =
                 assertThrows(
-                        ResourceNotFoundException.class,
+                        InstitutionNotFoundException.class,
                         () -> handler.getAllinstitution()
                 );
 
         assertEquals(
-                "Não existem instituições cadastradas.",
+                "Instituição não encontrada.",
                 exception.getMessage()
         );
 

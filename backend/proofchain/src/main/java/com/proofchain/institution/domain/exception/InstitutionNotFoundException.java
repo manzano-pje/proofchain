@@ -3,6 +3,6 @@ package com.proofchain.institution.domain.exception;
 public class InstitutionNotFoundException extends RuntimeException {
     public InstitutionNotFoundException(){
 
-        super("Instituicao não encontrada");
+        super("Instituição não encontrada.");
     }
 }

@@ -1,6 +1,6 @@
 package com.proofchain.institution.aplication;
 
-import com.proofchain.shared.exception.ResourceNotFoundException;
+import com.proofchain.shared.exception.NotFoundException;
 import com.proofchain.identities.enums.BillingType;
 import com.proofchain.identities.enums.StatusSubscription;
 import com.proofchain.identities.enums.UserRole;
@@ -80,7 +80,6 @@ public class CreateInstitutionTest {
         plan1.setActive(true);
         plan1.setBillingType(BillingType.MANUAL);
         plan1.setMonthlyCertificateLimit(5);
-        plan1.setCreatedAt(Instant.now());
 
         //Dados Plans2
         plan2 = new Plans();
@@ -91,7 +90,6 @@ public class CreateInstitutionTest {
         plan2.setActive(true);
         plan2.setBillingType(BillingType.MANUAL);
         plan2.setMonthlyCertificateLimit(5);
-        plan2.setCreatedAt(Instant.now());
 
         //Dados da lista plans
         List<Plans> plans = new ArrayList<>();
@@ -120,12 +118,12 @@ public class CreateInstitutionTest {
 
         // Dados Subscriptions
         subscriptions = new Subscriptions();
-        ReflectionTestUtils.setField(subscriptions, "idSubscription", 1L);
+        ReflectionTestUtils.setField(subscriptions, "id", 1L);
+        subscriptions.setId(1L);
         subscriptions.setInstitution(institution);
         subscriptions.setPlans(plan1);
         subscriptions.setStatus(StatusSubscription.PENDING);
         subscriptions.setBillingType(BillingType.MANUAL);
-        subscriptions.setCreatedAt(Instant.now());
     }
 
     @Nested
@@ -210,7 +208,7 @@ public class CreateInstitutionTest {
         @Test
         void ShouldEncryptPasswordWhenCreatingInstitution(){
 
-            dto.setIdPlan(10L);
+            dto.setIdPlan(1L);
 
             when(institutionRepository.findByCnpj(dto.getCnpj()))
                     .thenReturn(Optional.empty());
@@ -218,10 +216,17 @@ public class CreateInstitutionTest {
             when(userRepository.existsByEmail(dto.getEmail()))
                     .thenReturn(false);
 
-            assertThrows(ResourceNotFoundException.class,
-                    ()-> handler.createinstitution(dto));
+            when(passwordEncoder.encode(anyString()))
+                    .thenReturn("senha-criptografada");
 
-            verify(subscriptionRepository, never()).save(any());
+            when(plansRepository.findById(dto.getIdPlan()))
+                    .thenReturn(Optional.of(plan1));
+
+
+            handler.createinstitution(dto);
+
+            verify(passwordEncoder)
+                    .encode(dto.getPassword());
         }
     }
 }

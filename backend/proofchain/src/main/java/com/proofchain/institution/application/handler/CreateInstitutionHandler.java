@@ -134,7 +134,6 @@ public class CreateInstitutionHandler {
         subscription.setBillingType(billingType);
         subscription.setCurrentPeriodStarts(null);
         subscription.setCurrentPeriodEnd(null);
-        subscription.setCreatedAt(Instant.now());
 
         institutionRepository.save(institution);
         subscriptionRepository.save(subscription);

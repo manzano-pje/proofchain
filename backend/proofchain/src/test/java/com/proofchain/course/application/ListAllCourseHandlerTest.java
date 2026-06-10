@@ -1,12 +1,13 @@
 package com.proofchain.course.application;
 
 import com.proofchain.course.application.handler.ListAllCourseHandler;
+import com.proofchain.course.domain.exception.CourseNotFoundException;
 import com.proofchain.course.domain.model.Course;
 import com.proofchain.course.infrastructure.repository.CourseRepository;
-import com.proofchain.shared.exception.ResourceNotFoundException;
 import com.proofchain.institution.domain.exception.InstitutionNotFoundException;
 import com.proofchain.institution.domain.model.Institution;
 import com.proofchain.institution.infrastructure.repository.InstitutionRepository;
+import com.proofchain.shared.exception.NotFoundException;
 import com.proofchain.shared.security.SecurityUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -64,11 +65,10 @@ public class ListAllCourseHandlerTest {
 
     @Test
     void ShouldListAllCoursesSucessfuly(){
-        try(
-            MockedStatic<SecurityUtils> security =
+        try(MockedStatic<SecurityUtils> security =
                     mockStatic(SecurityUtils.class)){
 
-            security.when(SecurityUtils::getInstitutionId)
+            security.when(() -> SecurityUtils.getInstitutionId())
                     .thenReturn(1L);
 
             when(institutionRepository.existsByIdAndDeletedAtIsNull(1L))
@@ -104,8 +104,7 @@ public class ListAllCourseHandlerTest {
 
     @Test
     void ShouldListAllCoursesNotFound(){
-        try(
-                MockedStatic<SecurityUtils> security =
+        try(MockedStatic<SecurityUtils> security =
                         mockStatic(SecurityUtils.class)) {
 
             security.when(SecurityUtils::getInstitutionId)
@@ -117,7 +116,7 @@ public class ListAllCourseHandlerTest {
             when(courseRepository.findAllByInstitutionId(1L))
                     .thenReturn(Collections.emptyList());
 
-            assertThrows(ResourceNotFoundException.class, () -> handler.listAllCourses());
+            assertThrows(CourseNotFoundException.class, () -> handler.listAllCourses());
         }
 
     }

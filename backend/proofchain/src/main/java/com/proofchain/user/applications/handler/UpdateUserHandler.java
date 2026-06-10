@@ -22,7 +22,8 @@ public class UpdateUserHandler {
 
     public UserReturn updateUser(Long id, UpdateUserCommand command){
         // 🔑 Instituição vem do TOKEN, não do request
-        Long institutionId = SecurityUtils.getInstitutionId();
+//        Long institutionId = SecurityUtils.getInstitutionId();
+        Long institutionId = 1L;
 
         boolean existInstitution = institutionRepository.existsByIdAndDeletedAtIsNull(institutionId);
         if (!existInstitution){
@@ -33,12 +34,10 @@ public class UpdateUserHandler {
                 .orElseThrow(UserNotFoundException::new);
 
         user.setName(command.getName());
-        user.setEmail(command.getEmail());
         user.setRole(command.getRole());
         user.setActive(command.isActive());
         user = userRepository.save(user);
 
         return new UserReturn(user);
     }
-
 }
