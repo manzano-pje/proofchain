@@ -1,13 +1,13 @@
 package com.proofchain.featurePlan.aplicattion.handler;
 
 
-import com.proofchain.featurePlan.domain.exception.FeatureNotFoundException;
+import com.proofchain.shared.exception.NotFoundException;
 import com.proofchain.featurePlan.domain.model.enuns.FeaturePlansEnum;
 import com.proofchain.featurePlan.infrastructure.repository.FeaturePlansRepository;
 import com.proofchain.institution.domain.exception.InstitutionNotFoundException;
 import com.proofchain.institution.infrastructure.repository.InstitutionRepository;
 import com.proofchain.plan.PlansRepository;
-import com.proofchain.security.SecurityUtils;
+import com.proofchain.shared.security.SecurityUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -28,9 +28,9 @@ public class DeleteFeatureHandler {
             throw new InstitutionNotFoundException();
         }
 
-        boolean existFeature = featurePlansRepository.existsByIdAndIdPlan(idFeature, idPlan);
+        boolean existFeature = featurePlansRepository.existsByIdFeatureAndIdPlan(idFeature, idPlan);
         if(!existFeature){
-            throw new FeatureNotFoundException();
+            throw new NotFoundException("Feature não existe");
         }
         featurePlansRepository.deleteById(idFeature);
     }

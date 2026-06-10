@@ -38,13 +38,16 @@ public class CreateFeaturePlansTest {
     @InjectMocks
     private CreateFeatureHandler handler;
 
-
     private Institution institution;
     private Plans plans;
     private CreateFeatureCommand command;
 
     @BeforeEach
     public void setup(){
+
+        // Institution
+        institution = new Institution();
+        institution.setId(1L);
 
         plans = new Plans();
         BillingType billingType = BillingType.MANUAL;
@@ -55,7 +58,6 @@ public class CreateFeaturePlansTest {
         plans.setPrice(0);
         plans.setDurationDays(7);
         plans.setActive(true);
-        plans.setCreatedAt(Instant.now());
         plans.setBillingType(billingType);
         plans.setMonthlyCertificateLimit(5);
 
@@ -66,10 +68,6 @@ public class CreateFeaturePlansTest {
                 featureEnum,
                 5
         );
-
-        // Institution
-        institution = new Institution();
-        institution.setId(1L);
     }
 
     @Test

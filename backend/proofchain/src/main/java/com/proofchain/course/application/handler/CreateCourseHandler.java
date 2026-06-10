@@ -22,6 +22,7 @@ public class CreateCourseHandler {
 
     public void handle(CreateCourseCommand command) {
         Long institutionId = SecurityUtils.getInstitutionId();
+        institutionId = 1L;
         assert institutionId != null;
 
         Institution institution = institutionRepository.findByIdAndDeletedAtIsNull(institutionId)

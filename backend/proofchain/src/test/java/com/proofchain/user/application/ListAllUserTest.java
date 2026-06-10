@@ -41,6 +41,9 @@ public class ListAllUserTest {
     @BeforeEach
     public void setup(){
 
+        institution = new Institution();
+        institution.setId(1L);
+
         user1 = new User(
                 1L,
                 "Paulo Manzano",
@@ -63,9 +66,6 @@ public class ListAllUserTest {
                 true,
                 institution
         );
-
-        institution = new Institution();
-        institution.setId(1L);
     }
 
     @Test
@@ -76,19 +76,20 @@ public class ListAllUserTest {
 
             security.when(SecurityUtils::getInstitutionId)
                     .thenReturn(1L);
+
             List<User> users =
                     List.of(user1, user2);
 
             when(institutionRepository.existsByIdAndDeletedAtIsNull(1L))
                     .thenReturn(true);
 
-            when(userRepository.findAllByUser_IdAndInstitution_DeletedAtIsNull(1L))
+            when(userRepository.findAllByInstitution_IdAndInstitution_DeletedAtIsNull(1L))
                     .thenReturn(users);
 
             handler.listAllUser();
 
             verify(userRepository, times(1))
-                    .findAllByUser_IdAndInstitution_DeletedAtIsNull(1L);
+                    .findAllByInstitution_IdAndInstitution_DeletedAtIsNull(1L);
         }
     }
 
@@ -103,7 +104,7 @@ public class ListAllUserTest {
             when(institutionRepository.existsByIdAndDeletedAtIsNull(1L))
                     .thenReturn(true);
 
-            when(userRepository.findAllByUser_IdAndInstitution_DeletedAtIsNull(1L))
+            when(userRepository.findAllByInstitution_IdAndInstitution_DeletedAtIsNull(1L))
                     .thenReturn(Collections.emptyList());
 
             assertThrows(UserNotFoundException.class,

@@ -39,14 +39,14 @@ public class ListOneCourseHandlerTest {
 
     @BeforeEach
     void setup(){
+        institution = new Institution();
+        institution.setId(1L);
+
         course = new Course();
         course.setId(1L);
         course.setName("Java");
         course.setDescription("Curso Java");
         course.setHours(30);
-
-        institution = new Institution();
-        institution.setId(1L);
     }
 
     @Test

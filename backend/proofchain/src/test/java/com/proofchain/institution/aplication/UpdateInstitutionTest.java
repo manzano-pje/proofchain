@@ -1,7 +1,7 @@
 package com.proofchain.institution.aplication;
 
-import com.proofchain.shared.exception.ResourceNotFoundException;
 import com.proofchain.institution.application.handler.UpdateInstitutionHandler;
+import com.proofchain.institution.domain.exception.InstitutionNotFoundException;
 import com.proofchain.institution.domain.model.Institution;
 import com.proofchain.institution.infrastructure.repository.InstitutionRepository;
 import com.proofchain.institution.interfaces.dtos.request.InstitutionRequest;
@@ -100,9 +100,9 @@ public class UpdateInstitutionTest {
                 .findByCnpjAndDeletedAtIsNull("43419597000116"))
                 .thenReturn(Optional.empty());
 
-        ResourceNotFoundException exception =
+        InstitutionNotFoundException exception =
                 assertThrows(
-                        ResourceNotFoundException.class,
+                        InstitutionNotFoundException.class,
                         () -> handler.updateinstitution(
                                 "43419597000116",
                                 request

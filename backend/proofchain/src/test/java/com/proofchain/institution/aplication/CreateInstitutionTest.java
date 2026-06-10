@@ -118,7 +118,8 @@ public class CreateInstitutionTest {
 
         // Dados Subscriptions
         subscriptions = new Subscriptions();
-        ReflectionTestUtils.setField(subscriptions, "idSubscription", 1L);
+        ReflectionTestUtils.setField(subscriptions, "id", 1L);
+        subscriptions.setId(1L);
         subscriptions.setInstitution(institution);
         subscriptions.setPlans(plan1);
         subscriptions.setStatus(StatusSubscription.PENDING);
@@ -207,7 +208,7 @@ public class CreateInstitutionTest {
         @Test
         void ShouldEncryptPasswordWhenCreatingInstitution(){
 
-            dto.setIdPlan(10L);
+            dto.setIdPlan(1L);
 
             when(institutionRepository.findByCnpj(dto.getCnpj()))
                     .thenReturn(Optional.empty());
@@ -215,10 +216,17 @@ public class CreateInstitutionTest {
             when(userRepository.existsByEmail(dto.getEmail()))
                     .thenReturn(false);
 
-            assertThrows(ResourceNotFoundException.class,
-                    ()-> handler.createinstitution(dto));
+            when(passwordEncoder.encode(anyString()))
+                    .thenReturn("senha-criptografada");
 
-            verify(subscriptionRepository, never()).save(any());
+            when(plansRepository.findById(dto.getIdPlan()))
+                    .thenReturn(Optional.of(plan1));
+
+
+            handler.createinstitution(dto);
+
+            verify(passwordEncoder)
+                    .encode(dto.getPassword());
         }
     }
 }
