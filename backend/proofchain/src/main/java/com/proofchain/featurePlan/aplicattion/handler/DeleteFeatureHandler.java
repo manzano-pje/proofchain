@@ -2,11 +2,9 @@ package com.proofchain.featurePlan.aplicattion.handler;
 
 
 import com.proofchain.shared.exception.NotFoundException;
-import com.proofchain.featurePlan.domain.model.enuns.FeaturePlansEnum;
 import com.proofchain.featurePlan.infrastructure.repository.FeaturePlansRepository;
 import com.proofchain.institution.domain.exception.InstitutionNotFoundException;
 import com.proofchain.institution.infrastructure.repository.InstitutionRepository;
-import com.proofchain.plan.PlansRepository;
 import com.proofchain.shared.security.SecurityUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

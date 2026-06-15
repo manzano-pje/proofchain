@@ -8,8 +8,8 @@ import com.proofchain.institution.domain.exception.InstitutionAlerdyExistExcepti
 import com.proofchain.institution.domain.model.Institution;
 import com.proofchain.institution.infrastructure.repository.InstitutionRepository;
 import com.proofchain.institution.interfaces.dtos.request.NewInstitutionRequestDto;
-import com.proofchain.plan.Plans;
-import com.proofchain.plan.PlansRepository;
+import com.proofchain.plan.domain.model.Plans;
+import com.proofchain.plan.infrastructure.repository.PlansRepository;
 import com.proofchain.shared.exception.ResourceNotFoundException;
 import com.proofchain.subscription.SubscriptionRepository;
 import com.proofchain.subscription.Subscriptions;

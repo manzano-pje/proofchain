@@ -8,16 +8,14 @@ import com.proofchain.featurePlan.infrastructure.repository.FeaturePlansReposito
 import com.proofchain.identities.enums.BillingType;
 import com.proofchain.institution.domain.model.Institution;
 import com.proofchain.institution.infrastructure.repository.InstitutionRepository;
-import com.proofchain.plan.Plans;
-import com.proofchain.plan.PlansRepository;
+import com.proofchain.plan.domain.model.Plans;
+import com.proofchain.plan.infrastructure.repository.PlansRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.time.Instant;
 
 import static org.mockito.Mockito.*;
 
