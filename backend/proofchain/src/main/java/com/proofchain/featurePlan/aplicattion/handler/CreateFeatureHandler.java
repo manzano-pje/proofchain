@@ -6,8 +6,8 @@ import com.proofchain.featurePlan.domain.model.FeaturePlan;
 import com.proofchain.featurePlan.infrastructure.repository.FeaturePlansRepository;
 import com.proofchain.institution.domain.exception.InstitutionNotFoundException;
 import com.proofchain.institution.infrastructure.repository.InstitutionRepository;
-import com.proofchain.plan.PlanNotFoundException;
-import com.proofchain.plan.PlansRepository;
+import com.proofchain.plan.domain.exception.PlanNotFoundException;
+import com.proofchain.plan.infrastructure.repository.PlansRepository;
 //import com.proofchain.security.SecurityUtils;
 import org.springframework.stereotype.Component;
 

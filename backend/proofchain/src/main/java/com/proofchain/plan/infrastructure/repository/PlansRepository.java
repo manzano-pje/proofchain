@@ -1,5 +1,6 @@
-package com.proofchain.plan;
+package com.proofchain.plan.infrastructure.repository;
 
+import com.proofchain.plan.domain.model.Plans;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

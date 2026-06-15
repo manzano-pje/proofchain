@@ -1,4 +1,4 @@
-package com.proofchain.plan.dto.request;
+package com.proofchain.plan.interfaces.dto.request;
 
 import com.proofchain.identities.enums.BillingType;
 import lombok.*;

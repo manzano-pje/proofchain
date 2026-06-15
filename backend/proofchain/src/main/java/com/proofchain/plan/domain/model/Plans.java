@@ -1,4 +1,4 @@
-package com.proofchain.plan;
+package com.proofchain.plan.domain.model;
 
 import com.proofchain.featurePlan.domain.model.FeaturePlan;
 import com.proofchain.identities.enums.BillingType;
@@ -9,7 +9,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
