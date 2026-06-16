@@ -79,7 +79,7 @@ public class CreateInstitutionHandler {
         user.setName(newinstitutionRequestDto.getName());
         user.setEmail(newinstitutionRequestDto.getEmail());
         user.setPassword(passwordEncoder.encode(newinstitutionRequestDto.getPassword()));
-        user.setRole((UserRole.SUPER_ADMIN));
+        user.setRole((UserRole.ADMIN));
         user.setCreateAt(Instant.now());
         user.setActive(true);
         user.setInstitution(institution);
