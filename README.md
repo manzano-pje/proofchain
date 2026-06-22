@@ -231,10 +231,10 @@ O frontend deve seguir estritamente os tokens visuais definidos no protótipo `c
 
 ## ✅ Checklist de Desenvolvimento (MVP)
 
-- [ ] Criar projeto Spring Boot (Web, Security, JPA, Postgres, Mail).
+- [X] Criar projeto Spring Boot (Web, Security, JPA, Postgres, Mail).
 - [ ] Implementar fluxo de envio de e-mail (Mock para dev).
-- [ ] Criar Entidades JPA e relacionamentos Multi-tenant.
-- [ ] Configurar Spring Security com filtro JWT.
+- [X] Criar Entidades JPA e relacionamentos Multi-tenant.
+- [X] Configurar Spring Security com filtro JWT.
 - [ ] Migrar layout do `certificados.html` para estrutura SPA.
 - [ ] Conectar formulário de Login do Frontend com API `/auth/login`.
 - [ ] Implementar Dashboard com dados reais da API.
