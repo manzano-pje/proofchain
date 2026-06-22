@@ -1,6 +1,6 @@
 # Proofchain — Plataforma de Emissão e Validação de Certificados (MVP)
 
-Este documento serve como o blueprint oficial para o desenvolvimento do MVP da plataforma **Valida Pro**.  
+Este documento serve como o blueprint oficial para o desenvolvimento do MVP da plataforma **Proofchain**.  
 O projeto foca em **alta segurança**, **multi-tenancy**, **auditabilidade via blockchain** e uma arquitetura preparada para evolução, mantendo o frontend leve e simples.
 
 ---
