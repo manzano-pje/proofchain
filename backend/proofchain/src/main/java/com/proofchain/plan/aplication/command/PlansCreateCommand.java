@@ -1,6 +1,6 @@
 package com.proofchain.plan.aplication.command;
 
-import com.proofchain.identities.enums.BillingType;
+import com.proofchain.subscription.BillingType;
 import com.proofchain.plan.interfaces.dto.request.PlansRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

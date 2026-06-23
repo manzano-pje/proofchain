@@ -1,4 +1,4 @@
-package com.proofchain.identities.enums;
+package com.proofchain.auth;
 
 public enum AuthenticationStatus {
     SUCCESS,

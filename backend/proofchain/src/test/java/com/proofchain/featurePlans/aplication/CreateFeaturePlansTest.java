@@ -5,7 +5,7 @@ import com.proofchain.featurePlan.aplicattion.handler.CreateFeatureHandler;
 import com.proofchain.featurePlan.domain.model.FeaturePlan;
 import com.proofchain.featurePlan.domain.model.enuns.FeaturePlansEnum;
 import com.proofchain.featurePlan.infrastructure.repository.FeaturePlansRepository;
-import com.proofchain.identities.enums.BillingType;
+import com.proofchain.subscription.BillingType;
 import com.proofchain.institution.domain.model.Institution;
 import com.proofchain.institution.infrastructure.repository.InstitutionRepository;
 import com.proofchain.plan.domain.model.Plans;

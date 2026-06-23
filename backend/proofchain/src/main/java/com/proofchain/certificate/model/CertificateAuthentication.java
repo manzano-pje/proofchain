@@ -1,6 +1,6 @@
 package com.proofchain.certificate.model;
 
-import com.proofchain.identities.enums.AuthenticationStatus;
+import com.proofchain.auth.AuthenticationStatus;
 import com.proofchain.institution.domain.model.Institution;
 import com.proofchain.participant.Participant;
 import jakarta.persistence.*;

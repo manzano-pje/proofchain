@@ -1,7 +1,5 @@
 package com.proofchain.subscription;
 
-import com.proofchain.identities.enums.BillingType;
-import com.proofchain.identities.enums.StatusSubscription;
 import com.proofchain.institution.domain.model.Institution;
 import com.proofchain.payment.Payments;
 import com.proofchain.plan.domain.model.Plans;

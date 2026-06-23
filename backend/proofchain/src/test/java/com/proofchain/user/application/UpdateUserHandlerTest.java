@@ -1,6 +1,6 @@
 package com.proofchain.user.application;
 
-import com.proofchain.identities.enums.UserRole;
+import com.proofchain.user.domain.model.UserRole;
 import com.proofchain.institution.domain.model.Institution;
 import com.proofchain.institution.infrastructure.repository.InstitutionRepository;
 import com.proofchain.user.applications.command.UpdateUserCommand;
@@ -11,7 +11,6 @@ import com.proofchain.user.interfaces.dto.response.UserReturn;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.platform.engine.support.hierarchical.Node;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;

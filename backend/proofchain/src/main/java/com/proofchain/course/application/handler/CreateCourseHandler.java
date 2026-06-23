@@ -22,13 +22,13 @@ public class CreateCourseHandler {
 
     public void handle(CreateCourseCommand command) {
         Long institutionId = SecurityUtils.getInstitutionId();
-        institutionId = 1L;
+        institutionId = 3L;
         assert institutionId != null;
 
         Institution institution = institutionRepository.findByIdAndDeletedAtIsNull(institutionId)
                 .orElseThrow(InstitutionNotFoundException::new);
 
-        boolean exist = courseRepository.existsByIdAndInstitutionId(command.getId(), institution.getId());
+        boolean exist = courseRepository.existsByNameAndInstitutionId(command.getName(), institution.getId());
         if (exist) {
             throw new CourseIsRegisteredException();
         }

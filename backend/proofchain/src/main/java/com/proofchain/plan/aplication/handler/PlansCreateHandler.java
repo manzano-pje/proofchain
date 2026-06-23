@@ -11,7 +11,10 @@ import com.proofchain.shared.security.SecurityUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Optional;
+
+import static java.time.LocalTime.now;
 
 @Service
 @AllArgsConstructor
@@ -24,7 +27,7 @@ public class PlansCreateHandler {
 
         // 🔑 Instituição vem do TOKEN, não do request
         Long institutionId = SecurityUtils.getInstitutionId();
-        institutionId = 1L;
+        institutionId = 3L;
 
         if (institutionId == null){
             throw new InternalServerException("Instituição não pode ser nula");
@@ -44,6 +47,7 @@ public class PlansCreateHandler {
         plans.setDurationDays(command.getDurationDays());
         plans.setBillingType(command.getBillingType());     // MANUAL, RECURRING
         plans.setActive(command.isActive());
+        plans.setCreated_at(LocalDate.now());
         plans.setMonthlyCertificateLimit(command.getMonthlyCertificateLimit()); // Limite de certificados mensais
         plansRepository.save(plans);
     }
