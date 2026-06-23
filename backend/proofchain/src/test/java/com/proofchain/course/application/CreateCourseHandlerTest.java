@@ -43,7 +43,6 @@ class CreateCourseHandlerTest {
         institution.setId(1L);
 
         command = new CreateCourseCommand(
-                1L,
                 "Java",
                 "Curso Java",
                 40
@@ -64,8 +63,8 @@ class CreateCourseHandlerTest {
             when(institutionRepository.findByIdAndDeletedAtIsNull(1L))
                     .thenReturn(Optional.of(institution));
 
-            when(courseRepository.existsByIdAndInstitutionId(
-                    command.getId(),
+            when(courseRepository.existsByNameIdAndInstitutionId(
+                    command.getName(),
                     institution.getId()
             )).thenReturn(false);
 
@@ -114,8 +113,8 @@ class CreateCourseHandlerTest {
             when(institutionRepository.findByIdAndDeletedAtIsNull(1L))
                     .thenReturn(Optional.of(institution));
 
-            when(courseRepository.existsByIdAndInstitutionId(
-                    command.getId(),
+            when(courseRepository.existsByNameIdAndInstitutionId(
+                    command.getName(),
                     institution.getId()
             )).thenReturn(true);
 

@@ -1,8 +1,10 @@
 package com.proofchain.institution.domain.exception;
 
-public class InstitutionNotAutorizedException extends RuntimeException {
+import com.proofchain.shared.exception.BaseException;
+
+public class InstitutionNotAutorizedException extends BaseException {
     public InstitutionNotAutorizedException(){
 
-        super("INstituição não autorizado.");
+        super("Instituição não autorizado.",403);
     }
 }

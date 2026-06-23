@@ -1,7 +1,7 @@
 package com.proofchain.plan.domain.model;
 
 import com.proofchain.featurePlan.domain.model.FeaturePlan;
-import com.proofchain.identities.enums.BillingType;
+import com.proofchain.subscription.BillingType;
 import com.proofchain.subscription.Subscriptions;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +31,7 @@ public class Plans {
     private boolean isActive;
     private BillingType billingType;            // MANUAL, RECURRING
     private Integer monthlyCertificateLimit;    // Limite de certificados mensais
+    private LocalDate created_at;
 
     @OneToMany(mappedBy = "idPlan")
     private List<FeaturePlan> featurePlans = new ArrayList<>(); // Lista de features

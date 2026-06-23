@@ -1,6 +1,5 @@
 package com.proofchain.payment;
 
-import com.proofchain.identities.enums.StatusPayment;
 import com.proofchain.subscription.Subscriptions;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

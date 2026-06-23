@@ -1,6 +1,6 @@
 package com.proofchain.user.applications.command;
 
-import com.proofchain.identities.enums.UserRole;
+import com.proofchain.user.domain.model.UserRole;
 import com.proofchain.user.interfaces.dto.request.UserUpdateDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

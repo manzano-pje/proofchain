@@ -1,8 +1,9 @@
 package com.proofchain.course.domain.exception;
 
-public class CourseNotFoundException extends RuntimeException {
-    public CourseNotFoundException(){
+import com.proofchain.shared.exception.BaseException;
 
-        super("Curso não encontrado");
+public class CourseNotFoundException extends BaseException {
+    public CourseNotFoundException(){
+        super("Curso não encontrado",404);
     }
 }

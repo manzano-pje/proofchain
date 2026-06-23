@@ -1,8 +1,10 @@
 package com.proofchain.institution.domain.exception;
 
-public class InstitutionAlerdyExistException extends RuntimeException {
+import com.proofchain.shared.exception.BaseException;
+
+public class InstitutionAlerdyExistException extends BaseException {
     public InstitutionAlerdyExistException() {
 
-        super("Instituição não autorizado.");
+        super("Instituição já cadastrada.", 409);
     }
 }

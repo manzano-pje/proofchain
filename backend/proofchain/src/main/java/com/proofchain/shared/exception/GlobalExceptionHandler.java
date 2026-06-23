@@ -15,7 +15,7 @@ public class GlobalExceptionHandler {
                         ex.getMessage(),
                         ex.getStatusCode()));
     }
-    
+//
 ////     500 - Erro inesperado
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ResponseError> handleGenericException(Exception ex){

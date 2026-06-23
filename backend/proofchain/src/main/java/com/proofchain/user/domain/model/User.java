@@ -1,6 +1,5 @@
 package com.proofchain.user.domain.model;
 
-import com.proofchain.identities.enums.UserRole;
 import com.proofchain.institution.domain.model.Institution;
 import jakarta.persistence.*;
 import lombok.*;

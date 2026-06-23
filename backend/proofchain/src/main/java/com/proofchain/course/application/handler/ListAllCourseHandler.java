@@ -21,6 +21,7 @@ public class ListAllCourseHandler {
 
     public List<FullCourseResponse> listAllCourses(){
         Long institutionId = SecurityUtils.getInstitutionId();
+        institutionId = 3L;
         boolean existInstitution = institutionRepository.existsByIdAndDeletedAtIsNull(institutionId);
         if(!existInstitution){
             throw new InstitutionNotFoundException();

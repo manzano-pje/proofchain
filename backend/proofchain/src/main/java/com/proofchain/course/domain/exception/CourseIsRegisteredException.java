@@ -1,8 +1,10 @@
 package com.proofchain.course.domain.exception;
 
-public class CourseIsRegisteredException extends RuntimeException {
+import com.proofchain.shared.exception.BaseException;
+
+public class CourseIsRegisteredException extends BaseException {
     public CourseIsRegisteredException(){
 
-        super("Curso já cadastrado");
+        super("Curso já cadastrado", 409);
     }
 }

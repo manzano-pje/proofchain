@@ -1,8 +1,8 @@
 package com.proofchain.institution.aplication;
 
-import com.proofchain.identities.enums.BillingType;
-import com.proofchain.identities.enums.StatusSubscription;
-import com.proofchain.identities.enums.UserRole;
+import com.proofchain.subscription.BillingType;
+import com.proofchain.subscription.StatusSubscription;
+import com.proofchain.user.domain.model.UserRole;
 import com.proofchain.institution.application.handler.CreateInstitutionHandler;
 import com.proofchain.institution.domain.exception.InstitutionAlerdyExistException;
 import com.proofchain.institution.domain.model.Institution;

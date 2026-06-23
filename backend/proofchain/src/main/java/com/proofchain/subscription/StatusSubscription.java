@@ -1,4 +1,4 @@
-package com.proofchain.identities.enums;
+package com.proofchain.subscription;
 
 public enum StatusSubscription {
     PENDING,

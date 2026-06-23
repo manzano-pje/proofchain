@@ -1,8 +1,10 @@
 package com.proofchain.user.domain.exception;
 
-public class UserNotFoundException extends RuntimeException {
+import com.proofchain.shared.exception.BaseException;
+
+public class UserNotFoundException extends BaseException {
     public UserNotFoundException(){
 
-        super("Usuário não encontrado");
+        super("Usuário não encontrado",404);
     }
 }

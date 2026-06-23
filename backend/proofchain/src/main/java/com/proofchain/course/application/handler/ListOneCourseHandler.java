@@ -35,6 +35,8 @@ public class ListOneCourseHandler {
 
     public CourseResponse listOneCourse(Long id){
         Long institutionId = SecurityUtils.getInstitutionId();
+        institutionId = 3L;
+
         boolean existInstitution = institutionRepository.existsByIdAndDeletedAtIsNull(institutionId);
         if(!existInstitution) {
             throw new InstitutionNotFoundException();

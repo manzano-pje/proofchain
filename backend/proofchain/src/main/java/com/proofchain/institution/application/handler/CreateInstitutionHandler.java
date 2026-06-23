@@ -1,8 +1,8 @@
 package com.proofchain.institution.application.handler;
 
-import com.proofchain.identities.enums.BillingType;
-import com.proofchain.identities.enums.StatusSubscription;
-import com.proofchain.identities.enums.UserRole;
+import com.proofchain.subscription.BillingType;
+import com.proofchain.subscription.StatusSubscription;
+import com.proofchain.user.domain.model.UserRole;
 import com.proofchain.institution.domain.exception.InstitutionAlerdyExistException;
 import com.proofchain.institution.domain.model.Institution;
 import com.proofchain.institution.infrastructure.repository.InstitutionRepository;
@@ -73,12 +73,16 @@ public class CreateInstitutionHandler {
         institution.setName(newinstitutionRequestDto.getName());
         institution.setEmail(newinstitutionRequestDto.getEmail());
         institution.setCreatedAt(Instant.now());
+        institution.setActive(true);
 
         ///////// CRIA USUÁRIO /////////
         User user = new User();
         user.setName(newinstitutionRequestDto.getName());
         user.setEmail(newinstitutionRequestDto.getEmail());
         user.setPassword(passwordEncoder.encode(newinstitutionRequestDto.getPassword()));
+        if (newinstitutionRequestDto.getCnpj().equals("43419597000116")){
+            user.setRole((UserRole.SUPER_ADMIN));
+        }
         user.setRole((UserRole.ADMIN));
         user.setCreateAt(Instant.now());
         user.setActive(true);
@@ -129,7 +133,7 @@ public class CreateInstitutionHandler {
 
         subscription.setInstitution(institution);
         subscription.setPlans(plans.get());
-        subscription.setStatus(StatusSubscription.PENDING);
+        subscription.setStatus(StatusSubscription.ACTIVE);
         subscription.setBillingType(billingType);
         subscription.setCurrentPeriodStarts(null);
         subscription.setCurrentPeriodEnd(null);

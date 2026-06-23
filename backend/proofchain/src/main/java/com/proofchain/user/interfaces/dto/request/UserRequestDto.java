@@ -1,6 +1,6 @@
 package com.proofchain.user.interfaces.dto.request;
 
-import com.proofchain.identities.enums.UserRole;
+import com.proofchain.user.domain.model.UserRole;
 import jakarta.persistence.Column;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
