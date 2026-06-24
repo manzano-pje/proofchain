@@ -77,7 +77,7 @@ public class User {
 
     // EM Instituition
     @ManyToOne
-    @JoinColumn(name = "instituition_id")
+    @JoinColumn(name = "institution_id")
     private Institution institution;
 
 }

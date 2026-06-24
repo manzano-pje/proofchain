@@ -1,0 +1,123 @@
+ Pasta de E:\Biblioteca\documentos\projetos\proofchain\frontend\public
+
+21/05/2026  00:12    <DIR>          .
+21/05/2026  00:12    <DIR>          ..
+21/05/2026  00:12            70.928 favicon.ico
+               1 arquivo(s)         70.928 bytes
+
+ Pasta de E:\Biblioteca\documentos\projetos\proofchain\frontend\src
+
+12/06/2026  20:26    <DIR>          .
+12/06/2026  20:26    <DIR>          ..
+21/05/2026  00:12               555 App.vue
+12/06/2026  20:26    <DIR>          assets
+12/06/2026  20:26    <DIR>          components
+21/05/2026  00:12               292 main.ts
+21/05/2026  00:12    <DIR>          router
+21/05/2026  00:12    <DIR>          views
+               2 arquivo(s)            847 bytes
+
+ Pasta de E:\Biblioteca\documentos\projetos\proofchain\frontend\src\assets
+
+12/06/2026  20:26    <DIR>          .
+12/06/2026  20:26    <DIR>          ..
+15/05/2026  15:50             1.162 base.css
+03/06/2026  22:30    <DIR>          img
+15/05/2026  15:50               181 main.css
+15/05/2026  15:50             9.447 style.css
+12/06/2026  20:26    <DIR>          styles
+               3 arquivo(s)         10.790 bytes
+
+ Pasta de E:\Biblioteca\documentos\projetos\proofchain\frontend\src\assets\img
+
+03/06/2026  22:30    <DIR>          .
+03/06/2026  22:30    <DIR>          ..
+03/06/2026  21:27           824.839 Copilot_20260504_170650.png
+03/06/2026  21:27         2.101.424 Copilot_20260511_004152.png
+15/05/2026  15:50         1.366.472 funcionamento.png
+15/05/2026  15:50           581.155 fundo-funcionamento.png
+15/05/2026  15:50           488.566 fundo-home.png
+15/05/2026  15:50           371.463 icone-logo.svg
+03/06/2026  22:30            78.662 login.jpg
+15/05/2026  15:50            39.446 logo-horizontal.png
+15/05/2026  15:50           425.889 logo.svg
+               9 arquivo(s)      6.277.916 bytes
+
+ Pasta de E:\Biblioteca\documentos\projetos\proofchain\frontend\src\assets\styles
+
+12/06/2026  20:26    <DIR>          .
+12/06/2026  20:26    <DIR>          ..
+12/06/2026  20:26                 0 admin.css
+12/06/2026  20:26    <DIR>          components
+12/06/2026  20:26                 0 landing.css
+12/06/2026  20:26               563 tipography.css
+12/06/2026  20:26                 0 token.css
+               4 arquivo(s)            563 bytes
+
+ Pasta de E:\Biblioteca\documentos\projetos\proofchain\frontend\src\assets\styles\components
+
+12/06/2026  20:26    <DIR>          .
+12/06/2026  20:26    <DIR>          ..
+12/06/2026  20:26                 0 alert.css
+12/06/2026  20:26                 0 badge.css
+12/06/2026  20:26                 0 button.css
+12/06/2026  20:26                 0 card.css
+12/06/2026  20:26                 0 input.css
+12/06/2026  20:26                 0 modal.css
+12/06/2026  20:26                 0 table.css
+               7 arquivo(s)              0 bytes
+
+ Pasta de E:\Biblioteca\documentos\projetos\proofchain\frontend\src\components
+
+12/06/2026  20:26    <DIR>          .
+12/06/2026  20:26    <DIR>          ..
+12/06/2026  20:26    <DIR>          base
+12/06/2026  20:26    <DIR>          layout
+12/06/2026  20:26    <DIR>          responsive
+               0 arquivo(s)              0 bytes
+
+ Pasta de E:\Biblioteca\documentos\projetos\proofchain\frontend\src\components\base
+
+12/06/2026  20:26    <DIR>          .
+12/06/2026  20:26    <DIR>          ..
+12/06/2026  20:26                 0 BaseButtom.vue
+12/06/2026  20:26                 0 BaseCard.vue
+12/06/2026  20:26                 0 BaseInput.vue
+12/06/2026  20:26                 0 BaseModal.vue
+               4 arquivo(s)              0 bytes
+
+ Pasta de E:\Biblioteca\documentos\projetos\proofchain\frontend\src\components\layout
+
+12/06/2026  20:26    <DIR>          .
+12/06/2026  20:26    <DIR>          ..
+12/06/2026  20:26             2.360 Footer.vue
+12/06/2026  20:26             3.740 Header.vue
+12/06/2026  20:26                 0 SideBar.vue
+               3 arquivo(s)          6.100 bytes
+
+ Pasta de E:\Biblioteca\documentos\projetos\proofchain\frontend\src\components\responsive
+
+12/06/2026  20:26    <DIR>          .
+12/06/2026  20:26    <DIR>          ..
+12/06/2026  20:26               936 ResponseModal.vue
+               1 arquivo(s)            936 bytes
+
+ Pasta de E:\Biblioteca\documentos\projetos\proofchain\frontend\src\router
+
+21/05/2026  00:12    <DIR>          .
+21/05/2026  00:12    <DIR>          ..
+21/05/2026  00:12               950 Router.ts
+               1 arquivo(s)            950 bytes
+
+ Pasta de E:\Biblioteca\documentos\projetos\proofchain\frontend\src\views
+
+21/05/2026  00:12    <DIR>          .
+21/05/2026  00:12    <DIR>          ..
+21/05/2026  00:12             1.767 Dashboard.vue
+21/05/2026  00:12            17.104 Home.vue
+21/05/2026  00:12             2.482 Login.vue
+               3 arquivo(s)         21.353 bytes
+
+     Total de Arquivos na Lista:
+            3976 arquivo(s)    109.459.913 bytes
+            1607 pasta(s)   205.703.098.368 bytes dispon¡veis

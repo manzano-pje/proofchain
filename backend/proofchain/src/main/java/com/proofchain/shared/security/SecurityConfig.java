@@ -3,7 +3,7 @@ package com.proofchain.shared.security;
 
 // Configuração do Spring Security 6
 
-import com.proofchain.user.UserDetailsImpl;
+import com.proofchain.auth.UserDetailsImpl;
 import com.proofchain.user.infrastructure.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;

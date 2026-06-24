@@ -1,4 +1,4 @@
 package com.proofchain.auth;
 
-public class AuthResponse {
+public class AuthService {
 }
