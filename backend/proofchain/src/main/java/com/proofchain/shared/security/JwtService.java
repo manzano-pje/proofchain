@@ -3,7 +3,6 @@ package com.proofchain.shared.security;
 
 // Geração e validação de token
 
-import com.proofchain.user.domain.model.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -11,49 +10,75 @@ import io.jsonwebtoken.security.Keys;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.security.Key;
 import java.util.Date;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
 
 
 @Service
 @AllArgsConstructor
 public class JwtService {
-
-    // Em produção isso vem de variável de ambiente
-    private final String secret = "secret-key";
-
-    // Gera o token JWT
-    public String generateToken(User user){
-
-        return Jwts.builder()
-                // ID do usuário
-                .setSubject(user.getId().toString())
-
-                // Claim da instituição (tenat)
-                .claim("tenant_id",
-                        user.getInstitution().getId().toString())
-
-                // Claim do papel do usuário
-                .claim("role", user.getRole().name())
-
-                .setIssuedAt(new Date())
-                .setExpiration(
-                        new Date(System.currentTimeMillis()+3600000)
-                )
-                .signWith(SignatureAlgorithm.HS256, secret)
-                .compact();
-    }
-
-    // Valida token e retorna os claims
-    public Claims validateToken(String token){
-        return Jwts
-                .parserBuilder()
-                .setSigningKey(Keys.hmacShaKeyFor(secret.getBytes(UTF_8)))
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
-    }
+//
+//
+//
+//    private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+//
+//    // Tempo de expiração do token (1 hora)
+//    private final long expirationTime = 1000 * 60 * 60;
+//
+//    /**
+//    * Gera um token JWT para o usuário autenticado.
+//    *
+//    * @param username identificador do usuário
+//    * @return token JWT assinado
+//    */
+//
+//    public String generateToken(String username){
+//        return Jwts.builder()
+//                .setSubject(username)
+//                .setIssuedAt(new Date())
+//                .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
+//                .signWith(key)
+//                .compact();
+//
+//    }
+//
+//    /**
+//    * Extrai o username contido no token.
+//    *
+//    * @param token JWT recebido do cliente
+//    * @return username armazenado no token
+//    */
+//
+//    public String extractUsername(String token){
+//        return getClaims(token).getSubject();
+//    }
+//
+//    /**
+//     * Valida se o token ainda é válido (não expirado e assinado corretamente).
+//     *
+//     * @param token JWT recebido
+//     * @return true se válido, false caso contrário
+//     */
+//
+//    public boolean isTokenValid(String token){
+//        try{
+//            return  getClaims(token).getExpiration().after(new Date());
+//        } catch (Exception e){
+//            return false;
+//        }
+//    }
+//
+//    /**
+//     * Extrai os dados internos (claims) do token.
+//     */
+//
+//    private Claims getClaims(String token){
+//        return Jwts.parserBuilder()
+//                .setSigningKey(key)
+//                .build()
+//                .parseClaimsJwt(token)
+//                .getBody();
+//    }
 }
 
 /*

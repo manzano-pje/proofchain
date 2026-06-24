@@ -1,6 +1,9 @@
 # Compiled class file
 *.class
 
+# Test package
+**/test/
+
 # Log file
 *.log
 
@@ -19,6 +22,7 @@
 *.tar.gz
 *.rar
 .gitignore
+.idea/
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*

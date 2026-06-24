@@ -26,8 +26,8 @@ public class PlansCreateHandler {
     public void createPlan(PlansCreateCommand command) {
 
         // 🔑 Instituição vem do TOKEN, não do request
-        Long institutionId = SecurityUtils.getInstitutionId();
-        institutionId = 3L;
+       // Long institutionId = SecurityUtils.getInstitutionId();
+        Long institutionId = 1L;
 
         if (institutionId == null){
             throw new InternalServerException("Instituição não pode ser nula");

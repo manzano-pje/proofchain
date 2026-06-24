@@ -1,29 +1,24 @@
 package com.proofchain.auth;
 
-// Dados do Login
-
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-
-public class AuthRequest {
-
-    @Email
-    @NotBlank
-    // e-mail de login
-    private String email;
-    @NotBlank
-    private String password;
-
-    public String getEmail() {
-        return email;
-    }
-    public String getPassword() {
-        return password;
-    }
+/**
+ * AuthRequest
+ *
+ * Responsabilidade:
+ * Representar os dados enviados pelo cliente no processo de login.
+ *
+ * Função no sistema:
+ * Transporta as credenciais necessárias para validação do usuário.
+ *
+ * Fluxo:
+ * 1. Cliente envia requisição de login
+ * 2. Dados são mapeados para este record
+ * 3. AuthService utiliza as credenciais para validação
+ *
+ * Integração no sistema:
+ * Utilizado pelo AuthController no endpoint de login.
+ */
+public record AuthRequest(
+        String email,
+        String password
+) {
 }
-
-/*
-🔧 Versão mais otimizada (sênior):
-- Usar record: AuthRequest(String email, String password)
-Motivo: menos código e validação automática
-*/
