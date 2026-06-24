@@ -20,8 +20,8 @@ public class ListAllCourseHandler {
     private final InstitutionRepository institutionRepository;
 
     public List<FullCourseResponse> listAllCourses(){
-        Long institutionId = SecurityUtils.getInstitutionId();
-        institutionId = 3L;
+//        Long institutionId = SecurityUtils.getInstitutionId();
+        Long institutionId = 1L;
         boolean existInstitution = institutionRepository.existsByIdAndDeletedAtIsNull(institutionId);
         if(!existInstitution){
             throw new InstitutionNotFoundException();

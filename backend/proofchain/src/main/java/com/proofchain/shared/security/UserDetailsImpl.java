@@ -10,29 +10,35 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Implementação da interface UserDetails do Spring Security.
+ * UserDetailsImpl
  *
- * Esta classe atua como um adaptador entre a entidade User da aplicação
- * e o mecanismo de autenticação do Spring Security.
+ * Responsabilidade:
+ * Atua como adaptador entre a entidade de usuário da aplicação e o contrato
+ * exigido pelo Spring Security para autenticação e autorização.
  *
- * Sua responsabilidade é fornecer ao Spring Security as informações
- * necessárias para autenticação e autorização, como:
+ * Função no sistema:
+ * Implementa a interface UserDetails, fornecendo as informações necessárias
+ * para o processo de autenticação e controle de acesso.
  *
- * - Identificador do usuário (id);
- * - E-mail utilizado para login;
- * - Senha criptografada;
- * - Perfil de acesso (ROLE_USER, ROLE_ADMIN, ROLE_SUPER_ADMIN);
- * - Instituição à qual o usuário pertence;
- * - Status de ativação da conta.
+ * Dados expostos:
+ * - Identificador do usuário (id)
+ * - E-mail utilizado como username
+ * - Senha criptografada
+ * - Perfis de acesso (roles: ROLE_USER, ROLE_ADMIN, ROLE_SUPER_ADMIN)
+ * - Contexto institucional (multi-tenant)
+ * - Status da conta (ativo/inativo)
  *
- * Durante o processo de autenticação, o Spring Security não trabalha
- * diretamente com a entidade User, mas sim com objetos que implementam
- * a interface UserDetails. Por esse motivo, esta classe converte os
- * dados da entidade User para o formato esperado pelo framework.
+ * Fluxo de utilização:
+ * 1. O UserDetailsService carrega o usuário do banco de dados
+ * 2. A entidade User é convertida para UserDetailsImpl
+ * 3. O Spring Security utiliza esta estrutura para autenticação
+ * 4. As informações são usadas em autorização e validação de acesso
  *
- * Além disso, as informações armazenadas nesta classe serão utilizadas
- * posteriormente na geração e validação dos tokens JWT e no controle
- * de acesso multi-tenant da aplicação.
+ * Integração no sistema:
+ * Esta classe também fornece base para:
+ * - Geração de tokens JWT
+ * - Validação de permissões
+ * - Controle de acesso por tenant
  */
 
 @Getter

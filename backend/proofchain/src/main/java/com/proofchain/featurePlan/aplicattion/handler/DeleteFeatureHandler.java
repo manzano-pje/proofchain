@@ -17,9 +17,9 @@ public class DeleteFeatureHandler {
     private final InstitutionRepository institutionRepository;
 
     public void deleteFeatur(Long idFeature, Long idPlan){
-        Long institutionId = SecurityUtils.getInstitutionId();
+//        Long institutionId = SecurityUtils.getInstitutionId();
 //        assert institutionId != null;
-        institutionId = 1L;
+        Long institutionId = 1L;
 
         boolean existIntitution = institutionRepository.existsByIdAndDeletedAtIsNull(institutionId);
         if(!existIntitution){

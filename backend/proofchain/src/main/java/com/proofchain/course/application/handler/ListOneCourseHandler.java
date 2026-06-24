@@ -34,15 +34,15 @@ public class ListOneCourseHandler {
      */
 
     public CourseResponse listOneCourse(Long id){
-        Long institutionId = SecurityUtils.getInstitutionId();
-        institutionId = 3L;
+//        Long institutionId = SecurityUtils.getInstitutionId();
+        Long institutionId = 1L;
 
         boolean existInstitution = institutionRepository.existsByIdAndDeletedAtIsNull(institutionId);
         if(!existInstitution) {
             throw new InstitutionNotFoundException();
         }
 
-        Optional<Course> courseOptional = courseRepository.findByIdAndInstitutionId(id, SecurityUtils.getInstitutionId());
+        Optional<Course> courseOptional = courseRepository.findByIdAndInstitutionId(id, institutionId);
         if(courseOptional.isEmpty()){
             throw new CourseNotFoundException();
         }

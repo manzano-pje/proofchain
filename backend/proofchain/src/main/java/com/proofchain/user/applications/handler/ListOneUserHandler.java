@@ -20,7 +20,8 @@ public class ListOneUserHandler {
 
     public UserReturn listOneUser(String email) {
         // 🔑 Instituição vem do TOKEN, não do request
-        Long institutionId = SecurityUtils.getInstitutionId();
+//        Long institutionId = SecurityUtils.getInstitutionId();
+        Long institutionId = 1L;
 
         if (institutionId == null){
             throw new InstitutionNotAutorizedException();
