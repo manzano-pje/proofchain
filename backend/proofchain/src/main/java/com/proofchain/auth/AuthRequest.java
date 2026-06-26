@@ -18,7 +18,7 @@ package com.proofchain.auth;
  * Utilizado pelo AuthController no endpoint de login.
  */
 public record AuthRequest(
-        String email,
+        String username,
         String password
 ) {
 }

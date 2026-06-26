@@ -1,90 +1,154 @@
 package com.proofchain.shared.security;
 
-
-// Geração e validação de token
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import java.security.Key;
+import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
 
-
+/**
+ * JwtService
+ *
+ * Responsável por toda a operação de JWT no sistema ProofChain.
+ *
+ * Este componente centraliza:
+ * - Geração de tokens JWT
+ * - Extração de claims
+ * - Validação de tokens
+ * - Controle de expiração
+ *
+ * Arquitetura:
+ * - Configuração (secret e expiração)
+ * - Geração
+ * - Leitura de claims
+ * - Validação
+ *
+ * IMPORTANTE:
+ * Esta classe é o núcleo da autenticação stateless.
+ */
 @Service
-@AllArgsConstructor
 public class JwtService {
-//
-//
-//
-//    private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-//
-//    // Tempo de expiração do token (1 hora)
-//    private final long expirationTime = 1000 * 60 * 60;
-//
-//    /**
-//    * Gera um token JWT para o usuário autenticado.
-//    *
-//    * @param username identificador do usuário
-//    * @return token JWT assinado
-//    */
-//
-//    public String generateToken(String username){
-//        return Jwts.builder()
-//                .setSubject(username)
-//                .setIssuedAt(new Date())
-//                .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
-//                .signWith(key)
-//                .compact();
-//
-//    }
-//
-//    /**
-//    * Extrai o username contido no token.
-//    *
-//    * @param token JWT recebido do cliente
-//    * @return username armazenado no token
-//    */
-//
-//    public String extractUsername(String token){
-//        return getClaims(token).getSubject();
-//    }
-//
-//    /**
-//     * Valida se o token ainda é válido (não expirado e assinado corretamente).
-//     *
-//     * @param token JWT recebido
-//     * @return true se válido, false caso contrário
-//     */
-//
-//    public boolean isTokenValid(String token){
-//        try{
-//            return  getClaims(token).getExpiration().after(new Date());
-//        } catch (Exception e){
-//            return false;
-//        }
-//    }
-//
-//    /**
-//     * Extrai os dados internos (claims) do token.
-//     */
-//
-//    private Claims getClaims(String token){
-//        return Jwts.parserBuilder()
-//                .setSigningKey(key)
-//                .build()
-//                .parseClaimsJwt(token)
-//                .getBody();
-//    }
-}
 
-/*
-🔧 Versão mais otimizada (sênior):
-- Chave RSA
-- Namespaces nos claims
-- Refresh token
-Motivo: segurança e escalabilidade
-*/
+    /*
+     * =========================================================
+     * CONFIGURAÇÕES (INJETADAS DO application.properties)
+     * =========================================================
+     */
+
+    @Value("${security.jwt.secret}")
+    private String secret;
+
+    @Value("${security.jwt.access-token.expiration}")
+    private Long expiration;
+
+    @Value("${security.jwt.refresh-token.expiration}")
+    private Long refresh;
+
+    /*
+     * =========================================================
+     * CONSTANTES INTERNAS
+     * =========================================================
+     */
+
+    private static final String CLAIM_USER_ID = "userId";
+    private static final String CLAIM_INSTITUTION_ID = "instituionId";
+    private static final String CLAIM_ROLE = "role";
+    private static final String CLAIM_USERNAME = "username";
+
+    /*
+     * =========================================================
+     * CRIAÇÃO DA CHAVE CRIPTOGRÁFICA (CORE SECURITY)
+     * =========================================================
+     */
+
+    /**
+     * Gera a chave usada para assinar e validar tokens JWT.
+     *
+     * IMPORTANTE:
+     * - HS256 exige chave em formato binário seguro
+     * - O secret deve ter tamanho adequado (>= 256 bits idealmente)
+     */
+
+    private SecretKey getSigningKey(){
+        byte[] keyBytes = Decoders.BASE64.decode(secret);
+        return Keys.hmacShaKeyFor(keyBytes);
+    }
+
+    /*
+     * =========================================================
+     * GERAÇÃO DO TOKEN
+     * =========================================================
+     */
+
+    public String generateToken(
+            Long userId,
+            Long institutionId,
+            String role,
+            String username
+    ){
+        Date now = new Date();
+        Date expiryDate = new Date(now.getTime() + expiration);
+
+        return Jwts.builder()
+                .claims(buildClaims(userId, institutionId, role, username))
+                .setSubject(username)
+                .setIssuedAt(now)
+                .setExpiration(expiryDate)
+                .signWith(getSigningKey())
+                .compact();
+    }
+
+    /*
+     * =========================================================
+     * BUILD DE CLAIMS
+     * =========================================================
+     */
+
+    private Map<String, Object> buildClaims(
+            Long userId,
+            Long institutionId,
+            String role,
+            String username
+    ){
+        return Map.of(
+                CLAIM_USER_ID, userId,
+                CLAIM_INSTITUTION_ID, institutionId,
+                CLAIM_ROLE, role,
+                CLAIM_USERNAME, username
+        );
+    }
+
+    /*
+     * =========================================================
+     * LEITURA DO TOKEN
+     * =========================================================
+     */
+
+    /**
+     * Realiza o parsing do JWT.
+     *
+     * Durante esse processo o JJWT:
+     * - valida a assinatura;
+     * - verifica a integridade do token;
+     * - retorna o payload (Claims).
+     */
+    private Claims extractAllClaims(String token){
+        return Jwts.parser()
+                .verifyWith(getSigningKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+    }
+
+    public 
+
+}

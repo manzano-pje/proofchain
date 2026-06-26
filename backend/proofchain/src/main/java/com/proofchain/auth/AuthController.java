@@ -37,10 +37,6 @@ public class AuthController {
     public ResponseEntity<AuthResponse> login(AuthRequest authRequest){
         AuthResponse response = authService.login(authRequest);
 
-        if(!response.success()){
-            return ResponseEntity.badRequest()
-                    .body(response);
-        }
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok().build();
     }
 }

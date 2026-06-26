@@ -1,8 +1,14 @@
 package com.proofchain.auth;
 
 
+import com.proofchain.shared.security.JwtService;
+import com.proofchain.shared.security.UserDetailsImpl;
 import com.proofchain.user.infrastructure.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -26,30 +32,38 @@ import org.springframework.stereotype.Service;
  * Utilizado pelo AuthController no endpoint de login.
  */
 @Service
-@AllArgsConstructor
 public class AuthService {
 
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
+    private final UserDetailsService userDetailsService;
+    private final JwtService jwtService;
 
-    public AuthResponse login(AuthRequest request){
-
-        var userOpt = userRepository.findByEmail(request.email());
-        if(userOpt.isEmpty()){
-            return new AuthResponse("Usuário não encontrado.", false);
-        }
-
-        var user = userOpt.get();
-        boolean passwordMatches = passwordEncoder.matches(
-                request.password(),
-                user.getPassword()
-        );
-
-        if(!passwordMatches){
-            return new AuthResponse("Senha incorreta", false);
-        }
-
-        return new AuthResponse("Login efetuado com sucesso",true);
+    public AuthService(AuthenticationManager authenticationManager,
+                       UserDetailsService userDetailsService,
+                       JwtService jwtService) {
+        this.authenticationManager = authenticationManager;
+        this.userDetailsService = userDetailsService;
+        this.jwtService = jwtService;
     }
 
+    public AuthResponse login(AuthRequest request) {
+// 1. Tenta autenticar o usuário usando o mecanismo do Spring Security
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(request.username(), request.password())
+        );
+
+        // 2. Se não lançar exceção, busca os detalhes do usuário
+        final UserDetails userDetails = userDetailsService.loadUserByUsername(request.username());
+
+        // 3. Verifica se o objeto retornado é de facto a sua classe concreta e faz o Cast
+        if (userDetails instanceof UserDetailsImpl userDetailsImpl) {
+            // Agora você tem acesso direto aos campos customizados (como getInstitutionId())
+            return jwtService.generateToken(userDetailsImpl);
+        }
+
+        // 4. Retorna o token JWT gerado
+        return jwtService.generateToken(userDetailsImpl, userDetailsImpl.getInstitutionId());
+
+    }
 }
+

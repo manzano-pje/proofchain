@@ -2,6 +2,8 @@ package com.proofchain.shared.security;
 
 import com.proofchain.user.domain.model.User;
 import lombok.Getter;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -40,8 +42,9 @@ import java.util.List;
  * - Validação de permissões
  * - Controle de acesso por tenant
  */
-
+@Configuration
 @Getter
+@EnableWebSecurity
 public class UserDetailsImpl implements UserDetails {
 
     private final Long id;
