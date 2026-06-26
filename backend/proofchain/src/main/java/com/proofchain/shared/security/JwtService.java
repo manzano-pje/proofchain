@@ -16,73 +16,58 @@ import java.util.Map;
 import java.util.function.Function;
 
 /**
- * JwtService
+ * Serviço responsável por todas as operações envolvendo JSON Web Token (JWT).
  *
- * Responsável por toda a operação de JWT no sistema ProofChain.
+ * Responsabilidades:
  *
- * Este componente centraliza:
- * - Geração de tokens JWT
- * - Extração de claims
- * - Validação de tokens
- * - Controle de expiração
+ * - geração de Access Token
+ * - leitura de Claims
+ * - validação
+ * - controle de expiração
  *
- * Arquitetura:
- * - Configuração (secret e expiração)
- * - Geração
- * - Leitura de claims
- * - Validação
- *
- * IMPORTANTE:
- * Esta classe é o núcleo da autenticação stateless.
+ * Este serviço NÃO realiza autenticação de usuários.
+ * Sua única responsabilidade é manipular tokens JWT.
  */
 @Service
 public class JwtService {
 
     /*
      * =========================================================
-     * CONFIGURAÇÕES (INJETADAS DO application.properties)
+     * Configurações
      * =========================================================
      */
 
     @Value("${security.jwt.secret}")
     private String secret;
 
-    @Value("${security.jwt.access-token.expiration}")
+    @Value("${security.jwt.expiration}")
     private Long expiration;
 
-    @Value("${security.jwt.refresh-token.expiration}")
-    private Long refresh;
+    @Value("${security.jwt.refresh-expiration}")
+    private Long refreshExpiration;
 
     /*
      * =========================================================
-     * CONSTANTES INTERNAS
+     * Claims
      * =========================================================
      */
 
     private static final String CLAIM_USER_ID = "userId";
-    private static final String CLAIM_INSTITUTION_ID = "instituionId";
+    private static final String CLAIM_INSTITUTION_ID = "institutionId";
     private static final String CLAIM_ROLE = "role";
-    private static final String CLAIM_USERNAME = "username";
 
     /*
      * =========================================================
-     * CRIAÇÃO DA CHAVE CRIPTOGRÁFICA (CORE SECURITY)
+     * Core
      * =========================================================
      */
 
-    /**
-     * Gera a chave usada para assinar e validar tokens JWT.
-     *
-     * IMPORTANTE:
-     * - HS256 exige chave em formato binário seguro
-     * - O secret deve ter tamanho adequado (>= 256 bits idealmente)
-     */
-
-    private SecretKey getSigningKey(){
+    private SecretKey getSigningKey() {
         byte[] keyBytes = Decoders.BASE64.decode(secret);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
+}
     /*
      * =========================================================
      * GERAÇÃO DO TOKEN
@@ -149,6 +134,6 @@ public class JwtService {
                 .getPayload();
     }
 
-    public 
+    public
 
 }
