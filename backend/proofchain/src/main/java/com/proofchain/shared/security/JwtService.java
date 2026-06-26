@@ -1,39 +1,37 @@
 package com.proofchain.shared.security;
 
+import com.proofchain.shared.security.UserDetailsImpl;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
-import java.nio.charset.StandardCharsets;
+import java.time.Instant;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
 
 /**
- * Serviço responsável por todas as operações envolvendo JSON Web Token (JWT).
+ * JwtService (ProofChain)
  *
- * Responsabilidades:
+ * Responsabilidade:
+ * - Gerar JWT
+ * - Extrair claims
+ * - Validar token
  *
- * - geração de Access Token
- * - leitura de Claims
- * - validação
- * - controle de expiração
- *
- * Este serviço NÃO realiza autenticação de usuários.
- * Sua única responsabilidade é manipular tokens JWT.
+ * NÃO:
+ * - autentica usuário
+ * - acessa banco
+ * - executa regras de negócio
  */
 @Service
 public class JwtService {
 
     /*
      * =========================================================
-     * Configurações
+     * CONFIGURAÇÕES
      * =========================================================
      */
 
@@ -48,7 +46,7 @@ public class JwtService {
 
     /*
      * =========================================================
-     * Claims
+     * CLAIMS
      * =========================================================
      */
 
@@ -58,7 +56,7 @@ public class JwtService {
 
     /*
      * =========================================================
-     * Core
+     * SIGNING KEY
      * =========================================================
      */
 
@@ -67,48 +65,31 @@ public class JwtService {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-}
     /*
      * =========================================================
      * GERAÇÃO DO TOKEN
      * =========================================================
      */
 
-    public String generateToken(
-            Long userId,
-            Long institutionId,
-            String role,
-            String username
-    ){
-        Date now = new Date();
-        Date expiryDate = new Date(now.getTime() + expiration);
+    public String generateToken(UserDetailsImpl user) {
+
+        Instant now = Instant.now();
+        Instant expirationTime = now.plusMillis(expiration);
 
         return Jwts.builder()
-                .claims(buildClaims(userId, institutionId, role, username))
-                .setSubject(username)
-                .setIssuedAt(now)
-                .setExpiration(expiryDate)
+                .claims(buildClaims(user))
+                .subject(user.getUsername())
+                .issuedAt(Date.from(now))
+                .expiration(Date.from(expirationTime))
                 .signWith(getSigningKey())
                 .compact();
     }
 
-    /*
-     * =========================================================
-     * BUILD DE CLAIMS
-     * =========================================================
-     */
-
-    private Map<String, Object> buildClaims(
-            Long userId,
-            Long institutionId,
-            String role,
-            String username
-    ){
+    private Map<String, Object> buildClaims(UserDetailsImpl user) {
         return Map.of(
-                CLAIM_USER_ID, userId,
-                CLAIM_INSTITUTION_ID, institutionId,
-                CLAIM_ROLE, role,
-                CLAIM_USERNAME, username
+                CLAIM_USER_ID, user.getId(),
+                CLAIM_INSTITUTION_ID, user.getInstitutionId(),
+                CLAIM_ROLE, user.getRole()
         );
     }
 
@@ -118,15 +99,7 @@ public class JwtService {
      * =========================================================
      */
 
-    /**
-     * Realiza o parsing do JWT.
-     *
-     * Durante esse processo o JJWT:
-     * - valida a assinatura;
-     * - verifica a integridade do token;
-     * - retorna o payload (Claims).
-     */
-    private Claims extractAllClaims(String token){
+    private Claims extractAllClaims(String token) {
         return Jwts.parser()
                 .verifyWith(getSigningKey())
                 .build()
@@ -134,6 +107,42 @@ public class JwtService {
                 .getPayload();
     }
 
-    public
+    public Claims extractClaims(String token) {
+        return extractAllClaims(token);
+    }
 
+    public String extractUsername(String token) {
+        return extractAllClaims(token).getSubject();
+    }
+
+    public Long extractUserId(String token) {
+        return extractAllClaims(token).get(CLAIM_USER_ID, Long.class);
+    }
+
+    public Long extractInstitutionId(String token) {
+        return extractAllClaims(token).get(CLAIM_INSTITUTION_ID, Long.class);
+    }
+
+    public String extractRole(String token) {
+        return extractAllClaims(token).get(CLAIM_ROLE, String.class);
+    }
+
+    /*
+     * =========================================================
+     * VALIDAÇÃO
+     * =========================================================
+     */
+
+    public boolean validateToken(String token, UserDetailsImpl user) {
+
+        final String username = extractUsername(token);
+
+        return username.equals(user.getUsername()) && !isTokenExpired(token);
+    }
+
+    private boolean isTokenExpired(String token) {
+        return extractAllClaims(token)
+                .getExpiration()
+                .before(new Date());
+    }
 }

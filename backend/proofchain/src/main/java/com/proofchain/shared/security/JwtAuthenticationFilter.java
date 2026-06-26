@@ -81,7 +81,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                 try {
                     // 4. PASSO MULTI-TENANT: Extrai o ID da instituição e injeta no ThreadLocal
-                    Long institutionId = jwtService.extractClaim(jwt, claims -> claims.get("institution_id", Long.class));
+                    Long institutionId = jwtService.extractClaim(jwt, claims -> claims.get("institutionId", Long.class));
                     String role = jwtService.extractClaim(jwt, claims -> claims.get("role", String.class));
 
                     // Regra de negócio: Se for SUPER_ADMIN, ignora o isolamento ou define como 0
