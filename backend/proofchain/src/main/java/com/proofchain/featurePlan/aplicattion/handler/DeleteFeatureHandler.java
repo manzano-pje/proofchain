@@ -1,11 +1,10 @@
 package com.proofchain.featurePlan.aplicattion.handler;
 
 
-import com.proofchain.shared.exception.NotFoundException;
 import com.proofchain.featurePlan.infrastructure.repository.FeaturePlansRepository;
 import com.proofchain.institution.domain.exception.InstitutionNotFoundException;
 import com.proofchain.institution.infrastructure.repository.InstitutionRepository;
-import com.proofchain.shared.security.SecurityUtils;
+import com.proofchain.shared.exception.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
