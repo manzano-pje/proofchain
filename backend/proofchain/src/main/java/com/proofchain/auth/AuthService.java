@@ -1,69 +1,44 @@
 package com.proofchain.auth;
 
-
 import com.proofchain.shared.security.JwtService;
-import com.proofchain.shared.security.UserDetailsImpl;
-import com.proofchain.user.infrastructure.repository.UserRepository;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
  * AuthService
  *
  * Responsabilidade:
- * Executar o fluxo de login da aplicação, validando as credenciais do usuário.
+ * Orquestra o processo de autenticação dos usuários da aplicação.
  *
  * Função no sistema:
- * Verifica se o usuário existe e se a senha informada está correta,
- * retornando o resultado da tentativa de login.
+ * Recebe as credenciais informadas pelo usuário, delega a autenticação ao
+ * AuthenticationManager e, após a validação bem-sucedida, solicita ao
+ * JwtService a geração do token de acesso (JWT).
  *
- * Fluxo:
- * 1. Recebe email e senha do AuthController
- * 2. Busca o usuário no repositório
- * 3. Valida a senha utilizando PasswordEncoder
- * 4. Retorna sucesso ou falha no login
+ * Fluxo de utilização:
+ * 1. Recebe as credenciais enviadas pelo AuthController.
+ * 2. Solicita a autenticação ao AuthenticationManager.
+ * 3. Recupera o usuário autenticado.
+ * 4. Gera o JWT através do JwtService.
+ * 5. Retorna o AuthResponse ao controlador.
  *
  * Integração no sistema:
- * Utilizado pelo AuthController no endpoint de login.
+ * Atua entre o AuthController e a infraestrutura de autenticação do Spring
+ * Security, centralizando todo o fluxo de login da aplicação.
  */
 @Service
+@RequiredArgsConstructor
 public class AuthService {
 
+    /**
+     * Responsável por autenticar as credenciais do usuário.
+     */
     private final AuthenticationManager authenticationManager;
-    private final UserDetailsService userDetailsService;
+
+    /**
+     * Responsável pela geração e validação dos tokens JWT.
+     */
     private final JwtService jwtService;
 
-    public AuthService(AuthenticationManager authenticationManager,
-                       UserDetailsService userDetailsService,
-                       JwtService jwtService) {
-        this.authenticationManager = authenticationManager;
-        this.userDetailsService = userDetailsService;
-        this.jwtService = jwtService;
-    }
-
-    public AuthResponse login(AuthRequest request) {
-// 1. Tenta autenticar o usuário usando o mecanismo do Spring Security
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.username(), request.password())
-        );
-
-        // 2. Se não lançar exceção, busca os detalhes do usuário
-        final UserDetails userDetails = userDetailsService.loadUserByUsername(request.username());
-
-        // 3. Verifica se o objeto retornado é de facto a sua classe concreta e faz o Cast
-        if (userDetails instanceof UserDetailsImpl userDetailsImpl) {
-            // Agora você tem acesso direto aos campos customizados (como getInstitutionId())
-            return jwtService.generateToken(userDetailsImpl);
-        }
-
-        // 4. Retorna o token JWT gerado
-        return jwtService.generateToken(userDetailsImpl, userDetailsImpl.getInstitutionId());
-
-    }
 }
-
