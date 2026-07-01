@@ -7,14 +7,11 @@ import com.proofchain.plan.domain.exception.PlanAlerdyExistException;
 import com.proofchain.plan.domain.model.Plans;
 import com.proofchain.plan.infrastructure.repository.PlansRepository;
 import com.proofchain.shared.exception.InternalServerException;
-import com.proofchain.shared.security.SecurityUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.Optional;
-
-import static java.time.LocalTime.now;
 
 @Service
 @AllArgsConstructor

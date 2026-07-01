@@ -2,7 +2,6 @@ package com.proofchain.user.applications.handler;
 
 import com.proofchain.institution.domain.exception.InstitutionNotFoundException;
 import com.proofchain.institution.infrastructure.repository.InstitutionRepository;
-import com.proofchain.shared.security.SecurityUtils;
 import com.proofchain.user.domain.exception.UserNotFoundException;
 import com.proofchain.user.infrastructure.repository.UserRepository;
 import lombok.AllArgsConstructor;

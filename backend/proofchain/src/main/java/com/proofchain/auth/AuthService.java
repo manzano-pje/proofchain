@@ -1,55 +1,64 @@
 package com.proofchain.auth;
 
-
-import com.proofchain.user.infrastructure.repository.UserRepository;
-import lombok.AllArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import com.proofchain.shared.security.JwtService;
+import com.proofchain.shared.security.UserDetailsImpl;
+import com.proofchain.shared.security.UserDetailsServiceImpl;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
- * AuthService
- *
+ * AuthService (ProofChain Core Security Layer)
+
  * Responsabilidade:
- * Executar o fluxo de login da aplicação, validando as credenciais do usuário.
- *
- * Função no sistema:
- * Verifica se o usuário existe e se a senha informada está correta,
- * retornando o resultado da tentativa de login.
- *
+ * - Orquestrar o fluxo de autenticação de usuário
+ * - Validar credenciais via Spring Security
+ * - Gerar token JWT após autenticação bem-sucedida
+
  * Fluxo:
- * 1. Recebe email e senha do AuthController
- * 2. Busca o usuário no repositório
- * 3. Valida a senha utilizando PasswordEncoder
- * 4. Retorna sucesso ou falha no login
- *
- * Integração no sistema:
- * Utilizado pelo AuthController no endpoint de login.
+ * 1. Recebe AuthRequest (username/password)
+ * 2. Valida credenciais via AuthenticationManager
+ * 3. Carrega UserDetails autenticado
+ * 4. Gera JWT via JwtService
+ * 5. Retorna AuthResponse com token
+
+ * NÃO é responsabilidade desta camada:
+ * - Expor endpoints HTTP
+ * - Validar payload de request
+ * - Regras de negócio de domínio
  */
 @Service
-@AllArgsConstructor
 public class AuthService {
 
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
+    private final JwtService jwtService;
+    private final UserDetailsServiceImpl userDetailsService;
 
-    public AuthResponse login(AuthRequest request){
-
-        var userOpt = userRepository.findByEmail(request.email());
-        if(userOpt.isEmpty()){
-            return new AuthResponse("Usuário não encontrado.", false);
-        }
-
-        var user = userOpt.get();
-        boolean passwordMatches = passwordEncoder.matches(
-                request.password(),
-                user.getPassword()
-        );
-
-        if(!passwordMatches){
-            return new AuthResponse("Senha incorreta", false);
-        }
-
-        return new AuthResponse("Login efetuado com sucesso",true);
+    public AuthService(AuthenticationManager authenticationManager,
+                       JwtService jwtService,
+                       UserDetailsServiceImpl userDetailsService) {
+        this.authenticationManager = authenticationManager;
+        this.jwtService = jwtService;
+        this.userDetailsService = userDetailsService;
     }
 
+    @Transactional(readOnly = true)
+    public AuthResponse login(AuthRequest request) {
+
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.username(),
+                        request.password()
+                )
+        );
+
+        UserDetailsImpl user =
+                (UserDetailsImpl) userDetailsService.loadUserByUsername(request.username());
+
+        String token = jwtService.generateToken(user);
+
+        return new AuthResponse(token);
+    }
 }

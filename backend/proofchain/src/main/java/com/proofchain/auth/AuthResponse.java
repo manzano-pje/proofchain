@@ -10,12 +10,14 @@ package com.proofchain.auth;
  * Retorna o resultado da autenticação do usuário após validação das credenciais.
  *
  * Estrutura atual:
- * - message: mensagem de retorno (sucesso ou erro)
- * - success: indica se o login foi bem-sucedido
- *
- * Evolução futura:
- * Na fase de JWT, este DTO poderá incluir o token de acesso.
- *
+ * - token: token de acesso para a plataforma contendo:
+ *           - sub: e-mail de login do usuário
+ *           - userId: id do usuário,
+ *           - institutionId: id da instituição do usuário
+ *           - role: autoridade do usuário (SUPER_ADMIN, ADMIN, USER)
+ *           - iat: horário de geração do token,
+ *           - exp:  horário em que expira o token
+
  * Fluxo:
  * 1. AuthService valida credenciais
  * 2. Resultado é encapsulado neste record
@@ -25,7 +27,6 @@ package com.proofchain.auth;
  * Usado como resposta padrão do endpoint de login.
  */
 public record AuthResponse(
-        String message,
-        boolean success
+        String token
 ) {
 }

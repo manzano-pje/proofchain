@@ -1,90 +1,146 @@
 package com.proofchain.shared.security;
 
-
-// Geração e validação de token
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import java.security.Key;
+import javax.crypto.SecretKey;
+import java.time.Instant;
 import java.util.Date;
+import java.util.Map;
 
+/**
+ * JwtService (ProofChain)
 
+ * Responsável por:
+ * - Gerar JWT (access token)
+ * - Extrair claims
+ * - Validar token
+
+ * NÃO é responsável por:
+ * - Autenticação de usuário
+ * - Regras de negócio
+ * - Acesso a banco de dados
+ */
 @Service
-@AllArgsConstructor
 public class JwtService {
-//
-//
-//
-//    private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-//
-//    // Tempo de expiração do token (1 hora)
-//    private final long expirationTime = 1000 * 60 * 60;
-//
-//    /**
-//    * Gera um token JWT para o usuário autenticado.
-//    *
-//    * @param username identificador do usuário
-//    * @return token JWT assinado
-//    */
-//
-//    public String generateToken(String username){
-//        return Jwts.builder()
-//                .setSubject(username)
-//                .setIssuedAt(new Date())
-//                .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
-//                .signWith(key)
-//                .compact();
-//
-//    }
-//
-//    /**
-//    * Extrai o username contido no token.
-//    *
-//    * @param token JWT recebido do cliente
-//    * @return username armazenado no token
-//    */
-//
-//    public String extractUsername(String token){
-//        return getClaims(token).getSubject();
-//    }
-//
-//    /**
-//     * Valida se o token ainda é válido (não expirado e assinado corretamente).
-//     *
-//     * @param token JWT recebido
-//     * @return true se válido, false caso contrário
-//     */
-//
-//    public boolean isTokenValid(String token){
-//        try{
-//            return  getClaims(token).getExpiration().after(new Date());
-//        } catch (Exception e){
-//            return false;
-//        }
-//    }
-//
-//    /**
-//     * Extrai os dados internos (claims) do token.
-//     */
-//
-//    private Claims getClaims(String token){
-//        return Jwts.parserBuilder()
-//                .setSigningKey(key)
-//                .build()
-//                .parseClaimsJwt(token)
-//                .getBody();
-//    }
-}
 
-/*
-🔧 Versão mais otimizada (sênior):
-- Chave RSA
-- Namespaces nos claims
-- Refresh token
-Motivo: segurança e escalabilidade
-*/
+    /*
+     * =========================================================
+     * CONFIGURAÇÕES
+     * =========================================================
+     */
+
+    @Value("${security.jwt.secret}")
+    private String secret;
+
+    @Value("${security.jwt.expiration}")
+    private Long expiration;
+
+    @Value("${security.jwt.refresh-expiration}")
+    private Long refreshExpiration;
+
+    /*
+     * =========================================================
+     * CLAIMS CUSTOMIZADOS (MULTI-TENANT)
+     * =========================================================
+     */
+
+    private static final String CLAIM_USER_ID = "userId";
+    private static final String CLAIM_INSTITUTION_ID = "institutionId";
+    private static final String CLAIM_ROLE = "role";
+
+    /*
+     * =========================================================
+     * SIGNING KEY
+     * =========================================================
+     */
+
+    private SecretKey getSigningKey() {
+        byte[] keyBytes = Decoders.BASE64.decode(secret);
+        return Keys.hmacShaKeyFor(keyBytes);
+    }
+
+    /*
+     * =========================================================
+     * GERAÇÃO DE TOKEN
+     * =========================================================
+     */
+
+    public String generateToken(UserDetailsImpl user) {
+
+        Instant now = Instant.now();
+        Instant expirationTime = now.plusMillis(expiration);
+
+        return Jwts.builder()
+                .claims(buildClaims(user))
+                .subject(user.getUsername())
+                .issuedAt(Date.from(now))
+                .expiration(Date.from(expirationTime))
+                .signWith(getSigningKey())
+                .compact();
+    }
+
+    private Map<String, Object> buildClaims(UserDetailsImpl user) {
+        return Map.of(
+                CLAIM_USER_ID, user.getId(),
+                CLAIM_INSTITUTION_ID, user.getInstitutionId(),
+                CLAIM_ROLE, user.getRole()
+        );
+    }
+
+    /*
+     * =========================================================
+     * EXTRAÇÃO DE CLAIMS
+     * =========================================================
+     */
+
+    private Claims extractAllClaims(String token) {
+        return Jwts.parser()
+                .verifyWith(getSigningKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+    }
+
+    public String extractUsername(String token) {
+        return extractAllClaims(token).getSubject();
+    }
+
+    public Long extractUserId(String token) {
+        return extractAllClaims(token).get(CLAIM_USER_ID, Long.class);
+    }
+
+    public Long extractInstitutionId(String token) {
+        return extractAllClaims(token).get(CLAIM_INSTITUTION_ID, Long.class);
+    }
+
+    public String extractRole(String token) {
+        return extractAllClaims(token).get(CLAIM_ROLE, String.class);
+    }
+
+    public Claims extractClaims(String token) {
+        return extractAllClaims(token);
+    }
+
+    /*
+     * =========================================================
+     * VALIDAÇÃO
+     * =========================================================
+     */
+
+    public boolean validateToken(String token, UserDetails userDetails) {
+        return extractUsername(token).equals(userDetails.getUsername())
+                && !isTokenExpired(token);
+    }
+
+    private boolean isTokenExpired(String token) {
+        return extractAllClaims(token)
+                .getExpiration()
+                .before(new Date());
+    }
+}

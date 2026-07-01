@@ -6,9 +6,9 @@ import com.proofchain.course.infrastructure.repository.CourseRepository;
 import com.proofchain.course.interfaces.dto.response.FullCourseResponse;
 import com.proofchain.institution.domain.exception.InstitutionNotFoundException;
 import com.proofchain.institution.infrastructure.repository.InstitutionRepository;
-import com.proofchain.shared.security.SecurityUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
