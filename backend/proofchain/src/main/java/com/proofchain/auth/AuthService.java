@@ -1,44 +1,64 @@
 package com.proofchain.auth;
 
 import com.proofchain.shared.security.JwtService;
-import lombok.RequiredArgsConstructor;
+import com.proofchain.shared.security.UserDetailsImpl;
+import com.proofchain.shared.security.UserDetailsServiceImpl;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
- * AuthService
- *
+ * AuthService (ProofChain Core Security Layer)
+
  * Responsabilidade:
- * Orquestra o processo de autenticação dos usuários da aplicação.
- *
- * Função no sistema:
- * Recebe as credenciais informadas pelo usuário, delega a autenticação ao
- * AuthenticationManager e, após a validação bem-sucedida, solicita ao
- * JwtService a geração do token de acesso (JWT).
- *
- * Fluxo de utilização:
- * 1. Recebe as credenciais enviadas pelo AuthController.
- * 2. Solicita a autenticação ao AuthenticationManager.
- * 3. Recupera o usuário autenticado.
- * 4. Gera o JWT através do JwtService.
- * 5. Retorna o AuthResponse ao controlador.
- *
- * Integração no sistema:
- * Atua entre o AuthController e a infraestrutura de autenticação do Spring
- * Security, centralizando todo o fluxo de login da aplicação.
+ * - Orquestrar o fluxo de autenticação de usuário
+ * - Validar credenciais via Spring Security
+ * - Gerar token JWT após autenticação bem-sucedida
+
+ * Fluxo:
+ * 1. Recebe AuthRequest (username/password)
+ * 2. Valida credenciais via AuthenticationManager
+ * 3. Carrega UserDetails autenticado
+ * 4. Gera JWT via JwtService
+ * 5. Retorna AuthResponse com token
+
+ * NÃO é responsabilidade desta camada:
+ * - Expor endpoints HTTP
+ * - Validar payload de request
+ * - Regras de negócio de domínio
  */
 @Service
-@RequiredArgsConstructor
 public class AuthService {
 
-    /**
-     * Responsável por autenticar as credenciais do usuário.
-     */
     private final AuthenticationManager authenticationManager;
-
-    /**
-     * Responsável pela geração e validação dos tokens JWT.
-     */
     private final JwtService jwtService;
+    private final UserDetailsServiceImpl userDetailsService;
 
+    public AuthService(AuthenticationManager authenticationManager,
+                       JwtService jwtService,
+                       UserDetailsServiceImpl userDetailsService) {
+        this.authenticationManager = authenticationManager;
+        this.jwtService = jwtService;
+        this.userDetailsService = userDetailsService;
+    }
+
+    @Transactional(readOnly = true)
+    public AuthResponse login(AuthRequest request) {
+
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.username(),
+                        request.password()
+                )
+        );
+
+        UserDetailsImpl user =
+                (UserDetailsImpl) userDetailsService.loadUserByUsername(request.username());
+
+        String token = jwtService.generateToken(user);
+
+        return new AuthResponse(token);
+    }
 }

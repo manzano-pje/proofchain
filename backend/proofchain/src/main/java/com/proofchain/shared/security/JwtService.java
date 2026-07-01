@@ -1,6 +1,5 @@
 package com.proofchain.shared.security;
 
-import com.proofchain.shared.security.UserDetailsImpl;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -16,16 +15,16 @@ import java.util.Map;
 
 /**
  * JwtService (ProofChain)
- *
- * Responsabilidade:
- * - Gerar JWT
+
+ * Responsável por:
+ * - Gerar JWT (access token)
  * - Extrair claims
  * - Validar token
- *
- * NÃO:
- * - autentica usuário
- * - acessa banco
- * - executa regras de negócio
+
+ * NÃO é responsável por:
+ * - Autenticação de usuário
+ * - Regras de negócio
+ * - Acesso a banco de dados
  */
 @Service
 public class JwtService {
@@ -47,7 +46,7 @@ public class JwtService {
 
     /*
      * =========================================================
-     * CLAIMS
+     * CLAIMS CUSTOMIZADOS (MULTI-TENANT)
      * =========================================================
      */
 
@@ -68,7 +67,7 @@ public class JwtService {
 
     /*
      * =========================================================
-     * GERAÇÃO DO TOKEN
+     * GERAÇÃO DE TOKEN
      * =========================================================
      */
 
@@ -96,7 +95,7 @@ public class JwtService {
 
     /*
      * =========================================================
-     * LEITURA DO TOKEN
+     * EXTRAÇÃO DE CLAIMS
      * =========================================================
      */
 
@@ -106,10 +105,6 @@ public class JwtService {
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
-    }
-
-    public Claims extractClaims(String token) {
-        return extractAllClaims(token);
     }
 
     public String extractUsername(String token) {
@@ -128,6 +123,10 @@ public class JwtService {
         return extractAllClaims(token).get(CLAIM_ROLE, String.class);
     }
 
+    public Claims extractClaims(String token) {
+        return extractAllClaims(token);
+    }
+
     /*
      * =========================================================
      * VALIDAÇÃO
@@ -135,8 +134,8 @@ public class JwtService {
      */
 
     public boolean validateToken(String token, UserDetails userDetails) {
-        String username = extractUsername(token);
-        return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
+        return extractUsername(token).equals(userDetails.getUsername())
+                && !isTokenExpired(token);
     }
 
     private boolean isTokenExpired(String token) {
