@@ -10,48 +10,60 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 /**
+ * UserDetailsServiceImpl
+ *
+ * Função no sistema:
+ * Responsável por carregar os dados do usuário durante o processo de autenticação,
+ * servindo como ponte entre a camada de persistência e o Spring Security.
+ *
+ * Estrutura atual:
  * Implementação da interface UserDetailsService do Spring Security.
+ * Realiza consulta ao banco de dados via UserRepository e converte a entidade User
+ * para UserDetailsImpl.
  *
- * Responsável por localizar e carregar um usuário durante o processo
- * de autenticação da aplicação.
+ * Fluxo:
+ * 1. Spring Security inicia processo de autenticação
+ * 2. Username (email) é fornecido ao método loadUserByUsername
+ * 3. Repositório busca usuário no banco de dados
+ * 4. Usuário é convertido para UserDetailsImpl
+ * 5. Objeto é retornado para o AuthenticationManager
  *
- * Quando uma tentativa de login é realizada, o Spring Security chama
- * automaticamente o método loadUserByUsername(), passando o identificador
- * utilizado no login (neste caso, o e-mail do usuário).
- *
- * Esta classe consulta o banco de dados através do UserRepository,
- * localiza o usuário e o converte para UserDetailsImpl, formato
- * compreendido pelo Spring Security.
- *
- * Caso o usuário não seja encontrado, uma UsernameNotFoundException
- * é lançada, interrompendo o processo de autenticação.
- *
- * Importante:
- * Esta classe não valida a senha do usuário.
- * A validação da senha é realizada posteriormente pelo
- * AuthenticationManager utilizando o PasswordEncoder configurado
- * na aplicação.
- *
- * No contexto do ProofChain, esta classe representa o ponto de entrada
- * entre o banco de dados e o mecanismo de autenticação do Spring Security,
- * sendo responsável por fornecer as informações necessárias para geração
- * de tokens JWT e controle de acesso baseado em papéis (roles).
+ * Integração no sistema:
+ * Utilizado diretamente pelo AuthenticationManager durante login e geração de JWT,
+ * sendo parte essencial do fluxo de autenticação do ProofChain.
  */
-
 @Service
 @RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
 
+    /*
+     * =========================================================
+     * DEPENDÊNCIAS
+     * =========================================================
+     */
     private final UserRepository userRepository;
 
+    /*
+     * =========================================================
+     * CARREGAMENTO DE USUÁRIO
+     * =========================================================
+     */
+
+    /**
+     * Carrega um usuário pelo e-mail para autenticação.
+     *
+     * @param email identificador utilizado no login
+     * @return UserDetails representando o usuário autenticável
+     * @throws UsernameNotFoundException se o usuário não for encontrado
+     */
     @Override
     public UserDetails loadUserByUsername(String email)
-        throws UsernameNotFoundException {
+            throws UsernameNotFoundException {
 
-            User user = userRepository
-                    .findByEmail(email)
-                    .orElseThrow(UserNotFoundException::new);
+        User user = userRepository
+                .findByEmail(email)
+                .orElseThrow(UserNotFoundException::new);
 
-            return new UserDetailsImpl(user);
+        return new UserDetailsImpl(user);
     }
 }
