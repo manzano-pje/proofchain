@@ -12,40 +12,83 @@ import org.springframework.stereotype.Component;
 import java.util.Optional;
 
 /**
- * Handler for listing a single course by its ID.
- * Author - Paulo Manzano
- * version - 1.0
- * since - 2024-06-01
+ * ListOneCourseHandler
+ *
+ * Função no sistema:
+ * Responsável por executar o caso de uso de consulta de um curso específico por ID dentro do contexto de uma instituição.
+ * Atua como orquestrador da busca de um único registro de Course no sistema.
+ *
+ * Estrutura atual:
+ * Componente da camada de aplicação (Application Layer).
+ * Depende de CourseRepository e InstitutionRepository para validação de contexto e acesso a dados.
+ *
+ * Fluxo:
+ * 1. Obtém o contexto da instituição (tenant)
+ * 2. Valida existência da instituição no sistema
+ * 3. Busca o curso por ID dentro da instituição
+ * 4. Valida existência do curso
+ * 5. Converte entidade Course para CourseResponse
+ * 6. Retorna o curso solicitado
+ *
+ * Integração no sistema:
+ * Utilizado pela camada de interface (Controller) para consulta individual de cursos
+ * filtrados pelo contexto da instituição.
  */
-
-
 @Component
 @AllArgsConstructor
 public class ListOneCourseHandler {
 
+    /*
+     * =========================================================
+     * DEPENDÊNCIAS
+     * =========================================================
+     */
     private final InstitutionRepository institutionRepository;
     private final CourseRepository courseRepository;
 
-
     /**
-     * Lists a single course by its ID.
-     * @param id
-     * @return CourseResponse
+     * Executa o caso de uso de consulta de um curso por ID.
+     *
+     * @param id identificador do curso
+     * @return CourseResponse com os dados do curso encontrado
      */
+    public CourseResponse listOneCourse(Long id) {
 
-    public CourseResponse listOneCourse(Long id){
+        /*
+         * =========================================================
+         * CONTEXTO DE INSTITUIÇÃO (TENANT)
+         * =========================================================
+         */
+
 //        Long institutionId = SecurityUtils.getInstitutionId();
         Long institutionId = 1L;
 
-        boolean existInstitution = institutionRepository.existsByIdAndDeletedAtIsNull(institutionId);
-        if(!existInstitution) {
+        boolean existsInstitution = institutionRepository
+                .existsByIdAndDeletedAtIsNull(institutionId);
+
+        if (!existsInstitution) {
             throw new InstitutionNotFoundException();
         }
 
-        Optional<Course> courseOptional = courseRepository.findByIdAndInstitutionId(id, institutionId);
-        if(courseOptional.isEmpty()){
+        /*
+         * =========================================================
+         * CONSULTA DE DOMÍNIO
+         * =========================================================
+         */
+
+        Optional<Course> courseOptional = courseRepository
+                .findByIdAndInstitutionId(id, institutionId);
+
+        if (courseOptional.isEmpty()) {
             throw new CourseNotFoundException();
         }
+
+        /*
+         * =========================================================
+         * MAPEAMENTO DE RESPOSTA
+         * =========================================================
+         */
+
         return new CourseResponse(courseOptional.get());
     }
 }
