@@ -3,28 +3,27 @@ package com.proofchain.auth;
 /**
  * AuthResponse
  *
- * Responsabilidade:
- * Representar a resposta do processo de login.
- *
  * Função no sistema:
- * Retorna o resultado da autenticação do usuário após validação das credenciais.
+ * Representa a resposta do processo de autenticação do usuário, encapsulando o token JWT gerado após validação das credenciais.
  *
  * Estrutura atual:
- * - token: token de acesso para a plataforma contendo:
- *           - sub: e-mail de login do usuário
- *           - userId: id do usuário,
- *           - institutionId: id da instituição do usuário
- *           - role: autoridade do usuário (SUPER_ADMIN, ADMIN, USER)
- *           - iat: horário de geração do token,
- *           - exp:  horário em que expira o token
-
+ * Record imutável contendo:
+ * - token: JWT de acesso à plataforma contendo claims de autenticação e autorização:
+ *   - sub: identificador do usuário (username/email)
+ *   - userId: identificador interno do usuário
+ *   - institutionId: identificador do tenant (instituição)
+ *   - role: autoridade do usuário (ex: SUPER_ADMIN, ADMIN, USER)
+ *   - iat: timestamp de emissão do token
+ *   - exp: timestamp de expiração do token
+ *
  * Fluxo:
- * 1. AuthService valida credenciais
- * 2. Resultado é encapsulado neste record
- * 3. AuthController retorna ao cliente
+ * 1. AuthService autentica o usuário via AuthenticationManager
+ * 2. JwtService gera o token JWT com claims estruturadas
+ * 3. AuthResponse encapsula o token gerado
+ * 4. AuthController retorna a resposta ao cliente
  *
  * Integração no sistema:
- * Usado como resposta padrão do endpoint de login.
+ * Utilizado como payload de resposta do endpoint /auth/login, servindo como contrato de autenticação do sistema.
  */
 public record AuthResponse(
         String token

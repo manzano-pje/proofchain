@@ -4,133 +4,115 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+
 import java.io.IOException;
 
 /**
  * JwtAuthenticationFilter
  *
- * Responsabilidade:
- * Intercepta requisições HTTP protegidas para realizar a autenticação baseada
- * em JSON Web Token (JWT).
- *
  * Função no sistema:
- * Valida o token recebido, recupera o usuário autenticado, registra a
- * autenticação no Spring Security e configura o contexto de tenant para
- * isolamento multi-tenant.
+ * Responsável por interceptar requisições HTTP e aplicar autenticação baseada em JWT.
+ * Extrai o token do header Authorization, valida sua autenticidade e popula o SecurityContext
+ * com o usuário autenticado.
  *
- * Fluxo de utilização:
- * 1. Extrai o token do cabeçalho Authorization.
- * 2. Valida o JWT utilizando o JwtService.
- * 3. Recupera o usuário através do UserDetailsService.
- * 4. Registra a autenticação no SecurityContextHolder.
- * 5. Configura o TenantContext da requisição.
- * 6. Continua a cadeia de filtros.
+ * Estrutura atual:
+ * Filtro de segurança baseado em Spring Security (OncePerRequestFilter).
+ * Atua na camada de segurança da aplicação, integrando JwtService e UserDetailsServiceImpl.
+ *
+ * Fluxo:
+ * 1. Intercepta requisição HTTP
+ * 2. Extrai header Authorization
+ * 3. Valida prefixo "Bearer"
+ * 4. Extrai token JWT
+ * 5. Obtém username via JwtService
+ * 6. Carrega UserDetails via UserDetailsServiceImpl
+ * 7. Valida token
+ * 8. Cria Authentication object
+ * 9. Popula SecurityContextHolder
+ * 10. Continua cadeia de filtros
  *
  * Integração no sistema:
- * Atua entre o SecurityConfig e os recursos protegidos da aplicação,
- * utilizando o JwtService para manipulação do token e o UserDetailsService
- * para recuperação do usuário autenticado.
+ * Integrado à SecurityConfig como filtro principal de autenticação do sistema ProofChain.
  */
-
 @Component
-@RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
+    /*
+     * =========================================================
+     * DEPENDÊNCIAS
+     * =========================================================
+     */
     private final JwtService jwtService;
-    private final UserDetailsService userDetailsService;
+    private final UserDetailsServiceImpl userDetailsService;
 
-    private static final String AUTHORIZATION_HEADER = "Authorization";
-    private static final String BEARER_PREFIX = "Bearer ";
-    private static final int BEARER_PREFIX_LENGTH = BEARER_PREFIX.length();
+    /**
+     * Nota de decisão:
+     * A injeção via construtor foi escolhida para garantir imutabilidade das dependências
+     * e facilitar testes unitários do filtro.
+     */
+    public JwtAuthenticationFilter(JwtService jwtService,
+                                   UserDetailsServiceImpl userDetailsService) {
+        this.jwtService = jwtService;
+        this.userDetailsService = userDetailsService;
+    }
 
+    /*
+     * =========================================================
+     * PROCESSAMENTO DO FILTRO
+     * =========================================================
+     */
+
+    /**
+     * Intercepta a requisição HTTP e aplica validação JWT antes da execução do fluxo.
+     *
+     * @param request requisição HTTP recebida
+     * @param response resposta HTTP
+     * @param filterChain cadeia de filtros do Spring Security
+     */
     @Override
-    protected void doFilterInternal(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            FilterChain filterChain
-        ) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain filterChain)
+            throws ServletException, IOException {
 
-        final String authHeader = request.getHeader(AUTHORIZATION_HEADER);
+        final String authHeader = request.getHeader("Authorization");
 
-        if (authHeader == null || !authHeader.startsWith(BEARER_PREFIX)) {
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        final String token = authHeader.substring(BEARER_PREFIX_LENGTH );
+        final String token = authHeader.substring(7);
+        final String username = jwtService.extractUsername(token);
 
-        try {
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-            // Extrai username do token
-            final String username = jwtService.extractUsername(token);
+            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-            // Verifica se já não está autenticado
-            UserDetails userDetails;
-            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            if (jwtService.validateToken(token, userDetails)) {
 
-                // Carrega usuário real do banco
-                userDetails = userDetailsService.loadUserByUsername(username);
+                UsernamePasswordAuthenticationToken authToken =
+                        new UsernamePasswordAuthenticationToken(
+                                userDetails,
+                                null,
+                                userDetails.getAuthorities()
+                        );
 
-                // Valida token contra usuário
-                if (jwtService.validateToken(token, userDetails)) {
-                    authenticate(userDetails, request);
-                    configurationTenat(token);
-                }
-            }
-            filterChain.doFilter(request, response);
-
-        } finally {
-            TenantContext.clear();
-        }
-    }
-
-    /**
-     * Configura o contexto de tenant da requisição atual.
-     *
-     * @param token JWT da requisição autenticada
-     */
-    private void configurationTenat(String token){
-        // Tenant context (SÓ após autenticação válida)
-        Long institutionId = jwtService.extractInstitutionId(token);
-        String role = jwtService.extractRole(token);
-
-        if ("SUPER_ADMIN".equals(role)) {
-            TenantContext.setInstitutionId(1L);
-        } else if (institutionId != null) {
-            TenantContext.setInstitutionId(institutionId);
-        }
-    }
-
-    /**
-     * Registra o usuário autenticado no contexto de segurança do Spring.
-     *
-     * @param userDetails usuário autenticado
-     * @param request requisição HTTP atual
-     */
-    private void authenticate(UserDetails userDetails, HttpServletRequest request)
-    {
-
-        UsernamePasswordAuthenticationToken authToken =
-                new UsernamePasswordAuthenticationToken(
-                        userDetails,
-                        null,
-                        userDetails.getAuthorities()
+                authToken.setDetails(
+                        new WebAuthenticationDetailsSource().buildDetails(request)
                 );
 
-        authToken.setDetails(
-                new WebAuthenticationDetailsSource().buildDetails(request)
-        );
+                SecurityContextHolder.getContext().setAuthentication(authToken);
+            }
+        }
 
-        SecurityContextHolder.getContext().setAuthentication(authToken);
-
+        filterChain.doFilter(request, response);
     }
 }
+

@@ -14,17 +14,26 @@ import java.util.Date;
 import java.util.Map;
 
 /**
- * JwtService (ProofChain)
-
- * Responsável por:
- * - Gerar JWT (access token)
- * - Extrair claims
- * - Validar token
-
- * NÃO é responsável por:
- * - Autenticação de usuário
- * - Regras de negócio
- * - Acesso a banco de dados
+ * JwtService
+ *
+ * Função no sistema:
+ * Responsável por centralizar a geração, validação e extração de informações de tokens JWT
+ * utilizados no fluxo de autenticação do sistema ProofChain.
+ *
+ * Estrutura atual:
+ * Service de segurança baseado na biblioteca jjwt.
+ * Suporta claims customizados para arquitetura multi-tenant.
+ * Atua como componente central de criptografia e leitura de tokens.
+ *
+ * Fluxo:
+ * 1. Usuário é autenticado via AuthService
+ * 2. JwtService gera token contendo claims do usuário
+ * 3. Token é assinado com chave secreta
+ * 4. Em requisições futuras, token é validado via JwtAuthenticationFilter
+ * 5. Claims são extraídas para contexto de segurança e autorização
+ *
+ * Integração no sistema:
+ * Utilizado por AuthService (geração) e JwtAuthenticationFilter (validação e leitura).
  */
 @Service
 public class JwtService {
@@ -60,6 +69,11 @@ public class JwtService {
      * =========================================================
      */
 
+    /**
+     * Nota de decisão:
+     * A chave é derivada de Base64 para suportar compatibilidade com secrets gerados externamente
+     * (ex: environment variables / vault / CI/CD pipelines).
+     */
     private SecretKey getSigningKey() {
         byte[] keyBytes = Decoders.BASE64.decode(secret);
         return Keys.hmacShaKeyFor(keyBytes);
@@ -71,6 +85,12 @@ public class JwtService {
      * =========================================================
      */
 
+    /**
+     * Gera um JWT assinado contendo informações do usuário autenticado.
+     *
+     * @param user usuário autenticado contendo dados necessários para claims
+     * @return token JWT assinado
+     */
     public String generateToken(UserDetailsImpl user) {
 
         Instant now = Instant.now();
@@ -85,6 +105,12 @@ public class JwtService {
                 .compact();
     }
 
+    /**
+     * Constrói claims customizados do token JWT.
+     *
+     * @param user usuário autenticado
+     * @return mapa de claims
+     */
     private Map<String, Object> buildClaims(UserDetailsImpl user) {
         return Map.of(
                 CLAIM_USER_ID, user.getId(),
@@ -99,6 +125,12 @@ public class JwtService {
      * =========================================================
      */
 
+    /**
+     * Extrai todos os claims do token JWT.
+     *
+     * @param token token JWT
+     * @return claims do token
+     */
     private Claims extractAllClaims(String token) {
         return Jwts.parser()
                 .verifyWith(getSigningKey())
@@ -107,22 +139,52 @@ public class JwtService {
                 .getPayload();
     }
 
+    /**
+     * Extrai o username (subject) do token.
+     *
+     * @param token JWT
+     * @return username
+     */
     public String extractUsername(String token) {
         return extractAllClaims(token).getSubject();
     }
 
+    /**
+     * Extrai o ID do usuário do token.
+     *
+     * @param token JWT
+     * @return userId
+     */
     public Long extractUserId(String token) {
         return extractAllClaims(token).get(CLAIM_USER_ID, Long.class);
     }
 
+    /**
+     * Extrai o ID da instituição do token (multi-tenant).
+     *
+     * @param token JWT
+     * @return institutionId
+     */
     public Long extractInstitutionId(String token) {
         return extractAllClaims(token).get(CLAIM_INSTITUTION_ID, Long.class);
     }
 
+    /**
+     * Extrai o papel (role) do usuário no sistema.
+     *
+     * @param token JWT
+     * @return role do usuário
+     */
     public String extractRole(String token) {
         return extractAllClaims(token).get(CLAIM_ROLE, String.class);
     }
 
+    /**
+     * Retorna todos os claims do token.
+     *
+     * @param token JWT
+     * @return claims completos
+     */
     public Claims extractClaims(String token) {
         return extractAllClaims(token);
     }
@@ -133,11 +195,24 @@ public class JwtService {
      * =========================================================
      */
 
+    /**
+     * Valida se o token é válido para o usuário informado.
+     *
+     * @param token JWT
+     * @param userDetails usuário autenticado
+     * @return true se válido, false caso contrário
+     */
     public boolean validateToken(String token, UserDetails userDetails) {
         return extractUsername(token).equals(userDetails.getUsername())
                 && !isTokenExpired(token);
     }
 
+    /**
+     * Verifica se o token expirou.
+     *
+     * @param token JWT
+     * @return true se expirado
+     */
     private boolean isTokenExpired(String token) {
         return extractAllClaims(token)
                 .getExpiration()

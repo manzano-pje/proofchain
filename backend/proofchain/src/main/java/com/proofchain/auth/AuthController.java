@@ -6,37 +6,34 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
- * AuthController (ProofChain - Security Boundary Layer)
+ * AuthController
  *
- * Responsabilidade:
- * - Expor endpoints HTTP relacionados à autenticação
- * - Validar entrada estrutural via Bean Validation
- * - Delegar toda lógica de autenticação ao AuthService
+ * Função no sistema:
+ * Responsável por expor endpoints HTTP de autenticação.
+ * Atua como camada de entrada (Boundary Layer), delegando toda lógica de autenticação ao AuthService.
  *
- * NÃO é responsabilidade desta camada:
- * - Validar credenciais de usuário
- * - Gerar tokens JWT
- * - Acessar banco de dados
- * - Aplicar regras de negócio
+ * Estrutura atual:
+ * Controller REST stateless utilizando Spring Web.
+ * Integração com Swagger para documentação de API.
  *
- * Fluxo de autenticação:
+ * Fluxo:
  * 1. Recebe AuthRequest (username/password)
- * 2. Encaminha para AuthService
- * 3. AuthService autentica via Spring Security
- * 4. JWT é gerado e retornado
- * 5. Response devolvida ao cliente
+ * 2. Encaminha requisição para AuthService
+ * 3. AuthService executa autenticação e gera JWT
+ * 4. Token é retornado ao cliente via AuthResponse
+ *
+ * Integração no sistema:
+ * Utilizado como ponto de entrada do módulo de autenticação.
+ * Integra camada HTTP com camada de serviço de autenticação.
  */
 @RestController
 @RequestMapping("/auth")
 @Tag(
         name = "Authentication",
-        description = "Camada responsável pelos endpoints de autenticação e geração de token JWT"
+        description = "Endpoints responsáveis pela autenticação e geração de token JWT"
 )
 public class AuthController {
 
@@ -47,25 +44,19 @@ public class AuthController {
     }
 
     /**
-     * Autentica um usuário no sistema.
+     * Realiza autenticação do usuário e gera token JWT.
      *
-     * Este endpoint valida credenciais (username e password),
-     * e retorna um token JWT caso a autenticação seja bem-sucedida.
-     *
-     * O token retornado deve ser utilizado nas requisições subsequentes
-     * no header Authorization como: Bearer <token>
-     *
-     * @param request credenciais de login do usuário
-     * @return AuthResponse contendo o JWT gerado
+     * @param request credenciais de autenticação (username e password)
+     * @return AuthResponse contendo JWT válido
      */
     @Operation(
             summary = "Autenticar usuário",
-            description = "Realiza autenticação do usuário no sistema e gera um token JWT válido para acesso às rotas protegidas"
+            description = "Realiza autenticação e retorna token JWT para acesso às rotas protegidas"
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Autenticação realizada com sucesso"),
-            @ApiResponse(responseCode = "400", description = "Requisição inválida (payload incorreto)"),
-            @ApiResponse(responseCode = "401", description = "Credenciais inválidas ou usuário não autorizado")
+            @ApiResponse(responseCode = "400", description = "Requisição inválida"),
+            @ApiResponse(responseCode = "401", description = "Credenciais inválidas")
     })
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@Valid @RequestBody AuthRequest request) {

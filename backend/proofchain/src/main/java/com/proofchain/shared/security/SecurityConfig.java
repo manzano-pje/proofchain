@@ -1,15 +1,10 @@
 package com.proofchain.shared.security;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -17,58 +12,90 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 /**
  * SecurityConfig
  *
- * Responsabilidade:
- * Configuração central da segurança HTTP da API do ProofChain.
- *
  * Função no sistema:
- * Define quais endpoints são públicos ou protegidos, estabelece a política
- * de sessão como STATELESS e registra o filtro interceptador do JWT.
+ * Centraliza a configuração de segurança da aplicação ProofChain, definindo políticas de autenticação,
+ * autorização, gerenciamento de sessão e integração do filtro JWT.
+ *
+ * Estrutura atual:
+ * Configuração baseada em Spring Security com autenticação stateless via JWT.
+ * Define regras de acesso HTTP e integra filtros personalizados de autenticação.
  *
  * Fluxo:
- * 1. A requisição HTTP chega ao servidor.
- * 2. Passa pelas regras configuradas no HttpSecurity.
- * 3. O JwtAuthenticationFilter intercepta e valida o token (se houver).
- * 4. O Spring Security autoriza ou barra o acesso com base nas permissões.
+ * 1. Requisições HTTP entram na aplicação
+ * 2. SecurityFilterChain aplica regras de segurança
+ * 3. JwtAuthenticationFilter intercepta requisições protegidas
+ * 4. JwtAuthenticationEntryPoint trata falhas de autenticação
+ * 5. AuthenticationManager é utilizado no fluxo de login
+ *
+ * Integração no sistema:
+ * Base da camada de segurança do ProofChain, responsável por proteger todos os endpoints
+ * exceto rotas públicas de autenticação.
  */
 @Configuration
-@EnableWebSecurity
-@EnableMethodSecurity // Permite o uso de @PreAuthorize nos Controllers para controle fino
-@RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final JwtAuthenticationFilter jwtAuthFilter;
-    private final AuthenticationProvider authenticationProvider;
+    /*
+     * =========================================================
+     * DEPENDÊNCIAS DE SEGURANÇA
+     * =========================================================
+     */
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final JwtAuthenticationEntryPoint authenticationEntryPoint;
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                // 1. Desabilita o CSRF (Cross-Site Request Forgery) pois o sistema é Stateless baseado em tokens
-                .csrf(AbstractHttpConfigurer::disable)
-
-                // 2. Configura as regras de autorização de requisições (Endpoints)
-                .authorizeHttpRequests(auth -> auth
-                        // Endpoint de autenticação (Login) explicitamente público
-                        .requestMatchers("/api/v1/auth/**").permitAll()
-
-                        // Exemplo de liberação para documentação da API (Swagger/OpenAPI), se houver futuramente
-                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
-
-                        // Qualquer outra requisição dentro da API exige autenticação obrigatória
-                        .anyRequest().authenticated()
-                )
-
-                // 3. Define a política de sessão como estritamente STATELESS (sem estado no servidor)
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )
-
-                // 4. Associa o provedor de autenticação customizado (configurado no SecurityBeansConfig)
-                .authenticationProvider(authenticationProvider)
-
-                // 5. Injeta o nosso filtro JWT antes do filtro padrão de autenticação por usuário/senha
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-
-        return http.build();
+    /**
+     * Nota de decisão:
+     * A injeção via construtor garante imutabilidade das dependências de segurança
+     * e facilita testes da configuração de segurança.
+     */
+    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter,
+                          JwtAuthenticationEntryPoint authenticationEntryPoint) {
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+        this.authenticationEntryPoint = authenticationEntryPoint;
     }
 
+    /*
+     * =========================================================
+     * CONFIGURAÇÃO DO SECURITY FILTER CHAIN
+     * =========================================================
+     */
+
+    /**
+     * Define a cadeia principal de filtros de segurança da aplicação.
+     *
+     * @param http configuração HTTP do Spring Security
+     * @return SecurityFilterChain configurado
+     * @throws Exception erro de configuração de segurança
+     */
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
+        return http
+                .csrf(csrf -> csrf.disable())
+                .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .exceptionHandling(ex -> ex.authenticationEntryPoint(authenticationEntryPoint))
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/auth/**").permitAll()
+                        .anyRequest().authenticated()
+                )
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .build();
+    }
+
+    /*
+     * =========================================================
+     * AUTHENTICATION MANAGER
+     * =========================================================
+     */
+
+    /**
+     * Expõe o AuthenticationManager utilizado no fluxo de autenticação.
+     *
+     * @param config configuração de autenticação do Spring
+     * @return AuthenticationManager gerenciado pelo Spring
+     * @throws Exception erro ao obter configuração
+     */
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
+    }
 }

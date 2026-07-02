@@ -3,19 +3,21 @@ package com.proofchain.auth;
 /**
  * AuthRequest
  *
- * Responsabilidade:
- * Representar os dados enviados pelo cliente no processo de login.
- *
  * Função no sistema:
- * Transporta as credenciais necessárias para validação do usuário.
+ * Representa o payload de autenticação enviado pelo cliente no processo de login.
+ * Transporta as credenciais necessárias para validação do usuário no sistema.
+ *
+ * Estrutura atual:
+ * Record imutável contendo username e password.
+ * Utilizado como DTO de entrada na camada de autenticação.
  *
  * Fluxo:
  * 1. Cliente envia requisição de login
- * 2. Dados são mapeados para este record
- * 3. AuthService utiliza as credenciais para validação
+ * 2. Spring mapeia o JSON para AuthRequest
+ * 3. AuthService consome os dados para autenticação
  *
  * Integração no sistema:
- * Utilizado pelo AuthController no endpoint de login.
+ * Utilizado pelo AuthController como entrada do endpoint /auth/login.
  */
 public record AuthRequest(
         String username,
