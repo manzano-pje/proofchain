@@ -47,7 +47,7 @@ public class User {
 
         User user = new User();
         user.setName(name);
-        user.setEmail((email));
+        user.setEmail(email);
         user.setInstitution(institution);
         user.setPassword(password);
         user.setCreateAt(now());
