@@ -29,19 +29,16 @@ import lombok.Setter;
  * Integração no sistema:
  * Utilizado exclusivamente pela camada de interface para entrada de dados do módulo de cursos.
  */
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
-public class CourseRequestDto {
 
-    private Long id;
+public record CourseRequestDto(
+
+    Long id,
 
     @Size(max = 100)
-    private String name;
+    String name,
 
     @Size(max = 200)
-    private String description;
+    String description,
 
-    private int hours;
-}
+    int hours
+) {}
