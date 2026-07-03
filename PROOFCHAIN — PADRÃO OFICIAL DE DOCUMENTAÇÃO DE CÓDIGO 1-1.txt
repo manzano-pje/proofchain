@@ -1,0 +1,245 @@
+# 📘 ProofChain Documentation Standard v1.1
+
+## 🎯 Objetivo
+
+Definir um padrão único de documentação e estrutura para todo o ecossistema ProofChain, garantindo consistência entre camadas, previsibilidade arquitetural e clareza de intenção de código.
+
+---
+
+# 1. 🧱 Estrutura de Documentação de Classe (OBRIGATÓRIO)
+
+Toda classe deve iniciar com o bloco abaixo:
+
+```java
+/**
+ * NomeDaClasse
+ *
+ * Função no sistema:
+ * Descrição objetiva do papel da classe dentro da arquitetura ProofChain.
+ *
+ * Estrutura atual:
+ * Descrição técnica de como a classe está implementada (frameworks, padrões, dependências).
+ *
+ * Fluxo:
+ * Passo a passo da execução ou comportamento principal.
+ *
+ * Integração no sistema:
+ * Onde a classe se conecta (Controller, Service, Domain, Security, Infrastructure, etc).
+ */
+```
+
+---
+
+# 2. 🔧 Separação Interna de Código (OBRIGATÓRIO PARA CLASSES COM LÓGICA)
+
+Aplicável a:
+
+* Service
+* Handler
+* Domain Model
+* Security
+* Use Cases
+
+## Estrutura obrigatória:
+
+```java
+/*
+ * =========================================================
+ * DEPENDÊNCIAS
+ * =========================================================
+ */
+
+/*
+ * =========================================================
+ * FLUXO PRINCIPAL
+ * =========================================================
+ */
+
+/*
+ * =========================================================
+ * VALIDAÇÕES
+ * =========================================================
+ */
+
+/*
+ * =========================================================
+ * REGRAS DE DOMÍNIO
+ * =========================================================
+ */
+
+/*
+ * =========================================================
+ * PERSISTÊNCIA / INTEGRAÇÃO
+ * =========================================================
+ */
+```
+
+---
+
+# 3. 🧠 DOCUMENTAÇÃO DE MÉTODOS (OBRIGATÓRIO)
+
+## ✔ Regras gerais
+
+Todos os métodos devem ter JavaDoc.
+
+### Formato padrão:
+
+```java
+/**
+ * Descrição clara e objetiva do comportamento do método.
+ *
+ * @param param descrição do parâmetro
+ * @return descrição do retorno (quando aplicável)
+ */
+```
+
+---
+
+## ✔ Aplicação por visibilidade
+
+| Tipo      | Obrigatório              |
+| --------- | ------------------------ |
+| public    | SIM                      |
+| protected | SIM                      |
+| private   | SIM (quando não trivial) |
+
+---
+
+## ⚠️ Exceção controlada (private methods)
+
+NÃO documentar apenas quando:
+
+* método for trivial (ex: getter interno, trim, parse simples)
+* não contiver regra de negócio
+* não tiver impacto no fluxo
+
+---
+
+# 4. 🧭 NOTAS DE DECISÃO (OPCIONAL CONTROLADO)
+
+## ✔ Quando usar
+
+Somente quando houver:
+
+* decisão arquitetural relevante
+* trade-off técnico
+* dependência futura (ex: Security ainda não implementado)
+* regra de negócio não óbvia
+* workaround intencional
+
+---
+
+## ❌ Quando NÃO usar
+
+* lógica trivial
+* métodos simples
+* explicações óbvias
+* duplicação de JavaDoc
+
+---
+
+## 📌 Formato (quando usado)
+
+```java
+/**
+ * Nota de decisão:
+ * Explicação do porquê a abordagem foi escolhida.
+ */
+```
+
+---
+
+# 5. 🧱 PADRÃO POR CAMADA
+
+## 🟦 Controller (Interface Layer)
+
+* foco em contrato HTTP
+* sem regra de negócio
+* documentação leve + clara
+
+---
+
+## 🟨 Application (Handler / Service)
+
+* fluxo completo do caso de uso
+* separação interna obrigatória
+* regras de orquestração
+
+---
+
+## 🟥 Domain (Entity / Model)
+
+* invariantes obrigatórios
+* validações centralizadas
+* estado sempre consistente
+
+---
+
+## 🟪 Infrastructure
+
+* integração técnica
+* sem regra de negócio
+* foco em persistência e frameworks
+
+---
+
+## 🟩 Security
+
+* fluxo de autenticação explícito
+* referência obrigatória a SecurityContext futuro
+* nunca remover comentários de integração futura
+
+---
+
+# 6. 🔒 REGRAS DE CONSISTÊNCIA
+
+## ❌ PROIBIDO
+
+* documentação parcial
+* ausência de JavaDoc em métodos obrigatórios
+* mistura de estilos entre classes
+* lógica de domínio fora da entidade (quando possível evitar)
+* remoção de comentários de Security planejado
+
+---
+
+## ✔ OBRIGATÓRIO
+
+* padrão uniforme em todo o sistema
+* estrutura de blocos em classes com lógica
+* rastreabilidade do fluxo (controller → handler → domain)
+* preservação de intenções arquiteturais futuras
+
+---
+
+# 7. 🧭 EVOLUÇÃO ARQUITETURAL (IMPORTANTE)
+
+O ProofChain v1.1 não é apenas documentação:
+
+Ele define a base para:
+
+* Multi-tenant seguro
+* SecurityContext centralizado
+* Handlers como unidades de caso de uso
+* Domínio consistente (invariantes fortes)
+* Evolução para arquitetura distribuída (eventual)
+
+---
+
+# 🚀 RESUMO EXECUTIVO
+
+## ✔ O que este padrão garante:
+
+* previsibilidade de código
+* leitura arquitetural rápida
+* baixa ambiguidade entre camadas
+* manutenção escalável
+* preparo para multi-tenant real
+
+---
+
+Se quiser o próximo passo natural, posso criar:
+
+## 🔥 ProofChain Architecture Enforcement Rules v1.0
+
+que transforma isso em regras automáticas de revisão (tipo checklist de build mental do código).

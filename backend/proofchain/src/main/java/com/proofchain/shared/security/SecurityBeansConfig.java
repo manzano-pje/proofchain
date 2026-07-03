@@ -1,6 +1,5 @@
 package com.proofchain.shared.security;
 
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,73 +8,94 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
 /**
  * SecurityBeansConfig
  *
- * Responsabilidade:
- * Configura e expõe os beans essenciais para o processo de autenticação e segurança
- * da aplicação utilizando Spring Security.
+ * Função no sistema:
+ * Centraliza a configuração e exposição dos beans essenciais para autenticação e segurança
+ * da aplicação ProofChain, integrando UserDetailsService, encoder de senha e provider de autenticação.
  *
- * Componentes configurados:
+ * Estrutura atual:
+ * Configuração baseada em Spring Security para autenticação via banco de dados (DAO)
+ * com suporte a criptografia BCrypt e integração com fluxo JWT.
  *
- * - PasswordEncoder:
- *   Responsável pela criptografia e validação de senhas utilizando BCrypt,
- *   garantindo armazenamento seguro das credenciais.
+ * Fluxo:
+ * 1. Requisição de autenticação é recebida (login)
+ * 2. AuthenticationManager inicia o processo de autenticação
+ * 3. DaoAuthenticationProvider delega validação ao UserDetailsService
+ * 4. PasswordEncoder valida hash da senha
+ * 5. Usuário é autenticado ou rejeitado
+ * 6. Fluxo segue para geração de JWT via AuthService
  *
- * - AuthenticationProvider:
- *   Integra o UserDetailsService com o PasswordEncoder,
- *   executando a validação das credenciais no processo de autenticação.
- *
- * - AuthenticationManager:
- *   Orquestra o fluxo de autenticação, delegando a validação ao AuthenticationProvider.
- *
- * Fluxo de execução:
- * 1. Requisição de autenticação é iniciada
- * 2. AuthenticationManager coordena o processo
- * 3. AuthenticationProvider valida as credenciais
- * 4. PasswordEncoder compara hash da senha
- * 5. UserDetailsService carrega os dados do usuário
- * 6. Autenticação é concluída ou rejeitada
- *
- * Observação:
- * Esta configuração suporta o fluxo completo de autenticação da aplicação,
- * incluindo login, geração de JWT e controle de acesso baseado em roles.
+ * Integração no sistema:
+ * Base de suporte para autenticação dentro do ProofChain, atuando junto com SecurityConfig,
+ * JwtService e AuthService.
  */
-
 @Configuration
 @RequiredArgsConstructor
 public class SecurityBeansConfig {
 
+    /*
+     * =========================================================
+     * DEPENDÊNCIAS
+     * =========================================================
+     */
     private final UserDetailsServiceImpl userDetailsService;
 
-    // Responsável por encriptar a senha
+    /*
+     * =========================================================
+     * PASSWORD ENCODER
+     * =========================================================
+     */
+
+    /**
+     * Responsável por criptografar e validar senhas utilizando BCrypt.
+     *
+     * @return PasswordEncoder configurado com BCrypt
+     */
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    //
+    /*
+     * =========================================================
+     * AUTHENTICATION PROVIDER
+     * =========================================================
+     */
+
+    /**
+     * Configura o provider responsável por autenticação baseada em banco de dados.
+     *
+     * @return DaoAuthenticationProvider configurado com UserDetailsService e PasswordEncoder
+     */
     @Bean
-    public DaoAuthenticationProvider authenticationProvider(){
-        DaoAuthenticationProvider authProvider =
-                new DaoAuthenticationProvider();
+    public DaoAuthenticationProvider authenticationProvider() {
 
-        authProvider.setUserDetailsService(
-                userDetailsService
-        );
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
 
-        authProvider.setPasswordEncoder(
-                passwordEncoder()
-        );
+        authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setPasswordEncoder(passwordEncoder());
 
         return authProvider;
     }
 
-    @Bean
-    public AuthenticationManager authenticationManager(
-            AuthenticationConfiguration config
-    ) throws Exception{
+    /*
+     * =========================================================
+     * AUTHENTICATION MANAGER
+     * =========================================================
+     */
 
+    /**
+     * Expõe o AuthenticationManager utilizado no fluxo de autenticação.
+     *
+     * @param config configuração de autenticação do Spring
+     * @return AuthenticationManager gerenciado pelo Spring
+     * @throws Exception erro ao obter configuração de autenticação
+     */
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
 }
