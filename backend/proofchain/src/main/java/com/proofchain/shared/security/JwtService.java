@@ -55,15 +55,11 @@ public class JwtService {
     @Value("${security.jwt.secret}")
     private String secret;
 
-
-
-    @Value("${security.jwt-token.expiration}")
+    @Value("${security.jwt.access-token.expiration}")
     private Long expiration;
 
     @Value("${security.jwt-token.refresh-expiration}")
     private Long refreshExpiration;
-
-
 
     /*
      * =========================================================
