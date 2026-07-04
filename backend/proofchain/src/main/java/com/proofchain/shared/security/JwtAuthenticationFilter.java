@@ -23,6 +23,7 @@ import java.io.IOException;
  *
  * Estrutura atual:
  * Filtro de segurança baseado em Spring Security (OncePerRequestFilter).
+
  * Atua na camada de segurança da aplicação, integrando JwtService, UserDetailsServiceImpl
  * e TenantContext para suporte multi-tenant.
  *
@@ -143,3 +144,4 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
     }
 }
+

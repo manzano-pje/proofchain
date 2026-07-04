@@ -40,5 +40,6 @@ public class CreateCourseCommand {
         this.name = dto.name();
         this.description = dto.description();
         this.hours = dto.hours();
+
     }
 }
