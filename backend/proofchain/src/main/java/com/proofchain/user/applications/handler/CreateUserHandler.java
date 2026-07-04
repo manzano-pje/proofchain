@@ -75,7 +75,7 @@ public class CreateUserHandler {
     public void createUser(CreateUserCommand command) {
 
         // 🔑 Instituição obtida do contexto de segurança.
-        // Long institutionId = SecurityUtils.getInstitutionId();
+//        Long institutionId = SecurityUtils.getInstitutionId();
 
         Long institutionId = 1L;
 

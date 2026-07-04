@@ -41,9 +41,9 @@ public class UpdateCourseCommand {
     private int hours;
 
     public UpdateCourseCommand(CourseRequestDto dto) {
-        this.id = dto.getId();
-        this.name = dto.getName();
-        this.description = dto.getDescription();
-        this.hours = dto.getHours();
+        this.id = dto.id();
+        this.name = dto.name();
+        this.description = dto.description();
+        this.hours = dto.hours();
     }
 }

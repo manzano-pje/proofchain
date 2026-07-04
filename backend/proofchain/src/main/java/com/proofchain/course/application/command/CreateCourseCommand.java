@@ -37,8 +37,9 @@ public class CreateCourseCommand {
     private final int hours;
 
     public CreateCourseCommand(CourseRequestDto dto) {
-        this.name = dto.getName();
-        this.description = dto.getDescription();
-        this.hours = dto.getHours();
+        this.name = dto.name();
+        this.description = dto.description();
+        this.hours = dto.hours();
+
     }
 }

@@ -64,23 +64,11 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /*
-     * =========================================================
-     * DADOS CADASTRAIS
-     * =========================================================
-     */
-
     @Column(nullable = false)
     private String name;
 
     @Column(nullable = false, unique = true)
     private String email;
-
-    /*
-     * =========================================================
-     * CREDENCIAIS
-     * =========================================================
-     */
 
     @Column(nullable = false)
     private String password;
@@ -89,23 +77,11 @@ public class User {
     @Column(nullable = false)
     private UserRole role;
 
-    /*
-     * =========================================================
-     * AUDITORIA
-     * =========================================================
-     */
-
     @CreationTimestamp
     private Instant createAt;
 
     @UpdateTimestamp
     private Instant updateAt;
-
-    /*
-     * =========================================================
-     * STATUS
-     * =========================================================
-     */
 
     private boolean isActive;
 

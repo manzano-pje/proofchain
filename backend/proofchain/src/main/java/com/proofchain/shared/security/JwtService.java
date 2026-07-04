@@ -4,7 +4,9 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.converter.json.GsonBuilderUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +40,12 @@ import java.util.Map;
 @Service
 public class JwtService {
 
+    public void JwtService() {
+        System.out.println("\n\n=========================================================");
+        System.out.println("JWT SECRET = [" + secret + "]");
+        System.out.println("=========================================================\n\n");
+    }
+
     /*
      * =========================================================
      * CONFIGURAÇÕES
@@ -47,10 +55,10 @@ public class JwtService {
     @Value("${security.jwt.secret}")
     private String secret;
 
-    @Value("${security.jwt.expiration}")
+    @Value("${security.jwt.access-token.expiration}")
     private Long expiration;
 
-    @Value("${security.jwt.refresh-expiration}")
+    @Value("${security.jwt-token.refresh-expiration}")
     private Long refreshExpiration;
 
     /*
