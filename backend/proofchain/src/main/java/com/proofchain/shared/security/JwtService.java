@@ -83,7 +83,7 @@ public class JwtService {
      * (ex: environment variables / vault / CI/CD pipelines).
      */
     private SecretKey getSigningKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(secret);
+        byte[] keyBytes = Decoders.BASE64.decode("6Uvp/nAn/1VLi0E0gflxhYpSEBmPOjxOlalD5fRdO+E=");
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
@@ -225,5 +225,11 @@ public class JwtService {
         return extractAllClaims(token)
                 .getExpiration()
                 .before(new Date());
+    }
+
+    @PostConstruct
+    public void testSecret() {
+        System.out.println("SECRET LENGTH: " + secret.length());
+        System.out.println("SECRET VALUE: " + secret);
     }
 }
