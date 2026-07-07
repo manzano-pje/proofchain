@@ -83,8 +83,9 @@ public class JwtService {
      * (ex: environment variables / vault / CI/CD pipelines).
      */
     private SecretKey getSigningKey() {
-        byte[] keyBytes = Decoders.BASE64.decode("6Uvp/nAn/1VLi0E0gflxhYpSEBmPOjxOlalD5fRdO+E=");
-        return Keys.hmacShaKeyFor(keyBytes);
+        byte[] keyBytes = Decoders.BASE64.decode(secret);
+        SecretKey key = Keys.hmacShaKeyFor(keyBytes);
+        return key;
     }
 
     /*

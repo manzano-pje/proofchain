@@ -55,9 +55,6 @@ public class SystemBootstrap implements CommandLineRunner {
             admin.setActive(true);
             admin.setInstitution(root);
             userRepository.save(admin);
-            System.out.println("Super Admin criado");
         }
-        System.out.println("Sistema inicializado com sucesso!");
     }
-
 }

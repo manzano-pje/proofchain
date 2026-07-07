@@ -142,15 +142,15 @@ public class UserController {
      *
      * @return lista de usuários
      */
-    @Operation(
-            summary = "Listar usuários",
-            description = "Retorna todos os usuários pertencentes à instituição autenticada."
-    )
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso"),
-            @ApiResponse(responseCode = "404", description = "Nenhum usuário encontrado")
-    })
-    @PreAuthorize("hasAnyRole('SUPER_ADMIN','USER','ADMIN')")
+//    @Operation(
+//            summary = "Listar usuários",
+//            description = "Retorna todos os usuários pertencentes à instituição autenticada."
+//    )
+//    @ApiResponses({
+//            @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso"),
+//            @ApiResponse(responseCode = "404", description = "Nenhum usuário encontrado")
+//    })
+//    @PreAuthorize("hasAnyRole('SUPER_ADMIN','USER','ADMIN')")
     @GetMapping
     public List<UserReturn> listAllUser() {
 
