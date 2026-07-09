@@ -97,7 +97,7 @@ public class UserController {
             @ApiResponse(responseCode = "403", description = "Acesso negado"),
             @ApiResponse(responseCode = "409", description = "Usuário já cadastrado")
     })
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('SUPER_ADMIN','ADMIN')")
     @PostMapping("/register")
     public ResponseEntity<Void> createUser(@Valid @RequestBody UserRequestDto user) {
 
@@ -128,7 +128,7 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "Usuário localizado"),
             @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
     })
-    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN','USER','ADMIN')")
     @GetMapping("/{email}")
     public ResponseEntity<UserReturn> listOneUser(@PathVariable String email) {
 
@@ -142,15 +142,15 @@ public class UserController {
      *
      * @return lista de usuários
      */
-    @Operation(
-            summary = "Listar usuários",
-            description = "Retorna todos os usuários pertencentes à instituição autenticada."
-    )
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso"),
-            @ApiResponse(responseCode = "404", description = "Nenhum usuário encontrado")
-    })
-    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+//    @Operation(
+//            summary = "Listar usuários",
+//            description = "Retorna todos os usuários pertencentes à instituição autenticada."
+//    )
+//    @ApiResponses({
+//            @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso"),
+//            @ApiResponse(responseCode = "404", description = "Nenhum usuário encontrado")
+//    })
+//    @PreAuthorize("hasAnyRole('SUPER_ADMIN','USER','ADMIN')")
     @GetMapping
     public List<UserReturn> listAllUser() {
 
@@ -181,7 +181,7 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "Usuário atualizado"),
             @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
     })
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('SUPER_ADMIN','ADMIN')")
     @PatchMapping("/update/{id}")
     public ResponseEntity<UserReturn> updateUser(
             @PathVariable Long id,

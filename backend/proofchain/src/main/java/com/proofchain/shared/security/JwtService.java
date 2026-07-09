@@ -84,7 +84,8 @@ public class JwtService {
      */
     private SecretKey getSigningKey() {
         byte[] keyBytes = Decoders.BASE64.decode(secret);
-        return Keys.hmacShaKeyFor(keyBytes);
+        SecretKey key = Keys.hmacShaKeyFor(keyBytes);
+        return key;
     }
 
     /*
@@ -225,5 +226,11 @@ public class JwtService {
         return extractAllClaims(token)
                 .getExpiration()
                 .before(new Date());
+    }
+
+    @PostConstruct
+    public void testSecret() {
+        System.out.println("SECRET LENGTH: " + secret.length());
+        System.out.println("SECRET VALUE: " + secret);
     }
 }
