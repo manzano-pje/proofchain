@@ -34,6 +34,18 @@ import java.util.List;
 @Getter
 public class UserDetailsImpl implements UserDetails {
 
+
+    /*
+     * =========================================================
+     * DADOS MOCKADOS PARA VALIDAÇÃO DE CONTAS
+     * =========================================================
+     */
+
+    private boolean isAccountNonLocked = true;
+    private boolean isAccountNonExpired = true;
+    private boolean isCredentialsNonExpired = true;
+
+
     /*
      * =========================================================
      * DADOS DE AUTENTICAÇÃO
@@ -113,21 +125,21 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return isAccountNonExpired();
+        return isAccountNonExpired;
     }
-
     @Override
     public boolean isAccountNonLocked() {
-        return isAccountNonLocked();
+        return isAccountNonLocked;
     }
+
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return isCredentialsNonExpired();
+        return isCredentialsNonExpired;
     }
 
     @Override
     public boolean isEnabled() {
-        return isEnabled();
+        return active;
     }
 }
