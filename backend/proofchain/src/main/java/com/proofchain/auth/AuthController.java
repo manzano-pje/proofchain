@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.*;
  * Integra camada HTTP com camada de serviço de autenticação.
  */
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("api/v1/auth")
 @Tag(
         name = "Authentication",
         description = "Endpoints responsáveis pela autenticação e geração de token JWT"
