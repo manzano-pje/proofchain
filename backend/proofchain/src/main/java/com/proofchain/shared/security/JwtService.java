@@ -227,10 +227,4 @@ public class JwtService {
                 .getExpiration()
                 .before(new Date());
     }
-
-    @PostConstruct
-    public void testSecret() {
-        System.out.println("SECRET LENGTH: " + secret.length());
-        System.out.println("SECRET VALUE: " + secret);
-    }
 }
