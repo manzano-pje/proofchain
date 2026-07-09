@@ -83,6 +83,8 @@ public class SecurityConfig {
                                 "/swagger-ui.html",
                                 "/api/v1/institution"
                         ).permitAll()
+                        .anyRequest()
+                        .authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

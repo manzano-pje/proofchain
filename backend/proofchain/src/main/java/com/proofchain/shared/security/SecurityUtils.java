@@ -1,39 +1,97 @@
 package com.proofchain.shared.security;
 
-import io.jsonwebtoken.Claims;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 public class SecurityUtils {
 
-    // Retorna o ID da instituição do usuário logado
+    public SecurityUtils(){}
+
+    /*
+     * Retorna o usuário logado
+     *
+     * @return Long - ID da instituição
+     */
+
+    public static UserDetailsImpl getCurrentUser(){
+        Authentication authentication = SecurityContextHolder
+                                        .getContext()
+                                        .getAuthentication();
+
+        if(authentication == null){
+            return null;
+        }
+
+        Object principal = authentication.getPrincipal();
+        if(!(principal instanceof UserDetailsImpl user)){
+            return null;
+        }
+
+        return user;
+    }
+
+    /**
+     * Retorna o ID do usuário autenticado.
+     */
+    public static Long getUserId() {
+        UserDetailsImpl user = getCurrentUser();
+        if(user != null){
+            return user.getId();
+        }else {
+            return null;
+        }
+    }
+
+    /**
+     *  Retorna o ID da instituição do usuário logado
+     */
     public static Long getInstitutionId() {
 
-        Authentication auth =
-                SecurityContextHolder
-                        .getContext()
-                        .getAuthentication();
-//        Claims claims = (Claims) auth.getDetails();
+        UserDetailsImpl user = getCurrentUser();
 
-        if (auth == null) {
+        if (user != null) {
+            return user.getInstitutionId();
+        }else{
             return null;
         }
+    }
 
-        Object details = auth.getDetails();
+    /**
+     * Retorna o e-mail do usuário autenticado.
+     */
+    public static String getUsername() {
 
-        if (!(details instanceof Claims claims)) {
+        UserDetailsImpl user = getCurrentUser();
+
+        if (user != null){
+            return user.getUsername();
+        }else {
             return null;
         }
-        return Long.valueOf(
-                claims.get("institution_id").toString()
-        );
     }
 
-    // Retorna o ID do usuário logado
-    public static Long getUserId() {
-        Authentication auth =
-                SecurityContextHolder.getContext().getAuthentication();
-        return Long.valueOf(auth.getName());
+    /**
+     * Retorna o papel (ROLE) do usuário autenticado.
+     */
+    public static String getRole() {
+
+        UserDetailsImpl user = getCurrentUser();
+
+        if(user != null) {
+            return user.getRole();
+        }else {
+            return null;
+        }
     }
 
+    /**
+     * Verifica se existe um usuário autenticado.
+     */
+    public static boolean isAuthenticated() {
+        if(getCurrentUser() != null){
+            return true;
+        }else {
+            return false;
+        }
+    }
 }

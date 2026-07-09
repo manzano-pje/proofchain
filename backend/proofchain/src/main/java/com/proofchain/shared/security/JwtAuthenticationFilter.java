@@ -5,6 +5,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -124,25 +125,27 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                     SecurityContextHolder.getContext().setAuthentication(authToken);
 
+
                     /*
                      * =====================================================
                      * MULTI-TENANT CONTEXT (PROOFCHAIN)
                      * =====================================================
                      */
                     Long institutionId = jwtService.extractInstitutionId(token);
+                    System.out.println("InstitutionId do JWT: " + institutionId);
                     TenantContext.setInstitutionId(institutionId);
-                }
+                                    }
+                filterChain.doFilter(request, response);
             }
-
-            filterChain.doFilter(request, response);
-
         } finally {
             /*
              * =====================================================
              * CLEANUP (THREAD SAFETY)
              * =====================================================
              */
+
             TenantContext.clear();
+
         }
     }
 }
