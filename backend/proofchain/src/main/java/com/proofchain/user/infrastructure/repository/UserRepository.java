@@ -100,7 +100,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * @param institutionId identificador da instituição
      * @return true quando existir
      */
-    boolean existsByNameAndInstitutionId(String name, Long institutionId);
+    boolean existsByEmailAndInstitutionId(String name, Long institutionId);
 
     /**
      * Verifica se já existe um usuário cadastrado com o e-mail informado.

@@ -86,8 +86,8 @@ public class CreateUserHandler {
                 .findByIdAndDeletedAtIsNull(institutionId)
                 .orElseThrow(InstitutionNotFoundException::new);
 
-        boolean existUser = userRepository.existsByNameAndInstitutionId(
-                command.getName(),
+        boolean existUser = userRepository.existsByEmailAndInstitutionId(
+                command.getEmail(),
                 institutionId
         );
 

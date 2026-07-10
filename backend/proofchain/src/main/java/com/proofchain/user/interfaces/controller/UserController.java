@@ -142,15 +142,16 @@ public class UserController {
      *
      * @return lista de usuários
      */
-//    @Operation(
-//            summary = "Listar usuários",
-//            description = "Retorna todos os usuários pertencentes à instituição autenticada."
-//    )
-//    @ApiResponses({
-//            @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso"),
-//            @ApiResponse(responseCode = "404", description = "Nenhum usuário encontrado")
-//    })
-//    @PreAuthorize("hasAnyRole('SUPER_ADMIN','USER','ADMIN')")
+    @Operation(
+            summary = "Listar usuários",
+            description = "Retorna todos os usuários pertencentes à instituição autenticada."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Nenhum usuário encontrado")
+    })
+
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN','USER','ADMIN')")
     @GetMapping
     public List<UserReturn> listAllUser() {
 
@@ -189,7 +190,6 @@ public class UserController {
             @Valid @RequestBody UserUpdateDto userUpdateDto) {
 
         UpdateUserCommand command = new UpdateUserCommand(userUpdateDto);
-
         UserReturn user = updateUser.updateUser(id, command);
 
         return ResponseEntity.ok(user);
@@ -220,7 +220,7 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "Usuário removido"),
             @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
     })
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN', 'SUPER_ADMIN')")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable Long id) {
 
