@@ -154,7 +154,8 @@ public class UserController {
     @GetMapping
     public List<UserReturn> listAllUser() {
 
-        return listAllUser.listAllUser();
+        List<UserReturn> lista =  listAllUser.listAllUser();
+        return lista;
     }
 
     /*

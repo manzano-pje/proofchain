@@ -4,6 +4,7 @@ import com.proofchain.institution.domain.exception.InstitutionNotAutorizedExcept
 import com.proofchain.institution.domain.exception.InstitutionNotFoundException;
 import com.proofchain.institution.domain.model.Institution;
 import com.proofchain.institution.infrastructure.repository.InstitutionRepository;
+import com.proofchain.shared.security.SecurityUtils;
 import com.proofchain.user.applications.command.CreateUserCommand;
 import com.proofchain.user.domain.exception.UserRegisteredException;
 import com.proofchain.user.domain.model.User;
@@ -75,9 +76,7 @@ public class CreateUserHandler {
     public void createUser(CreateUserCommand command) {
 
         // 🔑 Instituição obtida do contexto de segurança.
-//        Long institutionId = SecurityUtils.getInstitutionId();
-
-        Long institutionId = 1L;
+        Long institutionId = SecurityUtils.getInstitutionId();
 
         if (institutionId == null) {
             throw new InstitutionNotAutorizedException();

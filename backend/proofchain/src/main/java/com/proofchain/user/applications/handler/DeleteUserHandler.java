@@ -2,6 +2,7 @@ package com.proofchain.user.applications.handler;
 
 import com.proofchain.institution.domain.exception.InstitutionNotFoundException;
 import com.proofchain.institution.infrastructure.repository.InstitutionRepository;
+import com.proofchain.shared.security.SecurityUtils;
 import com.proofchain.user.domain.exception.UserNotFoundException;
 import com.proofchain.user.infrastructure.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -65,9 +66,8 @@ public class DeleteUserHandler {
     public void deleteUser(Long id) {
 
         // 🔑 Instituição vem do TOKEN, não do request
-        // Long institutionId = SecurityUtils.getInstitutionId();
+        Long institutionId = SecurityUtils.getInstitutionId();
 
-        Long institutionId = 1L;
 
         boolean existInstitution = institutionRepository
                 .existsByIdAndDeletedAtIsNull(institutionId);

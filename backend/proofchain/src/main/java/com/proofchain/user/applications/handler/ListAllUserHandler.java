@@ -74,8 +74,30 @@ public class ListAllUserHandler {
     public List<UserReturn> listAllUser() {
 
         // 🔑 Instituição vem do TOKEN, não do request
-         Long institutionId = SecurityUtils.getInstitutionId();
-//        Long institutionId = 3L;
+        Long institutionId = SecurityUtils.getInstitutionId();
+
+        System.out.println("InstitutionId recebido: " + institutionId);
+
+        System.out.println(
+                "Existe por ID: " +
+                        institutionRepository.existsById(institutionId)
+        );
+
+        System.out.println(
+                "Existe ativa: " +
+                        institutionRepository.existsByIdAndDeletedAtIsNull(institutionId)
+        );
+
+
+
+
+
+
+
+
+
+
+
 
         if (institutionId == null) {
             throw new InstitutionNotAutorizedException();
