@@ -4,6 +4,7 @@ import com.proofchain.institution.domain.exception.InstitutionNotFoundException;
 import com.proofchain.institution.infrastructure.repository.InstitutionRepository;
 import com.proofchain.shared.security.SecurityUtils;
 import com.proofchain.user.domain.exception.UserNotFoundException;
+import com.proofchain.user.domain.model.User;
 import com.proofchain.user.infrastructure.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -76,13 +77,11 @@ public class DeleteUserHandler {
             throw new InstitutionNotFoundException();
         }
 
-        boolean existUser = userRepository
-                .existsByIdAndInstitutionId(id, institutionId);
+        User user = userRepository
+                .findByIdAndInstitution_Id(id, institutionId)
+                .orElseThrow(UserNotFoundException::new);
 
-        if (!existUser) {
-            throw new UserNotFoundException();
-        }
-
-        userRepository.deleteById(id);
+        user.setActive(false);
+        userRepository.save(user);
     }
 }
