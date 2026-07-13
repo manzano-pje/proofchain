@@ -18,6 +18,13 @@ import java.util.List;
 @CrossOrigin(origins = "*") // importante para o Vue acessar
 public class InstitutionController {
 
+
+    // TODO :Gerar documentação
+    // SUPER_ADMIN
+    // Criar métodos listar todas as instituições
+    // Excluir instituição
+
+
     private final CreateInstitutionHandler createInstitution;
     private final DeleteInstitutionHandler deleteInstitution;
     private ListAllInstitutionHandler listAllInstitution;

@@ -16,13 +16,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api/v1/feature/")
 public class FeaturePlanController {
 
+    // TODO: Documentação
     private CreateFeatureHandler createFeature;
     private DeleteFeatureHandler deleteFeature;
     private UpdateFeatureHandler updateFeature;
     private ListOneFeatureHandler listOneFeature;
     private ListAllFeatureHandler listallFeature;
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('SUPER_ADMIN')")
     @PostMapping
     public ResponseEntity<Void> createFeature(@Valid @RequestBody RequestNewFeatureDto dto){
         CreateFeatureCommand command = new CreateFeatureCommand(dto);

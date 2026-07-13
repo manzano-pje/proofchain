@@ -2,7 +2,7 @@ package com.proofchain.course.domain.model;
 
 import com.proofchain.certificate.model.Certificate;
 import com.proofchain.institution.domain.model.Institution;
-import com.proofchain.instructor.Instructor;
+import com.proofchain.instructor.domain.model.Instructor;
 import com.proofchain.participant.Participant;
 import com.proofchain.plataform.domain.text.textNormalize;
 import com.proofchain.shared.domain.model.BaseEntity;

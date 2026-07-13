@@ -1,10 +1,15 @@
-package com.proofchain.instructor;
+package com.proofchain.instructor.domain.model;
 
 import com.proofchain.course.domain.model.Course;
 import com.proofchain.institution.domain.model.Institution;
 import com.proofchain.user.domain.model.User;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.Instant;
+import java.util.Date;
 
 @Entity
 @AllArgsConstructor
@@ -31,6 +36,13 @@ public class Instructor  {
     @JoinColumn(name = "course_id")
     private Course course;
 
+    @CreationTimestamp
+    private Instant createAt;
+
+    @UpdateTimestamp
+    private Instant updateAt;
+
+    private boolean isActive;
     /////// RELACIONAMENTO ///////
 
     // EM Instituition
