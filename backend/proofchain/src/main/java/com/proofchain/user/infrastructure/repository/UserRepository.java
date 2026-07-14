@@ -57,7 +57,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * @param institutionId identificador da instituição
      * @return usuário encontrado, caso exista
      */
+
     Optional<User> findByIdAndInstitution_Id(Long id, Long institutionId);
+    Optional<User> findByInstitution_IdAndInstitution_DeletedAtIsNull(Long id, Long institutionId);
 
     /**
      * Localiza um usuário pelo e-mail.

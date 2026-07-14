@@ -60,7 +60,7 @@ public class CourseController {
      * =========================================================
      */
 
-    @PreAuthorize("hasRole('SUPER_ADMIN','ADMIN')")
+    @PreAuthorize("hasRole('SUPER_ADMIN','ADMIN', 'USER')")
     @PostMapping
     public ResponseEntity<Void> createCourse(@Valid @RequestBody CourseRequestDto dto) {
 
