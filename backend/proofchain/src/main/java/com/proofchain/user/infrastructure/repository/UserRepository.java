@@ -59,7 +59,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
      */
 
     Optional<User> findByIdAndInstitution_Id(Long id, Long institutionId);
-    Optional<User> findByInstitution_IdAndInstitution_DeletedAtIsNull(Long id, Long institutionId);
 
     /**
      * Localiza um usuário pelo e-mail.
@@ -120,4 +119,12 @@ public interface UserRepository extends JpaRepository<User, Long> {
      */
     boolean existsByRole(UserRole userRole);
 
+
+    boolean existsByIdAndCourse_IdAndInstitution_DeletedAtIsNull(
+            Long userId,
+            Long courseId,
+            Long institutionId);
+
 }
+
+

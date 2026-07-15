@@ -1,4 +1,4 @@
-package com.proofchain.instructor.domain.exceptions;
+package com.proofchain.couseClass.domain.exceptions;
 
 import com.proofchain.shared.exception.BaseException;
 

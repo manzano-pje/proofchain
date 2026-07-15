@@ -1,8 +1,9 @@
-package com.proofchain.instructor.interfaces.controller;
+package com.proofchain.couseClass.interfaces.controller;
 
-import com.proofchain.instructor.application.command.RequestInstructorCommand;
-import com.proofchain.instructor.application.handler.*;
-import com.proofchain.instructor.interfaces.dto.request.RequestInstructorDto;
+import com.proofchain.couseClass.application.command.RequestCourseClassCommand;
+import com.proofchain.couseClass.application.handler.*;
+import com.proofchain.couseClass.interfaces.dto.request.RequestCourseClassDto;
+import com.proofchain.couseClass.interfaces.dto.response.CourseClassReturn;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +39,7 @@ import java.util.List;
  @RestController
 @AllArgsConstructor
 
-@RequestMapping("/api/v1/instructor")
+@RequestMapping("/api/v1/couseClass")
 public class InstructorController {
 
     /*
@@ -46,11 +47,11 @@ public class InstructorController {
      * DEPENDÊNCIAS (APPLICATION LAYER)
      * =========================================================
      */
-    private final CreateInstructorHandler create;
-    private final ListAllInstructorHandler listAll;
-    private final ListOneInstructorHandler listOne;
-    private final UpdateInstructorHandler update;
-    private final DeleteInstructorHandler delete;
+    private final CreateCourseClassHandler create;
+    private final ListAllCourseClassHandler listAll;
+    private final ListOneCourseClassHandler listOne;
+    private final UpdateCourseClassHandler update;
+    private final DeleteCourseClassHandler delete;
 
     /*
      * =========================================================
@@ -59,8 +60,8 @@ public class InstructorController {
      */
     @PreAuthorize("hasRole('SUPER_ADMIN','ADMIN', 'USER')")
     @PostMapping
-    public ResponseEntity<Void> createInstructor(@Valid @RequestBody RequestInstructorDto dto){
-        RequestInstructorCommand command = new RequestInstructorCommand(dto);
+    public ResponseEntity<Void> createInstructor(@Valid @RequestBody RequestCourseClassDto dto){
+        RequestCourseClassCommand command = new RequestCourseClassCommand(dto);
         create.create(command);
         return ResponseEntity.ok().build();
     }
@@ -72,9 +73,8 @@ public class InstructorController {
      */
     @PreAuthorize("hasRole('SUPER_ADMIN','ADMIN', 'USER')")
     @GetMapping("/list")
-    public List<InstructorReturn> ListAllInstructor(){
-        listAll.listAll();
-        return ResponseEntity.ok().build();
+    public List<CourseClassReturn> ListAllInstructor(){
+        return listAll.listAllInstructor();
     }
 
 

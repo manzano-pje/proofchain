@@ -40,5 +40,8 @@ public enum UserRole {
     ADMIN,
 
     // Perfil padrão dos usuários da plataforma.
-    USER
+    USER,
+
+    // Perfil padrão dos instrutores da plataforma.
+    INSTRUCTOR
 }

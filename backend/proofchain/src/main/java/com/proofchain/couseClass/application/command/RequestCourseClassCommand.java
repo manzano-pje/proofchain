@@ -1,6 +1,6 @@
-package com.proofchain.instructor.application.command;
+package com.proofchain.couseClass.application.command;
 
-import com.proofchain.instructor.interfaces.dto.request.RequestInstructorDto;
+import com.proofchain.couseClass.interfaces.dto.request.RequestCourseClassDto;
 import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RequestInstructorCommand {
+public class RequestCourseClassCommand {
 
     @Column(nullable = false)
     private Long idUser;
@@ -19,7 +19,7 @@ public class RequestInstructorCommand {
     @Column(nullable = false)
     private Long idCourse;
 
-    public RequestInstructorCommand(RequestInstructorDto dto){
+    public RequestCourseClassCommand(RequestCourseClassDto dto){
         this.idUser = dto.getIdUser();
         this.idCourse = dto.getIdCourse();
     }
