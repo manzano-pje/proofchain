@@ -1,6 +1,6 @@
 package com.proofchain.instructor.application.command;
 
-import com.proofchain.instructor.interfaces.dto.RequestInstructorDto;
+import com.proofchain.instructor.interfaces.dto.request.RequestInstructorDto;
 import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -25,7 +25,8 @@ import com.proofchain.shared.exception.BaseException;
  */
 public class InstructorNotFoundException extends BaseException {
 
-    public InstructorNotFoundException() {
-        super("Instrutor não encontrado", 404);
+    public InstructorNotFoundException(String message) {
+
+        super(message, 404);
     }
 }
