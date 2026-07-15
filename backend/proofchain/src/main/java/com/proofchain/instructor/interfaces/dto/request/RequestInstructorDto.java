@@ -1,4 +1,4 @@
-package com.proofchain.instructor.interfaces.dto;
+package com.proofchain.instructor.interfaces.dto.request;
 
 import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;

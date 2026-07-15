@@ -2,16 +2,14 @@ package com.proofchain.instructor.interfaces.controller;
 
 import com.proofchain.instructor.application.command.RequestInstructorCommand;
 import com.proofchain.instructor.application.handler.*;
-import com.proofchain.instructor.interfaces.dto.RequestInstructorDto;
+import com.proofchain.instructor.interfaces.dto.request.RequestInstructorDto;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * InstructorController
@@ -72,6 +70,13 @@ public class InstructorController {
      * ENDPOINT: LISTALL INSTRUCTOR
      * =========================================================
      */
+    @PreAuthorize("hasRole('SUPER_ADMIN','ADMIN', 'USER')")
+    @GetMapping("/list")
+    public List<InstructorReturn> ListAllInstructor(){
+        listAll.listAll();
+        return ResponseEntity.ok().build();
+    }
+
 
     /*
      * =========================================================

@@ -2,6 +2,7 @@ package com.proofchain.instructor.infraestructure.repository;
 
 import com.proofchain.course.domain.model.Course;
 import com.proofchain.instructor.domain.model.Instructor;
+import com.proofchain.instructor.interfaces.dto.response.InstructorReturn;
 import com.proofchain.user.domain.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -39,5 +40,7 @@ public interface InstructorRepository extends JpaRepository<Instructor, Long> {
             Long userId,
             Long courseId,
             Long institutionId);
+
+    List<Instructor> findAllByInstitution_DeletedAtIsNullOrderBy_User_NameAscCourse_NameAsc(Long idInstitution);
 
 }
