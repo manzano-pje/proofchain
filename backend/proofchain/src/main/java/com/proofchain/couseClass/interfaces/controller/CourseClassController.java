@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * InstructorController
+ *  CourseClass
  *
  * Função no sistema:
  * Responsável por expor endpoints HTTP relacionados ao domínio de instrutores.
@@ -22,7 +22,7 @@ import java.util.List;
  *
  * Estrutura atual:
  * Controller REST baseado em Spring Boot.
- * Expõe operações CRUD de cursos com suporte a segurança baseada em roles.
+ * Expõe operações CRUD de turmas com suporte a segurança baseada em roles.
  * Integra-se com camada de aplicação através de Commands e Handlers.
  *
  * Fluxo:
@@ -33,14 +33,14 @@ import java.util.List;
  * 5. Retorna resposta HTTP ao cliente
  *
  * Integração no sistema:
- * Ponto de entrada do módulo de instrutores dentro da arquitetura ProofChain.
+ * Ponto de entrada do módulo de turmas dentro da arquitetura ProofChain.
  */
 
  @RestController
 @AllArgsConstructor
 
 @RequestMapping("/api/v1/couseClass")
-public class InstructorController {
+public class CourseClassController {
 
     /*
      * =========================================================
@@ -49,13 +49,13 @@ public class InstructorController {
      */
     private final CreateCourseClassHandler create;
     private final ListAllCourseClassHandler listAll;
-    private final ListOneCourseClassHandler listOne;
-    private final UpdateCourseClassHandler update;
-    private final DeleteCourseClassHandler delete;
+//    private final ListOneCourseClassHandler listOne;
+//    private final UpdateCourseClassHandler update;
+//    private final DeleteCourseClassHandler delete;
 
     /*
      * =========================================================
-     * ENDPOINT: CREATE INSTRUCTOR
+     * ENDPOINT: CREATE COURSECLASS
      * =========================================================
      */
     @PreAuthorize("hasRole('SUPER_ADMIN','ADMIN', 'USER')")
@@ -68,31 +68,31 @@ public class InstructorController {
 
     /*
      * =========================================================
-     * ENDPOINT: LISTALL INSTRUCTOR
+     * ENDPOINT: LISTALL COURSECLASS
      * =========================================================
      */
     @PreAuthorize("hasRole('SUPER_ADMIN','ADMIN', 'USER')")
     @GetMapping("/list")
-    public List<CourseClassReturn> ListAllInstructor(){
-        return listAll.listAllInstructor();
+    public List<CourseClassReturn> listAllcourseClass(){
+        return listAll.listAllcourseClass();
     }
 
 
     /*
      * =========================================================
-     * ENDPOINT: LISTONE INSTRUCTOR
+     * ENDPOINT: LISTONE COURSECLASS
      * =========================================================
      */
 
     /*
      * =========================================================
-     * ENDPOINT: UPDATE INSTRUCTOR
+     * ENDPOINT: UPDATE COURSECLASS
      * =========================================================
      */
 
     /*
      * =========================================================
-     * ENDPOINT: DELETE INSTRUCTOR
+     * ENDPOINT: DELETE COURSECLASS
      * =========================================================
      */
 

@@ -2,7 +2,7 @@ package com.proofchain.certificate.model;
 
 import com.proofchain.course.domain.model.Course;
 import com.proofchain.institution.domain.model.Institution;
-import com.proofchain.couseClass.domain.model.Instructor;
+import com.proofchain.couseClass.domain.model.CourseClass;
 import com.proofchain.participant.Participant;
 import jakarta.persistence.*;
 import lombok.*;
@@ -52,7 +52,7 @@ public class Certificate {
     // Instrutor
     @ManyToOne(optional = false)
     @JoinColumn(name = "instructor_id")
-    private Instructor instructor;
+    private CourseClass courseClass;
 
     // Participant
     @ManyToOne(optional = false)

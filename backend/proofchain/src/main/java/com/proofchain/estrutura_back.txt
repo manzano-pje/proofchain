@@ -1,5 +1,5 @@
- O volume na unidade E ‚ ssd secundario
- O N£mero de S‚rie do Volume ‚ 72F8-9311
+ O volume na unidade E ï¿½ ssd secundario
+ O Nï¿½mero de Sï¿½rie do Volume ï¿½ 72F8-9311
 
  Pasta de E:\Biblioteca\documentos\projetos\proofchain\backend\proofchain\src\main\java\com\proofchain
 
@@ -12,7 +12,7 @@
 03/06/2026  21:27    <DIR>          featurePlan
 15/05/2026  16:12    <DIR>          identities
 15/05/2026  16:12    <DIR>          institution
-03/06/2026  22:30    <DIR>          instructor
+03/06/2026  22:30    <DIR>          courseClass
 12/06/2026  20:26    <DIR>          participant
 15/05/2026  16:12    <DIR>          payment
 16/06/2026  19:32    <DIR>          plan
@@ -400,7 +400,7 @@
 15/05/2026  16:12             1.662 InstitutionReturn.java
                1 arquivo(s)          1.662 bytes
 
- Pasta de E:\Biblioteca\documentos\projetos\proofchain\backend\proofchain\src\main\java\com\proofchain\instructor
+ Pasta de E:\Biblioteca\documentos\projetos\proofchain\backend\proofchain\src\main\java\com\proofchain\courseClass
 
 03/06/2026  22:30    <DIR>          .
 03/06/2026  22:30    <DIR>          ..
@@ -756,4 +756,4 @@
 
      Total de Arquivos na Lista:
              110 arquivo(s)        131.831 bytes
-             275 pasta(s)   205.710.286.848 bytes dispon¡veis
+             275 pasta(s)   205.710.286.848 bytes disponï¿½veis

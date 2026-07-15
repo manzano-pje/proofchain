@@ -1,10 +1,10 @@
 package com.proofchain.couseClass.application.handler;
 
+import com.proofchain.couseClass.domain.model.CourseClass;
 import com.proofchain.institution.domain.exception.InstitutionNotFoundException;
 import com.proofchain.institution.domain.model.Institution;
 import com.proofchain.institution.infrastructure.repository.InstitutionRepository;
-import com.proofchain.couseClass.domain.exceptions.InstructorNotFoundException;
-import com.proofchain.couseClass.domain.model.Instructor;
+import com.proofchain.couseClass.domain.exceptions.CourseClassNotFoundException;
 import com.proofchain.couseClass.infraestructure.repository.CourseClassRepository;
 import com.proofchain.couseClass.interfaces.dto.response.CourseClassReturn;
 import com.proofchain.shared.security.SecurityUtils;
@@ -20,7 +20,7 @@ public class ListAllCourseClassHandler {
     private final CourseClassRepository courseClassRepository;
     private final InstitutionRepository institutionRepository;
 
-    public List<CourseClassReturn> listAllInstructor(){
+    public List<CourseClassReturn> listAllcourseClass(){
 
         /*
          * =========================================================
@@ -39,11 +39,11 @@ public class ListAllCourseClassHandler {
          * =========================================================
          */
 
-        List<Instructor> instructor = courseClassRepository.findAllByInstitution_DeletedAtIsNullOrderBy_User_NameAscCourse_NameAsc(institutionId);
-        if(instructor.isEmpty()){
-            throw new InstructorNotFoundException("Não há nenhum instrutor cadastrado.");
+        List<CourseClass> courseClass = courseClassRepository.findAllByInstitution_IdAndInstitution_DeletedAtIsNullOrderByUser_NameAscCourse_NameAsc(institutionId);
+        if(courseClass.isEmpty()){
+            throw new CourseClassNotFoundException("Não há nenhuma turma cadastrada.");
         }
-        return instructor
+        return courseClass
                 .stream()
                 .map(CourseClassReturn::from)
                 .toList();

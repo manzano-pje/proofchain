@@ -1,6 +1,6 @@
 package com.proofchain.couseClass.infraestructure.repository;
 
-import com.proofchain.couseClass.domain.model.Instructor;
+import com.proofchain.couseClass.domain.model.CourseClass;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -29,13 +29,11 @@ import java.util.List;
  */
 
 @Repository
-public interface CourseClassRepository extends JpaRepository<Instructor, Long> {
+public interface CourseClassRepository extends JpaRepository<CourseClass, Long> {
 
-//    boolean existsByUser_IdAndCourse_IdAndInstitution_DeletedAtIsNull(
-//            Long userId,
-//            Long courseId,
-//            Long institutionId);
+    List<CourseClass> findAllByInstitution_IdAndInstitution_DeletedAtIsNullOrderByUser_NameAscCourse_NameAsc(Long idInstitution);
 
-    List<Instructor> findAllByInstitution_DeletedAtIsNullOrderBy_User_NameAscCourse_NameAsc(Long idInstitution);
-
-}
+    boolean existsByIdAndCourse_IdAndInstitution_IdAndInstitution_DeletedAtIsNull(
+            Long userId,
+            Long courseId,
+            Long institutionId);}

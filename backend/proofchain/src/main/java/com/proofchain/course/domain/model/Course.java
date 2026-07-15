@@ -2,7 +2,7 @@ package com.proofchain.course.domain.model;
 
 import com.proofchain.certificate.model.Certificate;
 import com.proofchain.institution.domain.model.Institution;
-import com.proofchain.couseClass.domain.model.Instructor;
+import com.proofchain.couseClass.domain.model.CourseClass;
 import com.proofchain.participant.Participant;
 import com.proofchain.plataform.domain.text.textNormalize;
 import com.proofchain.shared.domain.model.BaseEntity;
@@ -75,7 +75,7 @@ public class Course extends BaseEntity {
     // Instrutor
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "instructor_id")
-    private Instructor instructor;
+    private CourseClass courseClass;
 
     // Certificates
     @OneToMany(mappedBy = "course")

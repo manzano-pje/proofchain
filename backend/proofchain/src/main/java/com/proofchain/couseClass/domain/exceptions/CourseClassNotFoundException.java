@@ -23,9 +23,9 @@ import com.proofchain.shared.exception.BaseException;
  * Utilizada na camada de domínio e aplicação para controle de integridade de consultas
  * no módulo de cursos.
  */
-public class InstructorNotFoundException extends BaseException {
+public class CourseClassNotFoundException extends BaseException {
 
-    public InstructorNotFoundException(String message) {
+    public CourseClassNotFoundException(String message) {
 
         super(message, 404);
     }
