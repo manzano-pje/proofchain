@@ -3,7 +3,7 @@ package com.proofchain.institution.domain.model;
 import com.proofchain.certificate.model.Certificate;
 import com.proofchain.course.domain.model.Course;
 import com.proofchain.institution.interfaces.dtos.request.InstitutionRequest;
-import com.proofchain.couseClass.domain.model.Instructor;
+import com.proofchain.couseClass.domain.model.CourseClass;
 import com.proofchain.participant.Participant;
 import com.proofchain.subscription.Subscriptions;
 import com.proofchain.user.domain.model.User;
@@ -83,12 +83,12 @@ public class Institution {
     @ToString.Exclude
     private List<User> listUsers = new ArrayList<>();
 
-    // Instructor
+    // CourseClass
     @OneToMany(mappedBy = "institution",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
     @ToString.Exclude
-    private List<Instructor> listInstructors = new ArrayList<>();
+    private List<CourseClass> listCourseClasses = new ArrayList<>();
 
     // Participants
     @OneToMany(mappedBy = "institution",

@@ -120,10 +120,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     boolean existsByRole(UserRole userRole);
 
 
-    boolean existsByIdAndCourse_IdAndInstitution_DeletedAtIsNull(
-            Long userId,
-            Long courseId,
-            Long institutionId);
+
 
 }
 

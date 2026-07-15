@@ -18,7 +18,7 @@ import java.time.Instant;
 @Setter
 @ToString
 @Table(name = "tb_instructors")
-public class Instructor  {
+public class CourseClass {
 
     @Id
     private Long id;

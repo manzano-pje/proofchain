@@ -1,5 +1,7 @@
 package com.proofchain.user.domain.model;
 
+import jakarta.persistence.Enumerated;
+
 /**
  * UserRole
  *
@@ -25,6 +27,7 @@ package com.proofchain.user.domain.model;
  * AuthenticationManager e pelas regras de autorização implementadas pelo
  * Spring Security.
  */
+
 public enum UserRole {
 
     /*

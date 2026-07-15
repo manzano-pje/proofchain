@@ -7,8 +7,8 @@ import com.proofchain.institution.domain.exception.InstitutionNotFoundException;
 import com.proofchain.institution.domain.model.Institution;
 import com.proofchain.institution.infrastructure.repository.InstitutionRepository;
 import com.proofchain.couseClass.application.command.RequestCourseClassCommand;
-import com.proofchain.couseClass.domain.exceptions.InstructorIsRegisteredException;
-import com.proofchain.couseClass.domain.model.Instructor;
+import com.proofchain.couseClass.domain.exceptions.CourseClassInstructorIsRegisteredException;
+import com.proofchain.couseClass.domain.model.CourseClass;
 import com.proofchain.couseClass.infraestructure.repository.CourseClassRepository;
 import com.proofchain.shared.security.SecurityUtils;
 import com.proofchain.user.domain.exception.UserNotFoundException;
@@ -56,9 +56,10 @@ public class CreateCourseClassHandler {
 
         // verificar instrutor cadastrado
 
-        boolean instructorExist = userRepository.existsByIdAndCourse_IdAndInstitution_DeletedAtIsNull(command.getIdUser(), command.getIdCourse(), institutionId);
+
+        boolean instructorExist = courseClassRepository.existsByIdAndCourse_IdAndInstitution_IdAndInstitution_DeletedAtIsNull(command.getIdUser(), command.getIdCourse(), institutionId);
         if(instructorExist){
-            throw new InstructorIsRegisteredException("Instrutor já cadastrado para este curso");
+            throw new CourseClassInstructorIsRegisteredException("Instrutor já cadastrado para este curso");
         }
 
         Optional<Course> course = courseRepository.findByIdAndInstitutionId(command.getIdCourse(), institutionId);
@@ -79,14 +80,14 @@ public class CreateCourseClassHandler {
          * =========================================================
          */
 
-        Instructor instructor = new Instructor();
+        CourseClass courseClass = new CourseClass();
 
-        instructor.setUser(user.get());
-        instructor.setCourse(course.get());
-        instructor.setCreateAt(Instant.now());
-        instructor.setUpdateAt(null);
-        instructor.setActive(true);
-        instructor.setInstitution(institution);
+        courseClass.setUser(user.get());
+        courseClass.setCourse(course.get());
+        courseClass.setCreateAt(Instant.now());
+        courseClass.setUpdateAt(null);
+        courseClass.setActive(true);
+        courseClass.setInstitution(institution);
 
         /*
          * =========================================================
@@ -94,7 +95,7 @@ public class CreateCourseClassHandler {
          * =========================================================
          */
 
-        courseClassRepository.save(instructor);
+        courseClassRepository.save(courseClass);
 
     }
 }

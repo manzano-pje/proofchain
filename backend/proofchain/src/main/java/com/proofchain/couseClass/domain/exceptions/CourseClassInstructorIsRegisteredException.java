@@ -22,9 +22,9 @@ import com.proofchain.shared.exception.BaseException;
  * Utilizada na camada de domínio e aplicação para garantir integridade de dados
  * no módulo de cursos.
  */
-public class InstructorIsRegisteredException extends BaseException {
+public class CourseClassInstructorIsRegisteredException extends BaseException {
 
-    public InstructorIsRegisteredException(String message) {
+    public CourseClassInstructorIsRegisteredException(String message) {
         super(message, 409);
     }
 }
