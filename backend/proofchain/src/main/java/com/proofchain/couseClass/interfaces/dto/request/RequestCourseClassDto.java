@@ -1,4 +1,4 @@
-package com.proofchain.instructor.interfaces.dto.request;
+package com.proofchain.couseClass.interfaces.dto.request;
 
 import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RequestInstructorDto{
+public class RequestCourseClassDto {
 
     @Column(nullable = false)
     Long idUser;

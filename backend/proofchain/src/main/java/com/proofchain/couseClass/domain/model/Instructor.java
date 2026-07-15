@@ -1,4 +1,4 @@
-package com.proofchain.instructor.domain.model;
+package com.proofchain.couseClass.domain.model;
 
 import com.proofchain.course.domain.model.Course;
 import com.proofchain.institution.domain.model.Institution;
@@ -9,7 +9,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
-import java.util.Date;
 
 @Entity
 @AllArgsConstructor
