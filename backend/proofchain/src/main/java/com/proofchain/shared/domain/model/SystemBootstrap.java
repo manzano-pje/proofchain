@@ -1,9 +1,8 @@
 package com.proofchain.shared.domain.model;
 
-import com.proofchain.institution.domain.model.Institution;
-import com.proofchain.institution.infrastructure.repository.InstitutionRepository;
+import com.proofchain.admin.institution.domain.model.Institution;
+import com.proofchain.admin.institution.infrastructure.repository.InstitutionRepository;
 import com.proofchain.user.domain.model.User;
-import com.proofchain.user.domain.model.UserRole;
 import com.proofchain.user.infrastructure.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;

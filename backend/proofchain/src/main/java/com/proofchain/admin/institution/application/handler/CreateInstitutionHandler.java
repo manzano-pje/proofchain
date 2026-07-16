@@ -1,0 +1,144 @@
+package com.proofchain.admin.institution.application.handler;
+
+import com.proofchain.admin.subscription.BillingType;
+import com.proofchain.admin.subscription.StatusSubscription;
+import com.proofchain.user.domain.model.UserRole;
+import com.proofchain.admin.institution.domain.exception.InstitutionAlerdyExistException;
+import com.proofchain.admin.institution.domain.model.Institution;
+import com.proofchain.admin.institution.infrastructure.repository.InstitutionRepository;
+import com.proofchain.admin.institution.interfaces.dtos.request.NewInstitutionRequestDto;
+import com.proofchain.admin.plan.domain.exception.PlanNotFoundException;
+import com.proofchain.admin.plan.domain.model.Plans;
+import com.proofchain.admin.plan.infrastructure.repository.PlansRepository;
+import com.proofchain.shared.exception.BusinessException;
+import com.proofchain.admin.subscription.SubscriptionRepository;
+import com.proofchain.admin.subscription.Subscriptions;
+import com.proofchain.user.domain.exception.UserRegisteredException;
+import com.proofchain.user.domain.model.User;
+import com.proofchain.user.infrastructure.repository.UserRepository;
+import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
+
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.Optional;
+
+@Component
+@AllArgsConstructor
+public class CreateInstitutionHandler {
+
+    private final InstitutionRepository institutionRepository;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final SubscriptionRepository subscriptionRepository;
+    private final PlansRepository plansRepository;
+
+    public void createinstitution(NewInstitutionRequestDto newinstitutionRequestDto) {
+        if(newinstitutionRequestDto.getCnpj() == null || (newinstitutionRequestDto.getCnpj().length() != 14)){
+            throw new BusinessException("CNPJ inválido");
+        }
+        if(newinstitutionRequestDto.getName() == null || newinstitutionRequestDto.getName().length() < 5){
+            throw new BusinessException("Nome inválido");
+        }
+        if(newinstitutionRequestDto.getEmail() == null){
+            throw new BusinessException("E-mail inválido");
+        }
+
+        // Validação da instituição
+        Optional<Institution> institutionOptional = institutionRepository.findByCnpj(newinstitutionRequestDto.getCnpj());
+
+        // Valida de instituição está inativa. Se estiver, ativa
+        if(institutionOptional.isPresent() && institutionOptional.get().getDeletedAt() == null) {
+            throw new InstitutionAlerdyExistException();
+        }
+        if(institutionOptional.isPresent() && institutionOptional.get().getDeletedAt() != null) {
+            Institution institution = institutionOptional.get();
+            institution.setDeletedAt(null);
+            institution.setActive(true);
+            institutionRepository.save(institution);
+            return;
+        }
+
+        // Valida se usuário já existe
+       boolean existUser = userRepository.existsByEmail(newinstitutionRequestDto.getEmail());
+
+        if(existUser){
+            throw new UserRegisteredException();
+        }
+
+        ///////// CRIA INSTITUIÇÃO /////////
+        Institution institution = new Institution();
+        institution.setCnpj(newinstitutionRequestDto.getCnpj());
+        institution.setName(newinstitutionRequestDto.getName());
+        institution.setEmail(newinstitutionRequestDto.getEmail());
+        institution.setCreatedAt(Instant.now());
+        institution.setActive(true);
+
+        ///////// CRIA USUÁRIO /////////
+        User user = new User();
+        user.setName(newinstitutionRequestDto.getName());
+        user.setEmail(newinstitutionRequestDto.getEmail());
+        user.setPassword(passwordEncoder.encode(newinstitutionRequestDto.getPassword()));
+        if (newinstitutionRequestDto.getCnpj().equals("43419597000116")){
+            user.setRole((UserRole.SUPER_ADMIN));
+        }
+        user.setRole((UserRole.ADMIN));
+        user.setCreateAt(Instant.now());
+        user.setActive(true);
+        user.setInstitution(institution);
+
+        institution.getListUsers().add(user);
+
+        ///////// CRIA ASSINATURA /////////
+        BillingType billingType ;
+        Instant periodStart ;
+        Instant periodEnd ;
+        Instant nextBilling;
+        Long idPlan = newinstitutionRequestDto.getIdPlan();
+
+        Optional<Plans> plans = plansRepository.findById(idPlan);
+
+        if (plans.isEmpty()) {
+            throw new PlanNotFoundException();
+        }
+        Subscriptions subscription = new Subscriptions();
+
+        switch(Math.toIntExact(idPlan)){
+            case 1:
+                billingType = subscription.getBillingType().MANUAL;
+                periodStart = Instant.now();
+                periodEnd = Instant.now().plus(7, ChronoUnit.DAYS);
+                break;
+            case 2:
+                billingType = subscription.getBillingType().MANUAL;
+                periodStart = Instant.now();
+                periodEnd = Instant.now().plus(15, ChronoUnit.DAYS);
+                break;
+            case 3:
+                billingType = subscription.getBillingType().RECURRING;
+                periodStart = Instant.now();
+                periodEnd = Instant.now().plus(30, ChronoUnit.DAYS);
+                nextBilling =  Instant.now().plus(30, ChronoUnit.DAYS);
+                break;
+            case 4:
+                billingType = subscription.getBillingType().RECURRING;
+                periodStart = Instant.now();
+                periodEnd = Instant.now().plus(30, ChronoUnit.DAYS);
+                nextBilling =  Instant.now().plus(30, ChronoUnit.DAYS);
+                break;
+            default:
+                throw new PlanNotFoundException();
+        }
+
+        subscription.setInstitution(institution);
+        subscription.setPlans(plans.get());
+        subscription.setStatus(StatusSubscription.ACTIVE);
+        subscription.setBillingType(billingType);
+        subscription.setCurrentPeriodStarts(null);
+        subscription.setCurrentPeriodEnd(null);
+
+        institutionRepository.save(institution);
+        subscriptionRepository.save(subscription);
+    }
+}
