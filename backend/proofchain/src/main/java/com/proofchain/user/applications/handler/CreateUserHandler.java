@@ -1,9 +1,9 @@
 package com.proofchain.user.applications.handler;
 
-import com.proofchain.institution.domain.exception.InstitutionNotAutorizedException;
-import com.proofchain.institution.domain.exception.InstitutionNotFoundException;
-import com.proofchain.institution.domain.model.Institution;
-import com.proofchain.institution.infrastructure.repository.InstitutionRepository;
+import com.proofchain.admin.institution.domain.exception.InstitutionNotAutorizedException;
+import com.proofchain.admin.institution.domain.exception.InstitutionNotFoundException;
+import com.proofchain.admin.institution.domain.model.Institution;
+import com.proofchain.admin.institution.infrastructure.repository.InstitutionRepository;
 import com.proofchain.shared.security.SecurityUtils;
 import com.proofchain.user.applications.command.CreateUserCommand;
 import com.proofchain.user.domain.exception.UserRegisteredException;

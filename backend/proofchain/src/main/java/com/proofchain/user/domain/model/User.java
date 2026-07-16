@@ -1,6 +1,6 @@
 package com.proofchain.user.domain.model;
 
-import com.proofchain.institution.domain.model.Institution;
+import com.proofchain.admin.institution.domain.model.Institution;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
