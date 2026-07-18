@@ -1,9 +1,9 @@
 package com.proofchain.admin.featurePlan.aplicattion.handler;
 
 import com.proofchain.admin.featurePlan.aplicattion.command.CreateFeatureCommand;
-import com.proofchain.admin.featurePlan.domain.exception.FeatureIsRegisteredException;
+import com.proofchain.admin.featurePlan.domain.exception.FeatureAlerdyExistException;
 import com.proofchain.admin.featurePlan.domain.model.FeaturePlan;
-import com.proofchain.admin.featurePlan.infrastructure.repository.FeaturePlansRepository;
+import com.proofchain.admin.featurePlan.infrastructure.repository.FeatureRepository;
 import com.proofchain.admin.institution.domain.exception.InstitutionNotFoundException;
 import com.proofchain.admin.institution.infrastructure.repository.InstitutionRepository;
 import com.proofchain.admin.plan.domain.exception.PlanNotFoundException;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class CreateFeatureHandler {
 
-    private FeaturePlansRepository featurePlansRepository;
+    private FeatureRepository featureRepository;
     private PlansRepository plansRepository;
     private InstitutionRepository institutionRepository;
 
@@ -33,9 +33,9 @@ public class CreateFeatureHandler {
             throw new PlanNotFoundException();
         }
 
-        boolean existFeature = featurePlansRepository.existsByFeatureAndIdPlan(command.getFeature(), command.getIdPlan());
+        boolean existFeature = featureRepository.existsByFeatureAndIdPlan(command.getFeature(), command.getIdPlan());
         if(existFeature){
-            throw new FeatureIsRegisteredException();
+            throw new FeatureAlerdyExistException();
         }
 
         FeaturePlan feature = new FeaturePlan();
@@ -43,6 +43,6 @@ public class CreateFeatureHandler {
         feature.setFeature(command.getFeature());
         feature.setQuantity(command.getQuantity());
 
-        featurePlansRepository.save(feature);
+        featureRepository.save(feature);
     }
 }

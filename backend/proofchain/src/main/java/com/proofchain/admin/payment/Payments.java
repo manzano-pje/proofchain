@@ -1,6 +1,6 @@
 package com.proofchain.admin.payment;
 
-import com.proofchain.admin.subscription.Subscriptions;
+import com.proofchain.admin.subscription.domain.model.Subscriptions;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
