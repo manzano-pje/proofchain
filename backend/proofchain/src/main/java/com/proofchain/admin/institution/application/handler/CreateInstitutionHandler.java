@@ -1,18 +1,18 @@
 package com.proofchain.admin.institution.application.handler;
 
-import com.proofchain.admin.subscription.BillingType;
-import com.proofchain.admin.subscription.StatusSubscription;
+import com.proofchain.admin.subscription.domain.enuns.BillingType;
+import com.proofchain.admin.subscription.domain.enuns.StatusSubscription;
 import com.proofchain.user.domain.model.UserRole;
 import com.proofchain.admin.institution.domain.exception.InstitutionAlerdyExistException;
 import com.proofchain.admin.institution.domain.model.Institution;
 import com.proofchain.admin.institution.infrastructure.repository.InstitutionRepository;
-import com.proofchain.admin.institution.interfaces.dtos.request.NewInstitutionRequestDto;
+import com.proofchain.admin.institution.interfaces.dtos.request.CreateInstitutionRequestDto;
 import com.proofchain.admin.plan.domain.exception.PlanNotFoundException;
 import com.proofchain.admin.plan.domain.model.Plans;
 import com.proofchain.admin.plan.infrastructure.repository.PlansRepository;
 import com.proofchain.shared.exception.BusinessException;
-import com.proofchain.admin.subscription.SubscriptionRepository;
-import com.proofchain.admin.subscription.Subscriptions;
+import com.proofchain.admin.subscription.infrastructure.repository.SubscriptionRepository;
+import com.proofchain.admin.subscription.domain.model.Subscriptions;
 import com.proofchain.user.domain.exception.UserRegisteredException;
 import com.proofchain.user.domain.model.User;
 import com.proofchain.user.infrastructure.repository.UserRepository;
@@ -34,7 +34,7 @@ public class CreateInstitutionHandler {
     private final SubscriptionRepository subscriptionRepository;
     private final PlansRepository plansRepository;
 
-    public void createinstitution(NewInstitutionRequestDto newinstitutionRequestDto) {
+    public void createinstitution(CreateInstitutionRequestDto newinstitutionRequestDto) {
         if(newinstitutionRequestDto.getCnpj() == null || (newinstitutionRequestDto.getCnpj().length() != 14)){
             throw new BusinessException("CNPJ inválido");
         }

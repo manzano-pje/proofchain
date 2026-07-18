@@ -1,10 +1,12 @@
 package com.proofchain.admin.institution.interfaces.controller;
 
 import com.proofchain.admin.institution.application.handler.*;
+import com.proofchain.admin.institution.application.query.ListAllInstitutionHandler;
+import com.proofchain.admin.institution.application.query.ListOneInstitutionHandler;
 import com.proofchain.institution.application.handler.*;
-import com.proofchain.admin.institution.interfaces.dtos.request.InstitutionRequest;
-import com.proofchain.admin.institution.interfaces.dtos.request.NewInstitutionRequestDto;
-import com.proofchain.admin.institution.interfaces.dtos.response.InstitutionReturn;
+import com.proofchain.admin.institution.interfaces.dtos.request.UpdateInstitutionRequest;
+import com.proofchain.admin.institution.interfaces.dtos.request.CreateInstitutionRequestDto;
+import com.proofchain.admin.institution.interfaces.dtos.response.InstitutionResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -33,8 +35,8 @@ public class InstitutionController {
     private UpdateInstitutionHandler updateInstitution;
 
     @PostMapping
-    public ResponseEntity<String> createInstitution(@RequestBody NewInstitutionRequestDto newInstitutionRequestDto){
-        createInstitution.createinstitution(newInstitutionRequestDto);
+    public ResponseEntity<String> createInstitution(@RequestBody CreateInstitutionRequestDto createInstitutionRequestDto){
+        createInstitution.createinstitution(createInstitutionRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body("Instituição cadastrada com sucesso.");
     }
@@ -42,22 +44,22 @@ public class InstitutionController {
 //    @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("/update/{cnpj}")
     public ResponseEntity<String> updateInstitution(@Valid @PathVariable String cnpj,
-                                                    @Valid @RequestBody InstitutionRequest institutionRequest){
-        updateInstitution.updateinstitution(cnpj, institutionRequest);
+                                                    @Valid @RequestBody UpdateInstitutionRequest UpdateInstitutionRequest){
+        updateInstitution.updateinstitution(cnpj, UpdateInstitutionRequest);
         return ResponseEntity.status(HttpStatus.OK)
                 .body("Instituição atualizada com sucesso.");
     }
 
 //    @PreAuthorize("hasRole('SUPER_ADMIN')")
     @GetMapping
-    public List<InstitutionReturn> getAllInstitution(){
+    public List<InstitutionResponse> getAllInstitution(){
 
         return listAllInstitution.getAllinstitution();
     }
 
 //    @PreAuthorize("hasRole('SUPER_ADMIN')")
     @GetMapping("/get/{cnpj}")
-    public InstitutionReturn getOneInstitution(@PathVariable String cnpj){
+    public InstitutionResponse getOneInstitution(@PathVariable String cnpj){
         return listOneInstitution.getOneinstitution(cnpj);
     }
 

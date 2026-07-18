@@ -1,7 +1,7 @@
 package com.proofchain.admin.featurePlan.aplicattion.handler;
 
 
-import com.proofchain.admin.featurePlan.infrastructure.repository.FeaturePlansRepository;
+import com.proofchain.admin.featurePlan.infrastructure.repository.FeatureRepository;
 import com.proofchain.admin.institution.domain.exception.InstitutionNotFoundException;
 import com.proofchain.admin.institution.infrastructure.repository.InstitutionRepository;
 import com.proofchain.shared.exception.NotFoundException;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class DeleteFeatureHandler {
 
-    private final FeaturePlansRepository featurePlansRepository;
+    private final FeatureRepository featureRepository;
     private final InstitutionRepository institutionRepository;
 
     public void deleteFeatur(Long idFeature, Long idPlan){
@@ -25,10 +25,10 @@ public class DeleteFeatureHandler {
             throw new InstitutionNotFoundException();
         }
 
-        boolean existFeature = featurePlansRepository.existsByIdFeatureAndIdPlan(idFeature, idPlan);
+        boolean existFeature = featureRepository.existsByIdFeatureAndIdPlan(idFeature, idPlan);
         if(!existFeature){
             throw new NotFoundException("Feature não existe");
         }
-        featurePlansRepository.deleteById(idFeature);
+        featureRepository.deleteById(idFeature);
     }
 }

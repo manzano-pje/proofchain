@@ -2,10 +2,10 @@ package com.proofchain.admin.institution.domain.model;
 
 import com.proofchain.business.model.Certificate;
 import com.proofchain.business.course.domain.model.Course;
-import com.proofchain.admin.institution.interfaces.dtos.request.InstitutionRequest;
+import com.proofchain.admin.institution.interfaces.dtos.request.UpdateInstitutionRequest;
 import com.proofchain.business.couseClass.domain.model.CourseClass;
 import com.proofchain.business.participant.Participant;
-import com.proofchain.admin.subscription.Subscriptions;
+import com.proofchain.admin.subscription.domain.model.Subscriptions;
 import com.proofchain.user.domain.model.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -104,7 +104,7 @@ public class Institution {
 
     // UPDATE
 
-    public void updateFrom(InstitutionRequest request) {
+    public void updateFrom(UpdateInstitutionRequest request) {
         this.name = request.name();
         this.address = request.address();
         this.number = request.number();

@@ -1,8 +1,8 @@
 package com.proofchain.admin.plan.domain.model;
 
 import com.proofchain.admin.featurePlan.domain.model.FeaturePlan;
-import com.proofchain.admin.subscription.BillingType;
-import com.proofchain.admin.subscription.Subscriptions;
+import com.proofchain.admin.subscription.domain.enuns.BillingType;
+import com.proofchain.admin.subscription.domain.model.Subscriptions;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

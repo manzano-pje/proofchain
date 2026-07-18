@@ -1,6 +1,6 @@
 package com.proofchain.admin.subscription.dto.request;
 
-import com.proofchain.admin.subscription.StatusSubscription;
+import com.proofchain.admin.subscription.domain.enuns.StatusSubscription;
 import com.proofchain.admin.institution.domain.model.Institution;
 import com.proofchain.admin.plan.domain.model.Plans;
 import lombok.AllArgsConstructor;
