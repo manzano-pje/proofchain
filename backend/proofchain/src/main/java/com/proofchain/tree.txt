@@ -1,0 +1,352 @@
+Listagem de caminhos de pasta para o volume ssd secundario
+O n£mero de s‚rie do volume ‚ 72F8-9311
+E:.
+³   ProofchainApplication.java
+³   tree
+³   
+ÃÄÄÄadmin
+³   ÃÄÄÄblockchain
+³   ÃÄÄÄdashboard
+³   ÃÄÄÄfeaturePlan
+³   ³   ÃÄÄÄaplicattion
+³   ³   ³   ÃÄÄÄcommand
+³   ³   ³   ³       CreateFeatureCommand.java
+³   ³   ³   ³       DeleteFeatureCommand.java
+³   ³   ³   ³       UpdateFeatureCommand.java
+³   ³   ³   ³       
+³   ³   ³   ÃÄÄÄhandler
+³   ³   ³   ³       CreateFeatureHandler.java
+³   ³   ³   ³       DeleteFeatureHandler.java
+³   ³   ³   ³       UpdateFeatureHandler.java
+³   ³   ³   ³       
+³   ³   ³   ÀÄÄÄquery
+³   ³   ³           GetFeatureQueryHandler.java
+³   ³   ³           ListAllFeatureQueryHandler.java
+³   ³   ³           
+³   ³   ÃÄÄÄdomain
+³   ³   ³   ÃÄÄÄexception
+³   ³   ³   ³       FeatureAlerdyExistException.java
+³   ³   ³   ³       FeatureInativeException.java
+³   ³   ³   ³       FeatureNotFoundException.java
+³   ³   ³   ³       
+³   ³   ³   ÀÄÄÄmodel
+³   ³   ³       ³   FeaturePlan.java
+³   ³   ³       ³   
+³   ³   ³       ÀÄÄÄenuns
+³   ³   ³               FeaturePlansEnum.java
+³   ³   ³               
+³   ³   ÃÄÄÄinfrastructure
+³   ³   ³   ÀÄÄÄrepository
+³   ³   ³           FeatureRepository.java
+³   ³   ³           
+³   ³   ÀÄÄÄinterfaces
+³   ³       ÃÄÄÄcontroller
+³   ³       ³       FeatureController.java
+³   ³       ³       
+³   ³       ÀÄÄÄdto
+³   ³           ÃÄÄÄrequest
+³   ³           ³       CreateFeatureRequest.java
+³   ³           ³       UpdateFeatureRequest.java
+³   ³           ³       
+³   ³           ÀÄÄÄresponse
+³   ³                   FeatureResponse.java
+³   ³                   FeatureSumaryResponse.java
+³   ³                   
+³   ÃÄÄÄinstitution
+³   ³   ÃÄÄÄapplication
+³   ³   ³   ÃÄÄÄcommand
+³   ³   ³   ³       CreateInstitutionCommand.java
+³   ³   ³   ³       DeleteInstitutionCommand.java
+³   ³   ³   ³       UpdateInstitutionCommand.java
+³   ³   ³   ³       
+³   ³   ³   ÃÄÄÄhandler
+³   ³   ³   ³       CreateInstitutionHandler.java
+³   ³   ³   ³       DeleteInstitutionHandler.java
+³   ³   ³   ³       UpdateInstitutionHandler.java
+³   ³   ³   ³       
+³   ³   ³   ÀÄÄÄquery
+³   ³   ³           ListAllInstitutionHandler.java
+³   ³   ³           ListOneInstitutionHandler.java
+³   ³   ³           
+³   ³   ÃÄÄÄdomain
+³   ³   ³   ÃÄÄÄexception
+³   ³   ³   ³       InstitutionAlerdyExistException.java
+³   ³   ³   ³       InstitutionNotAutorizedException.java
+³   ³   ³   ³       InstitutionNotFoundException.java
+³   ³   ³   ³       
+³   ³   ³   ÀÄÄÄmodel
+³   ³   ³           Institution.java
+³   ³   ³           
+³   ³   ÃÄÄÄinfrastructure
+³   ³   ³   ÀÄÄÄrepository
+³   ³   ³           InstitutionRepository.java
+³   ³   ³           
+³   ³   ÀÄÄÄinterfaces
+³   ³       ÃÄÄÄcontroller
+³   ³       ³       InstitutionController.java
+³   ³       ³       
+³   ³       ÀÄÄÄdtos
+³   ³           ÃÄÄÄrequest
+³   ³           ³       CreateInstitutionRequestDto.java
+³   ³           ³       UpdateInstitutionRequest.java
+³   ³           ³       
+³   ³           ÀÄÄÄresponse
+³   ³                   InstitutionResponse.java
+³   ³                   InstitutionSumaryResponse.java
+³   ³                   
+³   ÃÄÄÄpayment
+³   ³       Payments.java
+³   ³       StatusPayment.java
+³   ³       
+³   ÃÄÄÄplan
+³   ³   ÃÄÄÄaplication
+³   ³   ³   ÃÄÄÄcommand
+³   ³   ³   ³       PlansCreateCommand.java
+³   ³   ³   ³       UpdatePlanCommand.java
+³   ³   ³   ³       
+³   ³   ³   ÃÄÄÄhandler
+³   ³   ³   ³       CreatePlansHandler.java
+³   ³   ³   ³       eletePlansHandler.java
+³   ³   ³   ³       UpdatePlansHandler.java
+³   ³   ³   ³       
+³   ³   ³   ÀÄÄÄquery
+³   ³   ³           GetPlanQueryHandler.java
+³   ³   ³           ListPlanQueryHandler.java
+³   ³   ³           
+³   ³   ÃÄÄÄdomain
+³   ³   ³   ÃÄÄÄexception
+³   ³   ³   ³       PlanAlerdyExistException.java
+³   ³   ³   ³       PlanInactiveException.java
+³   ³   ³   ³       PlanNotFoundException.java
+³   ³   ³   ³       
+³   ³   ³   ÀÄÄÄmodel
+³   ³   ³           Plans.java
+³   ³   ³           
+³   ³   ÃÄÄÄinfrastructure
+³   ³   ³   ÀÄÄÄrepository
+³   ³   ³           PlansRepository.java
+³   ³   ³           
+³   ³   ÀÄÄÄinterfaces
+³   ³       ÃÄÄÄcontroller
+³   ³       ³       PlanController.java
+³   ³       ³       
+³   ³       ÀÄÄÄdto
+³   ³           ÃÄÄÄrequest
+³   ³           ³       CreatePlanRequest.java
+³   ³           ³       UpdatePlanRequest.java
+³   ³           ³       
+³   ³           ÀÄÄÄresponse
+³   ³                   PlanResponse.java
+³   ³                   PlanSumaryResponse.java
+³   ³                   
+³   ÀÄÄÄsubscription
+³       ÃÄÄÄapplication
+³       ³   ÃÄÄÄcommand
+³       ³   ³       CancelSubscriptionCommand.java
+³       ³   ³       CreateSubscriptionCommand.java
+³       ³   ³       UpdateSubscriptionCommand.java
+³       ³   ³       
+³       ³   ÃÄÄÄhandler
+³       ³   ³       CancelSubscriptionHandler.java
+³       ³   ³       CreateSubscriptionHandler.java
+³       ³   ³       UpdateSubscriptionHandler.java
+³       ³   ³       
+³       ³   ÀÄÄÄquery
+³       ³           GetSubscriptionQueryHandler.java
+³       ³           ListSubscriptionQueryHandler.java
+³       ³           
+³       ÃÄÄÄdomain
+³       ³   ÃÄÄÄenuns
+³       ³   ³       BillingType.java
+³       ³   ³       StatusSubscription.java
+³       ³   ³       
+³       ³   ÃÄÄÄexceptions
+³       ³   ³       SubscriptInactiveException.java
+³       ³   ³       SubscriptionAlerdyExistException.java
+³       ³   ³       SubscriptionNotFoundException.java
+³       ³   ³       
+³       ³   ÀÄÄÄmodel
+³       ³           Subscriptions.java
+³       ³           
+³       ÃÄÄÄdto
+³       ³   ÀÄÄÄrequest
+³       ³           SubscriptionDto.java
+³       ³           
+³       ÃÄÄÄinfrastructure
+³       ³   ÀÄÄÄrepository
+³       ³           SubscriptionRepository.java
+³       ³           
+³       ÀÄÄÄinterfaces
+³           ÃÄÄÄcontroller
+³           ³       SubscriptionController.java
+³           ³       
+³           ÀÄÄÄdto
+³               ÃÄÄÄrequest
+³               ³       CreateSubscriptionRequest.java
+³               ³       UpdateSubscriptionRequest.java
+³               ³       
+³               ÀÄÄÄresponse
+³                       SubscriptionResponse.java
+³                       SubscriptionSummaryResponse.java
+³                       
+ÃÄÄÄauth
+³       AuthController.java
+³       AuthRequest.java
+³       AuthResponse.java
+³       AuthService.java
+³       
+ÃÄÄÄbusiness
+³   ³   Instructor.java
+³   ³   
+³   ÃÄÄÄcertificate
+³   ÃÄÄÄcourse
+³   ³   ³   course.txt
+³   ³   ³   
+³   ³   ÃÄÄÄapplication
+³   ³   ³   ÃÄÄÄcommand
+³   ³   ³   ³       CreateCourseCommand.java
+³   ³   ³   ³       UpdateCourseCommand.java
+³   ³   ³   ³       
+³   ³   ³   ÀÄÄÄhandler
+³   ³   ³           CreateCourseHandler.java
+³   ³   ³           ListAllCourseHandler.java
+³   ³   ³           ListOneCourseHandler.java
+³   ³   ³           UpdateCourseHandler.java
+³   ³   ³           
+³   ³   ÃÄÄÄdomain
+³   ³   ³   ÃÄÄÄexception
+³   ³   ³   ³       CourseIsRegisteredException.java
+³   ³   ³   ³       CourseNotFoundException.java
+³   ³   ³   ³       
+³   ³   ³   ÀÄÄÄmodel
+³   ³   ³           Course.java
+³   ³   ³           
+³   ³   ÃÄÄÄinfrastructure
+³   ³   ³   ÀÄÄÄrepository
+³   ³   ³           CourseRepository.java
+³   ³   ³           
+³   ³   ÀÄÄÄinterfaces
+³   ³       ÃÄÄÄcontroller
+³   ³       ³       CourseController.java
+³   ³       ³       
+³   ³       ÀÄÄÄdto
+³   ³           ÃÄÄÄrequest
+³   ³           ³       CourseRequestDto.java
+³   ³           ³       
+³   ³           ÀÄÄÄresponse
+³   ³                   CourseResponse.java
+³   ³                   FullCourseResponse.java
+³   ³                   
+³   ÃÄÄÄcouseClass
+³   ³   ÃÄÄÄapplication
+³   ³   ³   ÃÄÄÄcommand
+³   ³   ³   ³       RequestCourseClassCommand.java
+³   ³   ³   ³       
+³   ³   ³   ÀÄÄÄhandler
+³   ³   ³           CreateCourseClassHandler.java
+³   ³   ³           ListAllCourseClassHandler.java
+³   ³   ³           
+³   ³   ÃÄÄÄdomain
+³   ³   ³   ÃÄÄÄexceptions
+³   ³   ³   ³       CourseClassInstructorIsRegisteredException.java
+³   ³   ³   ³       CourseClassNotFoundException.java
+³   ³   ³   ³       
+³   ³   ³   ÀÄÄÄmodel
+³   ³   ³           CourseClass.java
+³   ³   ³           
+³   ³   ÃÄÄÄinfraestructure
+³   ³   ³   ÀÄÄÄrepository
+³   ³   ³           CourseClassRepository.java
+³   ³   ³           
+³   ³   ÀÄÄÄinterfaces
+³   ³       ÃÄÄÄcontroller
+³   ³       ³       CourseClassController.java
+³   ³       ³       
+³   ³       ÀÄÄÄdto
+³   ³           ÃÄÄÄrequest
+³   ³           ³       RequestCourseClassDto.java
+³   ³           ³       
+³   ³           ÀÄÄÄresponse
+³   ³                   CourseClassReturn.java
+³   ³                   
+³   ÃÄÄÄmodel
+³   ³       Certificate.java
+³   ³       CertificateAuthentication.java
+³   ³       
+³   ÀÄÄÄparticipant
+³           Participant.java
+³           
+ÃÄÄÄshared
+³   ÃÄÄÄdomain
+³   ³   ÀÄÄÄmodel
+³   ³           BaseEntity.java
+³   ³           SystemBootstrap.java
+³   ³           
+³   ÃÄÄÄexception
+³   ³       BaseException.java
+³   ³       BusinessException.java
+³   ³       ForbiddenException.java
+³   ³       GlobalExceptionHandler.java
+³   ³       InternalServerException.java
+³   ³       NotFoundException.java
+³   ³       ResourceLimitExceededException.java
+³   ³       ResponseError.java
+³   ³       SubscriptionInactiveException.java
+³   ³       UnauthorizedException.java
+³   ³       ValidationException.java
+³   ³       
+³   ÃÄÄÄmapper
+³   ÃÄÄÄsecurity
+³   ³       JwtAuthenticationEntryPoint.java
+³   ³       JwtAuthenticationFilter.java
+³   ³       JwtService.java
+³   ³       SecurityBeansConfig.java
+³   ³       SecurityConfig.java
+³   ³       SecurityFacade.java
+³   ³       SecurityUtils.java
+³   ³       TenantContext.java
+³   ³       UserDetailsImpl.java
+³   ³       UserDetailsServiceImpl.java
+³   ³       
+³   ÃÄÄÄutil
+³   ³       TestJwtFactory.java
+³   ³       
+³   ÀÄÄÄvalidation
+ÀÄÄÄuser
+    ÃÄÄÄapplications
+    ³   ÃÄÄÄcommand
+    ³   ³       CreateUserCommand.java
+    ³   ³       UpdateUserCommand.java
+    ³   ³       
+    ³   ÀÄÄÄhandler
+    ³           CreateUserHandler.java
+    ³           DeleteUserHandler.java
+    ³           ListAllUserHandler.java
+    ³           ListOneUserHandler.java
+    ³           UpdateUserHandler.java
+    ³           
+    ÃÄÄÄdomain
+    ³   ÃÄÄÄexception
+    ³   ³       UserNotFoundException.java
+    ³   ³       UserRegisteredException.java
+    ³   ³       
+    ³   ÀÄÄÄmodel
+    ³           User.java
+    ³           UserRole.java
+    ³           
+    ÃÄÄÄinfrastructure
+    ³   ÀÄÄÄrepository
+    ³           UserRepository.java
+    ³           
+    ÀÄÄÄinterfaces
+        ÃÄÄÄcontroller
+        ³       UserController.java
+        ³       
+        ÀÄÄÄdto
+            ÃÄÄÄrequest
+            ³       UserRequestDto.java
+            ³       UserUpdateDto.java
+            ³       
+            ÀÄÄÄresponse
+                    UserReturn.java
+                    
