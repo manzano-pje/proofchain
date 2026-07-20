@@ -1,11 +1,12 @@
 package com.proofchain.business.course.application.handler;
 
-import com.proofchain.business.course.domain.exception.CourseNotFoundException;
+import com.proofchain.admin.institution.infrastructure.repository.InstitutionRepository;
 import com.proofchain.business.course.domain.model.Course;
 import com.proofchain.business.course.infrastructure.repository.CourseRepository;
 import com.proofchain.business.course.interfaces.dto.response.CourseResponse;
-import com.proofchain.admin.institution.domain.exception.InstitutionNotFoundException;
-import com.proofchain.admin.institution.infrastructure.repository.InstitutionRepository;
+import com.proofchain.shared.exception.NotFoundException;
+import com.proofchain.shared.exception.messages.CourseMessages;
+import com.proofchain.shared.exception.messages.InstitutionMessages;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -67,7 +68,7 @@ public class ListOneCourseHandler {
                 .existsByIdAndDeletedAtIsNull(institutionId);
 
         if (!existsInstitution) {
-            throw new InstitutionNotFoundException();
+            throw new NotFoundException(InstitutionMessages.INSTITUTION_NOT_FOUND);
         }
 
         /*
@@ -80,7 +81,7 @@ public class ListOneCourseHandler {
                 .findByIdAndInstitutionId(id, institutionId);
 
         if (courseOptional.isEmpty()) {
-            throw new CourseNotFoundException();
+            throw new NotFoundException(CourseMessages.COURSE_NOT_FOUND);
         }
 
         /*

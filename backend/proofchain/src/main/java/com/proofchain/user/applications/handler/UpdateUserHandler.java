@@ -1,8 +1,10 @@
 package com.proofchain.user.applications.handler;
 
-import com.proofchain.admin.institution.domain.exception.InstitutionNotAutorizedException;
-import com.proofchain.admin.institution.domain.exception.InstitutionNotFoundException;
 import com.proofchain.admin.institution.infrastructure.repository.InstitutionRepository;
+import com.proofchain.shared.exception.NotFoundException;
+import com.proofchain.shared.exception.UnauthorizedException;
+import com.proofchain.shared.exception.messages.InstitutionMessages;
+import com.proofchain.shared.exception.messages.UserMessage;
 import com.proofchain.shared.security.SecurityUtils;
 import com.proofchain.user.applications.command.UpdateUserCommand;
 import com.proofchain.user.domain.exception.UserNotFoundException;
@@ -68,8 +70,8 @@ public class UpdateUserHandler {
      * @param command comando contendo os novos dados
      * @return usuário atualizado
      *
-     * @throws InstitutionNotAutorizedException quando não houver instituição autenticada
-     * @throws InstitutionNotFoundException quando a instituição não existir
+     * @throws .InstitutionNotAutorizedException quando não houver instituição autenticada
+     * @throws .InstitutionNotFoundException quando a instituição não existir
      * @throws UserNotFoundException quando o usuário não for encontrado
      */
     public UserReturn updateUser(Long id, UpdateUserCommand command) {
@@ -78,19 +80,19 @@ public class UpdateUserHandler {
         Long institutionId = SecurityUtils.getInstitutionId();
 
         if (institutionId == null) {
-            throw new InstitutionNotAutorizedException();
+            throw new UnauthorizedException(InstitutionMessages.INSTITUTION_NOT_AUTORIZED);
         }
 
         boolean existInstitution = institutionRepository
                 .existsByIdAndDeletedAtIsNull(institutionId);
 
         if (!existInstitution) {
-            throw new InstitutionNotFoundException();
+            throw new NotFoundException(InstitutionMessages.INSTITUTION_NOT_FOUND);
         }
 
         User user = userRepository
                 .findByIdAndInstitution_Id(id, institutionId)
-                .orElseThrow(UserNotFoundException::new);
+                .orElseThrow(()-> new NotFoundException(UserMessage.USER_NOT_FOUND));
 
         user.setName(command.getName());
         user.setRole(command.getRole());

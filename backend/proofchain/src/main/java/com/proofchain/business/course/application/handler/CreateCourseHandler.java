@@ -1,12 +1,14 @@
 package com.proofchain.business.course.application.handler;
 
-import com.proofchain.business.course.application.command.CreateCourseCommand;
-import com.proofchain.business.course.domain.exception.CourseIsRegisteredException;
-import com.proofchain.business.course.domain.model.Course;
-import com.proofchain.business.course.infrastructure.repository.CourseRepository;
-import com.proofchain.admin.institution.domain.exception.InstitutionNotFoundException;
 import com.proofchain.admin.institution.domain.model.Institution;
 import com.proofchain.admin.institution.infrastructure.repository.InstitutionRepository;
+import com.proofchain.business.course.application.command.CreateCourseCommand;
+import com.proofchain.business.course.domain.model.Course;
+import com.proofchain.business.course.infrastructure.repository.CourseRepository;
+import com.proofchain.shared.exception.AlreadyExistsException;
+import com.proofchain.shared.exception.NotFoundException;
+import com.proofchain.shared.exception.messages.CourseMessages;
+import com.proofchain.shared.exception.messages.InstitutionMessages;
 import com.proofchain.shared.security.SecurityUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -64,7 +66,7 @@ public class CreateCourseHandler {
 
         Institution institution = institutionRepository
                 .findByIdAndDeletedAtIsNull(institutionId)
-                .orElseThrow(InstitutionNotFoundException::new);
+                .orElseThrow(() -> new NotFoundException(InstitutionMessages.INSTITUTION_NOT_FOUND));
 
         /*
          * =========================================================
@@ -78,7 +80,7 @@ public class CreateCourseHandler {
         );
 
         if (exists) {
-            throw new CourseIsRegisteredException();
+            throw new AlreadyExistsException(CourseMessages.COURSE_ALREADY_EXISTS);
         }
 
         /*

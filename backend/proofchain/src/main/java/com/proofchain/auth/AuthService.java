@@ -3,6 +3,7 @@ package com.proofchain.auth;
 import com.proofchain.shared.exception.ForbiddenException;
 import com.proofchain.shared.exception.NotFoundException;
 import com.proofchain.shared.exception.UnauthorizedException;
+import com.proofchain.shared.exception.messages.AuthMessages;
 import com.proofchain.shared.security.JwtService;
 import com.proofchain.shared.security.UserDetailsImpl;
 import org.springframework.security.authentication.*;
@@ -57,18 +58,21 @@ public class AuthService {
             UserDetailsImpl user = (UserDetailsImpl) authentication.getPrincipal();
             String token = jwtService.generateToken(user);
             return new AuthResponse(token);
-        }catch (InternalAuthenticationServiceException e){
-            throw new UnauthorizedException("Usuário ou senha inválidos."); // status 404
-        }catch (BadCredentialsException e){
-            throw new UnauthorizedException("Usuário ou senha inválidos."); // status 401
+        }catch (BadCredentialsException | InternalAuthenticationServiceException e){
+            throw new UnauthorizedException(AuthMessages.INVALID_CREDENTIALS); // status 401
+
         }catch (AccountExpiredException e) {
-            throw new AccountExpiredException("Sua conta está expirada."); // status 403
+            throw new AccountExpiredException(AuthMessages.ACCOUNT_EXPIRED); // status 403
+
         }catch (LockedException e) {
-            throw new ForbiddenException("Sua conta está bloqueada."); // status 403
+            throw new ForbiddenException(AuthMessages.ACCESS_DENIED); // status 403
+
         }catch (DisabledException e) {
-            throw new ForbiddenException("Acesso negado."); // status 403
+            throw new ForbiddenException(AuthMessages.ACCOUNT_DISABLED); // status 403
+
         }catch (CredentialsExpiredException e) {
-            throw new CredentialsExpiredException("Suas conta expiradas."); // status 403
+            throw new CredentialsExpiredException(AuthMessages.CREDENTIALS_EXPIRED); // status 403
         }
     }
 }
+

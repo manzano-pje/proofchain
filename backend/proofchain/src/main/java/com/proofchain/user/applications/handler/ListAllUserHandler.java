@@ -1,8 +1,10 @@
 package com.proofchain.user.applications.handler;
 
-import com.proofchain.admin.institution.domain.exception.InstitutionNotAutorizedException;
-import com.proofchain.admin.institution.domain.exception.InstitutionNotFoundException;
 import com.proofchain.admin.institution.infrastructure.repository.InstitutionRepository;
+import com.proofchain.shared.exception.NotFoundException;
+import com.proofchain.shared.exception.UnauthorizedException;
+import com.proofchain.shared.exception.messages.InstitutionMessages;
+import com.proofchain.shared.exception.messages.UserMessage;
 import com.proofchain.shared.security.SecurityUtils;
 import com.proofchain.user.domain.exception.UserNotFoundException;
 import com.proofchain.user.domain.model.User;
@@ -67,8 +69,8 @@ public class ListAllUserHandler {
      *
      * @return lista de usuários da instituição autenticada
      *
-     * @throws InstitutionNotAutorizedException quando não houver instituição autenticada
-     * @throws InstitutionNotFoundException quando a instituição não existir
+     * @throws .InstitutionNotAutorizedException quando não houver instituição autenticada
+     * @throws .InstitutionNotFoundException quando a instituição não existir
      * @throws UserNotFoundException quando não existirem usuários cadastrados
      */
     public List<UserReturn> listAllUser() {
@@ -76,45 +78,22 @@ public class ListAllUserHandler {
         // 🔑 Instituição vem do TOKEN, não do request
         Long institutionId = SecurityUtils.getInstitutionId();
 
-        System.out.println("InstitutionId recebido: " + institutionId);
-
-        System.out.println(
-                "Existe por ID: " +
-                        institutionRepository.existsById(institutionId)
-        );
-
-        System.out.println(
-                "Existe ativa: " +
-                        institutionRepository.existsByIdAndDeletedAtIsNull(institutionId)
-        );
-
-
-
-
-
-
-
-
-
-
-
-
         if (institutionId == null) {
-            throw new InstitutionNotAutorizedException();
+            throw new UnauthorizedException(InstitutionMessages.INSTITUTION_NOT_AUTORIZED);
         }
 
         boolean existInstitution = institutionRepository
                 .existsByIdAndDeletedAtIsNull(institutionId);
 
         if (!existInstitution) {
-            throw new InstitutionNotFoundException();
+            throw new NotFoundException(InstitutionMessages.INSTITUTION_NOT_FOUND);
         }
 
         List<User> users = userRepository
                 .findAllByInstitution_IdAndInstitution_DeletedAtIsNull(institutionId);
 
         if (users.isEmpty()) {
-            throw new UserNotFoundException();
+            throw new NotFoundException(UserMessage.USER_NOT_FOUND);
         }
 
         return users.stream()

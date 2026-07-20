@@ -1,7 +1,8 @@
 package com.proofchain.user.applications.handler;
 
-import com.proofchain.admin.institution.domain.exception.InstitutionNotFoundException;
 import com.proofchain.admin.institution.infrastructure.repository.InstitutionRepository;
+import com.proofchain.shared.exception.NotFoundException;
+import com.proofchain.shared.exception.messages.InstitutionMessages;
 import com.proofchain.shared.security.SecurityUtils;
 import com.proofchain.user.domain.exception.UserNotFoundException;
 import com.proofchain.user.domain.model.User;
@@ -61,7 +62,7 @@ public class DeleteUserHandler {
      *
      * @param id identificador do usuário a ser removido
      *
-     * @throws InstitutionNotFoundException quando a instituição não existir
+     * @throws .InstitutionNotFoundException quando a instituição não existir
      * @throws UserNotFoundException quando o usuário não existir na instituição
      */
     public void deleteUser(Long id) {
@@ -74,7 +75,7 @@ public class DeleteUserHandler {
                 .existsByIdAndDeletedAtIsNull(institutionId);
 
         if (!existInstitution) {
-            throw new InstitutionNotFoundException();
+            throw new NotFoundException(InstitutionMessages.INSTITUTION_NOT_FOUND);
         }
 
         User user = userRepository

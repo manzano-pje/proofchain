@@ -8,7 +8,12 @@ import com.proofchain.admin.institution.domain.exception.InstitutionNotFoundExce
 import com.proofchain.admin.institution.infrastructure.repository.InstitutionRepository;
 import com.proofchain.admin.plan.domain.exception.PlanNotFoundException;
 import com.proofchain.admin.plan.infrastructure.repository.PlansRepository;
-//import com.proofchain.security.SecurityUtils;
+import com.proofchain.shared.exception.AlreadyExistsException;
+import com.proofchain.shared.exception.NotFoundException;
+import com.proofchain.shared.exception.messages.FeaturePlanMessages;
+import com.proofchain.shared.exception.messages.InstitutionMessages;
+import com.proofchain.shared.exception.messages.PlanMessages;
+import com.proofchain.shared.security.SecurityUtils;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -19,23 +24,22 @@ public class CreateFeatureHandler {
     private InstitutionRepository institutionRepository;
 
     public void handler(CreateFeatureCommand command){
-//        Long institutionId = SecurityUtils.getInstitutionId();
-//        assert institutionId != null;
+        Long institutionId = SecurityUtils.getInstitutionId();
+        assert institutionId != null;
 
-        Long institutionId = 1L;
         boolean existInstitution = institutionRepository.existsByIdAndDeletedAtIsNull(institutionId);
         if(!existInstitution){
-            throw new InstitutionNotFoundException();
+            throw new NotFoundException(InstitutionMessages.INSTITUTION_NOT_FOUND);
         }
 
         boolean existPlan = plansRepository.existsById(command.getIdPlan());
         if(!existPlan){
-            throw new PlanNotFoundException();
+            throw new NotFoundException(PlanMessages.PLAN_NOT_FOUND);
         }
 
         boolean existFeature = featureRepository.existsByFeatureAndIdPlan(command.getFeature(), command.getIdPlan());
         if(existFeature){
-            throw new FeatureAlerdyExistException();
+            throw new AlreadyExistsException(FeaturePlanMessages.FEATURE_ALREADY_EXISTS);
         }
 
         FeaturePlan feature = new FeaturePlan();
