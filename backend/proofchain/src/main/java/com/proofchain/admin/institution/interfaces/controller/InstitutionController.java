@@ -3,7 +3,7 @@ package com.proofchain.admin.institution.interfaces.controller;
 import com.proofchain.admin.institution.application.handler.*;
 import com.proofchain.admin.institution.application.query.ListAllInstitutionHandler;
 import com.proofchain.admin.institution.application.query.ListOneInstitutionHandler;
-import com.proofchain.institution.application.handler.*;
+import com.proofchain.admin.institution.application.handler.*;
 import com.proofchain.admin.institution.interfaces.dtos.request.UpdateInstitutionRequest;
 import com.proofchain.admin.institution.interfaces.dtos.request.CreateInstitutionRequestDto;
 import com.proofchain.admin.institution.interfaces.dtos.response.InstitutionResponse;

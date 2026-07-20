@@ -5,7 +5,6 @@ import com.proofchain.admin.payment.Payments;
 import com.proofchain.admin.plan.domain.model.Plans;
 import com.proofchain.admin.subscription.domain.enuns.BillingType;
 import com.proofchain.admin.subscription.domain.enuns.StatusSubscription;
-import com.proofchain.admin.usageCounter.UsageCounters;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -69,6 +68,4 @@ public class Subscriptions {
     @JoinColumn(name = "payment_id")
     private Payments payments;
 
-    @OneToOne
-    private UsageCounters usageCounters;
 }

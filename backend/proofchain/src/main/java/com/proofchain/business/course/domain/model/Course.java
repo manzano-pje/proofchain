@@ -4,7 +4,7 @@ import com.proofchain.business.model.Certificate;
 import com.proofchain.admin.institution.domain.model.Institution;
 import com.proofchain.business.couseClass.domain.model.CourseClass;
 import com.proofchain.business.participant.Participant;
-import com.proofchain.config.textNormalize;
+import com.proofchain.shared.util.textNormalize;
 import com.proofchain.shared.domain.model.BaseEntity;
 import com.proofchain.shared.exception.ValidationException;
 import jakarta.persistence.*;
