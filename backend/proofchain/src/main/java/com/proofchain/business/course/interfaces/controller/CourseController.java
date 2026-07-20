@@ -6,7 +6,6 @@ import com.proofchain.business.course.application.handler.CreateCourseHandler;
 import com.proofchain.business.course.application.handler.ListAllCourseHandler;
 import com.proofchain.business.course.application.handler.ListOneCourseHandler;
 import com.proofchain.business.course.application.handler.UpdateCourseHandler;
-import com.proofchain.course.application.handler.*;
 import com.proofchain.business.course.domain.model.Course;
 import com.proofchain.business.course.interfaces.dto.request.CourseRequestDto;
 import com.proofchain.business.course.interfaces.dto.response.CourseResponse;
