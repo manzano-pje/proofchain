@@ -1,4 +1,4 @@
-package com.proofchain.business;
+package com.proofchain.business.instructor;
 
 import com.proofchain.user.domain.model.User;
 import jakarta.persistence.*;

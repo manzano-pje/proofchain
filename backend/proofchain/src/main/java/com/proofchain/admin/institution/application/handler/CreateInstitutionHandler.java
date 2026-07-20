@@ -1,20 +1,21 @@
 package com.proofchain.admin.institution.application.handler;
 
-import com.proofchain.admin.subscription.domain.enuns.BillingType;
-import com.proofchain.admin.subscription.domain.enuns.StatusSubscription;
-import com.proofchain.user.domain.model.UserRole;
-import com.proofchain.admin.institution.domain.exception.InstitutionAlerdyExistException;
 import com.proofchain.admin.institution.domain.model.Institution;
 import com.proofchain.admin.institution.infrastructure.repository.InstitutionRepository;
 import com.proofchain.admin.institution.interfaces.dtos.request.CreateInstitutionRequestDto;
 import com.proofchain.admin.plan.domain.exception.PlanNotFoundException;
 import com.proofchain.admin.plan.domain.model.Plans;
 import com.proofchain.admin.plan.infrastructure.repository.PlansRepository;
-import com.proofchain.shared.exception.BusinessException;
-import com.proofchain.admin.subscription.infrastructure.repository.SubscriptionRepository;
+import com.proofchain.admin.subscription.domain.enuns.BillingType;
+import com.proofchain.admin.subscription.domain.enuns.StatusSubscription;
 import com.proofchain.admin.subscription.domain.model.Subscriptions;
+import com.proofchain.admin.subscription.infrastructure.repository.SubscriptionRepository;
+import com.proofchain.shared.exception.AlreadyExistsException;
+import com.proofchain.shared.exception.BusinessException;
+import com.proofchain.shared.exception.messages.InstitutionMessages;
 import com.proofchain.user.domain.exception.UserRegisteredException;
 import com.proofchain.user.domain.model.User;
+import com.proofchain.user.domain.model.UserRole;
 import com.proofchain.user.infrastructure.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -50,7 +51,7 @@ public class CreateInstitutionHandler {
 
         // Valida de instituição está inativa. Se estiver, ativa
         if(institutionOptional.isPresent() && institutionOptional.get().getDeletedAt() == null) {
-            throw new InstitutionAlerdyExistException();
+            throw new AlreadyExistsException(InstitutionMessages.INSTITUTION_ALREADY_EXISTS);
         }
         if(institutionOptional.isPresent() && institutionOptional.get().getDeletedAt() != null) {
             Institution institution = institutionOptional.get();

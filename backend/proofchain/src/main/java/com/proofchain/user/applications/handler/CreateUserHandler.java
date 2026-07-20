@@ -1,9 +1,13 @@
 package com.proofchain.user.applications.handler;
 
-import com.proofchain.admin.institution.domain.exception.InstitutionNotAutorizedException;
-import com.proofchain.admin.institution.domain.exception.InstitutionNotFoundException;
 import com.proofchain.admin.institution.domain.model.Institution;
 import com.proofchain.admin.institution.infrastructure.repository.InstitutionRepository;
+import com.proofchain.shared.exception.AlreadyExistsException;
+import com.proofchain.shared.exception.NotFoundException;
+import com.proofchain.shared.exception.UnauthorizedException;
+import com.proofchain.shared.exception.messages.InstitutionMessages;
+import com.proofchain.shared.exception.messages.InstructorMessages;
+import com.proofchain.shared.exception.messages.UserMessage;
 import com.proofchain.shared.security.SecurityUtils;
 import com.proofchain.user.applications.command.CreateUserCommand;
 import com.proofchain.user.domain.exception.UserRegisteredException;
@@ -69,8 +73,8 @@ public class CreateUserHandler {
      *
      * @param command comando contendo os dados necessários para criação do usuário
      *
-     * @throws InstitutionNotAutorizedException quando não existir instituição autenticada
-     * @throws InstitutionNotFoundException quando a instituição não existir
+     * @throws .InstitutionNotAutorizedException quando não existir instituição autenticada
+     * @throws .InstitutionNotFoundException quando a instituição não existir
      * @throws UserRegisteredException quando já existir usuário com o mesmo nome na instituição
      */
     public void createUser(CreateUserCommand command) {
@@ -79,12 +83,12 @@ public class CreateUserHandler {
         Long institutionId = SecurityUtils.getInstitutionId();
 
         if (institutionId == null) {
-            throw new InstitutionNotAutorizedException();
+            throw new UnauthorizedException(InstitutionMessages.INSTITUTION_NOT_AUTORIZED);
         }
 
         Institution institution = institutionRepository
                 .findByIdAndDeletedAtIsNull(institutionId)
-                .orElseThrow(InstitutionNotFoundException::new);
+                .orElseThrow(()-> new NotFoundException(InstructorMessages.INSTRUCTOR_NOT_FOUND));
 
         boolean existUser = userRepository.existsByEmailAndInstitutionId(
                 command.getEmail(),
@@ -92,7 +96,7 @@ public class CreateUserHandler {
         );
 
         if (existUser) {
-            throw new UserRegisteredException();
+            throw new AlreadyExistsException(UserMessage.USER_ALREADY_EXISTS);
         }
 
         User user = User.create(

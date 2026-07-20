@@ -5,6 +5,9 @@ import com.proofchain.admin.featurePlan.infrastructure.repository.FeatureReposit
 import com.proofchain.admin.institution.domain.exception.InstitutionNotFoundException;
 import com.proofchain.admin.institution.infrastructure.repository.InstitutionRepository;
 import com.proofchain.shared.exception.NotFoundException;
+import com.proofchain.shared.exception.messages.FeaturePlanMessages;
+import com.proofchain.shared.exception.messages.InstitutionMessages;
+import com.proofchain.shared.security.SecurityUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,18 +19,17 @@ public class DeleteFeatureHandler {
     private final InstitutionRepository institutionRepository;
 
     public void deleteFeatur(Long idFeature, Long idPlan){
-//        Long institutionId = SecurityUtils.getInstitutionId();
-//        assert institutionId != null;
-        Long institutionId = 1L;
+        Long institutionId = SecurityUtils.getInstitutionId();
+        assert institutionId != null;
 
         boolean existIntitution = institutionRepository.existsByIdAndDeletedAtIsNull(institutionId);
         if(!existIntitution){
-            throw new InstitutionNotFoundException();
+            throw new NotFoundException(InstitutionMessages.INSTITUTION_NOT_AUTORIZED);
         }
 
         boolean existFeature = featureRepository.existsByIdFeatureAndIdPlan(idFeature, idPlan);
         if(!existFeature){
-            throw new NotFoundException("Feature não existe");
+            throw new NotFoundException(FeaturePlanMessages.FEATURE_NOT_FOUND);
         }
         featureRepository.deleteById(idFeature);
     }

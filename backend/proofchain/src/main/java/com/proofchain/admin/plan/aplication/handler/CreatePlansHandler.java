@@ -6,7 +6,11 @@ import com.proofchain.admin.plan.aplication.command.PlansCreateCommand;
 import com.proofchain.admin.plan.domain.exception.PlanAlerdyExistException;
 import com.proofchain.admin.plan.domain.model.Plans;
 import com.proofchain.admin.plan.infrastructure.repository.PlansRepository;
+import com.proofchain.shared.exception.AlreadyExistsException;
 import com.proofchain.shared.exception.InternalServerException;
+import com.proofchain.shared.exception.NotFoundException;
+import com.proofchain.shared.exception.messages.InstitutionMessages;
+import com.proofchain.shared.exception.messages.PlanMessages;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -31,12 +35,12 @@ public class CreatePlansHandler {
         }
         boolean exist = institutionRepository.existsById(institutionId);
         if (!exist) {
-            throw new InstitutionNotFoundException();
+            throw new NotFoundException(InstitutionMessages.INSTITUTION_NOT_FOUND);
         }
 
         Optional<Plans> plansOptional = plansRepository.findByName(command.getName());
         if (plansOptional.isPresent()) {
-            throw new PlanAlerdyExistException();
+            throw new AlreadyExistsException(PlanMessages.PLAN_ALERDY_EXISTS);
         }
         Plans plans = new Plans();
         plans.setName(command.getName());

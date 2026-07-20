@@ -1,17 +1,19 @@
 package com.proofchain.business.couseClass.application.handler;
 
-import com.proofchain.business.course.domain.exception.CourseNotFoundException;
-import com.proofchain.business.course.domain.model.Course;
-import com.proofchain.business.course.infrastructure.repository.CourseRepository;
-import com.proofchain.admin.institution.domain.exception.InstitutionNotFoundException;
 import com.proofchain.admin.institution.domain.model.Institution;
 import com.proofchain.admin.institution.infrastructure.repository.InstitutionRepository;
+import com.proofchain.business.course.domain.model.Course;
+import com.proofchain.business.course.infrastructure.repository.CourseRepository;
 import com.proofchain.business.couseClass.application.command.RequestCourseClassCommand;
-import com.proofchain.business.couseClass.domain.exceptions.CourseClassInstructorIsRegisteredException;
 import com.proofchain.business.couseClass.domain.model.CourseClass;
 import com.proofchain.business.couseClass.infraestructure.repository.CourseClassRepository;
+import com.proofchain.shared.exception.AlreadyExistsException;
+import com.proofchain.shared.exception.NotFoundException;
+import com.proofchain.shared.exception.messages.CourseMessages;
+import com.proofchain.shared.exception.messages.InstitutionMessages;
+import com.proofchain.shared.exception.messages.InstructorMessages;
+import com.proofchain.shared.exception.messages.UserMessage;
 import com.proofchain.shared.security.SecurityUtils;
-import com.proofchain.user.domain.exception.UserNotFoundException;
 import com.proofchain.user.domain.model.User;
 import com.proofchain.user.infrastructure.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -46,7 +48,7 @@ public class CreateCourseClassHandler {
         Long institutionId = SecurityUtils.getInstitutionId();
         Institution institution = institutionRepository
                 .findByIdAndDeletedAtIsNull(institutionId)
-                .orElseThrow(InstitutionNotFoundException::new);
+                .orElseThrow(() -> new NotFoundException(InstitutionMessages.INSTITUTION_NOT_FOUND));
 
         /*
          * =========================================================
@@ -59,19 +61,17 @@ public class CreateCourseClassHandler {
 
         boolean instructorExist = courseClassRepository.existsByIdAndCourse_IdAndInstitution_IdAndInstitution_DeletedAtIsNull(command.getIdUser(), command.getIdCourse(), institutionId);
         if(instructorExist){
-            throw new CourseClassInstructorIsRegisteredException("Instrutor já cadastrado para este curso");
+            throw new AlreadyExistsException(InstructorMessages.INSTRUCTOR_ALREAY_EXISTS);
         }
 
         Optional<Course> course = courseRepository.findByIdAndInstitutionId(command.getIdCourse(), institutionId);
         if(course.isEmpty()){
-//            throw new CourseNotFoundException("Curso não existe.");
-            throw new CourseNotFoundException();
+            throw new NotFoundException(CourseMessages.COURSE_NOT_FOUND);
         }
 
         Optional<User> user = userRepository.findByIdAndInstitution_Id(command.getIdUser(), institutionId);
         if(user.isEmpty()){
-//            throw new UserNotFoundException("Usuário não existe.");
-            throw new UserNotFoundException();
+            throw new NotFoundException(UserMessage.USER_NOT_FOUND);
         }
 
         /*
