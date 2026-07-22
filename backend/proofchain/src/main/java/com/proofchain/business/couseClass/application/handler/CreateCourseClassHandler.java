@@ -14,6 +14,7 @@ import com.proofchain.shared.exception.messages.InstitutionMessages;
 import com.proofchain.shared.exception.messages.InstructorMessages;
 import com.proofchain.shared.exception.messages.UserMessage;
 import com.proofchain.shared.security.SecurityUtils;
+import com.proofchain.shared.util.TenatValidation;
 import com.proofchain.user.domain.model.User;
 import com.proofchain.user.infrastructure.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -36,6 +37,7 @@ public class CreateCourseClassHandler {
     private final InstitutionRepository institutionRepository;
     private final CourseRepository courseRepository;
     private final UserRepository userRepository;
+    private final TenatValidation tenatValidation;
 
     public void create(RequestCourseClassCommand command){
 
@@ -46,29 +48,41 @@ public class CreateCourseClassHandler {
          */
 
         Long institutionId = SecurityUtils.getInstitutionId();
-        Institution institution = institutionRepository
-                .findByIdAndDeletedAtIsNull(institutionId)
-                .orElseThrow(() -> new NotFoundException(InstitutionMessages.INSTITUTION_NOT_FOUND));
+        tenatValidation.validateInstitution(institutionId);
 
         /*
          * =========================================================
-         * VALIDAÇÃO DE REGRA DE NEGÓCIO
+         * BUSCA DE INSTITUIÇÃO
          * =========================================================
          */
+        Optional<Institution> institution = institutionRepository.findByIdAndDeletedAtIsNull(institutionId);
 
-        // verificar instrutor cadastrado
-
-
+        /*
+         * TODO CORRIGIR VALIDAÇÃO INSTRUTOR PARA ENTIDADE INSTRUTOR
+         * =========================================================
+         * VALIDAÇÃO DE INSTRUTOR
+         * =========================================================
+         */
         boolean instructorExist = courseClassRepository.existsByIdAndCourse_IdAndInstitution_IdAndInstitution_DeletedAtIsNull(command.getIdUser(), command.getIdCourse(), institutionId);
         if(instructorExist){
             throw new AlreadyExistsException(InstructorMessages.INSTRUCTOR_ALREAY_EXISTS);
         }
 
+        /*
+         * =========================================================
+         * BUSCA DE CURSO
+         * =========================================================
+         */
         Optional<Course> course = courseRepository.findByIdAndInstitutionId(command.getIdCourse(), institutionId);
         if(course.isEmpty()){
             throw new NotFoundException(CourseMessages.COURSE_NOT_FOUND);
         }
 
+        /*
+         * =========================================================
+         * BUSCA DE USUÁRIO
+         * =========================================================
+         */
         Optional<User> user = userRepository.findByIdAndInstitution_Id(command.getIdUser(), institutionId);
         if(user.isEmpty()){
             throw new NotFoundException(UserMessage.USER_NOT_FOUND);
@@ -87,7 +101,7 @@ public class CreateCourseClassHandler {
         courseClass.setCreateAt(Instant.now());
         courseClass.setUpdateAt(null);
         courseClass.setActive(true);
-        courseClass.setInstitution(institution);
+        courseClass.setInstitution(institution.get());
 
         /*
          * =========================================================
