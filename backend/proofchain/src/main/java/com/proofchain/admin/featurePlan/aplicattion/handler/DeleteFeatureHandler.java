@@ -23,7 +23,7 @@ public class DeleteFeatureHandler {
 
         boolean existIntitution = institutionRepository.existsByIdAndDeletedAtIsNull(institutionId);
         if(!existIntitution){
-            throw new NotFoundException(InstitutionMessages.INSTITUTION_NOT_AUTORIZED);
+            throw new NotFoundException(InstitutionMessages.INSTITUTION_NOT_FOUND);
         }
 
         boolean existFeature = featureRepository.existsByIdFeatureAndIdPlan(idFeature, idPlan);

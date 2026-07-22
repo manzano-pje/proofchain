@@ -1,12 +1,12 @@
 package com.proofchain.business.course.domain.model;
 
-import com.proofchain.business.model.Certificate;
 import com.proofchain.admin.institution.domain.model.Institution;
 import com.proofchain.business.couseClass.domain.model.CourseClass;
+import com.proofchain.business.model.Certificate;
 import com.proofchain.business.participant.Participant;
-import com.proofchain.shared.util.textNormalize;
 import com.proofchain.shared.domain.model.BaseEntity;
-import com.proofchain.shared.exception.ValidationException;
+import com.proofchain.shared.exception.BusinessException;
+import com.proofchain.shared.util.textNormalize;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -136,22 +136,22 @@ public class Course extends BaseEntity {
     private static void validateCoreFields(String name, String description, int hours) {
 
         if (name == null || name.isBlank()) {
-            throw new ValidationException("Nome do curso é obrigatório");
+            throw new BusinessException("Nome do curso é obrigatório");
         }
 
         if (description == null || description.isBlank()) {
-            throw new ValidationException("Descrição do curso é obrigatória");
+            throw new BusinessException("Descrição do curso é obrigatória");
         }
 
         if (hours <= 0) {
-            throw new ValidationException("Horas devem ser maior que zero");
+            throw new BusinessException("Horas devem ser maior que zero");
         }
     }
 
     private static void validateInstitution(Institution institution) {
 
         if (institution == null) {
-            throw new ValidationException("Instituição obrigatória");
+            throw new BusinessException("Instituição obrigatória");
         }
     }
 }

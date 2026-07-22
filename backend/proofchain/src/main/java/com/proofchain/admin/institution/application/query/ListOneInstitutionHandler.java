@@ -22,6 +22,7 @@ public class ListOneInstitutionHandler {
         Long institutionId = SecurityUtils.getInstitutionId();
         assert institutionId != null;
 
+
         Optional<Institution> institutionOptional = institutionRepository.findByCnpjAndDeletedAtIsNull(cnpj);
         if(institutionOptional.isEmpty()){
             throw new NotFoundException(InstitutionMessages.INSTITUTION_NOT_FOUND);

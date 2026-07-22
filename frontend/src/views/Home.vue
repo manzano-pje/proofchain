@@ -263,7 +263,7 @@
 
 <script setup lang="ts">
 import { reactive } from 'vue'
-import ResponseModal from '@/components/ResponseModal.vue'
+import ResponseModal from '@/components/Responsive/ResponseModal.vue'
 import { ref } from 'vue'
 
 const modalTitle = ref('')
