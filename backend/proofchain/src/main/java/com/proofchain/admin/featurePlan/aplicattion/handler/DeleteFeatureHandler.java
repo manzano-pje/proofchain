@@ -7,6 +7,7 @@ import com.proofchain.shared.exception.NotFoundException;
 import com.proofchain.shared.exception.messages.FeaturePlanMessages;
 import com.proofchain.shared.exception.messages.InstitutionMessages;
 import com.proofchain.shared.security.SecurityUtils;
+import com.proofchain.shared.util.TenatValidation;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,15 +17,18 @@ public class DeleteFeatureHandler {
 
     private final FeatureRepository featureRepository;
     private final InstitutionRepository institutionRepository;
+    private final TenatValidation tenatValidation;
 
     public void deleteFeatur(Long idFeature, Long idPlan){
-        Long institutionId = SecurityUtils.getInstitutionId();
-        assert institutionId != null;
+        /*
+         * =========================================================
+         * CONTEXTO DE INSTITUIÇÃO (TENANT)
+         * =========================================================
+         */
 
-        boolean existIntitution = institutionRepository.existsByIdAndDeletedAtIsNull(institutionId);
-        if(!existIntitution){
-            throw new NotFoundException(InstitutionMessages.INSTITUTION_NOT_FOUND);
-        }
+        Long institutionId = SecurityUtils.getInstitutionId();
+        tenatValidation.validateInstitution(institutionId);
+
 
         boolean existFeature = featureRepository.existsByIdFeatureAndIdPlan(idFeature, idPlan);
         if(!existFeature){
