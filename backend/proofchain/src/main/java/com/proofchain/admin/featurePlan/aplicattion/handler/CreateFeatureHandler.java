@@ -11,23 +11,28 @@ import com.proofchain.shared.exception.messages.FeaturePlanMessages;
 import com.proofchain.shared.exception.messages.InstitutionMessages;
 import com.proofchain.shared.exception.messages.PlanMessages;
 import com.proofchain.shared.security.SecurityUtils;
+import com.proofchain.shared.util.TenatValidation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class CreateFeatureHandler {
 
     private FeatureRepository featureRepository;
     private PlansRepository plansRepository;
     private InstitutionRepository institutionRepository;
+    private final TenatValidation tenatValidation;
 
     public void handler(CreateFeatureCommand command){
-        Long institutionId = SecurityUtils.getInstitutionId();
-        assert institutionId != null;
+        /*
+         * =========================================================
+         * CONTEXTO DE INSTITUIÇÃO (TENANT)
+         * =========================================================
+         */
 
-        boolean existInstitution = institutionRepository.existsByIdAndDeletedAtIsNull(institutionId);
-        if(!existInstitution){
-            throw new NotFoundException(InstitutionMessages.INSTITUTION_NOT_FOUND);
-        }
+        Long institutionId = SecurityUtils.getInstitutionId();
+        tenatValidation.validateInstitution(institutionId);
 
         boolean existPlan = plansRepository.existsById(command.getIdPlan());
         if(!existPlan){

@@ -14,11 +14,13 @@ import com.proofchain.shared.exception.BusinessException;
 import com.proofchain.shared.exception.NotFoundException;
 import com.proofchain.shared.exception.messages.InstitutionMessages;
 import com.proofchain.shared.exception.messages.PlanMessages;
+import com.proofchain.shared.util.TenatValidation;
 import com.proofchain.user.domain.exception.UserRegisteredException;
 import com.proofchain.user.domain.model.User;
 import com.proofchain.user.domain.model.UserRole;
 import com.proofchain.user.infrastructure.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -27,7 +29,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
 @Component
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class CreateInstitutionHandler {
 
     private final InstitutionRepository institutionRepository;

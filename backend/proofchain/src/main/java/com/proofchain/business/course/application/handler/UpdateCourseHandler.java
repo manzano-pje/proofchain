@@ -9,6 +9,8 @@ import com.proofchain.shared.exception.AlreadyExistsException;
 import com.proofchain.shared.exception.NotFoundException;
 import com.proofchain.shared.exception.messages.CourseMessages;
 import com.proofchain.shared.exception.messages.InstitutionMessages;
+import com.proofchain.shared.security.SecurityUtils;
+import com.proofchain.shared.util.TenatValidation;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -47,6 +49,7 @@ public class UpdateCourseHandler {
      */
     private final InstitutionRepository institutionRepository;
     private final CourseRepository courseRepository;
+    private final TenatValidation tenatValidation;
 
     /**
      * Executa o caso de uso de atualização de curso.
@@ -63,12 +66,8 @@ public class UpdateCourseHandler {
          * =========================================================
          */
 
-        // Long institutionId = SecurityUtils.getInstitutionId();
-        Long institutionId = 1L;
-
-        Institution institution = institutionRepository
-                .findById(institutionId)
-                .orElseThrow(() -> new NotFoundException(InstitutionMessages.INSTITUTION_NOT_FOUND));
+        Long institutionId = SecurityUtils.getInstitutionId();
+        tenatValidation.validateInstitution(institutionId);
 
         /*
          * =========================================================
@@ -88,7 +87,7 @@ public class UpdateCourseHandler {
 
         boolean exists = courseRepository.existsByIdAndInstitutionId(
                 command.getId(),
-                institution.getId()
+                institutionId
         );
 
         if (exists && !course.getName().equals(command.getName())) {

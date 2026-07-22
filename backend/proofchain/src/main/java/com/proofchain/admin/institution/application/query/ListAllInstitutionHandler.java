@@ -5,21 +5,31 @@ import com.proofchain.admin.institution.infrastructure.repository.InstitutionRep
 import com.proofchain.admin.institution.interfaces.dtos.response.InstitutionResponse;
 import com.proofchain.shared.exception.NotFoundException;
 import com.proofchain.shared.exception.messages.InstitutionMessages;
-import lombok.AllArgsConstructor;
+import com.proofchain.shared.security.SecurityUtils;
+import com.proofchain.shared.util.TenatValidation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ListAllInstitutionHandler {
 
     private final InstitutionRepository institutionRepository;
+    private final TenatValidation tenatValidation;
 
     public List<InstitutionResponse> getAllinstitution(){
 
-        //TODO criar validação por token
+        /*
+         * =========================================================
+         * CONTEXTO DE INSTITUIÇÃO (TENANT)
+         * =========================================================
+         */
+        Long institutionId = SecurityUtils.getInstitutionId();
+        tenatValidation.validateInstitution(institutionId);
+
 
         List<Institution> institutionList = institutionRepository.findAllByDeletedAtIsNull();
         if(institutionList.isEmpty()){

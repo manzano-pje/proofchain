@@ -1,9 +1,8 @@
 package com.proofchain.user.applications.handler;
 
 import com.proofchain.admin.institution.infrastructure.repository.InstitutionRepository;
-import com.proofchain.shared.exception.NotFoundException;
-import com.proofchain.shared.exception.messages.InstitutionMessages;
 import com.proofchain.shared.security.SecurityUtils;
+import com.proofchain.shared.util.TenatValidation;
 import com.proofchain.user.domain.exception.UserNotFoundException;
 import com.proofchain.user.domain.model.User;
 import com.proofchain.user.infrastructure.repository.UserRepository;
@@ -44,7 +43,7 @@ public class DeleteUserHandler {
      */
 
     private final UserRepository userRepository;
-    private final InstitutionRepository institutionRepository;
+    private final TenatValidation tenatValidation;
 
     /*
      * =========================================================
@@ -67,16 +66,15 @@ public class DeleteUserHandler {
      */
     public void deleteUser(Long id) {
 
-        // 🔑 Instituição vem do TOKEN, não do request
+        /*
+         * =========================================================
+         * CONTEXTO DE INSTITUIÇÃO (TENANT)
+         * =========================================================
+         */
+
         Long institutionId = SecurityUtils.getInstitutionId();
+        tenatValidation.validateInstitution(institutionId);
 
-
-        boolean existInstitution = institutionRepository
-                .existsByIdAndDeletedAtIsNull(institutionId);
-
-        if (!existInstitution) {
-            throw new NotFoundException(InstitutionMessages.INSTITUTION_NOT_FOUND);
-        }
 
         User user = userRepository
                 .findByIdAndInstitution_Id(id, institutionId)

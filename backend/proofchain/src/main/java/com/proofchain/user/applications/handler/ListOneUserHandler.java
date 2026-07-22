@@ -6,6 +6,7 @@ import com.proofchain.shared.exception.UnauthorizedException;
 import com.proofchain.shared.exception.messages.InstitutionMessages;
 import com.proofchain.shared.exception.messages.UserMessage;
 import com.proofchain.shared.security.SecurityUtils;
+import com.proofchain.shared.util.TenatValidation;
 import com.proofchain.user.domain.exception.UserNotFoundException;
 import com.proofchain.user.domain.model.User;
 import com.proofchain.user.infrastructure.repository.UserRepository;
@@ -49,6 +50,7 @@ public class ListOneUserHandler {
 
     private final InstitutionRepository institutionRepository;
     private final UserRepository userRepository;
+    private final TenatValidation tenatValidation;
 
     /*
      * =========================================================
@@ -73,19 +75,15 @@ public class ListOneUserHandler {
      */
     public UserReturn listOneUser(String email) {
 
-        // 🔑 Instituição vem do TOKEN, não do request
+        /*
+         * =========================================================
+         * CONTEXTO DE INSTITUIÇÃO (TENANT)
+         * =========================================================
+         */
+
         Long institutionId = SecurityUtils.getInstitutionId();
+        tenatValidation.validateInstitution(institutionId);
 
-        if (institutionId == null) {
-            throw new UnauthorizedException(InstitutionMessages.INSTITUTION_NOT_AUTORIZED);
-        }
-
-        boolean existInstitution = institutionRepository
-                .existsByIdAndDeletedAtIsNull(institutionId);
-
-        if (!existInstitution) {
-            throw new NotFoundException(InstitutionMessages.INSTITUTION_NOT_FOUND);
-        }
 
         User user = userRepository
                 .findByEmailAndInstitution_Id(email, institutionId)

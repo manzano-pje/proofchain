@@ -88,7 +88,9 @@ public class CreateUserHandler {
 
         Institution institution = institutionRepository
                 .findByIdAndDeletedAtIsNull(institutionId)
-                .orElseThrow(()-> new NotFoundException(InstructorMessages.INSTRUCTOR_NOT_FOUND));
+                .orElseThrow(()-> new NotFoundException(InstitutionMessages.INSTITUTION_NOT_FOUND));
+
+        ////
 
         boolean existUser = userRepository.existsByEmailAndInstitutionId(
                 command.getEmail(),

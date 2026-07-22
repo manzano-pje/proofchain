@@ -6,20 +6,29 @@ import com.proofchain.admin.institution.interfaces.dtos.response.InstitutionResp
 import com.proofchain.shared.exception.NotFoundException;
 import com.proofchain.shared.exception.messages.InstitutionMessages;
 import com.proofchain.shared.security.SecurityUtils;
-import lombok.AllArgsConstructor;
+import com.proofchain.shared.util.TenatValidation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
 @Component
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ListOneInstitutionHandler {
 
     private final InstitutionRepository institutionRepository;
+    private final TenatValidation tenatValidation;
 
     public InstitutionResponse getOneinstitution(String cnpj){
 
+        /*
+         * =========================================================
+         * CONTEXTO DE INSTITUIÇÃO (TENANT)
+         * =========================================================
+         */
         Long institutionId = SecurityUtils.getInstitutionId();
+        tenatValidation.validateInstitution(institutionId);
+
 
 
         Optional<Institution> institutionOptional = institutionRepository.findByCnpjAndDeletedAtIsNull(cnpj);

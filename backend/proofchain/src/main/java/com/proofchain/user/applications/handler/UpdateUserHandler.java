@@ -6,6 +6,7 @@ import com.proofchain.shared.exception.UnauthorizedException;
 import com.proofchain.shared.exception.messages.InstitutionMessages;
 import com.proofchain.shared.exception.messages.UserMessage;
 import com.proofchain.shared.security.SecurityUtils;
+import com.proofchain.shared.util.TenatValidation;
 import com.proofchain.user.applications.command.UpdateUserCommand;
 import com.proofchain.user.domain.exception.UserNotFoundException;
 import com.proofchain.user.domain.model.User;
@@ -52,6 +53,7 @@ public class UpdateUserHandler {
 
     private final UserRepository userRepository;
     private final InstitutionRepository institutionRepository;
+    private final TenatValidation tenatValidation;
 
     /*
      * =========================================================
@@ -76,19 +78,15 @@ public class UpdateUserHandler {
      */
     public UserReturn updateUser(Long id, UpdateUserCommand command) {
 
-        // 🔑 Instituição vem do TOKEN, não do request
+        /*
+         * =========================================================
+         * CONTEXTO DE INSTITUIÇÃO (TENANT)
+         * =========================================================
+         */
+
         Long institutionId = SecurityUtils.getInstitutionId();
+        tenatValidation.validateInstitution(institutionId);
 
-        if (institutionId == null) {
-            throw new UnauthorizedException(InstitutionMessages.INSTITUTION_NOT_AUTORIZED);
-        }
-
-        boolean existInstitution = institutionRepository
-                .existsByIdAndDeletedAtIsNull(institutionId);
-
-        if (!existInstitution) {
-            throw new NotFoundException(InstitutionMessages.INSTITUTION_NOT_FOUND);
-        }
 
         User user = userRepository
                 .findByIdAndInstitution_Id(id, institutionId)
