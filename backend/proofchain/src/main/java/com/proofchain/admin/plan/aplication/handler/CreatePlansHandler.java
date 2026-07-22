@@ -5,37 +5,32 @@ import com.proofchain.admin.plan.aplication.command.PlansCreateCommand;
 import com.proofchain.admin.plan.domain.model.Plans;
 import com.proofchain.admin.plan.infrastructure.repository.PlansRepository;
 import com.proofchain.shared.exception.AlreadyExistsException;
-import com.proofchain.shared.exception.InternalServerException;
-import com.proofchain.shared.exception.NotFoundException;
-import com.proofchain.shared.exception.messages.InstitutionMessages;
 import com.proofchain.shared.exception.messages.PlanMessages;
 import com.proofchain.shared.security.SecurityUtils;
-import lombok.AllArgsConstructor;
+import com.proofchain.shared.util.TenatValidation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class CreatePlansHandler {
 
     private final PlansRepository plansRepository;
-    private final InstitutionRepository institutionRepository;
+    private final TenatValidation tenatValidation;
 
     public void createPlan(PlansCreateCommand command) {
 
-        // 🔑 Instituição vem do TOKEN, não do request
+        /*
+         * =========================================================
+         * CONTEXTO DE INSTITUIÇÃO (TENANT)
+         * =========================================================
+         */
         Long institutionId = SecurityUtils.getInstitutionId();
+        tenatValidation.validateInstitution(institutionId);
 
-
-        if (institutionId == null){
-            throw new InternalServerException("Instituição não pode ser nula");
-        }
-        boolean exist = institutionRepository.existsById(institutionId);
-        if (!exist) {
-            throw new NotFoundException(InstitutionMessages.INSTITUTION_NOT_FOUND);
-        }
 
         Optional<Plans> plansOptional = plansRepository.findByName(command.getName());
         if (plansOptional.isPresent()) {
