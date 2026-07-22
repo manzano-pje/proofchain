@@ -10,8 +10,11 @@ import com.proofchain.shared.exception.NotFoundException;
 import com.proofchain.shared.exception.messages.CourseMessages;
 import com.proofchain.shared.exception.messages.InstitutionMessages;
 import com.proofchain.shared.security.SecurityUtils;
+import com.proofchain.shared.util.TenatValidation;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 /**
  * CreateCourseHandler
@@ -47,6 +50,7 @@ public class CreateCourseHandler {
      */
     private final CourseRepository courseRepository;
     private final InstitutionRepository institutionRepository;
+    private final TenatValidation tenatValidation;
 
     /**
      * Executa o caso de uso de criação de curso.
@@ -62,11 +66,7 @@ public class CreateCourseHandler {
          */
 
         Long institutionId = SecurityUtils.getInstitutionId();
-//        Long institutionId = 1L;
-
-        Institution institution = institutionRepository
-                .findByIdAndDeletedAtIsNull(institutionId)
-                .orElseThrow(() -> new NotFoundException(InstitutionMessages.INSTITUTION_NOT_FOUND));
+        tenatValidation.validateInstitution(institutionId);
 
         /*
          * =========================================================
@@ -74,9 +74,12 @@ public class CreateCourseHandler {
          * =========================================================
          */
 
+        Optional<Institution> institution = institutionRepository
+                .findByIdAndDeletedAtIsNull(institutionId);
+
         boolean exists = courseRepository.existsByNameAndInstitutionId(
                 command.getName(),
-                institution.getId()
+                institutionId
         );
 
         if (exists) {
@@ -93,7 +96,7 @@ public class CreateCourseHandler {
                 command.getName(),
                 command.getDescription(),
                 command.getHours(),
-                institution
+                institution.get()
         );
 
         /*
