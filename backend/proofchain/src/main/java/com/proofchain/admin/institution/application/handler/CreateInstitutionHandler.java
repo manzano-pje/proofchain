@@ -3,7 +3,6 @@ package com.proofchain.admin.institution.application.handler;
 import com.proofchain.admin.institution.domain.model.Institution;
 import com.proofchain.admin.institution.infrastructure.repository.InstitutionRepository;
 import com.proofchain.admin.institution.interfaces.dtos.request.CreateInstitutionRequestDto;
-import com.proofchain.admin.plan.domain.exception.PlanNotFoundException;
 import com.proofchain.admin.plan.domain.model.Plans;
 import com.proofchain.admin.plan.infrastructure.repository.PlansRepository;
 import com.proofchain.admin.subscription.domain.enuns.BillingType;
@@ -12,7 +11,9 @@ import com.proofchain.admin.subscription.domain.model.Subscriptions;
 import com.proofchain.admin.subscription.infrastructure.repository.SubscriptionRepository;
 import com.proofchain.shared.exception.AlreadyExistsException;
 import com.proofchain.shared.exception.BusinessException;
+import com.proofchain.shared.exception.NotFoundException;
 import com.proofchain.shared.exception.messages.InstitutionMessages;
+import com.proofchain.shared.exception.messages.PlanMessages;
 import com.proofchain.user.domain.exception.UserRegisteredException;
 import com.proofchain.user.domain.model.User;
 import com.proofchain.user.domain.model.UserRole;
@@ -101,7 +102,7 @@ public class CreateInstitutionHandler {
         Optional<Plans> plans = plansRepository.findById(idPlan);
 
         if (plans.isEmpty()) {
-            throw new PlanNotFoundException();
+            throw new NotFoundException(PlanMessages.PLAN_NOT_FOUND);
         }
         Subscriptions subscription = new Subscriptions();
 
@@ -129,7 +130,7 @@ public class CreateInstitutionHandler {
                 nextBilling =  Instant.now().plus(30, ChronoUnit.DAYS);
                 break;
             default:
-                throw new PlanNotFoundException();
+                throw new NotFoundException(PlanMessages.PLAN_NOT_FOUND);
         }
 
         subscription.setInstitution(institution);

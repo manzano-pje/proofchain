@@ -2,7 +2,6 @@ package com.proofchain.admin.featurePlan.aplicattion.handler;
 
 
 import com.proofchain.admin.featurePlan.infrastructure.repository.FeatureRepository;
-import com.proofchain.admin.institution.domain.exception.InstitutionNotFoundException;
 import com.proofchain.admin.institution.infrastructure.repository.InstitutionRepository;
 import com.proofchain.shared.exception.NotFoundException;
 import com.proofchain.shared.exception.messages.FeaturePlanMessages;
@@ -24,7 +23,7 @@ public class DeleteFeatureHandler {
 
         boolean existIntitution = institutionRepository.existsByIdAndDeletedAtIsNull(institutionId);
         if(!existIntitution){
-            throw new NotFoundException(InstitutionMessages.INSTITUTION_NOT_AUTORIZED);
+            throw new NotFoundException(InstitutionMessages.INSTITUTION_NOT_FOUND);
         }
 
         boolean existFeature = featureRepository.existsByIdFeatureAndIdPlan(idFeature, idPlan);

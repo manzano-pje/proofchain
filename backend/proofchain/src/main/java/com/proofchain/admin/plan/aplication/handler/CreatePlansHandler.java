@@ -1,9 +1,7 @@
 package com.proofchain.admin.plan.aplication.handler;
 
-import com.proofchain.admin.institution.domain.exception.InstitutionNotFoundException;
 import com.proofchain.admin.institution.infrastructure.repository.InstitutionRepository;
 import com.proofchain.admin.plan.aplication.command.PlansCreateCommand;
-import com.proofchain.admin.plan.domain.exception.PlanAlerdyExistException;
 import com.proofchain.admin.plan.domain.model.Plans;
 import com.proofchain.admin.plan.infrastructure.repository.PlansRepository;
 import com.proofchain.shared.exception.AlreadyExistsException;
@@ -11,6 +9,7 @@ import com.proofchain.shared.exception.InternalServerException;
 import com.proofchain.shared.exception.NotFoundException;
 import com.proofchain.shared.exception.messages.InstitutionMessages;
 import com.proofchain.shared.exception.messages.PlanMessages;
+import com.proofchain.shared.security.SecurityUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -27,8 +26,8 @@ public class CreatePlansHandler {
     public void createPlan(PlansCreateCommand command) {
 
         // 🔑 Instituição vem do TOKEN, não do request
-       // Long institutionId = SecurityUtils.getInstitutionId();
-        Long institutionId = 1L;
+        Long institutionId = SecurityUtils.getInstitutionId();
+
 
         if (institutionId == null){
             throw new InternalServerException("Instituição não pode ser nula");

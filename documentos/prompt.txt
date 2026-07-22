@@ -1,134 +1,153 @@
-Crie uma plataforma para geração e validação de certificados com as seguintes especificações:
+---
 
-TECNOLOGIAS & FRAMEWORK:
-- HTML5 + CSS3 + JS
-- TailwindCSS + Shadcn/ui para componentes
-- React Hook Form + Zod para validação
-- Zustand para gerenciamento de estado
-- Animations: Framer Motion
-- Icons: Lucide React
+### 🚀 MASTER PROMPT UNIFICADO & PERFEITO (VERSÃO COMPLETA)
 
-ARQUITETURA & ESTRUTURA:
-- Arquitetura modular com custom hooks
-- Components reutilizáveis e type-safe
-- Pages: 
-  - Login, Dashboard
-  - Certificados
-    - Emitir Certificado, 
-    - Validação
-  - Cadsatros
-    - Cursos
-    - Participantes
-  - Configuração
-  - Sair  
+Abaixo está o **prompt definitivo consolidado**, combinando o melhor dos dois mundos: a **fidelidade visual UI/UX das suas 6 imagens**, a **componentização modular em Vue 3 + CSS3 Puro**, a **imagem estática 3D no Hero** e as **regras de backend/interceptor** trazidas por você.
 
-- Responsive design (mobile-first)
-- Dark/Light theme support
+```markdown
+Atue como um Desenvolvedor Front-end Sênior e Especialista em UI/UX. Sua missão é construir a arquitetura e o código completo da plataforma ProofChain (sistema de emissão, gestão e validação pública de certificados digitais registrados em blockchain).
 
-FUNCIONALIDADES
-1. ** Autenticação **
-   - Conexão obrigatória através de login e senha
-   - Feedback visual de conexão
-   - Conexão persistente
+---
 
-2. ** DASHBOARD **
-   - Menu lateral com topicos das páginas
-   - menu superior 
-     - Painel (Dashboard)
-     - Certificados
-     - Relatórios
-   - Logotipo
-   - Parte principal contendo 3 blocos horizontais 
-     - Certificados emitidos 
-     - Transações on-chain - Registros de prova (hashes) armazenados
-     - Saldo (estimado)
-       R$ 0,80 por certificado emitido
+### 1. STACK TECNOLÓGICA & DIRETRIZES TÉCNICAS (OBRIGATÓRIO)
+* **Framework:** Vue.js 3 (Composition API utilizando `<script setup>` e TypeScript).
+* **Navegação:** Vue Router 4 (com Navigation Guards para proteção de rotas autenticadas).
+* **Estilização:** CSS3 Puro com Scoped CSS e CSS Variables (NÃO utilizar TailwindCSS, Bootstrap, Vuetify ou frameworks CSS).
+* **Gerenciamento de Estado:** Pinia ou reatividade nativa do Vue (`ref`/`reactive`).
+* **Validação de Formulários:** Validação reativa em TypeScript (Zod ou suporte nativo com TypeScript).
+* **Ícones:** Lucide Vue Next (ou SVGs inline vetorizados).
+* **Arquitetura de Mocks/Backend:** Padrão Service Layer (`/src/services`) lendo/gravando no `localStorage` quando `import.meta.env.VITE_USE_MOCK = true`, com estrutura desacoplada para chamadas HTTP reais via Axios/Fetch quando `VITE_USE_MOCK = false`.
 
-   - Box horizontal contendo a listagem dos últimos certificados emitidos com os dados:
-     - ID, Participante, Curso, Data emissão
+---
 
-3. ** Emitir Certificado **
-   - Selecionar participante através checkbox atraves de pesquisa, lista ou selecionar todos
-   - Entrada de dados
-     - cursp
-     - Data início
-     - Data final
-     - carga horária
-   - botão gerar Certificado
-   - Pré-visualizar
-   - Limpar
-4. ** VALIDAÇÃO **
-   - Box com o campo Número do ID do Certificado
-   - Botão validar
-   - Apresentar a mensagem Não encontrado caso o ID não exista
-   - Apresentar os dados:
-     -Status Válido
-     - Participante:
-     - Curso
-     - Emitido em
-     - ID
+### 2. ARQUITETURA DE PASTAS E DIVISÃO DE RESPONSABILIDADES (ESTRITAMENTE OBRIGATÓRIO)
+Organize e estruture todo o projeto respeitando rigorosamente a seguinte árvore de diretórios:
 
-5. ** CADASTRO CURSOS **
-   - Card com o campo Curso
-   - Botões Gravar, excluir, cancelar
-   - Lista com os cursos cadastrados
-   - icones de funcionalidades nos itens das linhas
+```text
+src/
+├── assets/
+│   ├── css/
+│   │   ├── variables.css      # Variáveis Globais de CSS (Dark Mode Azul/Ciano)
+│   │   ├── main.css           # Estilos globais e reset
+│   │   └── animations.css     # Animações de fade, slide e rotação 3D
+│   └── img/                   # Imagens e Mocks (ex: certificate-hero.png, logo.svg)
+├── components/
+│   ├── ui/                    # Componentes Atômicos / Design System
+│   │   ├── BaseButton.vue     # Botões (primary-cyan, outline, ghost)
+│   │   ├── BaseInput.vue      # Inputs com estados de erro e ícones
+│   │   ├── BaseModal.vue      # Modal acessível com backdrop blur
+│   │   ├── StatusBadge.vue    # Badges de estado (Válido, Expirado, Inválido)
+│   │   └── MetricCard.vue     # Cards estatísticos do Dashboard
+│   ├── layout/                # Layouts e Estruturas das Páginas
+│   │   ├── AppHeader.vue      # Header da área logada (perfil, notificações, logout)
+│   │   ├── AppSidebar.vue     # Sidebar navegável do Dashboard
+│   │   └── PublicNavbar.vue   # Navbar superior da Landing Page
+│   └── certificate/
+│       ├── CertificateDocument.vue # Componente do Certificado Reativo (Preview/Modal)
+│       └── CertificateValidationState.vue # Alternador das 4 situações de validação
+├── views/                     # Páginas da Aplicação (Smart Components)
+│   ├── LandingView.vue        # Landing Page pública (`/`)
+│   ├── LoginView.vue          # Tela de Login split-screen (`/login`)
+│   ├── DashboardView.vue      # Painel Principal (`/dashboard`)
+│   ├── IssueCertificateView.vue # Emissão de Certificados (`/certificates/issue`)
+│   ├── ValidationView.vue     # Validação Pública (`/validar`)
+│   ├── CoursesView.vue        # Gestão de Cursos (`/courses`)
+│   ├── ParticipantsView.vue   # Gestão de Participantes (`/participants`)
+│   └── SettingsView.vue       # Configurações da Instituição (`/settings`)
+├── services/                  # Camada de Dados e APIs (Repository Pattern)
+│   ├── api.ts                 # Cliente HTTP base (Axios com Interceptors para Bearer Token)
+│   ├── auth.service.ts        # Autenticação (Login, logout, token session)
+│   ├── certificates.service.ts # Emissão, consulta e validação On-Chain
+│   ├── courses.service.ts     # CRUD de Cursos
+│   ├── participants.service.ts# CRUD de Participantes
+│   └── institution.service.ts # Dados da instituição e upload de logo
+├── router/
+│   └── index.ts               # Rotas e Proteção de Navegação (Guards)
+├── types/
+│   └── index.ts               # Interfaces TypeScript (ICertificate, IUser, ICourse, etc.)
+└── App.vue
 
-6. ** CADASTRO PARTICIPANTES **
-   - Card com os campos:
-     - Nome
-     - Curso (abrir lista dropdwn dos cursos cadastrados para seleção)
-     - Data de Nascimento
-   - Botões Gravar, excluir, cancelar
-   - Lista com os cursos cadastrados
-   - icones de funcionalidades nos itens das linhas   
+```
 
-7. ** CONFIGURAÇÃO **
-   - card para cadastro da instituição
-     - nome da instituição
-     - logo da instituição
+---
 
-VALIDAÇÃO & REGRAS DE NEGÓCIOS
-   - Certificado so pode ser emitido para participante cadastrado
-   - Participante obrigatoriamente tem que estar cadastrado em um curso
-   - Data de início não pode ser posterior a data de hoje
-   - Data final não pode ser anterior ao início
-   - Idade obrigatória no cadastro do participante idade ser maior que 16 anos
-   - a pré-visualização deverá ser apresentada sem o id em um modal centralizado com botão para fechar e download imagem
-   - A geração do certificado deverá aparecer em um modal centralizado na tela, com as opções de imprimir ou download pdf
-   - Cadastros não podem ser duplicados. 
+### 3. DESIGN SYSTEM & IDENTIDADE VISUAL (DARK MODE & AZUL TECH)
 
-UX/UI GUIDELINES:
-- Design System consistente (cores, tipografia, espaçamentos)
-- Estados visuais claros: disponível (verde), ocupado (vermelho), carregando
-- Micro-interactions e feedback tátil
-- Skeleton loaders durante fetch de dados
-- Toast notifications para ações
-- Breadcrumbs para navegação
-- Empty states informativos
+Utilize a seguinte paleta de cores no arquivo `src/assets/css/variables.css`:
 
-ACESSIBILIDADE & PERFORMANCE:
-- Semantic HTML e ARIA labels
-- Lighthouse score > 90
-- Bundle splitting e lazy loading
-- Image optimization (Next.js Image)
+* `--bg-primary`: `#0B132B` ou `#0F172A` (Azul Marinho Profundo/Tech para o fundo principal).
+* `--bg-surface`: `#1E293B` ou `#162032` (Azul Fechado de Contraste para Cards e Modais).
+* `--accent-primary`: `#00D2FF` ou `#0080FF` (Ciano Elétrico / Azul Tech para destaques e botões de ação).
+* `--text-primary`: `#FFFFFF` (Branco Puro).
+* `--text-secondary`: `#7DD3FC` ou `#94A3B8` (Azul Ciano Claro / Off-White).
+* Status Tags:
+* Sucesso / Válido: Ciano / Verde Menta (`#00D2FF` / `#059669` com fundo suave).
+* Expirado: Vermelho Alerta (`#DC2626` com fundo avermelhado escuro).
+* Inválido / Não Encontrado: Âmbar / Laranja (`#D97706` com fundo amarelado escuro).
 
-SEGURANÇA:
-- Sanitização de inputs
-- Rate limiting visual feedback
-- Error boundaries para crash prevention
-- Secure environment variables handling
 
-MOBILE & RESPONSIVIDADE:
-- Touch-friendly (min 44px tap targets)
-- Swipe gestures para carrosséis
-- Progressive Web App features
-- Offline state handling
 
-INTERNACIONALIZAÇÃO:
-- Suporte pt-BR e en-US
-- Formatação de moeda por região
-- Date/time localization
+---
 
-admin@example.com
-password
+### 4. COMPONENTIZAÇÃO E IMAGENS
+
+* **Imagem na Hero Section:** A Hero Section da Landing Page utiliza uma **imagem estática de mockup** (`<img>` apontando para `@/assets/img/certificate-hero.png` ou um placeholder SVG estilizado). Esta imagem do Hero NÃO é reativa, aplicando apenas a inclinação 3D estática via CSS (`transform: perspective(1000px) rotateY(-12deg)`).
+* **Componente Reativo (`CertificateDocument.vue`):** Reutilizado nas telas/modais de pré-visualização, emissão e validação. Aceita *props* (`studentName`, `courseName`, `issueDate`, `completionHours`, `hash`, `qrCodeUrl`).
+
+---
+
+### 5. MAPEAMENTO DETALHADO DE TELAS & ROTAS
+
+1. **LANDING PAGE INSTITUCIONAL (`/`) — Referência: 'proposta landpage 3_2.png'**
+* Navbar pública, Hero Section com imagem 3D, Categorias, Benefícios, Fluxo "Como funciona", Widget de Validação Rápida, Tabela de Preços (Pricing) e Footer com selo LGPD.
+
+
+2. **LOGIN (`/login`) — Referência: 'd96bee66-45aa-4907-bd60-c669d6283e47.png'**
+* Split-screen: Lado esquerdo escuro (`#0B132B`) com frase e mockup; Lado direito com formulário de Login. Credenciais mock: `admin@example.com` / `password`.
+
+
+3. **DASHBOARD (`/dashboard`) — Referência: 'dashboard.png'**
+* Sidebar fixa (`AppSidebar.vue`), Header (`AppHeader.vue`), 4 Top Metrics (Certificados Emitidos, Validações Realizadas, Alunos Certificados, Cursos Ativos + Saldo dinâmico de R$ 0,80/certificado), Gráficos SVG estilizados e Tabela de Certificados Recentes.
+
+
+4. **EMISSÃO DE CERTIFICADOS (`/certificates/issue`)**
+* Seleção de participante vinculado a curso ativo, formulário de datas/carga horária, Modal de Pré-visualização (sem hash) e Modal de Emissão Final (com Hash On-Chain e QR Code).
+
+
+5. **VALIDAÇÃO DE CERTIFICADOS (`/validar`) — Referências: 'validação 1, 2 e 3.png'**
+* Componente `CertificateValidationState.vue` alternando reativamente entre os 4 estados visuais:
+* State 1: Resumo do Certificado Válido.
+* State 2: Modal Detalhado / Registro Blockchain (Hash `0xA34B89C7...B7A1` + Botão Copiar Hash).
+* State 3: Certificado Expirado (Alerta vermelho com ampulheta).
+* State 4: Certificado Não Válido / Não Encontrado (Alerta amarelo com aviso).
+
+
+
+
+6. **GESTÃO DE CURSOS (`/courses`) & PARTICIPANTES (`/participants`)**
+* Formulários com busca/autocomplete, validações de regra de negócio e tabelas responsivas com ações de linha (Editar/Excluir).
+
+
+7. **CONFIGURAÇÕES DA INSTITUIÇÃO (`/settings`)**
+* Formulário para nome da instituição e upload simulado da logomarca oficial.
+
+
+
+---
+
+### 6. REGRAS DE NEGÓCIO & VALIDAÇÕES DA CAMADA DE DADOS (`/src/services/`)
+
+* **Lógica de Validação On-Chain:**
+* Digitar `CERT-2026-2458` ou `VALIDO` aciona os Estados 1 e 2 (Sucesso/Autêntico).
+* Digitar `EXPIRADO` aciona o Estado 3 (Expirado).
+* Qualquer outro valor aciona o Estado 4 (Não Válido / Não Encontrado).
+
+
+* **Validação de Idade:** Impede o cadastro de participantes com menos de 16 anos completos.
+* **Validação de Datas:** Data de início <= data atual; Data de término >= data de início.
+* **Emissão Vinculada & Anti-Duplicidade:** O participante deve estar obrigatoriamente associado a um curso ativo. Impede cadastros duplicados com dados únicos idênticos.
+* **Cálculo Financeiro:** Atualiza e exibe dinamicamente no Dashboard o custo acumulado de R$ 0,80 por certificado gerado.
+
+Gere o projeto com tipagem completa em TypeScript, CSS Scoped modularizado conforme a árvore de pastas e pronto para execução.
+
+```
