@@ -1,12 +1,9 @@
 package com.proofchain.admin.featurePlan.aplicattion.handler;
 
 import com.proofchain.admin.featurePlan.aplicattion.command.CreateFeatureCommand;
-import com.proofchain.admin.featurePlan.domain.exception.FeatureAlerdyExistException;
 import com.proofchain.admin.featurePlan.domain.model.FeaturePlan;
 import com.proofchain.admin.featurePlan.infrastructure.repository.FeatureRepository;
-import com.proofchain.admin.institution.domain.exception.InstitutionNotFoundException;
 import com.proofchain.admin.institution.infrastructure.repository.InstitutionRepository;
-import com.proofchain.admin.plan.domain.exception.PlanNotFoundException;
 import com.proofchain.admin.plan.infrastructure.repository.PlansRepository;
 import com.proofchain.shared.exception.AlreadyExistsException;
 import com.proofchain.shared.exception.NotFoundException;

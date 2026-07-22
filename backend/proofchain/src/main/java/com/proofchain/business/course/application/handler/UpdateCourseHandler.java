@@ -9,6 +9,7 @@ import com.proofchain.shared.exception.AlreadyExistsException;
 import com.proofchain.shared.exception.NotFoundException;
 import com.proofchain.shared.exception.messages.CourseMessages;
 import com.proofchain.shared.exception.messages.InstitutionMessages;
+import com.proofchain.shared.security.SecurityUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -63,8 +64,8 @@ public class UpdateCourseHandler {
          * =========================================================
          */
 
-        // Long institutionId = SecurityUtils.getInstitutionId();
-        Long institutionId = 1L;
+        Long institutionId = SecurityUtils.getInstitutionId();
+        assert institutionId != null;
 
         Institution institution = institutionRepository
                 .findById(institutionId)

@@ -5,6 +5,7 @@ import com.proofchain.admin.institution.infrastructure.repository.InstitutionRep
 import com.proofchain.admin.institution.interfaces.dtos.request.UpdateInstitutionRequest;
 import com.proofchain.shared.exception.NotFoundException;
 import com.proofchain.shared.exception.messages.InstitutionMessages;
+import com.proofchain.shared.security.SecurityUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -16,8 +17,8 @@ public class UpdateInstitutionHandler {
 
     public void updateinstitution(String cnpj, UpdateInstitutionRequest UpdateInstitutionRequest){
 
-//        Long institutionId = SecurityUtils.getInstitutionId();
-//        validations.validateinstitution(institutionId);
+        Long institutionId = SecurityUtils.getInstitutionId();
+        assert institutionId != null;
 
         Institution institution = institutionRepository.findByCnpjAndDeletedAtIsNull(cnpj)
                 .orElseThrow(() -> new NotFoundException(InstitutionMessages.INSTITUTION_NOT_FOUND));

@@ -30,6 +30,8 @@ public class ListAllCourseClassHandler {
          */
 
         Long institutionId = SecurityUtils.getInstitutionId();
+        assert institutionId != null;
+
         Institution institution = institutionRepository
                 .findByIdAndDeletedAtIsNull(institutionId)
                 .orElseThrow(()-> new NotFoundException(InstitutionMessages.INSTITUTION_NOT_FOUND));

@@ -4,6 +4,7 @@ import com.proofchain.admin.institution.domain.model.Institution;
 import com.proofchain.admin.institution.infrastructure.repository.InstitutionRepository;
 import com.proofchain.shared.exception.NotFoundException;
 import com.proofchain.shared.exception.messages.InstitutionMessages;
+import com.proofchain.shared.security.SecurityUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,8 +20,8 @@ public class DeleteInstitutionHandler {
     @Transactional
     public void deleteinstitution(String cnpj){
 
-//        Long institutionId = SecurityUtils.getInstitutionId();
-//        validations.validateinstitution(institutionId);
+        Long institutionId = SecurityUtils.getInstitutionId();
+        assert institutionId != null;
 
         Institution institution = institutionRepository.findByCnpjAndDeletedAtIsNull(cnpj)
                 .orElseThrow(() -> new NotFoundException(InstitutionMessages.INSTITUTION_NOT_FOUND));

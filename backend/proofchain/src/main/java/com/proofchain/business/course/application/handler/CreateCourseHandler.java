@@ -62,7 +62,7 @@ public class CreateCourseHandler {
          */
 
         Long institutionId = SecurityUtils.getInstitutionId();
-//        Long institutionId = 1L;
+        assert institutionId != null;
 
         Institution institution = institutionRepository
                 .findByIdAndDeletedAtIsNull(institutionId)

@@ -7,6 +7,7 @@ import com.proofchain.business.course.interfaces.dto.response.CourseResponse;
 import com.proofchain.shared.exception.NotFoundException;
 import com.proofchain.shared.exception.messages.CourseMessages;
 import com.proofchain.shared.exception.messages.InstitutionMessages;
+import com.proofchain.shared.security.SecurityUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -61,8 +62,8 @@ public class ListOneCourseHandler {
          * =========================================================
          */
 
-//        Long institutionId = SecurityUtils.getInstitutionId();
-        Long institutionId = 1L;
+        Long institutionId = SecurityUtils.getInstitutionId();
+        assert institutionId != null;
 
         boolean existsInstitution = institutionRepository
                 .existsByIdAndDeletedAtIsNull(institutionId);
