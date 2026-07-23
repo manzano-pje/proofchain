@@ -12,13 +12,13 @@ import java.time.Instant;
 @Getter
 public class UpdateInstructorCommand {
 
-    private String specialty;
-    private Instant hiringDate;
-    private boolean isActive;
-
-    public UpdateInstructorCommand(UpdateInstructor dto) {
-        this.specialty = dto.getSpecialty();
-        this.hiringDate = dto.getHiringDate();
-        this.isActive = dto.isActive();
-    }
+//    private String specialty;
+//    private Instant hiringDate;
+//    private boolean isActive;
+//
+//    public UpdateInstructorCommand(UpdateInstructor dto) {
+//        this.specialty = dto.getSpecialty();
+//        this.hiringDate = dto.getHiringDate();
+//        this.isActive = dto.isActive();
+//    }
 }

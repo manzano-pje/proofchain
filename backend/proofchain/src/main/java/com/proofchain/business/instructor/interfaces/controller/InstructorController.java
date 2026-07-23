@@ -3,13 +3,17 @@ package com.proofchain.business.instructor.interfaces.controller;
 import com.proofchain.business.instructor.application.command.CreateInstructorCommand;
 import com.proofchain.business.instructor.application.command.UpdateInstructorCommand;
 import com.proofchain.business.instructor.application.handler.CreateInstructorHandler;
+import com.proofchain.business.instructor.application.query.ListAllInstructorHandler;
 import com.proofchain.business.instructor.interfaces.dto.request.InstructorRequest;
 import com.proofchain.business.instructor.interfaces.dto.request.UpdateInstructor;
+import com.proofchain.business.instructor.interfaces.dto.response.InstructorsSumaryResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -43,7 +47,7 @@ public class InstructorController {
 
     @GetMapping("/list")
     @PreAuthorize("hasRole('SUPER_ADMIN','ADMIN', 'USER')")
-    public List<InstructorResponse> listAllInstructors(){
+    public List<InstructorsSumaryResponse> listAllInstructors(){
         return listAllInstructorHandler.listAllInstructors();
     }
 
