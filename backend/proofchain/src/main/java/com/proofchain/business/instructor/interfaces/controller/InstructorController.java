@@ -3,9 +3,11 @@ package com.proofchain.business.instructor.interfaces.controller;
 import com.proofchain.business.instructor.application.command.CreateInstructorCommand;
 import com.proofchain.business.instructor.application.command.UpdateInstructorCommand;
 import com.proofchain.business.instructor.application.handler.CreateInstructorHandler;
+import com.proofchain.business.instructor.application.query.GetOneInstructorHandler;
 import com.proofchain.business.instructor.application.query.ListAllInstructorHandler;
 import com.proofchain.business.instructor.interfaces.dto.request.InstructorRequest;
 import com.proofchain.business.instructor.interfaces.dto.request.UpdateInstructor;
+import com.proofchain.business.instructor.interfaces.dto.response.InstructorResponse;
 import com.proofchain.business.instructor.interfaces.dto.response.InstructorsSumaryResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +29,7 @@ public class InstructorController {
      */
       private final CreateInstructorHandler createInstructorHandler;
       private final ListAllInstructorHandler listAllInstructorHandler;
-//    private final GetOneInstructorHandler getOneInstructorHandler;
+      private final GetOneInstructorHandler getOneInstructorHandler;
 //    private final UpdateInstructorHandler updateInstructoHandler;
 //    private final DeleteInstructorHandler deleteInstructorHandler;
 
@@ -51,11 +53,11 @@ public class InstructorController {
         return listAllInstructorHandler.listAllInstructors();
     }
 
-//    @GetMapping("/list/{id}")
-//    @PreAuthorize("hasRole('SUPER_ADMIN','ADMIN', 'USER')")
-//    public List<InstructorResponse> getOneInstructor(@PathVariable Long id){
-//        return getOneInstructorHandler.getOneInstructor(id);
-//    }
+    @GetMapping("/list/{id}")
+    @PreAuthorize("hasRole('SUPER_ADMIN','ADMIN', 'USER')")
+    public InstructorResponse getOneInstructor(@PathVariable Long id){
+        return getOneInstructorHandler.getOneInstructor(id);
+    }
 
 //    @PathMapping("/update/{id}")
 //    @PreAuthorize("hasRole('SUPER_ADMIN','ADMIN', 'USER')")
