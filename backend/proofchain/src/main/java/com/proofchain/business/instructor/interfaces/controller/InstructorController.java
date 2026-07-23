@@ -3,6 +3,7 @@ package com.proofchain.business.instructor.interfaces.controller;
 import com.proofchain.business.instructor.application.command.CreateInstructorCommand;
 import com.proofchain.business.instructor.application.command.UpdateInstructorCommand;
 import com.proofchain.business.instructor.application.handler.CreateInstructorHandler;
+import com.proofchain.business.instructor.application.handler.UpdateInstructorHandler;
 import com.proofchain.business.instructor.application.query.GetOneInstructorHandler;
 import com.proofchain.business.instructor.application.query.ListAllInstructorHandler;
 import com.proofchain.business.instructor.interfaces.dto.request.InstructorRequest;
@@ -30,7 +31,7 @@ public class InstructorController {
       private final CreateInstructorHandler createInstructorHandler;
       private final ListAllInstructorHandler listAllInstructorHandler;
       private final GetOneInstructorHandler getOneInstructorHandler;
-//    private final UpdateInstructorHandler updateInstructoHandler;
+      private final UpdateInstructorHandler updateInstructoHandler;
 //    private final DeleteInstructorHandler deleteInstructorHandler;
 
     /*
@@ -59,12 +60,12 @@ public class InstructorController {
         return getOneInstructorHandler.getOneInstructor(id);
     }
 
-//    @PathMapping("/update/{id}")
-//    @PreAuthorize("hasRole('SUPER_ADMIN','ADMIN', 'USER')")
-//    public ResponseEntity<Void> updateInstructor(@Valid @PathVariable Long id, @RequestBody UpdateInstructor dto){
-//        UpdateInstructorCommand command = new UpdateInstructorCommand(dto);
-//        updateInstructoHandler.updateInstructor(id, command);
-//        return ResponseEntity.ok().build();
-//    }
+    @PatchMapping("/update/{id}")
+    @PreAuthorize("hasRole('SUPER_ADMIN','ADMIN', 'USER')")
+    public ResponseEntity<Void> updateInstructor(@Valid @PathVariable Long id, @RequestBody UpdateInstructor dto){
+        UpdateInstructorCommand command = new UpdateInstructorCommand(dto);
+        updateInstructoHandler.updateInstructor(id, command);
+        return ResponseEntity.ok().build();
+    }
 
 }
