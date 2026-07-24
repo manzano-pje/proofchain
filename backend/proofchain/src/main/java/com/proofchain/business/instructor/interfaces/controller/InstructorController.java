@@ -55,7 +55,7 @@ public class InstructorController {
         return listAllInstructorHandler.listAllInstructors();
     }
 
-    @GetMapping("/list/{id}")
+    @GetMapping("/get/{id}")
     @PreAuthorize("hasRole('SUPER_ADMIN','ADMIN', 'USER')")
     public InstructorResponse getOneInstructor(@PathVariable Long id){
         return getOneInstructorHandler.getOneInstructor(id);

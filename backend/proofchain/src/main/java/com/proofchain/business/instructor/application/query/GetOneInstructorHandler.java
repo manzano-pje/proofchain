@@ -5,7 +5,7 @@ import com.proofchain.business.instructor.interfaces.dto.response.InstructorResp
 import com.proofchain.shared.exception.NotFoundException;
 import com.proofchain.shared.exception.messages.InstructorMessages;
 import com.proofchain.shared.security.SecurityUtils;
-import com.proofchain.shared.util.TenatValidation;
+import com.proofchain.shared.util.TenantValidation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 public class GetOneInstructorHandler {
 
     private final InstructorRepository instructorRepository;
-    private final TenatValidation tenatValidation;
+    private final TenantValidation tenantValidation;
 
     public InstructorResponse getOneInstructor(Long id) {
 
@@ -24,7 +24,7 @@ public class GetOneInstructorHandler {
          * =========================================================
          */
         Long institutionId = SecurityUtils.getInstitutionId();
-        tenatValidation.validateInstitution(institutionId);
+        tenantValidation.validateInstitution(institutionId);
 
         var instructor = instructorRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(InstructorMessages.INSTRUCTOR_NOT_FOUND));

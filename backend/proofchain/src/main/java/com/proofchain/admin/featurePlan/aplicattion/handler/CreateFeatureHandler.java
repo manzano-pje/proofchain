@@ -8,10 +8,9 @@ import com.proofchain.admin.plan.infrastructure.repository.PlansRepository;
 import com.proofchain.shared.exception.AlreadyExistsException;
 import com.proofchain.shared.exception.NotFoundException;
 import com.proofchain.shared.exception.messages.FeaturePlanMessages;
-import com.proofchain.shared.exception.messages.InstitutionMessages;
 import com.proofchain.shared.exception.messages.PlanMessages;
 import com.proofchain.shared.security.SecurityUtils;
-import com.proofchain.shared.util.TenatValidation;
+import com.proofchain.shared.util.TenantValidation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -22,7 +21,7 @@ public class CreateFeatureHandler {
     private FeatureRepository featureRepository;
     private PlansRepository plansRepository;
     private InstitutionRepository institutionRepository;
-    private final TenatValidation tenatValidation;
+    private final TenantValidation tenantValidation;
 
     public void handler(CreateFeatureCommand command){
         /*
@@ -32,7 +31,7 @@ public class CreateFeatureHandler {
          */
 
         Long institutionId = SecurityUtils.getInstitutionId();
-        tenatValidation.validateInstitution(institutionId);
+        tenantValidation.validateInstitution(institutionId);
 
         boolean existPlan = plansRepository.existsById(command.getIdPlan());
         if(!existPlan){

@@ -6,7 +6,7 @@ import com.proofchain.business.couseClass.interfaces.dto.response.CourseClassRet
 import com.proofchain.shared.exception.NotFoundException;
 import com.proofchain.shared.exception.messages.CourseMessages;
 import com.proofchain.shared.security.SecurityUtils;
-import com.proofchain.shared.util.TenatValidation;
+import com.proofchain.shared.util.TenantValidation;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +17,7 @@ import java.util.List;
 public class ListAllCourseClassHandler {
 
     private final CourseClassRepository courseClassRepository;
-    private final TenatValidation tenatValidation;
+    private final TenantValidation tenantValidation;
 
     public List<CourseClassReturn> listAllcourseClass(){
 
@@ -28,7 +28,7 @@ public class ListAllCourseClassHandler {
          */
 
         Long institutionId = SecurityUtils.getInstitutionId();
-        tenatValidation.validateInstitution(institutionId);
+        tenantValidation.validateInstitution(institutionId);
 
         /*
          * =========================================================

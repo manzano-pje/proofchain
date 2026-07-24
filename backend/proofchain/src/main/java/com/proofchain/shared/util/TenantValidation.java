@@ -8,14 +8,14 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class TenatValidation {
+public class TenantValidation {
 
-    private InstitutionRepository institutionRepository;
+    private final InstitutionRepository institutionRepository;
 
     public void validateInstitution(Long institutionId) {
 
-        boolean exist = institutionRepository.existsByIdAndDeletedAtIsNull(institutionId);
-        if(!exist){
+        boolean exists = institutionRepository.existsByIdAndDeletedAtIsNull(institutionId);
+        if(!exists){
             throw new NotFoundException(InstitutionMessages.INSTITUTION_NOT_FOUND);
         }
     }

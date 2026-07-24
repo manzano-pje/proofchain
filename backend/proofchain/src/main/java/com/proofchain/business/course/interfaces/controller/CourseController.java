@@ -64,7 +64,7 @@ public class CourseController {
      */
 
     @PreAuthorize("hasRole('SUPER_ADMIN','ADMIN', 'USER')")
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<Void> createCourse(@Valid @RequestBody CourseRequestDto dto) {
 
         CreateCourseCommand command = new CreateCourseCommand(dto);
@@ -80,7 +80,7 @@ public class CourseController {
      */
 
     @PreAuthorize("hasRole('ADMIN', 'USER')")
-    @GetMapping
+    @GetMapping("/list")
     public List<FullCourseResponse> listAllCourses() {
         return listAllCourses.listAllCourses();
     }
@@ -92,7 +92,7 @@ public class CourseController {
      */
 
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
-    @GetMapping("/{id}")
+    @GetMapping("/list/{id}")
     public CourseResponse listOneCourse(@PathVariable Long id) {
         return listOneCourse.listOneCourse(id);
     }
@@ -120,4 +120,10 @@ public class CourseController {
                 )
         );
     }
+
+    /*
+     * =========================================================
+     * ENDPOINT: DELETE COURSE
+     * =========================================================
+     */
 }

@@ -60,7 +60,7 @@ public class CourseClassController {
      * =========================================================
      */
     @PreAuthorize("hasRole('SUPER_ADMIN','ADMIN', 'USER')")
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<Void> createInstructor(@Valid @RequestBody RequestCourseClassDto dto){
         RequestCourseClassCommand command = new RequestCourseClassCommand(dto);
         create.create(command);
