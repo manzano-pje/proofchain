@@ -28,7 +28,7 @@ public class FeatureController {
     private ListAllFeatureQueryHandler listallFeature;
 
     @PreAuthorize("hasRole('SUPER_ADMIN')")
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<Void> createFeature(@Valid @RequestBody CreateFeatureRequest dto){
         CreateFeatureCommand command = new CreateFeatureCommand(dto);
         createFeature.handler(command);

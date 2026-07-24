@@ -5,9 +5,8 @@ import com.proofchain.admin.featurePlan.infrastructure.repository.FeatureReposit
 import com.proofchain.admin.institution.infrastructure.repository.InstitutionRepository;
 import com.proofchain.shared.exception.NotFoundException;
 import com.proofchain.shared.exception.messages.FeaturePlanMessages;
-import com.proofchain.shared.exception.messages.InstitutionMessages;
 import com.proofchain.shared.security.SecurityUtils;
-import com.proofchain.shared.util.TenatValidation;
+import com.proofchain.shared.util.TenantValidation;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +16,7 @@ public class DeleteFeatureHandler {
 
     private final FeatureRepository featureRepository;
     private final InstitutionRepository institutionRepository;
-    private final TenatValidation tenatValidation;
+    private final TenantValidation tenantValidation;
 
     public void deleteFeatur(Long idFeature, Long idPlan){
         /*
@@ -27,7 +26,7 @@ public class DeleteFeatureHandler {
          */
 
         Long institutionId = SecurityUtils.getInstitutionId();
-        tenatValidation.validateInstitution(institutionId);
+        tenantValidation.validateInstitution(institutionId);
 
 
         boolean existFeature = featureRepository.existsByIdFeatureAndIdPlan(idFeature, idPlan);

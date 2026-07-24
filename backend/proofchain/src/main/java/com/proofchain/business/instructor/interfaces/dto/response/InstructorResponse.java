@@ -27,7 +27,7 @@ public record InstructorResponse(
                 instructor.getSpecialty(),
                 instructor.getHiringDate(),
                 instructor.isActive(),
-                instructor.getCreatAt(),
+                instructor.getCreatedAt(),
                 instructor.getDeletedAt()
         );
     }

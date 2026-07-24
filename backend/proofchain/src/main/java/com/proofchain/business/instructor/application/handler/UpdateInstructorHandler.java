@@ -6,7 +6,7 @@ import com.proofchain.business.instructor.insfrastructure.repository.InstructorR
 import com.proofchain.shared.exception.NotFoundException;
 import com.proofchain.shared.exception.messages.InstructorMessages;
 import com.proofchain.shared.security.SecurityUtils;
-import com.proofchain.shared.util.TenatValidation;
+import com.proofchain.shared.util.TenantValidation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 public class UpdateInstructorHandler {
 
     private final InstructorRepository instructorRepository;
-    private final TenatValidation tenatValidation;
+    private final TenantValidation tenantValidation;
 
     public void updateInstructor(Long id, UpdateInstructorCommand command) {
 
@@ -25,7 +25,7 @@ public class UpdateInstructorHandler {
          * =========================================================
          */
         Long institutionId = SecurityUtils.getInstitutionId();
-        tenatValidation.validateInstitution(institutionId);
+        tenantValidation.validateInstitution(institutionId);
 
         /*
          * =========================================================

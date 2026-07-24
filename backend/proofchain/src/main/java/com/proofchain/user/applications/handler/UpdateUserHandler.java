@@ -2,11 +2,9 @@ package com.proofchain.user.applications.handler;
 
 import com.proofchain.admin.institution.infrastructure.repository.InstitutionRepository;
 import com.proofchain.shared.exception.NotFoundException;
-import com.proofchain.shared.exception.UnauthorizedException;
-import com.proofchain.shared.exception.messages.InstitutionMessages;
 import com.proofchain.shared.exception.messages.UserMessage;
 import com.proofchain.shared.security.SecurityUtils;
-import com.proofchain.shared.util.TenatValidation;
+import com.proofchain.shared.util.TenantValidation;
 import com.proofchain.user.applications.command.UpdateUserCommand;
 import com.proofchain.user.domain.exception.UserNotFoundException;
 import com.proofchain.user.domain.model.User;
@@ -53,7 +51,7 @@ public class UpdateUserHandler {
 
     private final UserRepository userRepository;
     private final InstitutionRepository institutionRepository;
-    private final TenatValidation tenatValidation;
+    private final TenantValidation tenantValidation;
 
     /*
      * =========================================================
@@ -85,7 +83,7 @@ public class UpdateUserHandler {
          */
 
         Long institutionId = SecurityUtils.getInstitutionId();
-        tenatValidation.validateInstitution(institutionId);
+        tenantValidation.validateInstitution(institutionId);
 
 
         User user = userRepository

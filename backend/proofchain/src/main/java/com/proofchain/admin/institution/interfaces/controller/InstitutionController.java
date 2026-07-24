@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,14 +35,14 @@ public class InstitutionController {
     private ListOneInstitutionHandler listOneInstitution;
     private UpdateInstitutionHandler updateInstitution;
 
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<String> createInstitution(@RequestBody CreateInstitutionRequestDto createInstitutionRequestDto){
         createInstitution.createinstitution(createInstitutionRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body("Instituição cadastrada com sucesso.");
     }
 
-//    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("/update/{cnpj}")
     public ResponseEntity<String> updateInstitution(@Valid @PathVariable String cnpj,
                                                     @Valid @RequestBody UpdateInstitutionRequest UpdateInstitutionRequest){
@@ -50,20 +51,20 @@ public class InstitutionController {
                 .body("Instituição atualizada com sucesso.");
     }
 
-//    @PreAuthorize("hasRole('SUPER_ADMIN')")
-    @GetMapping
+    @PreAuthorize("hasRole('SUPER_ADMIN')")
+    @GetMapping("/list")
     public List<InstitutionResponse> getAllInstitution(){
 
         return listAllInstitution.getAllinstitution();
     }
 
-//    @PreAuthorize("hasRole('SUPER_ADMIN')")
+    @PreAuthorize("hasRole('SUPER_ADMIN')")
     @GetMapping("/get/{cnpj}")
     public InstitutionResponse getOneInstitution(@PathVariable String cnpj){
         return listOneInstitution.getOneinstitution(cnpj);
     }
 
-//    @PreAuthorize("hasRole('SUPER_ADMIN', 'ROLE_ADMIN')")
+    @PreAuthorize("hasRole('SUPER_ADMIN', 'ROLE_ADMIN')")
     @DeleteMapping("/delete/{cnpj}")
     public ResponseEntity<String> deleteInstitution(@PathVariable String cnpj){
         deleteInstitution.deleteinstitution(cnpj);

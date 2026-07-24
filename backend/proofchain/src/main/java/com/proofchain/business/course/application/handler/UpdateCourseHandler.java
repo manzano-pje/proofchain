@@ -1,6 +1,5 @@
 package com.proofchain.business.course.application.handler;
 
-import com.proofchain.admin.institution.domain.model.Institution;
 import com.proofchain.admin.institution.infrastructure.repository.InstitutionRepository;
 import com.proofchain.business.course.application.command.UpdateCourseCommand;
 import com.proofchain.business.course.domain.model.Course;
@@ -8,9 +7,8 @@ import com.proofchain.business.course.infrastructure.repository.CourseRepository
 import com.proofchain.shared.exception.AlreadyExistsException;
 import com.proofchain.shared.exception.NotFoundException;
 import com.proofchain.shared.exception.messages.CourseMessages;
-import com.proofchain.shared.exception.messages.InstitutionMessages;
 import com.proofchain.shared.security.SecurityUtils;
-import com.proofchain.shared.util.TenatValidation;
+import com.proofchain.shared.util.TenantValidation;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -49,7 +47,7 @@ public class UpdateCourseHandler {
      */
     private final InstitutionRepository institutionRepository;
     private final CourseRepository courseRepository;
-    private final TenatValidation tenatValidation;
+    private final TenantValidation tenantValidation;
 
     /**
      * Executa o caso de uso de atualização de curso.
@@ -67,7 +65,7 @@ public class UpdateCourseHandler {
          */
 
         Long institutionId = SecurityUtils.getInstitutionId();
-        tenatValidation.validateInstitution(institutionId);
+        tenantValidation.validateInstitution(institutionId);
 
         /*
          * =========================================================

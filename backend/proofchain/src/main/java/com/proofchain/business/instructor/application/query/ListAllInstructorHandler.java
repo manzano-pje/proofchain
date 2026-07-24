@@ -6,7 +6,7 @@ import com.proofchain.business.instructor.interfaces.dto.response.InstructorsSum
 import com.proofchain.shared.exception.NotFoundException;
 import com.proofchain.shared.exception.messages.InstructorMessages;
 import com.proofchain.shared.security.SecurityUtils;
-import com.proofchain.shared.util.TenatValidation;
+import com.proofchain.shared.util.TenantValidation;
 import com.proofchain.user.infrastructure.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -17,7 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ListAllInstructorHandler {
 
-    private final TenatValidation tenatValidation;
+    private final TenantValidation tenantValidation;
     private final InstructorRepository instructorRepository;;
     private final UserRepository userRepository;
 
@@ -29,7 +29,7 @@ public class ListAllInstructorHandler {
          * =========================================================
          */
         Long institutionId = SecurityUtils.getInstitutionId();
-        tenatValidation.validateInstitution(institutionId);
+        tenantValidation.validateInstitution(institutionId);
 
         List<Instructor> instructors = instructorRepository.findAllByIsActiveIsTrue();
         if(instructors.isEmpty()) {

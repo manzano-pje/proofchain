@@ -21,7 +21,7 @@ public class PlanController {
     private final CreatePlansHandler createPlansHandler;
 
 //    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<String> signaturePlan( @Valid @RequestBody CreatePlanRequest dto){
         PlansCreateCommand command = new PlansCreateCommand(dto);
         createPlansHandler.createPlan(command);

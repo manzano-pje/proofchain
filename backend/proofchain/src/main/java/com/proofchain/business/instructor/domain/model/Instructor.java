@@ -15,6 +15,7 @@ import java.time.Instant;
 @NoArgsConstructor
 @Getter
 @Setter
+@Table(name = "tb_instructors")
 public class Instructor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,7 +32,7 @@ public class Instructor {
     private String specialty;
     private Instant hiringDate;
     private boolean isActive;
-    private Instant creatAt;
+    private Instant createdAt;
     private Instant deletedAt;
 
 }

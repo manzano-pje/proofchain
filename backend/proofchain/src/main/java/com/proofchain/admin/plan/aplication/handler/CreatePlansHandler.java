@@ -1,13 +1,12 @@
 package com.proofchain.admin.plan.aplication.handler;
 
-import com.proofchain.admin.institution.infrastructure.repository.InstitutionRepository;
 import com.proofchain.admin.plan.aplication.command.PlansCreateCommand;
 import com.proofchain.admin.plan.domain.model.Plans;
 import com.proofchain.admin.plan.infrastructure.repository.PlansRepository;
 import com.proofchain.shared.exception.AlreadyExistsException;
 import com.proofchain.shared.exception.messages.PlanMessages;
 import com.proofchain.shared.security.SecurityUtils;
-import com.proofchain.shared.util.TenatValidation;
+import com.proofchain.shared.util.TenantValidation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +18,7 @@ import java.util.Optional;
 public class CreatePlansHandler {
 
     private final PlansRepository plansRepository;
-    private final TenatValidation tenatValidation;
+    private final TenantValidation tenantValidation;
 
     public void createPlan(PlansCreateCommand command) {
 
@@ -29,7 +28,7 @@ public class CreatePlansHandler {
          * =========================================================
          */
         Long institutionId = SecurityUtils.getInstitutionId();
-        tenatValidation.validateInstitution(institutionId);
+        tenantValidation.validateInstitution(institutionId);
 
 
         Optional<Plans> plansOptional = plansRepository.findByName(command.getName());

@@ -2,7 +2,10 @@ package com.proofchain.user.domain.model;
 
 import com.proofchain.admin.institution.domain.model.Institution;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -50,7 +53,6 @@ import static java.time.Instant.now;
 @NoArgsConstructor
 @Getter
 @Setter
-@Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "tb_users")
 public class User {
 
@@ -175,4 +177,6 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "institution_id")
     private Institution institution;
+
+
 }

@@ -1,8 +1,7 @@
 package com.proofchain.user.applications.handler;
 
-import com.proofchain.admin.institution.infrastructure.repository.InstitutionRepository;
 import com.proofchain.shared.security.SecurityUtils;
-import com.proofchain.shared.util.TenatValidation;
+import com.proofchain.shared.util.TenantValidation;
 import com.proofchain.user.domain.exception.UserNotFoundException;
 import com.proofchain.user.domain.model.User;
 import com.proofchain.user.infrastructure.repository.UserRepository;
@@ -43,7 +42,7 @@ public class DeleteUserHandler {
      */
 
     private final UserRepository userRepository;
-    private final TenatValidation tenatValidation;
+    private final TenantValidation tenantValidation;
 
     /*
      * =========================================================
@@ -73,7 +72,7 @@ public class DeleteUserHandler {
          */
 
         Long institutionId = SecurityUtils.getInstitutionId();
-        tenatValidation.validateInstitution(institutionId);
+        tenantValidation.validateInstitution(institutionId);
 
 
         User user = userRepository

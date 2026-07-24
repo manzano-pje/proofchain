@@ -6,7 +6,7 @@ import com.proofchain.admin.institution.interfaces.dtos.request.UpdateInstitutio
 import com.proofchain.shared.exception.NotFoundException;
 import com.proofchain.shared.exception.messages.InstitutionMessages;
 import com.proofchain.shared.security.SecurityUtils;
-import com.proofchain.shared.util.TenatValidation;
+import com.proofchain.shared.util.TenantValidation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 public class UpdateInstitutionHandler {
 
     private final InstitutionRepository institutionRepository;
-    private final TenatValidation tenatValidation;
+    private final TenantValidation tenantValidation;
 
     public void updateinstitution(String cnpj, UpdateInstitutionRequest UpdateInstitutionRequest){
 
@@ -25,7 +25,7 @@ public class UpdateInstitutionHandler {
          * =========================================================
          */
         Long institutionId = SecurityUtils.getInstitutionId();
-        tenatValidation.validateInstitution(institutionId);
+        tenantValidation.validateInstitution(institutionId);
 
 
         Institution institution = institutionRepository.findByCnpjAndDeletedAtIsNull(cnpj)

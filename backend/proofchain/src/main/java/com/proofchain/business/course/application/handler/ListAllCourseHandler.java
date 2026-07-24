@@ -6,9 +6,8 @@ import com.proofchain.business.course.infrastructure.repository.CourseRepository
 import com.proofchain.business.course.interfaces.dto.response.FullCourseResponse;
 import com.proofchain.shared.exception.NotFoundException;
 import com.proofchain.shared.exception.messages.CourseMessages;
-import com.proofchain.shared.exception.messages.InstitutionMessages;
 import com.proofchain.shared.security.SecurityUtils;
-import com.proofchain.shared.util.TenatValidation;
+import com.proofchain.shared.util.TenantValidation;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -49,7 +48,7 @@ public class ListAllCourseHandler {
      */
     private final CourseRepository courseRepository;
     private final InstitutionRepository institutionRepository;
-    private final TenatValidation tenatValidation;
+    private final TenantValidation tenantValidation;
 
     /**
      * Executa o caso de uso de listagem de cursos por instituição.
@@ -65,7 +64,7 @@ public class ListAllCourseHandler {
          */
 
         Long institutionId = SecurityUtils.getInstitutionId();
-        tenatValidation.validateInstitution(institutionId);
+        tenantValidation.validateInstitution(institutionId);
 
 
         /*

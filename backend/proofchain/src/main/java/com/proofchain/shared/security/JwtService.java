@@ -40,11 +40,7 @@ import java.util.Map;
 @Service
 public class JwtService {
 
-    public void JwtService() {
-        System.out.println("\n\n=========================================================");
-        System.out.println("JWT SECRET = [" + secret + "]");
-        System.out.println("=========================================================\n\n");
-    }
+    public void JwtService() {}
 
     /*
      * =========================================================

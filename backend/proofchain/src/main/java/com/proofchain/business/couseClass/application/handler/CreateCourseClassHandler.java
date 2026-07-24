@@ -10,11 +10,10 @@ import com.proofchain.business.couseClass.infraestructure.repository.CourseClass
 import com.proofchain.shared.exception.AlreadyExistsException;
 import com.proofchain.shared.exception.NotFoundException;
 import com.proofchain.shared.exception.messages.CourseMessages;
-import com.proofchain.shared.exception.messages.InstitutionMessages;
 import com.proofchain.shared.exception.messages.InstructorMessages;
 import com.proofchain.shared.exception.messages.UserMessage;
 import com.proofchain.shared.security.SecurityUtils;
-import com.proofchain.shared.util.TenatValidation;
+import com.proofchain.shared.util.TenantValidation;
 import com.proofchain.user.domain.model.User;
 import com.proofchain.user.infrastructure.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -37,7 +36,7 @@ public class CreateCourseClassHandler {
     private final InstitutionRepository institutionRepository;
     private final CourseRepository courseRepository;
     private final UserRepository userRepository;
-    private final TenatValidation tenatValidation;
+    private final TenantValidation tenantValidation;
 
     public void create(RequestCourseClassCommand command){
 
@@ -48,7 +47,7 @@ public class CreateCourseClassHandler {
          */
 
         Long institutionId = SecurityUtils.getInstitutionId();
-        tenatValidation.validateInstitution(institutionId);
+        tenantValidation.validateInstitution(institutionId);
 
         /*
          * =========================================================

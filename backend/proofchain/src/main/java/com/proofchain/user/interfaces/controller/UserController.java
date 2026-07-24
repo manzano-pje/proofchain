@@ -129,7 +129,7 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
     })
     @PreAuthorize("hasAnyRole('SUPER_ADMIN','USER','ADMIN')")
-    @GetMapping("/{email}")
+    @GetMapping("/get/{email}")
     public ResponseEntity<UserReturn> listOneUser(@PathVariable String email) {
 
         UserReturn user = listOneUser.listOneUser(email);
@@ -152,7 +152,7 @@ public class UserController {
     })
 
     @PreAuthorize("hasAnyRole('SUPER_ADMIN','USER','ADMIN')")
-    @GetMapping
+    @GetMapping("/list")
     public List<UserReturn> listAllUser() {
 
         List<UserReturn> lista =  listAllUser.listAllUser();
