@@ -1,5 +1,6 @@
 package com.proofchain.admin.institution.domain.model;
 
+import com.proofchain.business.instructor.domain.model.Instructor;
 import com.proofchain.business.model.Certificate;
 import com.proofchain.business.course.domain.model.Course;
 import com.proofchain.admin.institution.interfaces.dtos.request.UpdateInstitutionRequest;
@@ -76,7 +77,7 @@ public class Institution {
     @ToString.Exclude
     private List<Subscriptions> subscriptions = new ArrayList<>();
 
-    // Useres
+    // Users
     @OneToMany(mappedBy = "institution",
             cascade = CascadeType.ALL,
             orphanRemoval = true)

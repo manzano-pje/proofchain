@@ -17,7 +17,7 @@ import java.time.Instant;
 @Getter
 @Setter
 @ToString
-@Table(name = "tb_instructors")
+@Table(name = "tb_CourseClass")
 public class CourseClass {
 
     @Id

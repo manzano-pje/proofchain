@@ -19,7 +19,7 @@ import java.util.List;
 @Getter
 @Setter
 @Table(name = "tb_participants")
-public class Participant extends User {
+public class Participant  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
