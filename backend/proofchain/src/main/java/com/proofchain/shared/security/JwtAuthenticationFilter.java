@@ -132,7 +132,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                      * =====================================================
                      */
                     Long institutionId = jwtService.extractInstitutionId(token);
-                    System.out.println("InstitutionId do JWT: " + institutionId);
                     TenantContext.setInstitutionId(institutionId);
                                     }
                 filterChain.doFilter(request, response);

@@ -63,7 +63,8 @@ public class InstructorController {
 
     @PatchMapping("/update/{id}")
     @PreAuthorize("hasRole('SUPER_ADMIN','ADMIN', 'USER')")
-    public ResponseEntity<Void> updateInstructor(@Valid @PathVariable Long id, @RequestBody UpdateInstructor dto){
+    public ResponseEntity<Void> updateInstructor(@Valid @PathVariable Long id,
+                                                 @RequestBody UpdateInstructor dto){
         UpdateInstructorCommand command = new UpdateInstructorCommand(dto);
         updateInstructoHandler.updateInstructor(id, command);
         return ResponseEntity.ok().build();

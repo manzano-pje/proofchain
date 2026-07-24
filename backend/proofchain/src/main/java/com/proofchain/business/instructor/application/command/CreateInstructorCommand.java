@@ -1,6 +1,5 @@
 package com.proofchain.business.instructor.application.command;
 
-
 import com.proofchain.business.instructor.interfaces.dto.request.InstructorRequest;
 import com.proofchain.user.domain.model.User;
 import lombok.AllArgsConstructor;

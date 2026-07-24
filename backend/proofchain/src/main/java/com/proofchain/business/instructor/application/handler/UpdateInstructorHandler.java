@@ -35,16 +35,12 @@ public class UpdateInstructorHandler {
         var instructor = instructorRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(InstructorMessages.INSTRUCTOR_NOT_FOUND));
 
-        Instructor isntructor = new Instructor();
         instructor.setIdInstructor(id);
         instructor.setActive(command.isActive());
         instructor.setSpecialty(command.getSpecialty());
         instructor.setHiringDate(command.getHiringDate());
 
         instructorRepository.save(instructor);
-
-
-
     }
 
 }
