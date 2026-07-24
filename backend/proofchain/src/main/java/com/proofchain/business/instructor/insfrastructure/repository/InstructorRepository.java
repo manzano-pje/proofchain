@@ -11,4 +11,5 @@ public interface InstructorRepository extends JpaRepository<Instructor, Long> {
 
     boolean existsByUserIdAndInstitutionIdAndInstitutionDeletedAtIsNull(Long InstUserId, Long InstitutionId );
     List<Instructor> findAllByIsActiveIsTrue();
+    boolean existsByIdInstructorAndIsActiveIsTrue(Long idInstructor);
 }

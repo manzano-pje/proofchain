@@ -3,6 +3,7 @@ package com.proofchain.business.instructor.interfaces.controller;
 import com.proofchain.business.instructor.application.command.CreateInstructorCommand;
 import com.proofchain.business.instructor.application.command.UpdateInstructorCommand;
 import com.proofchain.business.instructor.application.handler.CreateInstructorHandler;
+import com.proofchain.business.instructor.application.handler.DeleteInstructorHandler;
 import com.proofchain.business.instructor.application.handler.UpdateInstructorHandler;
 import com.proofchain.business.instructor.application.query.GetOneInstructorHandler;
 import com.proofchain.business.instructor.application.query.ListAllInstructorHandler;
@@ -32,7 +33,7 @@ public class InstructorController {
       private final ListAllInstructorHandler listAllInstructorHandler;
       private final GetOneInstructorHandler getOneInstructorHandler;
       private final UpdateInstructorHandler updateInstructoHandler;
-//    private final DeleteInstructorHandler deleteInstructorHandler;
+      private final DeleteInstructorHandler deleteInstructorHandler;
 
     /*
      * =========================================================
@@ -65,6 +66,13 @@ public class InstructorController {
     public ResponseEntity<Void> updateInstructor(@Valid @PathVariable Long id, @RequestBody UpdateInstructor dto){
         UpdateInstructorCommand command = new UpdateInstructorCommand(dto);
         updateInstructoHandler.updateInstructor(id, command);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasRole('SUPER_ADMIN','ADMIN', 'USER')")
+    public ResponseEntity<Void> deleteInstructor(@PathVariable Long id) {
+        deleteInstructorHandler.deleteInstructor(id);
         return ResponseEntity.ok().build();
     }
 
