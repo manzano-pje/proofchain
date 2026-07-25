@@ -7,7 +7,7 @@ public enum FeaturePlansEnum {
     STUDENTS,
     DASHBOARD,
     BASICREPORTS,
-    ADVANCEDrEPORTS,
+    ADVANCEDREPORTS,
     FULLDASBOARD,
     ADVANCEDBOARD,
     API

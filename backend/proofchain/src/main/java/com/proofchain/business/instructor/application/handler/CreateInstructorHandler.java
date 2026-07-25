@@ -76,14 +76,6 @@ public class CreateInstructorHandler {
                           userOptional.get().getId(),
                           institutionId);
 
-        var teste = instructorRepository
-                .findByUserIdAndInstitutionIdAndInstitutionDeletedAtIsNull(
-                        1L,
-                        1L);
-        System.out.println("\n========================================");
-        System.out.println("teste: " + teste);
-        System.out.println("\n========================================");
-
           if(existInstructor){
               throw new AlreadyExistsException(InstructorMessages.INSTRUCTOR_ALREAY_EXISTS);
           }

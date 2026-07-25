@@ -15,17 +15,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("api/v1/feature/")
+@RequiredArgsConstructor
 public class FeatureController {
 
     // TODO: Documentação
-    private CreateFeatureHandler createFeature;
-    private DeleteFeatureHandler deleteFeature;
-    private UpdateFeatureHandler updateFeature;
-    private GetFeatureQueryHandler listOneFeature;
-    private ListAllFeatureQueryHandler listallFeature;
+    private final CreateFeatureHandler createFeature;
+//    private DeleteFeatureHandler deleteFeature;
+//    private UpdateFeatureHandler updateFeature;
+//    private GetFeatureQueryHandler listOneFeature;
+//    private ListAllFeatureQueryHandler listallFeature;
 
     @PreAuthorize("hasRole('SUPER_ADMIN')")
     @PostMapping("/register")

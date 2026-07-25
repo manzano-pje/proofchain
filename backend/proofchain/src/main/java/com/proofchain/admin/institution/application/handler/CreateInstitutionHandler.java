@@ -84,8 +84,9 @@ public class CreateInstitutionHandler {
         user.setPassword(passwordEncoder.encode(newinstitutionRequestDto.getPassword()));
         if (newinstitutionRequestDto.getCnpj().equals("43419597000116")){
             user.setRole((UserRole.SUPER_ADMIN));
+        }else{
+            user.setRole((UserRole.ADMIN));
         }
-        user.setRole((UserRole.ADMIN));
         user.setCreateAt(Instant.now());
         user.setActive(true);
         user.setInstitution(institution);
