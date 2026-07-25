@@ -18,9 +18,9 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class CreateFeatureHandler {
 
-    private FeatureRepository featureRepository;
-    private PlansRepository plansRepository;
-    private InstitutionRepository institutionRepository;
+    private final FeatureRepository featureRepository;
+    private final PlansRepository plansRepository;
+    private final InstitutionRepository institutionRepository;
     private final TenantValidation tenantValidation;
 
     public void handler(CreateFeatureCommand command){

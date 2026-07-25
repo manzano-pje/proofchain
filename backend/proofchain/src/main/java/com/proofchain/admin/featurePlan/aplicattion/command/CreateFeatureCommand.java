@@ -3,10 +3,13 @@ package com.proofchain.admin.featurePlan.aplicattion.command;
 import com.proofchain.admin.featurePlan.domain.model.enuns.FeaturePlansEnum;
 import com.proofchain.admin.featurePlan.interfaces.dto.request.CreateFeatureRequest;
 import jakarta.persistence.Enumerated;
+import jdk.jfr.SettingDefinition;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 @AllArgsConstructor
 public class CreateFeatureCommand {
 

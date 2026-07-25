@@ -1,0 +1,157 @@
+Vou gerar um plano de refactor detalhado e acionável (passo-a-passo), incluindo arquivos afetados, mudanças de import esperadas, opções com trade-offs, ordem de execução e estimativas de risco/impacto. Não alterarei nada — apenas proponho o refactor.
+Checklist (o que entregarei)
+ Lista de arquivos que demonstram acoplamento indevido (ex.: shared → *.infrastructure, handlers que importam repositórios de infra).
+ Estratégia recomendada (abstrações/ports vs mover classes).
+ Passo-a-passo para aplicar o refactor com exemplos de código.
+ Ordem sugerida de execução, risco e mitigação.
+ Opções alternativas (mais seguras vs mais corretas).
+Achados concretos (arquivos que mostram acoplamento indevido)
+Arquivos em shared que importam repositórios de módulos específicos:
+src/main/java/com/proofchain/shared/util/TenantValidation.java
+importa com.proofchain.admin.institution.infrastructure.repository.InstitutionRepository
+src/main/java/com/proofchain/shared/security/UserDetailsServiceImpl.java
+importa com.proofchain.user.infrastructure.repository.UserRepository
+src/main/java/com/proofchain/shared/domain/model/SystemBootstrap.java
+importa com.proofchain.admin.institution.infrastructure.repository.InstitutionRepository
+importa com.proofchain.user.infrastructure.repository.UserRepository
+Handlers / classes que importam InstitutionRepository (lista completa encontrada):
+user/applications/handler/CreateUserHandler.java
+user/applications/handler/UpdateUserHandler.java
+user/applications/handler/ListOneUserHandler.java
+user/applications/handler/ListAllUserHandler.java
+user/applications/handler/DeleteUserHandler.java
+admin/featurePlan/aplicattion/handler/CreateFeatureHandler.java
+admin/featurePlan/aplicattion/handler/DeleteFeatureHandler.java
+admin/institution/application/query/ListOneInstitutionHandler.java
+admin/institution/application/query/ListAllInstitutionHandler.java
+admin/institution/application/handler/CreateInstitutionHandler.java
+admin/institution/application/handler/UpdateInstitutionHandler.java
+admin/institution/application/handler/DeleteInstitutionHandler.java
+business/course/application/handler/CreateCourseHandler.java
+business/course/application/handler/UpdateCourseHandler.java
+business/course/application/handler/ListOneCourseHandler.java
+business/course/application/handler/ListAllCourseHandler.java
+business/instructor/application/handler/CreateInstructorHandler.java
+business/couseClass/application/handler/CreateCourseClassHandler.java
+(observe: muitos handlers de módulos distintos dependem de admin.institution.infrastructure.InstitutionRepository)
+Repositórios encontrados em *.infrastructure.repository (exemplos):
+com.proofchain.admin.institution.infrastructure.repository.InstitutionRepository
+com.proofchain.user.infrastructure.repository.UserRepository
+com.proofchain.admin.plan.infrastructure.repository.PlansRepository
+com.proofchain.admin.featurePlan.infrastructure.repository.FeatureRepository
+com.proofchain.business.course.infrastructure.repository.CourseRepository
+com.proofchain.admin.subscription.infrastructure.repository.SubscriptionRepository
+Estratégia recomendada (pragmática e de baixo risco) Objetivo: remover os acoplamentos indevidos e aplicar inversão de dependência sem grandes reestruturações.
+Passo A (rápido e de baixo risco) — Remover dependências do shared para infra:
+Mover classes de shared que dependem de repositórios específicos para o módulo adequado, exemplo:
+Mover TenantValidation de com.proofchain.shared.util → com.proofchain.admin.institution.application (ou admin.institution.domain).
+Justificativa: validação de tenant é regra ligada ao contexto institution — faz sentido viver no módulo admin/platform.
+Mudança mínima nos imports: componentes que usavam TenantValidation continuam a chamá-la, mas importam do novo pacote.
+Mover SystemBootstrap (se faz bootstrap de módulos específicos) para um pacote central do módulo admin ou projeto principal (ex.: com.proofchain.bootstrap) — evitar shared depender de infra.
+Para UserDetailsServiceImpl: avaliar mover para user.interfaces/user.application (onde UserRepository já existe) ou converter para depender de uma abstração user.domain.repository.UserRepository (veja Passo B).
+Por que este passo é seguro: apenas relocação de classes que pertencem semanticamente a um domínio; altera imports, pouco risco de break. Boa primeira etapa para reduzir acoplamentos imediatos.
+Passo B (correto e sistemático) — Introduzir ports/abstrações de repositório no domínio:
+Criar interfaces de port (contratos) em domain de cada módulo que exporta funcionalidade requerida por outros módulos. Exemplo:
+Criar com.proofchain.admin.institution.domain.repository.InstitutionRepository (interface do domínio) com métodos usados (p.ex. boolean existsByIdAndDeletedAtIsNull(Long id)).
+Modificar o repositório da infraestrutura para estender tanto JpaRepository quanto a interface do domínio, por exemplo:
+infra: public interface InstitutionRepository extends JpaRepository<Institution, Long>, com.proofchain.admin.institution.domain.repository.InstitutionRepository { }
+Depois, atualizar todos os imports nas classes que hoje importam com.proofchain.admin.institution.infrastructure.repository.InstitutionRepository para importar com.proofchain.admin.institution.domain.repository.InstitutionRepository.
+Repetir para outros repositórios que são usados por múltiplos módulos (UserRepository, PlansRepository, etc).
+Por que: com isso outros módulos passam a depender de uma interface estável (domínio) e não da implementação. Infra provê implementação concreta (Spring Data).
+Passo C (refinamento) — Revisar shared e extrair apenas utilitários independentes:
+Se algum utilitário do shared precisa de comportamento de módulos, ele deve depender de uma interface (port) definida em shared ou no domínio apropriado. Ex.: TenantValidation poderia depender de um TenantPort definido no shared e implementado em admin.institution.infrastructure — essa é alternativa se quiser manter TenantValidation no shared.
+Passo-a-passo detalhado de refactor (ordem e comandos conceituais) Vou dar o passo-a-passo com exemplos de código. Faça com refactors pequenos e testes após cada passo.
+Passo 1 — Mover TenantValidation (baixa complexidade)
+Mover arquivo:
+De: com.proofchain.shared.util.TenantValidation
+Para: com.proofchain.admin.institution.application.TenantValidation (ou domain)
+Atualizar pacote no arquivo e imports referenciadores.
+Testar: compilar projeto, rodar testes unitários.
+Risco: baixo. Motivo: funcionalidade pertence ao contexto de instituição.
+Passo 2 — Criar port de repositório no domínio (InstitutionRepository interface)
+Criar novo arquivo:
+Path: src/main/java/com/proofchain/admin/institution/domain/repository/InstitutionRepository.java
+Conteúdo (exemplo):
+package com.proofchain.admin.institution.domain.repository;
+
+public interface InstitutionRepository {
+    boolean existsByIdAndDeletedAtIsNull(Long id);
+    // adicione outros métodos de domínio usados por handlers
+}
+Alterar infra repository:
+Original: com.proofchain.admin.institution.infrastructure.repository.InstitutionRepository (extende JpaRepository)
+Atual: faça a interface de infra estender tanto o JpaRepository quanto a interface do domínio:
+public interface InstitutionRepository extends JpaRepository<Institution, Long>, com.proofchain.admin.institution.domain.repository.InstitutionRepository { }
+Atualizar imports:
+Substituir em todos os handlers import com.proofchain.admin.institution.infrastructure.repository.InstitutionRepository;
+Por: import com.proofchain.admin.institution.domain.repository.InstitutionRepository;
+Testar e compilar.
+Risco: médio. Motivo: múltiplos arquivos para atualizar; mas alteração local de import — se feita via refactor da IDE fica bem segura.
+Passo 3 — Repetir Passo 2 para repositórios compartilhados (UserRepository, PlansRepository, FeatureRepository, etc.)
+Para cada repositório que é usado por outros módulos: criar interface em domain.repository e fazer infra extender o domain interface + JpaRepository.
+Atualizar imports de consumidores para a interface de domínio.
+Passo 4 — Revisar shared.security.UserDetailsServiceImpl
+Opções:
+(A) Mover a classe para o módulo user (preferido se UserDetailsServiceImpl faz lógica centrada em usuário).
+(B) Torná-la dependente da abstração com.proofchain.user.domain.repository.UserRepository (quando criada no Passo 3).
+Implementação: escolha A para menor impacto inicial: mover o arquivo para com.proofchain.user.application/security e ajustar bean config se necessário.
+Passo 5 — Revisar SystemBootstrap
+Avaliar dependências. Se SystemBootstrap inicializa módulos, coloque-o num módulo bootstrap central (ex.: com.proofchain.platform.bootstrap) ou no módulo admin.
+Testar inicialização da aplicação.
+Passo 6 — Padronização de nomes e grafia (refactor global)
+Corrigir pacotes mal grafados:
+aplicattion → application
+infraestructure / infraestructure → infrastructure
+couseClass → courseClass
+Usar refactor > rename da IDE (ferramentas Java) para atualizar imports automaticamente.
+Testar build completo.
+Risco: alto (muitos arquivos). Fazer por etapas e com CI para detectar regressões. Recomendo adiar este refactor até depois dos passos principais de desacoplamento (Passo 1-5).
+Exemplos de mudanças de código (modelo)
+Exemplo: novo domain interface (InstitutionRepository)
+src/main/java/com/proofchain/admin/institution/domain/repository/InstitutionRepository.java
+package com.proofchain.admin.institution.domain.repository;
+
+public interface InstitutionRepository {
+    boolean existsByIdAndDeletedAtIsNull(Long id);
+    // outros métodos relevantes do domínio
+}
+Exemplo: infra repository adaptar-se:
+src/main/java/com/proofchain/admin/institution/infrastructure/repository/InstitutionRepository.java
+package com.proofchain.admin.institution.infrastructure.repository;
+
+import com.proofchain.admin.institution.domain.model.Institution;
+import com.proofchain.admin.institution.domain.repository.InstitutionRepository as DomainInstitutionRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface InstitutionRepository extends JpaRepository<Institution, Long>, DomainInstitutionRepository {
+    // aqui você pode não precisar redeclarar métodos se a assinatura for a mesma
+}
+Exemplo: handler importando a nova interface de domínio:
+Antes:
+import com.proofchain.admin.institution.infrastructure.repository.InstitutionRepository;
+Depois:
+import com.proofchain.admin.institution.domain.repository.InstitutionRepository;
+Ordem sugerida e estimativas
+Fase 0 — Preparação (0.5 dia)
+Criar plano de refactor (este documento).
+Criar branch git para trabalhar.
+Fase 1 — Reduzir acoplamento do shared (1 dia)
+Mover TenantValidation, UserDetailsServiceImpl (ou adaptar para usar domain port) e SystemBootstrap.
+Testes rápidos e build.
+Fase 2 — Criar domain ports para InstitutionRepository (1 dia)
+Criar interface de domínio, adaptar infra e atualizar imports (usar IDE refactor).
+Fase 3 — Repetir para outros repositórios usados por múltiplos módulos (2–3 dias)
+UserRepository, PlansRepository, FeatureRepository, etc.
+Fase 4 — Padronização de nomes (2–4 dias; depende do tamanho do projeto)
+Renomear pacotes (IDE), rodar build completo e testes.
+Total estimado (para uma pessoa experiente no projeto): ~1–2 semanas (incluindo testes manuais). Pode ser muito mais rápido se fizer em pequenos passos (Passo 1 primeiro).
+Riscos e mitigação
+Risco: imports quebrados / compile errors — mitigar com refactor da IDE e testes de compilação contínuos.
+Risco: regressão funcional (mudança de bean names) — mitigar com testes automatizados e validação manual de fluxos críticos (auth, criação de usuário, startup).
+Risco: cortes em commits grandes — realizar muitos commits pequenos e testáveis.
+Alternativas (trade-offs)
+Alternativa rápida: apenas mover TenantValidation e UserDetailsServiceImpl para módulos donos (minimiza mudanças). Isso reduz o acoplamento imediato, mas mantém dependência de handlers para infra.
+Alternativa completa (mais trabalho, melhor correção): aplicar ports para todos os repositórios compartilhados e padronizar nomes de pacotes.
+O que posso fazer agora (sem alterar nada ainda)
+Gerar o relatório completo e exato (arquivos/linhas) onde cada módulo depende de *.infrastructure — já gerei parte (InstitutionRepository, shared imports). Posso gerar um relatório completo e salvar em arquivo (CSV/markdown).
+Gerar o patch/PR com o primeiro refactor seguro (mover TenantValidation) — se você autorizar.
