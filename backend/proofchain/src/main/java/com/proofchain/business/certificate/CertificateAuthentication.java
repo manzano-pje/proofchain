@@ -1,8 +1,8 @@
-package com.proofchain.business.model;
+package com.proofchain.business.certificate;
 
 //import com.proofchain.auth.AuthenticationStatus;
 //import com.proofchain.admin.model.domain.institution.Institution;
-//import com.proofchain.business.participant.Participant;
+//import com.proofchain.business.participant.domain.model.Participant;
 //import jakarta.persistence.*;
 //import lombok.*;
 //
