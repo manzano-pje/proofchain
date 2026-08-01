@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ParticipantRepository extends JpaRepository<Participant, Long> {
 
-    boolean existsByCpfAndInstitutionActiveAndInstitutionNotDeletedIsNull(String cpf, Long institutionId);
+    boolean existsByCpfAndInstitutionIdAndInstitutionDeletedAtIsNull(String cpf, Long institutionId);
 }

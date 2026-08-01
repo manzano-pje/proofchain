@@ -36,7 +36,7 @@ public class CreateParticipantHandler {
          * =========================================================
          */
 
-        boolean participantExists = participantRepository.existsByCpfAndInstitutionActiveAndInstitutionNotDeletedIsNull(command.getCpf(), institutionId);
+        boolean participantExists = participantRepository.existsByCpfAndInstitutionIdAndInstitutionDeletedAtIsNull(command.getCpf(), institutionId);
         if(participantExists){
             throw new NotFoundException(ParticipantMessages.PARTICIPANT_ALREAY_EXISTS);
         }
