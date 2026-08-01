@@ -1,8 +1,7 @@
-package com.proofchain.business.participant;
+package com.proofchain.business.participant.domain.model;
 
 import com.proofchain.business.course.domain.model.Course;
 import com.proofchain.admin.institution.domain.model.Institution;
-import com.proofchain.user.domain.model.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
@@ -10,16 +9,16 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.validator.constraints.br.CPF;
 
+import java.time.Instant;
 import java.util.List;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-
 @Getter
 @Setter
 @Table(name = "tb_participants")
-public class Participant  {
+public class Participant {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -59,8 +58,16 @@ public class Participant  {
     @Pattern(regexp = "\\d{5}-\\d{3}", message = "O cep deve ser no fornato XXXXX-XXX")
     private String postalCode;
 
+    @Column(nullable = false)
+    private Instant createdAt;
 
-    /////// RELACIONAMENTO //////
+    private Instant DeletedAt;
+
+    @Column(nullable = false)
+    private boolean isActive;
+
+
+    /// //// RELACIONAMENTO //////
 
     // Course
     @ManyToMany(mappedBy = "participants")
@@ -70,4 +77,38 @@ public class Participant  {
     @ManyToOne
     @JoinColumn(name = "institution_id")
     private Institution institution;
+
+    public static Participant createParticipant(
+            String name,
+            String email,
+            String phone,
+            String cpf,
+            String address,
+            Long number,
+            String complement,
+            String neighborhood,
+            String city,
+            String state,
+            String postalCode,
+            Instant createdAt,
+            Instant DeletedAt,
+            boolean isActive
+    ) {
+        Participant participant = new Participant();
+        participant.setName(name);
+        participant.setEmail(email);
+        participant.setPhone(phone);
+        participant.setCpf(cpf);
+        participant.setAddress(address);
+        participant.setNumber(number);
+        participant.setComplement(complement);
+        participant.setNeighborhood(neighborhood);
+        participant.setCity(city);
+        participant.setState(state);
+        participant.setPostalCode(postalCode);
+        participant.setCreatedAt(createdAt);
+        participant.setDeletedAt(DeletedAt);
+        participant.setActive(isActive);
+        return participant;
+    }
 }

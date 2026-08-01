@@ -2,8 +2,8 @@ package com.proofchain.business.course.domain.model;
 
 import com.proofchain.admin.institution.domain.model.Institution;
 import com.proofchain.business.couseClass.domain.model.CourseClass;
-import com.proofchain.business.model.Certificate;
-import com.proofchain.business.participant.Participant;
+import com.proofchain.business.certificate.Certificate;
+import com.proofchain.business.participant.domain.model.Participant;
 import com.proofchain.shared.domain.model.BaseEntity;
 import com.proofchain.shared.exception.BusinessException;
 import com.proofchain.shared.util.textNormalize;

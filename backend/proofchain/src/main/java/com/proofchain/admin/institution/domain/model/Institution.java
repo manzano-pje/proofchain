@@ -1,11 +1,10 @@
 package com.proofchain.admin.institution.domain.model;
 
-import com.proofchain.business.instructor.domain.model.Instructor;
-import com.proofchain.business.model.Certificate;
+import com.proofchain.business.certificate.Certificate;
 import com.proofchain.business.course.domain.model.Course;
 import com.proofchain.admin.institution.interfaces.dtos.request.UpdateInstitutionRequest;
 import com.proofchain.business.couseClass.domain.model.CourseClass;
-import com.proofchain.business.participant.Participant;
+import com.proofchain.business.participant.domain.model.Participant;
 import com.proofchain.admin.subscription.domain.model.Subscriptions;
 import com.proofchain.user.domain.model.User;
 import jakarta.persistence.*;
