@@ -1,0 +1,341 @@
+/* ==========================================================
+   SURFACES
+========================================================== */
+
+.surface {
+
+    background: var(--surface-primary);
+
+    border: var(--border-width-thin) var(--border-style) var(--border-primary);
+
+    border-radius: var(--radius-lg);
+
+}
+
+.surface-secondary {
+
+    background: var(--surface-secondary);
+
+    border: var(--border-width-thin) var(--border-style) var(--border-primary);
+
+    border-radius: var(--radius-lg);
+
+}
+
+.surface-elevated {
+
+    background: var(--surface-primary);
+
+    border: var(--border-width-thin) var(--border-style) var(--border-primary);
+
+    border-radius: var(--radius-lg);
+
+    box-shadow: var(--shadow-md);
+
+}
+
+/* ==========================================================
+   GLASS
+========================================================== */
+
+.glass {
+
+    background: rgba(255,255,255,.08);
+
+    backdrop-filter: blur(16px);
+
+    -webkit-backdrop-filter: blur(16px);
+
+    border: var(--border-width-thin) solid rgba(255,255,255,.12);
+
+    border-radius: var(--radius-xl);
+
+}
+
+.glass-dark {
+
+    background: rgba(15,23,42,.55);
+
+    backdrop-filter: blur(16px);
+
+    -webkit-backdrop-filter: blur(16px);
+
+    border: var(--border-width-thin) solid rgba(255,255,255,.08);
+
+    border-radius: var(--radius-xl);
+
+}
+
+/* ==========================================================
+   DIVIDERS
+========================================================== */
+
+.divider {
+
+    width: 100%;
+
+    height: var(--border-width-thin);
+
+    background: var(--border-primary);
+
+}
+
+.divider-vertical {
+
+    width: var(--border-width-thin);
+
+    height: 100%;
+
+    background: var(--border-primary);
+
+}
+
+/* ==========================================================
+   ELEVATION
+========================================================== */
+
+.elevation-1 {
+
+    box-shadow: var(--shadow-xs);
+
+}
+
+.elevation-2 {
+
+    box-shadow: var(--shadow-sm);
+
+}
+
+.elevation-3 {
+
+    box-shadow: var(--shadow-md);
+
+}
+
+.elevation-4 {
+
+    box-shadow: var(--shadow-lg);
+
+}
+
+.elevation-5 {
+
+    box-shadow: var(--shadow-xl);
+
+}
+
+/* ==========================================================
+   TEXT
+========================================================== */
+
+.text-gradient {
+
+    background: linear-gradient(
+        90deg,
+        var(--brand),
+        var(--brand-light)
+    );
+
+    -webkit-background-clip: text;
+
+    background-clip: text;
+
+    color: transparent;
+
+}
+
+.text-muted {
+
+    color: var(--text-secondary);
+
+}
+
+.text-disabled {
+
+    color: var(--text-disabled);
+
+}
+
+/* ==========================================================
+   TRUNCATE
+========================================================== */
+
+.truncate {
+
+    overflow: hidden;
+
+    white-space: nowrap;
+
+    text-overflow: ellipsis;
+
+}
+
+.line-clamp-2 {
+
+    display: -webkit-box;
+
+    -webkit-box-orient: vertical;
+
+    -webkit-line-clamp: 2;
+
+    overflow: hidden;
+
+}
+
+.line-clamp-3 {
+
+    display: -webkit-box;
+
+    -webkit-box-orient: vertical;
+
+    -webkit-line-clamp: 3;
+
+    overflow: hidden;
+
+}
+
+.line-clamp-4 {
+
+    display: -webkit-box;
+
+    -webkit-box-orient: vertical;
+
+    -webkit-line-clamp: 4;
+
+    overflow: hidden;
+
+}
+
+/* ==========================================================
+   TRANSITIONS
+========================================================== */
+
+.transition {
+
+    transition: all var(--transition-default);
+
+}
+
+.transition-fast {
+
+    transition: all var(--transition-fast);
+
+}
+
+.transition-slow {
+
+    transition: all var(--transition-slow);
+
+}
+
+/* ==========================================================
+   INTERACTION
+========================================================== */
+
+.hover-lift {
+
+    transition:
+        transform var(--transition-default),
+        box-shadow var(--transition-default);
+
+}
+
+.hover-lift:hover {
+
+    transform: translateY(-4px);
+
+    box-shadow: var(--shadow-lg);
+
+}
+
+.hover-scale {
+
+    transition: transform var(--transition-default);
+
+}
+
+.hover-scale:hover {
+
+    transform: scale(1.03);
+
+}
+
+/* ==========================================================
+   LOADING
+========================================================== */
+
+.loading {
+
+    pointer-events: none;
+
+    opacity: var(--opacity-disabled);
+
+}
+
+.disabled {
+
+    pointer-events: none;
+
+    opacity: var(--opacity-disabled);
+
+}
+
+/* ==========================================================
+   BACKDROP
+========================================================== */
+
+.backdrop {
+
+    backdrop-filter: blur(8px);
+
+    -webkit-backdrop-filter: blur(8px);
+
+}
+
+/* ==========================================================
+   ASPECT RATIO
+========================================================== */
+
+.aspect-square {
+
+    aspect-ratio: 1;
+
+}
+
+.aspect-video {
+
+    aspect-ratio: 16 / 9;
+
+}
+
+/* ==========================================================
+   OBJECT FIT
+========================================================== */
+
+.object-cover {
+
+    object-fit: cover;
+
+}
+
+.object-contain {
+
+    object-fit: contain;
+
+}
+
+.object-fill {
+
+    object-fit: fill;
+
+}
+
+/* ==========================================================
+   SCROLL
+========================================================== */
+
+.scroll-smooth {
+
+    scroll-behavior: smooth;
+
+}

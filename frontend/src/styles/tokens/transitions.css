@@ -1,0 +1,13 @@
+:root {
+
+    /* ======================================================
+       TRANSITIONS
+    ====================================================== */
+
+    --transition-fast: .15s ease-in-out;
+
+    --transition-default: .25s ease-in-out;
+
+    --transition-slow: .40s ease;
+
+}

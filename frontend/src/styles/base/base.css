@@ -1,0 +1,166 @@
+/* ==========================================================
+   HTML
+========================================================== */
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* ==========================================================
+   BODY
+========================================================== */
+
+body {
+
+    min-height: 100vh;
+
+    overflow-x: hidden;
+
+    background: var(--background);
+
+    color: var(--text-primary);
+
+    font-family: var(--font-body);
+
+    font-size: var(--body-default);
+
+    font-weight: var(--weight-regular);
+
+    line-height: var(--line-normal);
+
+}
+
+/* ==========================================================
+   HEADINGS
+========================================================== */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+
+    color: var(--text-primary);
+
+    font-family: var(--font-heading);
+
+    font-weight: var(--weight-bold);
+
+    line-height: var(--line-tight);
+
+    overflow-wrap: break-word;
+
+}
+
+h1 { font-size: var(--heading-1); }
+
+h2 { font-size: var(--heading-2); }
+
+h3 { font-size: var(--heading-3); }
+
+h4 { font-size: var(--heading-4); }
+
+h5 { font-size: var(--heading-5); }
+
+h6 { font-size: var(--heading-6); }
+
+/* ==========================================================
+   TEXT
+========================================================== */
+
+p {
+
+    overflow-wrap: break-word;
+
+    font-size: var(--body-default);
+
+}
+
+small {
+
+    font-size: var(--body-small);
+
+}
+
+strong {
+
+    font-weight: var(--weight-bold);
+
+}
+
+code,
+pre {
+
+    font-family: var(--font-monospace);
+
+}
+
+/* ==========================================================
+   LINKS
+========================================================== */
+
+a {
+
+    transition: color var(--transition-fast);
+
+}
+
+/* ==========================================================
+   BUTTON
+========================================================== */
+
+button {
+
+    cursor: pointer;
+
+}
+
+/* ==========================================================
+   FORM
+========================================================== */
+
+input,
+textarea,
+select {
+
+    outline: none;
+
+}
+
+input::placeholder,
+textarea::placeholder {
+
+    color: var(--text-muted);
+
+}
+
+/* ==========================================================
+   TABLE
+========================================================== */
+
+table {
+
+    width: 100%;
+
+}
+
+/* ==========================================================
+   SELECTION
+========================================================== */
+
+::selection {
+
+    background: var(--action);
+
+    color: var(--text-inverse);
+
+}
+
+::-moz-selection {
+
+    background: var(--action);
+
+    color: var(--text-inverse);
+
+}

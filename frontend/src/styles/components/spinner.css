@@ -1,0 +1,70 @@
+/* ==========================================
+   ProofChain Design System
+   Component: Spinner
+   ========================================== */
+
+
+/* ==========================================
+   Base
+   ========================================== */
+
+.spinner {
+
+  display: inline-block;
+
+  width: 32px;
+
+  height: 32px;
+
+  border: 3px solid var(--color-border);
+
+  border-top-color: var(--color-primary);
+
+  border-radius: var(--radius-full);
+
+  animation:
+
+    spin var(--animation-duration-fast) linear infinite;
+
+}
+
+
+
+/* ==========================================
+   Estados
+   ========================================== */
+
+.spinner--inverse {
+
+  border-color: var(--color-background-alpha);
+
+  border-top-color: var(--color-text-inverse);
+
+}
+
+
+
+/* ==========================================
+   Modificadores
+   ========================================== */
+
+.spinner--sm {
+
+  width: 20px;
+
+  height: 20px;
+
+  border-width: 2px;
+
+}
+
+
+.spinner--lg {
+
+  width: 48px;
+
+  height: 48px;
+
+  border-width: 4px;
+
+}

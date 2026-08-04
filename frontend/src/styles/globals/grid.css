@@ -1,0 +1,219 @@
+/* ==========================================================
+   GRID
+========================================================== */
+
+.grid {
+
+    display: grid;
+
+}
+
+/* ==========================================================
+   GRID COLUMNS
+========================================================== */
+
+.grid-1 {
+
+    grid-template-columns: repeat(1, 1fr);
+
+}
+
+.grid-2 {
+
+    grid-template-columns: repeat(2, 1fr);
+
+}
+
+.grid-3 {
+
+    grid-template-columns: repeat(3, 1fr);
+
+}
+
+.grid-4 {
+
+    grid-template-columns: repeat(4, 1fr);
+
+}
+
+.grid-5 {
+
+    grid-template-columns: repeat(5, 1fr);
+
+}
+
+.grid-6 {
+
+    grid-template-columns: repeat(6, 1fr);
+
+}
+
+/* ==========================================================
+   AUTO GRID
+========================================================== */
+
+.grid-auto-fit {
+
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+
+}
+
+.grid-auto-fill {
+
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+
+}
+
+/* ==========================================================
+   SIDEBAR LAYOUT
+========================================================== */
+
+.grid-sidebar {
+
+    display: grid;
+
+    grid-template-columns: 280px 1fr;
+
+}
+
+/* ==========================================================
+   DASHBOARD
+========================================================== */
+
+.grid-dashboard {
+
+    display: grid;
+
+    grid-template-columns: repeat(12, 1fr);
+
+}
+
+/* ==========================================================
+   GAP
+========================================================== */
+
+.grid-gap-1 {
+
+    gap: var(--space-1);
+
+}
+
+.grid-gap-2 {
+
+    gap: var(--space-2);
+
+}
+
+.grid-gap-3 {
+
+    gap: var(--space-3);
+
+}
+
+.grid-gap-4 {
+
+    gap: var(--space-4);
+
+}
+
+.grid-gap-5 {
+
+    gap: var(--space-5);
+
+}
+
+.grid-gap-6 {
+
+    gap: var(--space-6);
+
+}
+
+.grid-gap-8 {
+
+    gap: var(--space-8);
+
+}
+
+.grid-gap-10 {
+
+    gap: var(--space-10);
+
+}
+
+.grid-gap-12 {
+
+    gap: var(--space-12);
+
+}
+
+/* ==========================================================
+   COLUMN SPAN
+========================================================== */
+
+.col-span-1 { grid-column: span 1; }
+
+.col-span-2 { grid-column: span 2; }
+
+.col-span-3 { grid-column: span 3; }
+
+.col-span-4 { grid-column: span 4; }
+
+.col-span-5 { grid-column: span 5; }
+
+.col-span-6 { grid-column: span 6; }
+
+.col-span-7 { grid-column: span 7; }
+
+.col-span-8 { grid-column: span 8; }
+
+.col-span-9 { grid-column: span 9; }
+
+.col-span-10 { grid-column: span 10; }
+
+.col-span-11 { grid-column: span 11; }
+
+.col-span-12 { grid-column: span 12; }
+
+/* ==========================================================
+   ROW SPAN
+========================================================== */
+
+.row-span-1 { grid-row: span 1; }
+
+.row-span-2 { grid-row: span 2; }
+
+.row-span-3 { grid-row: span 3; }
+
+.row-span-4 { grid-row: span 4; }
+
+.row-span-5 { grid-row: span 5; }
+
+.row-span-6 { grid-row: span 6; }
+
+/* ==========================================================
+   ALIGNMENT
+========================================================== */
+
+.grid-center {
+
+    place-items: center;
+
+}
+
+.grid-start {
+
+    place-items: start;
+
+}
+
+.grid-end {
+
+    place-items: end;
+
+}
+
+.grid-stretch {
+
+    place-items: stretch;
+
+}

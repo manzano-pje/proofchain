@@ -1,0 +1,98 @@
+/* ==========================================
+   ProofChain Design System
+   Component: Tabs
+   ========================================== */
+
+
+/* ==========================================
+   Base
+   ========================================== */
+
+.tabs {
+
+  display: flex;
+
+  flex-direction: column;
+
+}
+
+
+
+/* ==========================================
+   Navigation
+   ========================================== */
+
+.tabs__nav {
+
+  display: flex;
+
+  gap: var(--space-md);
+
+  border-bottom: 1px solid var(--color-border);
+
+}
+
+
+.tabs__tab {
+
+  position: relative;
+
+  padding: var(--space-sm) var(--space-md);
+
+  font-size: var(--font-size-sm);
+
+  color: var(--color-text-secondary);
+
+  cursor: pointer;
+
+}
+
+
+
+/* ==========================================
+   Estados
+   ========================================== */
+
+.tabs__tab:hover {
+
+  color: var(--color-primary);
+
+}
+
+
+.tabs__tab--active {
+
+  color: var(--color-primary);
+
+}
+
+
+.tabs__tab--active::after {
+
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+
+  right: 0;
+
+  bottom: -1px;
+
+  height: 2px;
+
+  background: var(--color-primary);
+
+}
+
+
+
+/* ==========================================
+   Content
+   ========================================== */
+
+.tabs__content {
+
+  padding-top: var(--space-lg);
+
+}

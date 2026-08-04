@@ -1,0 +1,101 @@
+/* ==========================================
+   ProofChain Design System
+   Component: Table
+   ========================================== */
+
+
+/* ==========================================
+   Base
+   ========================================== */
+
+.table {
+
+  width: 100%;
+
+  border-collapse: collapse;
+
+  font-size: var(--font-size-sm);
+
+  color: var(--color-text-primary);
+
+}
+
+
+
+/* ==========================================
+   Header
+   ========================================== */
+
+.table thead {
+
+  background: var(--color-background-secondary);
+
+}
+
+
+.table th {
+
+  padding: var(--space-md);
+
+  text-align: left;
+
+  font-weight: var(--font-weight-medium);
+
+  color: var(--color-text-secondary);
+
+  border-bottom: 1px solid var(--color-border);
+
+}
+
+
+
+/* ==========================================
+   Body
+   ========================================== */
+
+.table td {
+
+  padding: var(--space-md);
+
+  border-bottom: 1px solid var(--color-border);
+
+}
+
+
+
+/* ==========================================
+   Estados
+   ========================================== */
+
+.table tbody tr:hover {
+
+  background: var(--color-background-hover);
+
+}
+
+
+.table__row--selected {
+
+  background: var(--color-primary-light);
+
+}
+
+
+
+/* ==========================================
+   Modificadores
+   ========================================== */
+
+.table--bordered {
+
+  border: 1px solid var(--color-border);
+
+}
+
+
+.table--compact th,
+.table--compact td {
+
+  padding: var(--space-sm);
+
+}

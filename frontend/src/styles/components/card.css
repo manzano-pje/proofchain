@@ -1,0 +1,114 @@
+/* ==========================================
+   ProofChain Design System
+   Component: Card
+   ========================================== */
+
+
+/* ==========================================
+   Base
+   ========================================== */
+
+.card {
+
+  display: flex;
+
+  flex-direction: column;
+
+  background: var(--color-background);
+
+  border: 1px solid var(--color-border);
+
+  border-radius: var(--radius-lg);
+
+  box-shadow: var(--shadow-card);
+
+  overflow: hidden;
+
+}
+
+
+/* ==========================================
+   Header
+   ========================================== */
+
+.card__header {
+
+  padding: var(--space-lg);
+
+  border-bottom: 1px solid var(--color-border);
+
+}
+
+
+/* ==========================================
+   Body
+   ========================================== */
+
+.card__body {
+
+  padding: var(--space-lg);
+
+}
+
+
+/* ==========================================
+   Footer
+   ========================================== */
+
+.card__footer {
+
+  padding: var(--space-lg);
+
+  border-top: 1px solid var(--color-border);
+
+}
+
+
+
+/* ==========================================
+   Estados
+   ========================================== */
+
+.card:hover {
+
+  box-shadow: var(--shadow-md);
+
+}
+
+
+
+/* ==========================================
+   Modificadores
+   ========================================== */
+
+.card--flat {
+
+  box-shadow: none;
+
+}
+
+
+.card--borderless {
+
+  border: none;
+
+}
+
+
+.card--interactive {
+
+  cursor: pointer;
+
+  transition:
+
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast);
+
+}
+
+
+.card--interactive:hover {
+
+  transform: translateY(-2px);
+
+}

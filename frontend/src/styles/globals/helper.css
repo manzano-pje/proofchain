@@ -1,0 +1,257 @@
+/* ==========================================================
+   DISPLAY
+========================================================== */
+
+.hidden {
+
+    display: none !important;
+
+}
+
+.block {
+
+    display: block;
+
+}
+
+.inline {
+
+    display: inline;
+
+}
+
+.inline-block {
+
+    display: inline-block;
+
+}
+
+/* ==========================================================
+   VISIBILITY
+========================================================== */
+
+.visible {
+
+    visibility: visible;
+
+}
+
+.invisible {
+
+    visibility: hidden;
+
+}
+
+/* ==========================================================
+   POSITION
+========================================================== */
+
+.relative {
+
+    position: relative;
+
+}
+
+.absolute {
+
+    position: absolute;
+
+}
+
+.fixed {
+
+    position: fixed;
+
+}
+
+.sticky {
+
+    position: sticky;
+
+}
+
+/* ==========================================================
+   CURSOR
+========================================================== */
+
+.pointer {
+
+    cursor: pointer;
+
+}
+
+.not-allowed {
+
+    cursor: not-allowed;
+
+}
+
+/* ==========================================================
+   USER SELECT
+========================================================== */
+
+.no-select {
+
+    user-select: none;
+
+}
+
+/* ==========================================================
+   OVERFLOW
+========================================================== */
+
+.overflow-hidden {
+
+    overflow: hidden;
+
+}
+
+.overflow-auto {
+
+    overflow: auto;
+
+}
+
+.overflow-x-auto {
+
+    overflow-x: auto;
+
+}
+
+.overflow-y-auto {
+
+    overflow-y: auto;
+
+}
+
+/* ==========================================================
+   WIDTH
+========================================================== */
+
+.w-full {
+
+    width: 100%;
+
+}
+
+.w-auto {
+
+    width: auto;
+
+}
+
+/* ==========================================================
+   HEIGHT
+========================================================== */
+
+.h-full {
+
+    height: 100%;
+
+}
+
+.h-screen {
+
+    height: 100vh;
+
+}
+
+.min-h-screen {
+
+    min-height: 100vh;
+
+}
+
+/* ==========================================================
+   RADIUS
+========================================================== */
+
+.rounded {
+
+    border-radius: var(--radius-md);
+
+}
+
+.rounded-sm {
+
+    border-radius: var(--radius-sm);
+
+}
+
+.rounded-lg {
+
+    border-radius: var(--radius-lg);
+
+}
+
+.rounded-xl {
+
+    border-radius: var(--radius-xl);
+
+}
+
+.rounded-full {
+
+    border-radius: var(--radius-round);
+
+}
+
+/* ==========================================================
+   SHADOW
+========================================================== */
+
+.shadow {
+
+    box-shadow: var(--shadow-sm);
+
+}
+
+.shadow-md {
+
+    box-shadow: var(--shadow-md);
+
+}
+
+.shadow-lg {
+
+    box-shadow: var(--shadow-lg);
+
+}
+
+.shadow-xl {
+
+    box-shadow: var(--shadow-xl);
+
+}
+
+/* ==========================================================
+   TEXT
+========================================================== */
+
+.text-left {
+
+    text-align: left;
+
+}
+
+.text-center {
+
+    text-align: center;
+
+}
+
+.text-right {
+
+    text-align: right;
+
+}
+
+/* ==========================================================
+   MARGIN
+========================================================== */
+
+.mx-auto {
+
+    margin-inline: auto;
+
+}

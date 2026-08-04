@@ -1,0 +1,76 @@
+/* ==========================================
+   ProofChain Design System
+   Component: Checkbox
+   ========================================== */
+
+
+/* ==========================================
+   Base
+   ========================================== */
+
+.checkbox {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: var(--space-sm);
+
+  cursor: pointer;
+
+}
+
+
+.checkbox__input {
+
+  width: 16px;
+
+  height: 16px;
+
+  accent-color: var(--color-primary);
+
+}
+
+
+.checkbox__label {
+
+  font-size: var(--font-size-sm);
+
+  color: var(--color-text-primary);
+
+}
+
+
+
+/* ==========================================
+   Estados
+   ========================================== */
+
+.checkbox:hover .checkbox__label {
+
+  color: var(--color-primary);
+
+}
+
+
+.checkbox__input:disabled {
+
+  cursor: not-allowed;
+
+  opacity: var(--opacity-disabled);
+
+}
+
+
+
+/* ==========================================
+   Modificadores
+   ========================================== */
+
+.checkbox--disabled {
+
+  cursor: not-allowed;
+
+  opacity: var(--opacity-disabled);
+
+}

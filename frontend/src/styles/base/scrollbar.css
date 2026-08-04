@@ -1,0 +1,43 @@
+/* ==========================================================
+   SCROLLBAR
+========================================================== */
+
+::-webkit-scrollbar {
+
+    width: 10px;
+
+    height: 10px;
+
+}
+
+::-webkit-scrollbar-track {
+
+    background: var(--surface-secondary);
+
+}
+
+::-webkit-scrollbar-thumb {
+
+    background: var(--border-hover);
+
+    border-radius: var(--radius-round);
+
+}
+
+::-webkit-scrollbar-thumb:hover {
+
+    background: var(--brand);
+
+}
+
+/* ==========================================================
+   FIREFOX
+========================================================== */
+
+* {
+
+    scrollbar-width: thin;
+
+    scrollbar-color: var(--border-hover) var(--surface-secondary);
+
+}

@@ -1,0 +1,109 @@
+/* ==========================================
+   ProofChain Design System
+   Component: Tooltip
+   ========================================== */
+
+
+/* ==========================================
+   Base
+   ========================================== */
+
+.tooltip {
+
+  position: relative;
+
+  display: inline-flex;
+
+}
+
+
+
+/* ==========================================
+   Content
+   ========================================== */
+
+.tooltip__content {
+
+  position: absolute;
+
+  bottom: calc(100% + var(--space-sm));
+
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  padding: var(--space-xs) var(--space-sm);
+
+  font-size: var(--font-size-xs);
+
+  color: var(--color-text-inverse);
+
+  background: var(--color-background-dark);
+
+  border-radius: var(--radius-sm);
+
+  white-space: nowrap;
+
+  opacity: 0;
+
+  pointer-events: none;
+
+  transition:
+
+    opacity var(--transition-fast);
+
+}
+
+
+
+/* ==========================================
+   Estados
+   ========================================== */
+
+.tooltip:hover .tooltip__content {
+
+  opacity: 1;
+
+}
+
+
+
+/* ==========================================
+   Modificadores
+   ========================================== */
+
+.tooltip--bottom .tooltip__content {
+
+  top: calc(100% + var(--space-sm));
+
+  bottom: auto;
+
+}
+
+
+.tooltip--right .tooltip__content {
+
+  left: calc(100% + var(--space-sm));
+
+  top: 50%;
+
+  bottom: auto;
+
+  transform: translateY(-50%);
+
+}
+
+
+.tooltip--left .tooltip__content {
+
+  right: calc(100% + var(--space-sm));
+
+  left: auto;
+
+  top: 50%;
+
+  bottom: auto;
+
+  transform: translateY(-50%);
+
+}

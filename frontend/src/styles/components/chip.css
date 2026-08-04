@@ -1,0 +1,91 @@
+/* ==========================================
+   ProofChain Design System
+   Component: Chip
+   ========================================== */
+
+
+/* ==========================================
+   Base
+   ========================================== */
+
+.chip {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: var(--space-xs);
+
+  height: 28px;
+
+  padding-inline: var(--space-md);
+
+  font-size: var(--font-size-xs);
+
+  color: var(--color-text-primary);
+
+  background: var(--color-background-secondary);
+
+  border-radius: var(--radius-full);
+
+}
+
+
+
+/* ==========================================
+   Variantes
+   ========================================== */
+
+.chip--primary {
+
+  background: var(--color-primary);
+
+  color: var(--color-text-inverse);
+
+}
+
+
+.chip--success {
+
+  background: var(--color-success);
+
+  color: var(--color-text-inverse);
+
+}
+
+
+
+/* ==========================================
+   Estados
+   ========================================== */
+
+.chip--clickable {
+
+  cursor: pointer;
+
+  transition:
+
+    background-color var(--transition-fast);
+
+}
+
+
+.chip--clickable:hover {
+
+  opacity: .85;
+
+}
+
+
+
+/* ==========================================
+   Modificadores
+   ========================================== */
+
+.chip--outline {
+
+  background: transparent;
+
+  border: 1px solid var(--color-border);
+
+}
