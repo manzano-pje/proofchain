@@ -1,0 +1,158 @@
+/* ==========================================
+   ProofChain Design System
+   Component: Input
+   ========================================== */
+
+
+.input {
+
+  width: 100%;
+
+  height: 40px;
+
+  padding-inline: var(--space-md);
+
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-sm);
+
+  color: var(--color-text-primary);
+
+  background: var(--color-background);
+
+  border: 1px solid var(--color-border);
+
+  border-radius: var(--radius-md);
+
+  outline: none;
+
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    background-color var(--transition-fast);
+
+}
+
+
+
+/* ==========================================
+   Placeholder
+   ========================================== */
+
+
+.input::placeholder {
+
+  color: var(--color-text-secondary);
+
+}
+
+
+
+/* ==========================================
+   Hover
+   ========================================== */
+
+
+.input:hover {
+
+  border-color: var(--color-border-hover);
+
+}
+
+
+
+/* ==========================================
+   Focus
+   ========================================== */
+
+
+.input:focus {
+
+  border-color: var(--color-primary);
+
+  box-shadow: var(--shadow-focus);
+
+}
+
+
+
+/* ==========================================
+   Sizes
+   ========================================== */
+
+
+.input--sm {
+
+  height: 32px;
+
+  font-size: var(--font-size-xs);
+
+}
+
+
+
+.input--md {
+
+  height: 40px;
+
+}
+
+
+
+.input--lg {
+
+  height: 48px;
+
+  font-size: var(--font-size-md);
+
+}
+
+
+
+/* ==========================================
+   Error
+   ========================================== */
+
+
+.input--error {
+
+  border-color: var(--color-danger);
+
+}
+
+
+
+.input--error:focus {
+
+  box-shadow: var(--shadow-error);
+
+}
+
+
+
+/* ==========================================
+   Disabled
+   ========================================== */
+
+
+.input:disabled {
+
+  cursor: not-allowed;
+
+  opacity: var(--opacity-disabled);
+
+  background: var(--color-background-disabled);
+
+}
+
+
+
+/* ==========================================
+   Readonly
+   ========================================== */
+
+
+.input:read-only {
+
+  background: var(--color-background-secondary);
+
+}

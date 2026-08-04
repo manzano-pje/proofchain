@@ -1,0 +1,98 @@
+/* ==========================================
+   ProofChain Design System
+   Component: Avatar
+   ========================================== */
+
+
+/* ==========================================
+   Base
+   ========================================== */
+
+.avatar {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  overflow: hidden;
+
+  background: var(--color-background-secondary);
+
+  color: var(--color-text-primary);
+
+  border-radius: var(--radius-full);
+
+  font-weight: var(--font-weight-medium);
+
+}
+
+
+
+.avatar__image {
+
+  width: 100%;
+
+  height: 100%;
+
+  object-fit: cover;
+
+}
+
+
+
+/* ==========================================
+   Tamanhos
+   ========================================== */
+
+.avatar--sm {
+
+  width: 32px;
+
+  height: 32px;
+
+  font-size: var(--font-size-xs);
+
+}
+
+
+.avatar--md {
+
+  width: 40px;
+
+  height: 40px;
+
+  font-size: var(--font-size-sm);
+
+}
+
+
+.avatar--lg {
+
+  width: 56px;
+
+  height: 56px;
+
+  font-size: var(--font-size-md);
+
+}
+
+
+
+/* ==========================================
+   Estados
+   ========================================== */
+
+.avatar--online {
+
+  border: 2px solid var(--color-success);
+
+}
+
+
+.avatar--offline {
+
+  opacity: var(--opacity-disabled);
+
+}

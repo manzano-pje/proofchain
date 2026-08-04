@@ -1,0 +1,93 @@
+/* ==========================================================
+   GOOGLE FONTS
+========================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap");
+
+:root {
+
+  /* ======================================================
+       FONT FAMILY
+    ====================================================== */
+
+    --font-heading:
+        "Plus Jakarta Sans",
+        "Inter",
+        "Segoe UI",
+        sans-serif;
+
+    --font-body:
+        "Inter",
+        "Plus Jakarta Sans",
+        "Segoe UI",
+        sans-serif;
+
+    --font-monospace:
+        "JetBrains Mono",
+        "Fira Code",
+        Consolas,
+        monospace;
+
+    /* ======================================================
+       FONT SIZE
+    ====================================================== */
+
+    --font-xs: .75rem;      /* 12px */
+    --font-sm: .875rem;     /* 14px */
+    --font-md: 1rem;        /* 16px */
+    --font-lg: 1.125rem;    /* 18px */
+    --font-xl: 1.25rem;     /* 20px */
+    --font-2xl: 1.5rem;     /* 24px */
+    --font-3xl: 1.875rem;   /* 30px */
+    --font-4xl: 2.25rem;    /* 36px */
+    --font-5xl: 3rem;       /* 48px */
+    --font-6xl: 3.75rem;    /* 60px */
+
+    /* ======================================================
+       FONT WEIGHT
+    ====================================================== */
+
+    --weight-light: 300;
+    --weight-regular: 400;
+    --weight-medium: 500;
+    --weight-semibold: 600;
+    --weight-bold: 700;
+
+    /* ======================================================
+       LINE HEIGHT
+    ====================================================== */
+
+    --line-tight: 1.2;
+    --line-normal: 1.5;
+    --line-relaxed: 1.8;
+
+    /* ======================================================
+       LETTER SPACING
+    ====================================================== */
+
+    --tracking-tight: -.03em;
+    --tracking-normal: 0;
+    --tracking-wide: .03em;
+
+    /* ======================================================
+       HEADINGS
+    ====================================================== */
+
+    --heading-1: var(--font-5xl);
+    --heading-2: var(--font-4xl);
+    --heading-3: var(--font-3xl);
+    --heading-4: var(--font-2xl);
+    --heading-5: var(--font-xl);
+    --heading-6: var(--font-lg);
+
+    /* ======================================================
+       BODY
+    ====================================================== */
+
+    --body-large: var(--font-lg);
+    --body-default: var(--font-md);
+    --body-small: var(--font-sm);
+
+}

@@ -1,0 +1,87 @@
+/* ==========================================
+   ProofChain Design System
+   Component: Alert
+   ========================================== */
+
+
+/* ==========================================
+   Base
+   ========================================== */
+
+.alert {
+
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: var(--space-md);
+
+  padding: var(--space-md);
+
+  border-radius: var(--radius-md);
+
+  font-size: var(--font-size-sm);
+
+}
+
+
+
+/* ==========================================
+   Variantes
+   ========================================== */
+
+.alert--info {
+
+  background: var(--color-info-background);
+
+  color: var(--color-info);
+
+}
+
+
+.alert--success {
+
+  background: var(--color-success-background);
+
+  color: var(--color-success);
+
+}
+
+
+.alert--warning {
+
+  background: var(--color-warning-background);
+
+  color: var(--color-warning);
+
+}
+
+
+.alert--danger {
+
+  background: var(--color-danger-background);
+
+  color: var(--color-danger);
+
+}
+
+
+
+/* ==========================================
+   Modificadores
+   ========================================== */
+
+.alert--outlined {
+
+  background: transparent;
+
+  border: 1px solid currentColor;
+
+}
+
+
+.alert--dismissible {
+
+  justify-content: space-between;
+
+}

@@ -1,28 +1,11 @@
-<script setup lang="ts">
-import { RouterView } from 'vue-router' 
-import Header from './components/layout/Header.vue'
-import Footer from './components/layout/Footer.vue'
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <div class="app-layout">
-    <Header />
-    <main>
-      <RouterView />
-    </main>
-    <Footer />
-  </div>
+  <h1>You did it!</h1>
+  <p>
+    Visit <a href="https://vuejs.org/" target="_blank" rel="noopener">vuejs.org</a> to read the
+    documentation
+  </p>
 </template>
 
-<style scoped>
-.app-layout {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-main {
-  width: 100%;
-  flex: 1; /* This makes the main content expand to fill available space, pushing footer down */
-}
-</style>
+<style scoped></style>

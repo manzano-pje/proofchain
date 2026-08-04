@@ -1,0 +1,66 @@
+/* ==========================================
+   ProofChain Design System
+   Component: Breadcrumb
+   ========================================== */
+
+
+/* ==========================================
+   Base
+   ========================================== */
+
+.breadcrumb {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: var(--space-sm);
+
+  font-size: var(--font-size-sm);
+
+}
+
+
+
+/* ==========================================
+   Item
+   ========================================== */
+
+.breadcrumb__item {
+
+  color: var(--color-text-secondary);
+
+}
+
+
+.breadcrumb__item a {
+
+  color: var(--color-primary);
+
+  text-decoration: none;
+
+}
+
+
+
+/* ==========================================
+   Separator
+   ========================================== */
+
+.breadcrumb__separator {
+
+  color: var(--color-text-secondary);
+
+}
+
+
+
+/* ==========================================
+   Estados
+   ========================================== */
+
+.breadcrumb__item--active {
+
+  color: var(--color-text-primary);
+
+}
