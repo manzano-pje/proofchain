@@ -1,0 +1,78 @@
+/*
+=========================================================
+Project.......: ProofChain
+Component.....: FormField
+File..........: FormField.css
+Version.......: 1.0.0
+
+Description...:
+Styles for form field wrapper.
+
+Responsibility:
+Provide layout and validation states.
+
+Methodology...:
+BEM
+=========================================================
+*/
+
+.form-field {
+
+    display: flex;
+    flex-direction: column;
+
+    gap: var(--spacing-xs);
+
+    width: 100%;
+
+}
+
+
+.form-field__label {
+
+    color: var(--color-text-primary);
+
+    font-size: var(--font-size-sm);
+
+    font-weight: var(--font-weight-medium);
+
+}
+
+
+.form-field__required {
+
+    color: var(--color-danger);
+
+}
+
+
+.form-field__control {
+
+    width: 100%;
+
+}
+
+
+.form-field__error {
+
+    color: var(--color-danger);
+
+    font-size: var(--font-size-sm);
+
+}
+
+
+.form-field__hint {
+
+    color: var(--color-text-secondary);
+
+    font-size: var(--font-size-sm);
+
+}
+
+
+.form-field--disabled {
+
+    opacity: .6;
+
+}
