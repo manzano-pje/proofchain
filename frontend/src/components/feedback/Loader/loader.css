@@ -1,111 +1,89 @@
-/* ==========================================
-   ProofChain Design System
-   Component: Loader
-   ========================================== */
+/*
+=========================================================
+Project.......: ProofChain
+Component.....: Loader
+File..........: Loader.css
+Version.......: 1.0.0
 
+Description...:
+Loader styles.
 
-/* ==========================================
-   Base
-   ========================================== */
+Responsibility:
+Provide loading indicators.
+
+Methodology...:
+BEM
+=========================================================
+*/
+
+.loader-container {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: var(--spacing-sm);
+
+}
+
 
 .loader {
 
-  display: inline-flex;
+    display: inline-block;
 
-  align-items: center;
+    border-radius: 50%;
 
-  justify-content: center;
+    border: 3px solid var(--color-border);
 
-  gap: var(--space-sm);
+    border-top-color: var(--color-primary);
+
+    animation: loader-spin .8s linear infinite;
 
 }
 
 
+.loader--sm {
 
-/* ==========================================
-   Text
-   ========================================== */
+    width: 16px;
+
+    height: 16px;
+
+}
+
+
+.loader--md {
+
+    width: 28px;
+
+    height: 28px;
+
+}
+
+
+.loader--lg {
+
+    width: 44px;
+
+    height: 44px;
+
+}
+
 
 .loader__text {
 
-  font-size: var(--font-size-sm);
-
-  color: var(--color-text-secondary);
+    color: var(--color-text-secondary);
 
 }
 
 
+@keyframes loader-spin {
 
-/* ==========================================
-   Animation
-   ========================================== */
+    to {
 
-.loader__bar {
+        transform: rotate(360deg);
 
-  width: 120px;
-
-  height: 4px;
-
-  overflow: hidden;
-
-  background: var(--color-background-secondary);
-
-  border-radius: var(--radius-full);
-
-}
-
-
-.loader__bar::after {
-
-  content: "";
-
-  display: block;
-
-  width: 40%;
-
-  height: 100%;
-
-  background: var(--color-primary);
-
-  border-radius: inherit;
-
-  animation:
-
-    loader-progress var(--animation-duration-normal) infinite;
-
-}
-
-@keyframes loader-progress {
-
-  from {
-
-    transform: translateX(-100%);
-
-  }
-
-  to {
-
-    transform: translateX(250%);
-
-  }
-
-}
-
-
-
-/* ==========================================
-   Modificadores
-   ========================================== */
-
-.loader--sm .loader__bar {
-
-  width: 80px;
-
-}
-
-
-.loader--lg .loader__bar {
-
-  width: 180px;
+    }
 
 }

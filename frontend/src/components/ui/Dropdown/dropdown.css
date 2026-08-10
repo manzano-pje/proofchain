@@ -1,107 +1,94 @@
-/* ==========================================
-   ProofChain Design System
-   Component: Dropdown
-   ========================================== */
+/*
+=========================================================
+Project.......: ProofChain
+Component.....: Dropdown
+File..........: Dropdown.css
+Version.......: 1.0.0
 
+Description...:
+Dropdown component styles.
 
-/* ==========================================
-   Base
-   ========================================== */
+Responsibility:
+Provide contextual menus and actions.
+
+Methodology...:
+BEM
+=========================================================
+*/
 
 .dropdown {
 
-  position: relative;
+    position: relative;
 
-  display: inline-flex;
+    display: inline-flex;
 
 }
 
 
+.dropdown__trigger {
 
-/* ==========================================
-   Menu
-   ========================================== */
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    cursor: pointer;
+
+}
+
 
 .dropdown__menu {
 
-  position: absolute;
+    position: absolute;
 
-  top: calc(100% + var(--space-sm));
+    top: calc(100% + var(--spacing-xs));
 
-  right: 0;
+    right: 0;
 
-  min-width: 180px;
+    min-width: 180px;
 
-  padding: var(--space-sm);
+    padding: var(--spacing-sm);
 
-  background: var(--color-background);
+    background: var(--color-surface);
 
-  border: 1px solid var(--color-border);
+    border: 1px solid var(--color-border);
 
-  border-radius: var(--radius-md);
+    border-radius: var(--radius-md);
 
-  box-shadow: var(--shadow-md);
+    box-shadow: var(--shadow-md);
 
-  z-index: var(--z-dropdown);
+    z-index: 1000;
 
 }
 
 
+.dropdown--open .dropdown__menu {
 
-/* ==========================================
-   Item
-   ========================================== */
+    display: block;
+
+}
+
 
 .dropdown__item {
 
-  display: flex;
+    display: flex;
 
-  align-items: center;
+    align-items: center;
 
-  width: 100%;
+    width: 100%;
 
-  padding: var(--space-sm) var(--space-md);
+    padding: var(--spacing-sm);
 
-  font-size: var(--font-size-sm);
+    border-radius: var(--radius-sm);
 
-  color: var(--color-text-primary);
-
-  border-radius: var(--radius-sm);
-
-  cursor: pointer;
-
-  transition:
-
-    background-color var(--transition-fast);
+    cursor: pointer;
 
 }
 
 
 .dropdown__item:hover {
 
-  background: var(--color-background-hover);
-
-}
-
-
-
-/* ==========================================
-   Estados
-   ========================================== */
-
-.dropdown__item--active {
-
-  background: var(--color-primary-light);
-
-  color: var(--color-primary);
-
-}
-
-
-.dropdown__item--disabled {
-
-  cursor: not-allowed;
-
-  opacity: var(--opacity-disabled);
+    background: var(--color-surface-secondary);
 
 }

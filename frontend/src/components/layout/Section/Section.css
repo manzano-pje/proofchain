@@ -1,0 +1,47 @@
+/*
+=========================================================
+Project.......: ProofChain
+Component.....: Section
+File..........: Section.css
+Version.......: 1.0.0
+
+Methodology...:
+BEM
+=========================================================
+*/
+
+.section {
+
+    width: 100%;
+
+}
+
+.section--none {
+
+    padding-block: 0;
+
+}
+
+.section--sm {
+
+    padding-block: var(--spacing-lg);
+
+}
+
+.section--md {
+
+    padding-block: var(--spacing-xl);
+
+}
+
+.section--lg {
+
+    padding-block: calc(var(--spacing-xl) * 2);
+
+}
+
+.section--xl {
+
+    padding-block: calc(var(--spacing-xl) * 3);
+
+}

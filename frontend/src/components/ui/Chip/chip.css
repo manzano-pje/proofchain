@@ -1,91 +1,56 @@
-/* ==========================================
-   ProofChain Design System
-   Component: Chip
-   ========================================== */
-
-
-/* ==========================================
-   Base
-   ========================================== */
+/*
+=========================================================
+Project.......: ProofChain
+Component.....: Chip
+File..........: Chip.css
+Version.......: 1.0.0
+Methodology...:
+BEM
+=========================================================
+*/
 
 .chip {
 
-  display: inline-flex;
+    display: inline-flex;
 
-  align-items: center;
+    align-items: center;
 
-  gap: var(--space-xs);
+    gap: var(--spacing-xs);
 
-  height: 28px;
+    padding: .35rem .75rem;
 
-  padding-inline: var(--space-md);
+    border-radius: 999px;
 
-  font-size: var(--font-size-xs);
+    background: var(--color-surface-secondary);
 
-  color: var(--color-text-primary);
-
-  background: var(--color-background-secondary);
-
-  border-radius: var(--radius-full);
+    border: 1px solid var(--color-border);
 
 }
 
+.chip__label {
 
-
-/* ==========================================
-   Variantes
-   ========================================== */
-
-.chip--primary {
-
-  background: var(--color-primary);
-
-  color: var(--color-text-inverse);
+    white-space: nowrap;
 
 }
 
+.chip__remove {
 
-.chip--success {
+    cursor: pointer;
 
-  background: var(--color-success);
+    border: none;
 
-  color: var(--color-text-inverse);
+    background: transparent;
 
-}
+    font-size: 1rem;
 
-
-
-/* ==========================================
-   Estados
-   ========================================== */
-
-.chip--clickable {
-
-  cursor: pointer;
-
-  transition:
-
-    background-color var(--transition-fast);
+    line-height: 1;
 
 }
 
+.chip--disabled {
 
-.chip--clickable:hover {
+    opacity: .6;
 
-  opacity: .85;
-
-}
-
-
-
-/* ==========================================
-   Modificadores
-   ========================================== */
-
-.chip--outline {
-
-  background: transparent;
-
-  border: 1px solid var(--color-border);
+    pointer-events: none;
 
 }

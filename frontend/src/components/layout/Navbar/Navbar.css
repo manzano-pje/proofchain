@@ -1,0 +1,75 @@
+/*
+=========================================================
+Project.......: ProofChain
+Component.....: Navbar
+File..........: Navbar.css
+Version.......: 1.0.0
+
+Methodology...:
+BEM
+=========================================================
+*/
+
+.navbar {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: var(--spacing-lg);
+
+    width: 100%;
+
+    min-height: 72px;
+
+    padding-inline: var(--spacing-xl);
+
+    background: var(--color-surface);
+
+    border-bottom: 1px solid var(--color-border);
+
+    z-index: 100;
+
+}
+
+.navbar--fixed {
+
+    position: sticky;
+
+    top: 0;
+
+}
+
+.navbar__brand {
+
+    display: flex;
+
+    align-items: center;
+
+}
+
+.navbar__menu {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: var(--spacing-lg);
+
+    flex: 1;
+
+    justify-content: center;
+
+}
+
+.navbar__actions {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: var(--spacing-md);
+
+}

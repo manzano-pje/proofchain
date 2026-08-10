@@ -1,47 +1,87 @@
-/* ==========================================
-   ProofChain Design System
-   Component: Divider
-   ========================================== */
+/*
+=========================================================
+Project.......: ProofChain
+Component.....: Divider
+File..........: Divider.css
+Version.......: 1.0.0
 
+Description...:
+Styles for Divider component.
 
-/* ==========================================
-   Base
-   ========================================== */
+Responsibility:
+Provide standardized separators.
+
+Methodology...:
+BEM
+=========================================================
+*/
 
 .divider {
 
-  width: 100%;
+    border: none;
 
-  height: 1px;
+    background: var(--color-border);
 
-  background: var(--color-border);
+    flex-shrink: 0;
 
 }
 
+.divider--horizontal {
 
+    width: 100%;
 
-/* ==========================================
-   Variantes
-   ========================================== */
+    height: 1px;
+
+}
 
 .divider--vertical {
 
-  width: 1px;
+    width: 1px;
 
-  height: auto;
+    height: 100%;
 
-  min-height: 24px;
+    min-height: 1.5rem;
 
 }
 
+.divider--none {
 
+    margin: 0;
 
-/* ==========================================
-   Modificadores
-   ========================================== */
+}
 
-.divider--strong {
+.divider--sm {
 
-  background: var(--color-border-strong);
+    margin: var(--spacing-sm) 0;
+
+}
+
+.divider--md {
+
+    margin: var(--spacing-md) 0;
+
+}
+
+.divider--lg {
+
+    margin: var(--spacing-lg) 0;
+
+}
+
+.divider--vertical.divider--sm {
+
+    margin: 0 var(--spacing-sm);
+
+}
+
+.divider--vertical.divider--md {
+
+    margin: 0 var(--spacing-md);
+
+}
+
+.divider--vertical.divider--lg {
+
+    margin: 0 var(--spacing-lg);
 
 }

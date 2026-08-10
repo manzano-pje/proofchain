@@ -1,0 +1,57 @@
+/*
+=========================================================
+Project.......: ProofChain
+Component.....: Grid
+File..........: Grid.css
+Version.......: 1.0.0
+
+Description...:
+Grid styles.
+
+Responsibility:
+Provide responsive CSS Grid layouts.
+
+Methodology...:
+BEM
+=========================================================
+*/
+
+.grid {
+
+    display: grid;
+
+    width: 100%;
+
+    grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
+
+}
+
+.grid--gap-xs {
+
+    gap: var(--spacing-xs);
+
+}
+
+.grid--gap-sm {
+
+    gap: var(--spacing-sm);
+
+}
+
+.grid--gap-md {
+
+    gap: var(--spacing-md);
+
+}
+
+.grid--gap-lg {
+
+    gap: var(--spacing-lg);
+
+}
+
+.grid--gap-xl {
+
+    gap: var(--spacing-xl);
+
+}

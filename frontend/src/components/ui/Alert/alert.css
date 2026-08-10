@@ -1,87 +1,51 @@
-/* ==========================================
-   ProofChain Design System
-   Component: Alert
-   ========================================== */
+/*
+=========================================================
+Project.......: ProofChain
+Component.....: Alert
+File..........: Alert.css
+Version.......: 1.0.0
+Methodology...: BEM
+=========================================================
+*/
 
+.alert{
 
-/* ==========================================
-   Base
-   ========================================== */
+    padding:var(--spacing-md);
 
-.alert {
+    border-radius:var(--radius-md);
 
-  display: flex;
-
-  align-items: flex-start;
-
-  gap: var(--space-md);
-
-  padding: var(--space-md);
-
-  border-radius: var(--radius-md);
-
-  font-size: var(--font-size-sm);
+    border:1px solid transparent;
 
 }
 
+.alert--info{
 
+    color:var(--color-info);
 
-/* ==========================================
-   Variantes
-   ========================================== */
-
-.alert--info {
-
-  background: var(--color-info-background);
-
-  color: var(--color-info);
+    border-color:var(--color-info);
 
 }
 
+.alert--success{
 
-.alert--success {
+    color:var(--color-success);
 
-  background: var(--color-success-background);
-
-  color: var(--color-success);
-
-}
-
-
-.alert--warning {
-
-  background: var(--color-warning-background);
-
-  color: var(--color-warning);
+    border-color:var(--color-success);
 
 }
 
+.alert--warning{
 
-.alert--danger {
+    color:var(--color-warning);
 
-  background: var(--color-danger-background);
-
-  color: var(--color-danger);
-
-}
-
-
-
-/* ==========================================
-   Modificadores
-   ========================================== */
-
-.alert--outlined {
-
-  background: transparent;
-
-  border: 1px solid currentColor;
+    border-color:var(--color-warning);
 
 }
 
+.alert--danger{
 
-.alert--dismissible {
+    color:var(--color-danger);
 
-  justify-content: space-between;
+    border-color:var(--color-danger);
 
 }

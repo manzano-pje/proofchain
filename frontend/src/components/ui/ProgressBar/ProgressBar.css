@@ -1,0 +1,51 @@
+/*
+=========================================================
+Project.......: ProofChain
+Component.....: ProgressBar
+File..........: ProgressBar.css
+Version.......: 1.0.0
+
+Description...:
+Progress bar styles.
+
+Responsibility:
+Represent operation progress.
+
+Methodology...:
+BEM
+=========================================================
+*/
+
+.progress-bar {
+
+    width: 100%;
+
+}
+
+
+.progress-bar__track {
+
+    width: 100%;
+
+    height: 8px;
+
+    overflow: hidden;
+
+    background: var(--color-surface-secondary);
+
+    border-radius: var(--radius-full);
+
+}
+
+
+.progress-bar__value {
+
+    height: 100%;
+
+    background: var(--color-primary);
+
+    border-radius: inherit;
+
+    transition: width .3s ease;
+
+}

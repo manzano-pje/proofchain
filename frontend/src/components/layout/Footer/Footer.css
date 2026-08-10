@@ -1,0 +1,31 @@
+/*
+=========================================================
+Project.......: ProofChain
+Component.....: Footer
+File..........: Footer.css
+Version.......: 1.0.0
+
+Methodology...:
+BEM
+=========================================================
+*/
+
+.footer {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: var(--spacing-lg);
+
+    width: 100%;
+
+    padding-top: var(--spacing-xl);
+
+    margin-top: var(--spacing-xl);
+
+    border-top: 1px solid var(--color-border);
+
+}
