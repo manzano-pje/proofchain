@@ -1,109 +1,106 @@
-/* ==========================================
-   ProofChain Design System
-   Component: Tooltip
-   ========================================== */
+/*
+=========================================================
+Project.......: ProofChain
+Component.....: Tooltip
+File..........: Tooltip.css
+Version.......: 1.0.0
+
+Description...:
+Tooltip styles.
+
+Responsibility:
+Provide contextual helper messages.
+
+Methodology...:
+BEM
+=========================================================
+*/
 
 
-/* ==========================================
-   Base
-   ========================================== */
+.tooltip-wrapper {
+
+    position:relative;
+
+    display:inline-flex;
+
+}
+
 
 .tooltip {
 
-  position: relative;
+    position:absolute;
 
-  display: inline-flex;
+    visibility:hidden;
 
-}
+    opacity:0;
 
+    padding:var(--spacing-xs) var(--spacing-sm);
 
+    background:var(--color-text-primary);
 
-/* ==========================================
-   Content
-   ========================================== */
+    color:white;
 
-.tooltip__content {
+    font-size:var(--font-size-sm);
 
-  position: absolute;
+    border-radius:var(--radius-sm);
 
-  bottom: calc(100% + var(--space-sm));
+    white-space:nowrap;
 
-  left: 50%;
+    transition:.2s ease;
 
-  transform: translateX(-50%);
-
-  padding: var(--space-xs) var(--space-sm);
-
-  font-size: var(--font-size-xs);
-
-  color: var(--color-text-inverse);
-
-  background: var(--color-background-dark);
-
-  border-radius: var(--radius-sm);
-
-  white-space: nowrap;
-
-  opacity: 0;
-
-  pointer-events: none;
-
-  transition:
-
-    opacity var(--transition-fast);
+    z-index:1000;
 
 }
 
 
+.tooltip-wrapper:hover .tooltip {
 
-/* ==========================================
-   Estados
-   ========================================== */
+    visibility:visible;
 
-.tooltip:hover .tooltip__content {
-
-  opacity: 1;
+    opacity:1;
 
 }
 
 
+.tooltip--top {
 
-/* ==========================================
-   Modificadores
-   ========================================== */
+    bottom:calc(100% + var(--spacing-xs));
 
-.tooltip--bottom .tooltip__content {
+    left:50%;
 
-  top: calc(100% + var(--space-sm));
-
-  bottom: auto;
+    transform:translateX(-50%);
 
 }
 
 
-.tooltip--right .tooltip__content {
+.tooltip--bottom {
 
-  left: calc(100% + var(--space-sm));
+    top:calc(100% + var(--spacing-xs));
 
-  top: 50%;
+    left:50%;
 
-  bottom: auto;
-
-  transform: translateY(-50%);
+    transform:translateX(-50%);
 
 }
 
 
-.tooltip--left .tooltip__content {
+.tooltip--left {
 
-  right: calc(100% + var(--space-sm));
+    right:calc(100% + var(--spacing-xs));
 
-  left: auto;
+    top:50%;
 
-  top: 50%;
+    transform:translateY(-50%);
 
-  bottom: auto;
+}
 
-  transform: translateY(-50%);
+
+.tooltip--right {
+
+    left:calc(100% + var(--spacing-xs));
+
+    top:50%;
+
+    transform:translateY(-50%);
 
 }

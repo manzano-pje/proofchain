@@ -1,0 +1,71 @@
+/*
+=========================================================
+Project.......: ProofChain
+Component.....: Skeleton
+File..........: Skeleton.css
+Version.......: 1.0.0
+
+Description...:
+Skeleton styles.
+
+Responsibility:
+Provide loading placeholders.
+
+Methodology...:
+BEM
+=========================================================
+*/
+
+.skeleton {
+
+    display: block;
+
+    background: var(--color-surface-secondary);
+
+    animation: skeleton-pulse 1.5s ease-in-out infinite;
+
+}
+
+
+.skeleton--text {
+
+    border-radius: var(--radius-sm);
+
+}
+
+
+.skeleton--circle {
+
+    border-radius: 50%;
+
+}
+
+
+.skeleton--rectangle {
+
+    border-radius: var(--radius-md);
+
+}
+
+
+@keyframes skeleton-pulse {
+
+    0% {
+
+        opacity: .6;
+
+    }
+
+    50% {
+
+        opacity: 1;
+
+    }
+
+    100% {
+
+        opacity: .6;
+
+    }
+
+}

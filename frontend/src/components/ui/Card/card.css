@@ -1,114 +1,101 @@
-/* ==========================================
-   ProofChain Design System
-   Component: Card
-   ========================================== */
+/*
+=========================================================
+Project.......: ProofChain
+Component.....: Card
+File..........: Card.css
+Version.......: 1.0.0
 
+Description...:
+Card component styles.
 
-/* ==========================================
-   Base
-   ========================================== */
+Responsibility:
+Provide standardized content containers.
+
+Methodology...:
+BEM
+=========================================================
+*/
+
 
 .card {
 
-  display: flex;
+    display: flex;
 
-  flex-direction: column;
+    flex-direction: column;
 
-  background: var(--color-background);
+    width: 100%;
 
-  border: 1px solid var(--color-border);
+    background: var(--color-surface);
 
-  border-radius: var(--radius-lg);
+    border-radius: var(--radius-lg);
 
-  box-shadow: var(--shadow-card);
-
-  overflow: hidden;
+    overflow: hidden;
 
 }
 
 
-/* ==========================================
-   Header
-   ========================================== */
+/*
+---------------------------------------------------------
+Modifiers
+---------------------------------------------------------
+*/
+
+.card--bordered {
+
+    border: 1px solid var(--color-border);
+
+}
+
+
+.card--elevated {
+
+    box-shadow: var(--shadow-md);
+
+}
+
+
+/*
+---------------------------------------------------------
+Elements
+---------------------------------------------------------
+*/
 
 .card__header {
 
-  padding: var(--space-lg);
+    display: flex;
 
-  border-bottom: 1px solid var(--color-border);
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: var(--spacing-lg);
+
+    border-bottom: 1px solid var(--color-border);
 
 }
 
-
-/* ==========================================
-   Body
-   ========================================== */
 
 .card__body {
 
-  padding: var(--space-lg);
+    flex: 1;
+
+    padding: var(--spacing-lg);
 
 }
 
-
-/* ==========================================
-   Footer
-   ========================================== */
 
 .card__footer {
 
-  padding: var(--space-lg);
+    display: flex;
 
-  border-top: 1px solid var(--color-border);
+    align-items: center;
 
-}
+    justify-content: flex-end;
 
+    gap: var(--spacing-md);
 
+    padding: var(--spacing-lg);
 
-/* ==========================================
-   Estados
-   ========================================== */
-
-.card:hover {
-
-  box-shadow: var(--shadow-md);
-
-}
-
-
-
-/* ==========================================
-   Modificadores
-   ========================================== */
-
-.card--flat {
-
-  box-shadow: none;
-
-}
-
-
-.card--borderless {
-
-  border: none;
-
-}
-
-
-.card--interactive {
-
-  cursor: pointer;
-
-  transition:
-
-    transform var(--transition-fast),
-    box-shadow var(--transition-fast);
-
-}
-
-
-.card--interactive:hover {
-
-  transform: translateY(-2px);
+    border-top: 1px solid var(--color-border);
 
 }

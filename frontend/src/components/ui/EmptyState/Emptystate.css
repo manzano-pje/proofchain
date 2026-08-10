@@ -1,0 +1,86 @@
+/*
+=========================================================
+Project.......: ProofChain
+Component.....: EmptyState
+File..........: EmptyState.css
+Version.......: 1.0.0
+
+Description...:
+Empty state component styles.
+
+Responsibility:
+Provide visual feedback for empty content.
+
+Methodology...:
+BEM
+=========================================================
+*/
+
+
+.empty-state {
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-align: center;
+
+    width: 100%;
+
+    padding: var(--spacing-xl);
+
+}
+
+
+.empty-state__icon {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    margin-bottom: var(--spacing-lg);
+
+}
+
+
+.empty-state__title {
+
+    margin: 0;
+
+    color: var(--color-text-primary);
+
+    font-size: var(--font-size-lg);
+
+    font-weight: var(--font-weight-semibold);
+
+}
+
+
+.empty-state__description {
+
+    max-width: 420px;
+
+    margin-top: var(--spacing-sm);
+
+    color: var(--color-text-secondary);
+
+}
+
+
+.empty-state__actions {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: var(--spacing-md);
+
+    margin-top: var(--spacing-lg);
+
+}
