@@ -1,0 +1,175 @@
+Projeto do esqueleto do frontend proofchain
+
+src/
+│
+├── assets/                              ← Recursos estáticos
+│   ├── images/                          ← Imagens
+│   ├── icons/                           ← Ícones
+│   ├── illustrations/                   ← Ilustrações
+│   ├── animations/                      ← Animações
+│   └── fonts/                           ← Fontes
+│
+├── components/                          ← Componentes reutilizáveis
+│   │
+│   ├── genericos/                       ← Design System
+│   │   ├── ui/                          ← Elementos básicos
+│   │   ├── forms/                       ← Formulários
+│   │   ├── layout/                      ← Estruturas
+│   │   ├── data-display/                ← Exibição de dados
+│   │   ├── feedback/                    ← Feedback visual
+│   │   └── charts/                      ← Gráficos
+│   │
+│   ├── home/                            ← Componentes da Home
+│   ├── authentication/                  ← Componentes de autenticação
+│   ├── institution/                     ← Componentes da instituição
+│   └── platform/                        ← Componentes da plataforma
+│
+├── composables/                         ← Lógica reutilizável
+│   ├── auth/                            ← Autenticação
+│   ├── form/                            ← Formulários
+│   ├── ui/                              ← Interface
+│   ├── navigation/                      ← Navegação
+│   └── data/                            ← Manipulação de dados
+│
+├── config/                              ← Configurações
+│   ├── app/                             ← Aplicação
+│   ├── api/                             ← API
+│   ├── environment/                     ← Ambientes
+│   └── routes/                          ← Configuração de rotas
+│
+├── layouts/                             ← Estruturas de página
+│   ├── public/                          ← Área pública
+│   ├── authentication/                  ← Autenticação
+│   └── platform/                        ← Plataforma autenticada
+│
+├── modules/                             ← Contextos funcionais
+│   ├── home/                            ← Home
+│   ├── authentication/                  ← Autenticação
+│   ├── institution/                     ← Instituição
+│   └── platform/                        ← Plataforma
+│
+├── router/                              ← Navegação
+│   ├── routes/                          ← Rotas
+│   └── guards/                          ← Guards
+│
+├── services/                            ← Infraestrutura externa
+│   ├── api/                             ← Comunicação HTTP
+│   │   ├── client/                      ← Cliente HTTP
+│   │   ├── interceptors/                ← Interceptadores
+│   │   └── errors/                      ← Erros HTTP
+│   │
+│   ├── storage/                         ← Persistência local
+│   │   ├── local/                       ← Local Storage
+│   │   └── session/                     ← Session Storage
+│   │
+│   └── external/                        ← Integrações externas
+│       ├── analytics/                   ← Analytics
+│       └── integrations/                ← Integrações
+│
+├── stores/                              ← Estado global
+│   ├── app/                             ← Estado da aplicação
+│   ├── auth/                            ← Estado de autenticação
+│   └── ui/                              ← Estado global de interface
+│
+├── styles/                              ← Design System global
+│   ├── tokens/                          ← Design tokens
+│   │   ├── colors/                      ← Cores
+│   │   ├── typography/                 ← Tipografia
+│   │   ├── spacing/                     ← Espaçamentos
+│   │   ├── borders/                     ← Bordas
+│   │   ├── shadows/                     ← Sombras
+│   │   ├── sizing/                      ← Dimensões
+│   │   └── motion/                      ← Motion
+│   │
+│   ├── base/                            ← Estilos fundamentais
+│   │   ├── reset/                       ← Reset
+│   │   ├── typography/                  ← Tipografia base
+│   │   └── accessibility/               ← Acessibilidade
+│   │
+│   ├── globals/                         ← Estilos globais
+│   │   ├── root/                        ← Root
+│   │   └── themes/                      ← Temas
+│   │
+│   ├── components/                      ← Estilos globais de componentes
+│   └── utilities/                       ← Utilitários CSS
+│
+├── types/                               ← Tipos compartilhados
+│   ├── api/                             ← Tipos de API
+│   ├── auth/                            ← Tipos de autenticação
+│   ├── navigation/                      ← Tipos de navegação
+│   ├── common/                          ← Tipos comuns
+│   └── ui/                              ← Tipos de interface
+│
+└── utils/                               ← Funções utilitárias
+    ├── formatters/                      ← Formatação
+    ├── validators/                      ← Validação
+    ├── date/                            ← Datas
+    ├── string/                          ← Strings
+    ├── number/                          ← Números
+    └── object/                          ← Objetos
+
+
+proposta inicial, sem criar complexidade desnecessária no mvp
+
+src/
+│
+├── assets/                                  ← Recursos estáticos da aplicação
+│   ├── images/                              ← Imagens
+│   ├── icons/                               ← Ícones
+│   ├── illustrations/                       ← Ilustrações
+│   ├── animations/                          ← Animações e recursos visuais
+│   └── fonts/                               ← Fontes
+│
+├── components/                              ← Componentes reutilizáveis da interface
+│   │
+│   ├── genericos/                            ← Design System
+│   │   ├── ui/                               ← Componentes básicos de interface
+│   │   ├── forms/                            ← Componentes de formulário
+│   │   ├── layout/                           ← Componentes estruturais
+│   │   ├── data-display/                     ← Componentes de apresentação de dados
+│   │   ├── feedback/                         ← Componentes de feedback visual
+│   │   └── charts/                           ← Componentes de gráficos e visualizações
+│   │
+│   ├── home/                                 ← Componentes específicos da Home
+│   ├── authentication/                      ← Componentes específicos de autenticação
+│   ├── institution/                         ← Componentes específicos da instituição
+│   └── platform/                            ← Componentes específicos da plataforma
+│
+├── composables/                              ← Lógica reutilizável baseada em Vue
+│
+├── config/                                   ← Configurações centralizadas da aplicação
+│
+├── layouts/                                  ← Estruturas visuais das páginas
+│   ├── public/                               ← Layout das áreas públicas
+│   ├── authentication/                      ← Layout da autenticação
+│   └── platform/                            ← Layout da plataforma autenticada
+│
+├── modules/                                  ← Contextos funcionais da aplicação
+│   ├── home/                                 ← Experiência pública / Landing Page
+│   ├── authentication/                      ← Fluxos de autenticação
+│   ├── institution/                         ← Área da instituição
+│   └── platform/                            ← Área geral da plataforma
+│
+├── router/                                   ← Navegação e controle de acesso
+│
+├── services/                                 ← Comunicação externa e infraestrutura
+│   ├── api/                                  ← Comunicação com APIs
+│   ├── storage/                              ← Persistência local
+│   └── external/                             ← Integrações externas
+│
+├── stores/                                   ← Estado global da aplicação
+│
+├── styles/                                   ← Design System global e estilos
+│   ├── tokens/                               ← Design tokens
+│   ├── base/                                 ← Estilos fundamentais
+│   ├── globals/                              ← Estilos globais
+│   ├── components/                           ← Estilos globais de componentes
+│   └── utilities/                            ← Utilitários CSS
+│
+├── types/                                    ← Tipos compartilhados
+│
+├── utils/                                    ← Funções utilitárias independentes
+│
+├── App.vue                                   ← Componente raiz da aplicação
+│
+└── main.ts                                   ← Ponto de entrada da aplicação
