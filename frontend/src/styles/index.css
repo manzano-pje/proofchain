@@ -15,7 +15,7 @@
 @import "./tokens/shadows.css";
 @import "./tokens/transitions.css";
 @import "./tokens/opacity.css";
-@import "./tokens/z-index.css";
+@import "./tokens/zindex.css";
 @import "./tokens/breakpoints.css";
 
 /* ==========================================================
@@ -35,5 +35,5 @@
 @import "./globals/layout.css";
 @import "./globals/flex.css";
 @import "./globals/grid.css";
-@import "./globals/helpers.css";
+@import "./globals/helper.css";
 @import "./globals/utilities.css";

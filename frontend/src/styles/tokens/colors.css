@@ -1,93 +1,89 @@
 :root {
 
-    /* ======================================================
+   /* ======================================================
        BRAND
     ====================================================== */
 
-    --brand: #0B1F3A;
-    --brand-hover: #102A4C;
-    --brand-active: #163B66;
-    --brand-light: #1E4D7A;
+   --brand: #0B1F3A;
+   --brand-hover: #102A4C;
+   --brand-active: #163B66;
+   --brand-light: #1E4D7A;
 
-    --action: #06B6D4;
-    --action-hover: #22D3EE;
-    --action-active: #0891B2;
-    --action-light: #67E8F9;
+   --action: #06B6D4;
+   --action-hover: #22D3EE;
+   --action-active: #0891B2;
+   --action-light: #67E8F9;
 
-    /* ======================================================
+   /* ======================================================
        BACKGROUND
     ====================================================== */
 
-    --background: #F8FAFC;
-    --background-secondary: #F1F5F9;
-    --background-dark: #07111F;
+   --background: #F8FAFC;
+   --background-secondary: #F1F5F9;
+   --background-dark: #07111F;
 
-    /* ======================================================
+   /* ======================================================
        SURFACE
     ====================================================== */
 
-    --surface: #FFFFFF;
-    --surface-secondary: #F8FAFC;
-    --surface-tertiary: #E2E8F0;
+   --surface: #FFFFFF;
+   --surface-secondary: #F8FAFC;
+   --surface-tertiary: #E2E8F0;
 
-    /* ======================================================
+   /* ======================================================
        TEXT
     ====================================================== */
 
-    --text-primary: #0F172A;
-    --text-secondary: #475569;
-    --text-muted: #64748B;
-    --text-disabled: #94A3B8;
-    --text-inverse: #FFFFFF;
+   --text-primary: #F8FAFC;
+   --text-secondary: #CBD5E1;
+   --text-muted: #94A3B8;
+   --text-disabled: #64748B;
+   --text-inverse: #0F172A;
 
-    /* ======================================================
+   /* ======================================================
        BORDER
     ====================================================== */
 
-    --border: #E2E8F0;
-    --border-hover: #CBD5E1;
-    --border-focus: #06B6D4;
+   --border: #E2E8F0;
+   --border-hover: #CBD5E1;
+   --border-focus: #06B6D4;
 
-    /* ======================================================
+   /* ======================================================
        STATUS
     ====================================================== */
 
-    --success: #10B981;
-    --success-light: #D1FAE5;
+   --success: #10B981;
+   --success-light: #D1FAE5;
 
-    --warning: #F59E0B;
-    --warning-light: #FEF3C7;
+   --warning: #F59E0B;
+   --warning-light: #FEF3C7;
 
-    --danger: #EF4444;
-    --danger-light: #FEE2E2;
+   --danger: #EF4444;
+   --danger-light: #FEE2E2;
 
-    --info: #3B82F6;
-    --info-light: #DBEAFE;
+   --info: #3B82F6;
+   --info-light: #DBEAFE;
 
-    /* ======================================================
+   /* ======================================================
        OVERLAY
     ====================================================== */
 
-    --overlay-light: rgba(255,255,255,.70);
-    --overlay-dark: rgba(2,6,23,.65);
+   --overlay-light: rgba(255, 255, 255, .70);
+   --overlay-dark: rgba(2, 6, 23, .65);
 
-    /* ======================================================
+   /* ======================================================
        GRADIENTS
     ====================================================== */
 
-    --gradient-brand:
-        linear-gradient(
-            135deg,
-            #07111F 0%,
-            #0B1F3A 50%,
-            #163B66 100%
-        );
+   --gradient-brand:
+      linear-gradient(135deg,
+         #07111F 0%,
+         #0B1F3A 50%,
+         #163B66 100%);
 
-    --gradient-action:
-        linear-gradient(
-            135deg,
-            #06B6D4,
-            #22D3EE
-        );
+   --gradient-action:
+      linear-gradient(0deg,
+         #2a5e8f,
+         #5a8fc0);
 
 }
