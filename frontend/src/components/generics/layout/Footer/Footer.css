@@ -11,21 +11,12 @@ BEM
 */
 
 .footer {
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    gap: var(--spacing-lg);
-
-    width: 100%;
-
-    padding-top: var(--spacing-xl);
-
-    margin-top: var(--spacing-xl);
-
-    border-top: 1px solid var(--color-border);
-
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-lg);
+  width: 100%;
+  padding-top: var(--spacing-xl);
+  margin-top: var(--spacing-xl);
+  border-top: 1px solid var(--color-border);
 }
