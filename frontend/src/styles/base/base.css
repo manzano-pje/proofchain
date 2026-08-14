@@ -11,23 +11,14 @@ html {
 ========================================================== */
 
 body {
-
     min-height: 100vh;
-
     overflow-x: hidden;
-
     background: var(--background);
-
     color: var(--text-primary);
-
     font-family: var(--font-body);
-
     font-size: var(--body-default);
-
     font-weight: var(--weight-regular);
-
     line-height: var(--line-normal);
-
 }
 
 /* ==========================================================
@@ -40,29 +31,18 @@ h3,
 h4,
 h5,
 h6 {
-
     color: var(--text-primary);
-
     font-family: var(--font-heading);
-
     font-weight: var(--weight-bold);
-
     line-height: var(--line-tight);
-
     overflow-wrap: break-word;
-
 }
 
 h1 { font-size: var(--heading-1); }
-
 h2 { font-size: var(--heading-2); }
-
 h3 { font-size: var(--heading-3); }
-
 h4 { font-size: var(--heading-4); }
-
 h5 { font-size: var(--heading-5); }
-
 h6 { font-size: var(--heading-6); }
 
 /* ==========================================================
@@ -70,30 +50,21 @@ h6 { font-size: var(--heading-6); }
 ========================================================== */
 
 p {
-
     overflow-wrap: break-word;
-
     font-size: var(--body-default);
-
 }
 
 small {
-
     font-size: var(--body-small);
-
 }
 
 strong {
-
     font-weight: var(--weight-bold);
-
 }
 
 code,
 pre {
-
     font-family: var(--font-monospace);
-
 }
 
 /* ==========================================================
@@ -101,9 +72,7 @@ pre {
 ========================================================== */
 
 a {
-
     transition: color var(--transition-fast);
-
 }
 
 /* ==========================================================
@@ -111,9 +80,7 @@ a {
 ========================================================== */
 
 button {
-
     cursor: pointer;
-
 }
 
 /* ==========================================================
@@ -123,16 +90,12 @@ button {
 input,
 textarea,
 select {
-
     outline: none;
-
 }
 
 input::placeholder,
 textarea::placeholder {
-
     color: var(--text-muted);
-
 }
 
 /* ==========================================================
@@ -140,9 +103,7 @@ textarea::placeholder {
 ========================================================== */
 
 table {
-
     width: 100%;
-
 }
 
 /* ==========================================================

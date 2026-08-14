@@ -70,18 +70,6 @@ BEM
 }
 
 /* ==========================================================
-   HEADER ACTION
-========================================================== */
-
-.header-actions {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: var(--space-sm);
-    justify-self: end;
-}
-
-/* ==========================================================
    HEADER ACTIONS
 ========================================================== */
 .header-actions {
