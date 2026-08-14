@@ -91,8 +91,15 @@
    --gradient-teste:
       linear-gradient(120deg,
          #02020a,
-         #010715);
+         #102A4C);
 
-   --teste:#02020a;
-    --teste1:#0B1F3A;
+   --gradient-button:
+   linear-gradient(0deg,
+         #102c4d,
+         #3B82F6);
+
+   --gradient-cta:
+      linear-gradient(0deg,
+         #005825,
+         #0fb655);
 }
