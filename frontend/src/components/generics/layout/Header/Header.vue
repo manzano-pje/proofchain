@@ -29,6 +29,7 @@ BEM
       <a class="proofchain-brand">
         <img src="@/assets/images/proofchain-horizontal-dark.png" alt="ProofChain Logo" class="proofchain-logo" />
       </a>
+     
       <nav class="proofchain-navigation">
         <a href="#" class="navigation-link">Soluções</a>
         <a href="#" class="navigation-link">Como funciona</a>
@@ -36,6 +37,7 @@ BEM
         <a href="#" class="navigation-link">Planos</a>
         <a href="#" class="navigation-link">Fale conosco</a>
       </nav>
+     
       <div class="header-actions">
         <a href="#" class="header-button">Entrar</a>
         <a href="#" class="header-button">Começar grátis</a>

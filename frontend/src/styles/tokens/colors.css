@@ -4,6 +4,8 @@
        BRAND
     ====================================================== */
 
+    --teste:#02020a;
+    --teste1:#010715;
    --brand: #0B1F3A;
    --brand-hover: #102A4C;
    --brand-active: #163B66;
@@ -86,4 +88,11 @@
          #2a5e8f,
          #5a8fc0);
 
+   --gradient-teste:
+      linear-gradient(120deg,
+         #02020a,
+         #010715);
+
+   --teste:#02020a;
+    --teste1:#0B1F3A;
 }

@@ -22,18 +22,15 @@ BEM
 <script setup lang="ts">
 
 import { computed } from 'vue'
-
 import './Section.css'
 
 interface SectionProps {
-
     spacing?:
         | 'none'
         | 'sm'
         | 'md'
         | 'lg'
         | 'xl'
-
 }
 
 const props = withDefaults(
@@ -44,21 +41,14 @@ const props = withDefaults(
 )
 
 const classes = computed(() => [
-
     'section',
-
     `section--${props.spacing}`
-
 ])
 
 </script>
 
 <template>
-
     <section :class="classes">
-
         <slot />
-
     </section>
-
 </template>
