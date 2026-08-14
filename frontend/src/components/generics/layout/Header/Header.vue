@@ -20,7 +20,7 @@ BEM
 -->
 
 <script setup lang="ts">
-  import './Header.css'
+  import './Header.css';
 </script>
 
 <template>
