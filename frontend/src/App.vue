@@ -8,8 +8,8 @@
 </template>
 
 <script setup>
-import Header from '@/components/generics/layout/Header/Header.vue'
-import Footer from '@/components/generics/layout/Footer/Footer.vue'
-import Hero from '@/components/generics/layout/Hero/Hero.vue'
+import Header from '@/layouts/components/Header/Header.vue'
+import Footer from '@/layouts/components/Footer/Footer.vue'
+import Hero from '@/modules/landing/components/Hero/Hero.vue'
 // import Gravityzero from '@/components/ui/Gravityzero/GravityZero.vue'
 </script>

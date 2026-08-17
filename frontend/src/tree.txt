@@ -1,0 +1,44 @@
+Listagem de caminhos de pasta para o volume ssd secundario
+O n£mero de s‚rie do volume ‚ 72F8-9311
+E:.
+ÃÄÄÄassets
+³   ÃÄÄÄfonts
+³   ÃÄÄÄicons
+³   ÃÄÄÄilustrations
+³   ÀÄÄÄimages
+³       ÃÄÄÄindica‡Æo
+³       ÀÄÄÄlogo
+ÃÄÄÄcore
+³   ÃÄÄÄcomponents
+³   ³   ÃÄÄÄbase
+³   ³   ³   ÃÄÄÄBadge
+³   ³   ³   ÃÄÄÄBaseButton
+³   ³   ³   ÀÄÄÄBaseIcon
+³   ³   ÀÄÄÄui
+³   ³       ÃÄÄÄCard
+³   ³       ÃÄÄÄColumn
+³   ³       ÃÄÄÄContainer
+³   ³       ÃÄÄÄCrownCarousel
+³   ³       ÃÄÄÄGrid
+³   ³       ÃÄÄÄRow
+³   ³       ÀÄÄÄSection
+³   ÃÄÄÄcomposables
+³   ÀÄÄÄstyles
+³       ÃÄÄÄbase
+³       ÃÄÄÄcomponents
+³       ÃÄÄÄglobals
+³       ÀÄÄÄtokens
+ÃÄÄÄlayouts
+³   ÀÄÄÄcomponents
+³       ÃÄÄÄFooter
+³       ÀÄÄÄHeader
+ÀÄÄÄmodules
+    ÀÄÄÄlanding
+        ÃÄÄÄassets
+        ³   ÀÄÄÄimages
+        ³       ÃÄÄÄgravity
+        ³       ÀÄÄÄpara-quem-e
+        ÃÄÄÄcomponents
+        ³   ÀÄÄÄHero
+        ÃÄÄÄcontent
+        ÀÄÄÄviews
