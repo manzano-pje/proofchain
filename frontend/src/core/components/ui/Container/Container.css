@@ -17,41 +17,27 @@ BEM
 */
 
 .container {
-
-    width: 100%;
-
-    margin-inline: auto;
-
-    padding-inline: var(--spacing-lg);
-
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: var(--spacing-lg);
 }
 
 .container--sm {
-
-    max-width: 640px;
-
+  max-width: 640px;
 }
 
 .container--md {
-
-    max-width: 768px;
-
+  max-width: 768px;
 }
 
 .container--lg {
-
-    max-width: 1024px;
-
+  max-width: 1024px;
 }
 
 .container--xl {
-
-    max-width: 1280px;
-
+  max-width: 1280px;
 }
 
 .container--fluid {
-
-    max-width: 100%;
-
+  max-width: 100%;
 }
