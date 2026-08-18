@@ -1,105 +1,82 @@
 :root {
-
-   /* ======================================================
+  /* ======================================================
        BRAND
     ====================================================== */
 
-    --teste:#02020a;
-    --teste1:#010715;
-   --brand: #0B1F3A;
-   --brand-hover: #102A4C;
-   --brand-active: #163B66;
-   --brand-light: #1E4D7A;
+  --brand: #0b1f3a;
+  --brand-hover: #102a4c;
+  --brand-active: #163b66;
+  --brand-light: #1e4d7a;
 
-   --action: #06B6D4;
-   --action-hover: #22D3EE;
-   --action-active: #0891B2;
-   --action-light: #67E8F9;
+  --action: #06b6d4;
+  --action-hover: #22d3ee;
+  --action-active: #0891b2;
+  --action-light: #67e8f9;
 
-   /* ======================================================
+  /* ======================================================
        BACKGROUND
     ====================================================== */
 
-   --background: #F8FAFC;
-   --background-secondary: #F1F5F9;
-   --background-dark: #07111F;
+  --background: #f8fafc;
+  --background-secondary: #f1f5f9;
+  --background-dark: #07111f;
 
-   /* ======================================================
+  /* ======================================================
        SURFACE
     ====================================================== */
 
-   --surface: #FFFFFF;
-   --surface-secondary: #F8FAFC;
-   --surface-tertiary: #E2E8F0;
+  --surface: #102a4c;
+  --surface-secondary: #0891b2;
+  --surface-tertiary: #e2e8f0;
 
-   /* ======================================================
+  /* ======================================================
        TEXT
     ====================================================== */
 
-   --text-primary: #F8FAFC;
-   --text-secondary: #CBD5E1;
-   --text-muted: #94A3B8;
-   --text-disabled: #64748B;
-   --text-inverse: #0F172A;
-   
-   /* ======================================================
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  --text-disabled: #64748b;
+  --text-inverse: #0f172a;
+
+  /* ======================================================
        BORDER
     ====================================================== */
 
-   --border: #E2E8F0;
-   --border-hover: #CBD5E1;
-   --border-focus: #06B6D4;
+  --border: #e2e8f0;
+  --border-hover: #cbd5e1;
+  --border-focus: #06b6d4;
 
-   /* ======================================================
+  /* ======================================================
        STATUS
     ====================================================== */
 
-   --success: #10B981;
-   --success-light: #D1FAE5;
+  --success: #10b981;
+  --success-light: #d1fae5;
 
-   --warning: #F59E0B;
-   --warning-light: #FEF3C7;
+  --warning: #f59e0b;
+  --warning-light: #fef3c7;
 
-   --danger: #EF4444;
-   --danger-light: #FEE2E2;
+  --danger: #ef4444;
+  --danger-light: #fee2e2;
 
-   --info: #3B82F6;
-   --info-light: #DBEAFE;
+  --info: #3b82f6;
+  --info-light: #dbeafe;
 
-   /* ======================================================
+  /* ======================================================
        OVERLAY
     ====================================================== */
 
-   --overlay-light: rgba(255, 255, 255, .70);
-   --overlay-dark: rgba(2, 6, 23, .65);
+  --overlay-light: rgba(255, 255, 255, 0.7);
+  --overlay-dark: rgba(2, 6, 23, 0.65);
 
-   /* ======================================================
+  /* ======================================================
        GRADIENTS
     ====================================================== */
 
-   --gradient-brand:
-      linear-gradient(135deg,
-         #07111F 0%,
-         #0B1F3A 50%,
-         #163B66 100%);
-
-   --gradient-action:
-      linear-gradient(0deg,
-         #2a5e8f,
-         #5a8fc0);
-
-   --gradient-teste:
-      linear-gradient(120deg,
-         #02020a,
-         #102A4C);
-
-   --gradient-button:
-   linear-gradient(0deg,
-         #102c4d,
-         #3B82F6);
-
-   --gradient-cta:
-      linear-gradient(0deg,
-         #005825,
-         #0fb655);
+  --gradient-dark: linear-gradient(120deg, #02020a, #102a4c);
+  --gradient-brand: linear-gradient(135deg, #07111f 0%, #0b1f3a 50%, #163b66 100%);
+  --gradient-action: linear-gradient(0deg, #2a5e8f, #5a8fc0);
+  --gradient-light: linear-gradient(0deg, #102c4d, #0c56ce);
+  --gradient-cta: linear-gradient(0deg, #005825, #0fb655);
 }

@@ -8,9 +8,7 @@ Version.......: 1.0.0
 Description...:
 Styles for the audiences section and its carousel.
 
-Methodology...:
-BEM
-
+Methodology...: BEM
 =========================================================
 */
 
@@ -18,8 +16,15 @@ BEM
    SECTION
 ====================================================== */
 
+.section-audience {
+  background: var(--brand-light);
+  padding: var(--space-md) var(--space-xs);
+}
+
 .audiences {
   width: 100%;
+  border: 1pt solid var(--brand);
+  background-color: aqua;
 }
 
 /* ======================================================
@@ -27,20 +32,33 @@ BEM
 ====================================================== */
 
 .audiences__header {
-  max-width: 720px;
-  margin: 0 auto var(--space-3x1);
-  text-align: center;
-}
-
-.audiences__header h2 {
-  margin: 0 0 var(--space-sm);
-  color: var(--text-primary);
+  max-width: 450px;
+  margin: 0;
+  text-align: left;
+  padding-left: var(--space-sm);
 }
 
 .audiences__header p {
-  margin: 0;
+  margin: var(--space-md) 0;
   color: var(--text-secondary);
+  font-size: var(--font-xl);
+  font-weight: var(--weight-medium);
 }
+
+.badge__heeader {
+  background-color: var(--brand-hover);
+  border-radius: var(--radius-xl);
+  padding: var(--space-xs) var(--space-lg);
+  width: 220px;
+  margin: var(--space-xs) 0 0;
+  font-size: var(--heading-5);
+  font-weight: var(--weight-semibold);
+  color: var(--text-primary);
+}
+
+/* ======================================================
+   CARD
+====================================================== */
 
 /* ======================================================
    SWIPER
@@ -49,16 +67,29 @@ BEM
 .audiences__swiper {
   width: 100%;
   overflow: hidden;
+  height: 100%;
 }
 
+/* Força a linha do Swiper a alinhar e esticar todos os slides */
 .audiences__swiper :deep(.swiper-wrapper) {
-  align-items: stretch;
+  display: flex !important;
+  align-items: stretch !important;
   transition-timing-function: linear !important;
 }
 
+/* Força o slide a ter altura total baseada no maior slide do container */
 .audiences__swiper :deep(.swiper-slide) {
-  height: auto;
+  height: auto !important; /* Permite que o stretch funcione */
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.audiences__swiper :deep(.swiper-slide > .card),
+.audiences__swiper :deep(.swiper-slide > *) {
+  width: 100%;
+  height: 100%;
   display: flex;
+  flex-direction: column;
 }
 
 /* ======================================================
@@ -70,6 +101,7 @@ BEM
   aspect-ratio: 16 / 9;
   overflow: hidden;
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  flex-shrink: 0; /* Impede que a imagem encolha quando houver muito texto */
 }
 
 .audiences__image img {
@@ -84,17 +116,22 @@ BEM
 ====================================================== */
 
 .audiences__content {
-  padding: var(--space-lg) var(--space-xl);
+  padding: var(--space-sm) var(--space-xl);
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .audiences__content h3 {
   margin: 0 0 var(--space-sm);
   color: var(--text-primary);
+  font-size: var(--font-sm);
 }
 
 .audiences__content p {
   margin: 0;
   color: var(--text-secondary);
+  font-size: var(--font-sm);
 }
 
 /* ======================================================

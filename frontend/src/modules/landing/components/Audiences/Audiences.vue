@@ -36,16 +36,16 @@ import { audiences } from '../../content/Audiences.ts'
 </script>
 
 <template>
-  <Section>
+  <Section class="section-audience">
     <Container>
       <div class="audiences">
         <header class="audiences__header">
-          <Badge variant="primary" size="sm">Para quem é</Badge>
+          <div class="badge__heeader">Para quem é</div>
           <p>Feito para quem valoriza credibilidade</p>
         </header>
 
         <Swiper
-          class="audience__swiper"
+          class="audiences__swiper"
           :modules="[Autoplay, A11y]"
           :slides-per-view="1"
           :space-between="24"
@@ -71,7 +71,7 @@ import { audiences } from '../../content/Audiences.ts'
               </div>
 
               <div class="audiences__content">
-                <h3>{{ audience.title }}</h3>
+                <h3 class="card__title">{{ audience.title }}</h3>
                 <p>{{ audience.description }}</p>
               </div>
             </Card>
