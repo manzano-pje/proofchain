@@ -25,6 +25,8 @@ import { Swiper, SwiperSlide } from 'swiper/vue'
 import { Autoplay, A11y } from 'swiper/modules'
 
 import 'swiper/css'
+import './Audiences.css'
+import Badge from '@/core/components/base/Badge/Badge.vue'
 
 import Section from '@/core/components/ui/Section/Section.vue'
 import Container from '@/core/components/ui/Container/Container.vue'
@@ -34,11 +36,11 @@ import { audiences } from '../../content/Audiences.ts'
 </script>
 
 <template>
-  <Section style="background-color: blueviolet">
+  <Section>
     <Container>
       <div class="audiences">
         <header class="audiences__header">
-          <h2>Para quem é</h2>
+          <Badge variant="primary" size="sm">Para quem é</Badge>
           <p>Feito para quem valoriza credibilidade</p>
         </header>
 
@@ -79,8 +81,3 @@ import { audiences } from '../../content/Audiences.ts'
     </Container>
   </Section>
 </template>
-<style lang="css">
-.audiences__swiper :deep(.swiper-wrapper) {
-  transition-timing-function: linear !important;
-}
-</style>

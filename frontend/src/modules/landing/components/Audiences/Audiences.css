@@ -1,0 +1,136 @@
+/*
+=========================================================
+Project.......: ProofChain
+Component.....: Audiences
+File..........: Audiences.css
+Version.......: 1.0.0
+
+Description...:
+Styles for the audiences section and its carousel.
+
+Methodology...:
+BEM
+
+=========================================================
+*/
+
+/* ======================================================
+   SECTION
+====================================================== */
+
+.audiences {
+  width: 100%;
+}
+
+/* ======================================================
+   HEADER
+====================================================== */
+
+.audiences__header {
+  max-width: 720px;
+  margin: 0 auto var(--space-3x1);
+  text-align: center;
+}
+
+.audiences__header h2 {
+  margin: 0 0 var(--space-sm);
+  color: var(--text-primary);
+}
+
+.audiences__header p {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+/* ======================================================
+   SWIPER
+====================================================== */
+
+.audiences__swiper {
+  width: 100%;
+  overflow: hidden;
+}
+
+.audiences__swiper :deep(.swiper-wrapper) {
+  align-items: stretch;
+  transition-timing-function: linear !important;
+}
+
+.audiences__swiper :deep(.swiper-slide) {
+  height: auto;
+  display: flex;
+}
+
+/* ======================================================
+   IMAGE
+====================================================== */
+
+.audiences__image {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+
+.audiences__image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ======================================================
+   CONTENT
+====================================================== */
+
+.audiences__content {
+  padding: var(--space-lg) var(--space-xl);
+}
+
+.audiences__content h3 {
+  margin: 0 0 var(--space-sm);
+  color: var(--text-primary);
+}
+
+.audiences__content p {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+/* ======================================================
+   IMAGE INTERACTION
+====================================================== */
+
+.audiences__image img {
+  transition:
+    transform 300ms ease,
+    filter 300ms ease;
+}
+
+.audiences__swiper :deep(.swiper-slide:hover) .audiences__image img {
+  transform: scale(1.03);
+}
+
+/* ======================================================
+   RESPONSIVE
+====================================================== */
+
+@media (max-width: 1023px) {
+  .audiences__header {
+    margin-bottom: var(--space-xl);
+  }
+}
+
+@media (max-width: 767px) {
+  .audiences__header {
+    margin-bottom: var(--space-lg);
+  }
+
+  .audiences__content {
+    padding: var(--space-md);
+  }
+
+  .audiences__image {
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+  }
+}
