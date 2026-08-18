@@ -17,14 +17,15 @@ Methodology...: BEM
 ====================================================== */
 
 .section-audience {
-  background: var(--brand-light);
-  padding: var(--space-md) var(--space-xs);
+  padding: var(--space-md) 0;
+  margin: 0;
+  background-color: var(--brand-hover);
 }
 
 .audiences {
   width: 100%;
-  border: 1pt solid var(--brand);
-  background-color: aqua;
+  margin: 0 auto;
+  padding: var(--space-xs) 0;
 }
 
 /* ======================================================
@@ -33,63 +34,57 @@ Methodology...: BEM
 
 .audiences__header {
   max-width: 450px;
-  margin: 0;
+  margin-left: var(--space-lg);
   text-align: left;
-  padding-left: var(--space-sm);
+}
+
+.badge__heeader {
+  margin: 0;
+  font-size: var(--heading-5);
+  font-weight: var(--weight-semibold);
+  color: var(--action);
 }
 
 .audiences__header p {
-  margin: var(--space-md) 0;
+  margin: 0;
   color: var(--text-secondary);
   font-size: var(--font-xl);
   font-weight: var(--weight-medium);
 }
-
-.badge__heeader {
-  background-color: var(--brand-hover);
-  border-radius: var(--radius-xl);
-  padding: var(--space-xs) var(--space-lg);
-  width: 220px;
-  margin: var(--space-xs) 0 0;
-  font-size: var(--heading-5);
-  font-weight: var(--weight-semibold);
-  color: var(--text-primary);
-}
-
-/* ======================================================
-   CARD
-====================================================== */
 
 /* ======================================================
    SWIPER
 ====================================================== */
 
 .audiences__swiper {
-  width: 100%;
+  width: 100vw;
   overflow: hidden;
   height: 100%;
+  background-color: var(--brand);
+  padding: var(--space-xl);
+  margin-top: var(--space-xs);
+  margin-left: calc(50% - 50vw);
 }
 
 /* Força a linha do Swiper a alinhar e esticar todos os slides */
-.audiences__swiper :deep(.swiper-wrapper) {
-  display: flex !important;
+.audiences__swiper .swiper-wrapper {
   align-items: stretch !important;
   transition-timing-function: linear !important;
 }
 
 /* Força o slide a ter altura total baseada no maior slide do container */
-.audiences__swiper :deep(.swiper-slide) {
+.audiences__swiper .swiper-slide {
   height: auto !important; /* Permite que o stretch funcione */
   display: flex !important;
-  flex-direction: column !important;
 }
 
-.audiences__swiper :deep(.swiper-slide > .card),
-.audiences__swiper :deep(.swiper-slide > *) {
+.audiences__swiper .swiper-slide > * {
   width: 100%;
   height: 100%;
-  display: flex;
-  flex-direction: column;
+}
+
+.audiences__swiper .swiper-slide:hover .audiences__image img {
+  transform: scale(1.03);
 }
 
 /* ======================================================
@@ -144,8 +139,8 @@ Methodology...: BEM
     filter 300ms ease;
 }
 
-.audiences__swiper :deep(.swiper-slide:hover) .audiences__image img {
-  transform: scale(1.03);
+.audiences__swiper .swiper-slide:hover .audiences__image img {
+  transform: scale(1.07);
 }
 
 /* ======================================================

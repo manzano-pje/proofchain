@@ -17,8 +17,7 @@ Dependencies..:
 - Container
 - Card
 - Swiper
-=========================================================
--->
+========================================================= -->
 
 <script setup lang="ts">
 import { Swiper, SwiperSlide } from 'swiper/vue'
@@ -26,7 +25,6 @@ import { Autoplay, A11y } from 'swiper/modules'
 
 import 'swiper/css'
 import './Audiences.css'
-import Badge from '@/core/components/base/Badge/Badge.vue'
 
 import Section from '@/core/components/ui/Section/Section.vue'
 import Container from '@/core/components/ui/Container/Container.vue'
@@ -50,6 +48,7 @@ import { audiences } from '../../content/Audiences.ts'
           :slides-per-view="1"
           :space-between="24"
           :loop="true"
+          :autoHeight="false"
           :autoplay="{
             delay: 0,
             disableOnInteraction: false,
