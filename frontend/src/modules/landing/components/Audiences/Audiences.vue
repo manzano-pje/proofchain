@@ -22,11 +22,9 @@ Dependencies..:
 
 <script setup lang="ts">
 import { Swiper, SwiperSlide } from 'swiper/vue'
-import { Navigation, Pagination, A11y } from 'swiper/modules'
+import { Autoplay, A11y } from 'swiper/modules'
 
 import 'swiper/css'
-import 'swiper/css/navigation'
-import 'swiper/css/pagination'
 
 import Section from '@/core/components/ui/Section/Section.vue'
 import Container from '@/core/components/ui/Container/Container.vue'
@@ -36,37 +34,44 @@ import { audiences } from '../../content/Audiences.ts'
 </script>
 
 <template>
-  <Section>
+  <Section style="background-color: blueviolet">
     <Container>
       <div class="audiences">
         <header class="audiences__header">
           <h2>Para quem é</h2>
-
           <p>Feito para quem valoriza credibilidade</p>
         </header>
 
         <Swiper
-          :modules="[Navigation, Pagination, A11y]"
+          class="audience__swiper"
+          :modules="[Autoplay, A11y]"
           :slides-per-view="1"
           :space-between="24"
-          navigation
-          :pagination="{ clickable: true }"
+          :loop="true"
+          :autoplay="{
+            delay: 0,
+            disableOnInteraction: false,
+          }"
+          :speed="10000"
           :breakpoints="{
             768: {
               slidesPerView: 2,
             },
             1024: {
-              slidesPerView: 3,
+              slidesPerView: 5,
             },
           }"
         >
           <SwiperSlide v-for="audience in audiences" :key="audience.id">
             <Card>
-              <img :src="audience.image" :alt="audience.title" />
+              <div class="audiences__image">
+                <img :src="audience.image" :alt="audience.title" />
+              </div>
 
-              <h3>{{ audience.title }}</h3>
-
-              <p>{{ audience.description }}</p>
+              <div class="audiences__content">
+                <h3>{{ audience.title }}</h3>
+                <p>{{ audience.description }}</p>
+              </div>
             </Card>
           </SwiperSlide>
         </Swiper>
@@ -74,3 +79,8 @@ import { audiences } from '../../content/Audiences.ts'
     </Container>
   </Section>
 </template>
+<style lang="css">
+.audiences__swiper :deep(.swiper-wrapper) {
+  transition-timing-function: linear !important;
+}
+</style>
