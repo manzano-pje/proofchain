@@ -3,6 +3,7 @@
     <Header />
     <Hero />
     <Audiences />
+    <Flow />
     <!-- <Gravityzero /> -->
     <Footer />
   </div>
@@ -13,5 +14,6 @@ import Header from '@/layouts/components/Header/Header.vue'
 import Footer from '@/layouts/components/Footer/Footer.vue'
 import Hero from '@/modules/landing/components/Hero/Hero.vue'
 import Audiences from './modules/landing/components/Audiences/Audiences.vue'
+import Flow from './modules/landing/components/Flow/Flow.vue'
 // import Gravityzero from '@/components/ui/Gravityzero/GravityZero.vue'
 </script>
