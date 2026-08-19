@@ -8,9 +8,7 @@ Version.......: 1.0.0
 Description...:
 Styles for the audiences section and its carousel.
 
-Methodology...:
-BEM
-
+Methodology...: BEM
 =========================================================
 */
 
@@ -18,8 +16,16 @@ BEM
    SECTION
 ====================================================== */
 
+.section-audience {
+  padding: var(--space-md) 0;
+  margin: 0;
+  background-color: var(--brand-hover);
+}
+
 .audiences {
   width: 100%;
+  margin: 0 auto;
+  padding-bottom: var(--space-xs);
 }
 
 /* ======================================================
@@ -27,19 +33,24 @@ BEM
 ====================================================== */
 
 .audiences__header {
-  max-width: 720px;
-  margin: 0 auto var(--space-3x1);
-  text-align: center;
+  max-width: 450px;
+  margin-left: var(--space-md);
+  margin-bottom: var(--space-md);
+  text-align: left;
 }
 
-.audiences__header h2 {
-  margin: 0 0 var(--space-sm);
-  color: var(--text-primary);
+.badge__heeader {
+  margin: 0;
+  font-size: var(--heading-4);
+  font-weight: var(--weight-semibold);
+  color: var(--action);
 }
 
 .audiences__header p {
   margin: 0;
   color: var(--text-secondary);
+  font-size: var(--font-xl);
+  font-weight: var(--weight-medium);
 }
 
 /* ======================================================
@@ -47,18 +58,34 @@ BEM
 ====================================================== */
 
 .audiences__swiper {
-  width: 100%;
+  width: 100vw;
   overflow: hidden;
+  height: 100%;
+  background-color: var(--brand);
+  padding: var(--space-xl);
+  margin-top: var(--space-xs);
+  margin-left: calc(50% - 50vw);
 }
 
-.audiences__swiper :deep(.swiper-wrapper) {
-  align-items: stretch;
+/* Força a linha do Swiper a alinhar e esticar todos os slides */
+.audiences__swiper .swiper-wrapper {
+  align-items: stretch !important;
   transition-timing-function: linear !important;
 }
 
-.audiences__swiper :deep(.swiper-slide) {
-  height: auto;
-  display: flex;
+/* Força o slide a ter altura total baseada no maior slide do container */
+.audiences__swiper .swiper-slide {
+  height: auto !important; /* Permite que o stretch funcione */
+  display: flex !important;
+}
+
+.audiences__swiper .swiper-slide > * {
+  width: 100%;
+  height: 100%;
+}
+
+.audiences__swiper .swiper-slide:hover .audiences__image img {
+  transform: scale(1.03);
 }
 
 /* ======================================================
@@ -70,6 +97,7 @@ BEM
   aspect-ratio: 16 / 9;
   overflow: hidden;
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  flex-shrink: 0; /* Impede que a imagem encolha quando houver muito texto */
 }
 
 .audiences__image img {
@@ -84,17 +112,22 @@ BEM
 ====================================================== */
 
 .audiences__content {
-  padding: var(--space-lg) var(--space-xl);
+  padding: var(--space-sm) var(--space-xl);
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .audiences__content h3 {
   margin: 0 0 var(--space-sm);
   color: var(--text-primary);
+  font-size: var(--font-sm);
 }
 
 .audiences__content p {
   margin: 0;
   color: var(--text-secondary);
+  font-size: var(--font-sm);
 }
 
 /* ======================================================
@@ -107,8 +140,8 @@ BEM
     filter 300ms ease;
 }
 
-.audiences__swiper :deep(.swiper-slide:hover) .audiences__image img {
-  transform: scale(1.03);
+.audiences__swiper .swiper-slide:hover .audiences__image img {
+  transform: scale(1.07);
 }
 
 /* ======================================================

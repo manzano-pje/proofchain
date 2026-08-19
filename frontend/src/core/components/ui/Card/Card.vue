@@ -11,13 +11,8 @@ Reusable card container component.
 Responsibility:
 Provide a standardized content container
 for interface sections.
-
-Dependencies..:
-- Card.css
-
-Methodology...:
-BEM
-
+Dependencies..: - Card.css
+Methodology...: BEM
 =========================================================
 -->
 

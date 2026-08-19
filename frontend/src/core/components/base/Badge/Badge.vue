@@ -22,57 +22,25 @@ BEM
 -->
 
 <script setup lang="ts">
-
 import { computed } from 'vue'
-
 import './Badge.css'
 
-
 interface BadgeProps {
+  variant?: 'primary' | 'success' | 'warning' | 'danger' | 'neutral'
 
-  variant?:
-    | 'primary'
-    | 'success'
-    | 'warning'
-    | 'danger'
-    | 'neutral'
-
-  size?:
-    | 'sm'
-    | 'md'
-
+  size?: 'sm' | 'md' | 'lg'
 }
 
+const props = withDefaults(defineProps<BadgeProps>(), {
+  variant: 'neutral',
+  size: 'lg',
+})
 
-const props = withDefaults(
-  defineProps<BadgeProps>(),
-  {
-    variant: 'neutral',
-    size: 'md'
-  }
-)
-
-
-const classes = computed(() => [
-
-  'badge',
-
-  `badge--${props.variant}`,
-
-  `badge--${props.size}`
-
-])
-
-
+const classes = computed(() => ['badge', `badge--${props.variant}`, `badge--${props.size}`])
 </script>
 
-
 <template>
-
   <span :class="classes">
-
     <slot />
-
   </span>
-
 </template>

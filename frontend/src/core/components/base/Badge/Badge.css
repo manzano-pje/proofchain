@@ -18,14 +18,15 @@ BEM
 
 .badge {
   display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  /* align-items: center;
+  justify-content: center; */
   gap: var(--spacing-xs);
   width: fit-content;
   border-radius: var(--radius-full);
   font-weight: var(--weight-semibold);
   line-height: 1;
   white-space: nowrap;
+  font-size: var(--font-lg);
 }
 
 /*
@@ -36,17 +37,17 @@ Sizes
 
 .badge--sm {
   padding: var(--spacing-xs) var(--spacing-sm);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-sm);
 }
 
 .badge--md {
   padding: var(--spacing-xs) var(--spacing-md);
-  font-size: var(--font-sm);
+  font-size: var(--font-md);
 }
 
 .badge--lg {
   padding: var(--spacing-sm) var(--spacing-lg);
-  font-size: var(--font-md);
+  font-size: var(--font-lg);
 }
 
 /*
