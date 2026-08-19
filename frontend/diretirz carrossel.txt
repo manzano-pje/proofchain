@@ -1,0 +1,159 @@
+Sim. O ideal é separar as **diretrizes visuais fixas** do conteúdo de cada imagem. Assim, você usa estas diretrizes como instrução geral e depois fornece à IA apenas o cenário específico de cada card.
+
+```text
+DIRETRIZES GERAIS PARA A CRIAÇÃO DAS IMAGENS
+
+Criar uma coleção de imagens para uma landing page SaaS da ProofChain.
+
+As imagens devem possuir unidade visual entre si, mas representar ambientes, situações e públicos diferentes. A coleção deve transmitir diversidade de aplicações, deixando claro visualmente que a plataforma não está limitada ao ambiente corporativo.
+
+ESTILO VISUAL
+
+- Fotografia editorial realista e contemporânea.
+- Aparência premium, sofisticada e natural.
+- Estética de fotografia profissional produzida para uma empresa moderna de tecnologia, educação e serviços.
+- Cenas espontâneas e plausíveis, evitando aparência artificial de banco de imagens.
+- Pessoas naturais, com expressões autênticas e sem poses exageradas.
+- Diversidade de idade, gênero e aparência quando houver pessoas.
+- Priorizar ambientes reais e visualmente interessantes.
+- A imagem deve transmitir credibilidade, conhecimento, participação, desenvolvimento ou conquista, de acordo com o contexto representado.
+
+ILUMINAÇÃO
+
+- Imagens predominantemente claras e luminosas.
+- Preferência por iluminação natural abundante.
+- Utilizar luz suave e agradável.
+- Ambientes com sensação de abertura, leveza e qualidade.
+- Evitar iluminação dramática, sombria ou excessivamente contrastada.
+- Evitar ambientes predominantemente escuros.
+
+PALETA DE CORES
+
+- Predominância de branco, off-white, bege, madeira clara, cinza claro e cores naturais.
+- Utilizar cores próprias de cada ambiente de maneira natural.
+- Azul pode aparecer apenas como detalhe secundário.
+- NÃO utilizar azul como cor dominante.
+- Evitar que todas as imagens tenham aparência azulada.
+- A identidade azul da ProofChain será fornecida pelo restante da interface, não pelas imagens.
+
+COMPOSIÇÃO
+
+- Formato horizontal 16:9.
+- Composição adequada para utilização em cards de uma landing page.
+- Elemento principal claramente identificável mesmo quando a imagem estiver reduzida.
+- Composição equilibrada e limpa.
+- Evitar excesso de objetos ou informações visuais.
+- Utilizar profundidade de campo moderada.
+- Manter elementos importantes afastados das bordas.
+- Evitar enquadramentos que dificultem cortes ou redimensionamentos posteriores.
+- Não criar áreas artificiais destinadas à inserção de texto.
+- A imagem deve funcionar visualmente mesmo sem qualquer texto sobreposto.
+
+DIVERSIDADE
+
+Cada imagem deve representar um ambiente significativamente diferente das demais.
+
+Variar entre:
+- escritórios;
+- laboratórios;
+- instituições de ensino;
+- ambientes residenciais;
+- workshops;
+- espaços comunitários;
+- ambientes técnicos;
+- espaços criativos ou especializados.
+
+Evitar repetir:
+- escritório corporativo;
+- pessoas sentadas em reuniões;
+- pessoas usando notebooks;
+- salas de aula;
+- pessoas olhando para a câmera;
+- grupos posando para fotografia.
+
+A diversidade dos ambientes é parte fundamental do conceito da coleção.
+
+RELAÇÃO COM O PRODUTO
+
+As imagens devem representar QUEM PODE UTILIZAR a ProofChain e o contexto em que essas organizações ou grupos atuam.
+
+Não representar uma funcionalidade específica do sistema.
+
+Não é necessário mostrar:
+- certificados;
+- diplomas;
+- documentos;
+- telas do sistema;
+- interfaces digitais;
+- códigos;
+- blockchain;
+- criptomoedas.
+
+A imagem deve representar o contexto de utilização, e não a tecnologia responsável pela plataforma.
+
+LINGUAGEM VISUAL
+
+A coleção deve comunicar:
+
+- credibilidade;
+- autenticidade;
+- conhecimento;
+- qualificação;
+- participação;
+- aprendizado;
+- reconhecimento;
+- diversidade de aplicações.
+
+A tecnologia deve estar implícita na proposta da marca, e não visualmente representada por elementos futuristas.
+
+ELEMENTOS PROIBIDOS
+
+Não utilizar:
+- textos;
+- letras legíveis;
+- números;
+- logotipos;
+- marcas comerciais;
+- marcas d'água;
+- símbolos de blockchain;
+- criptomoedas;
+- moedas digitais;
+- hologramas;
+- interfaces flutuantes;
+- elementos cyberpunk;
+- estética sci-fi;
+- excesso de efeitos digitais;
+- excesso de azul;
+- iluminação escura;
+- pessoas artificialmente posadas;
+- apertos de mão como elemento principal;
+- executivos olhando para gráficos;
+- pessoas olhando diretamente para a câmera sem justificativa;
+- composição genérica de banco de imagens.
+
+CONSISTÊNCIA DA COLEÇÃO
+
+Todas as imagens devem parecer pertencer à mesma campanha visual.
+
+Manter consistente:
+- qualidade fotográfica;
+- nível de realismo;
+- iluminação clara;
+- tratamento natural;
+- sofisticação;
+- proporção 16:9;
+- composição adequada para cards.
+
+Ao mesmo tempo, variar deliberadamente:
+- ambientes;
+- atividades;
+- quantidade de pessoas;
+- idade das pessoas;
+- enquadramentos;
+- cores secundárias;
+- contexto cultural e profissional.
+
+RESULTADO ESPERADO
+
+Uma coleção visualmente coerente, clara, humana e diversificada, na qual cada imagem represente um contexto de utilização diferente e, quando observadas em conjunto, transmita a ideia de que a ProofChain pode ser utilizada em diferentes setores, ambientes e situações onde exista uma conquista, qualificação, participação ou formação que possa ser reconhecida e comprovada.
+```

@@ -59,7 +59,7 @@ import { audiences } from '../../content/Audiences.ts'
               slidesPerView: 2,
             },
             1024: {
-              slidesPerView: 5,
+              slidesPerView: 4,
             },
           }"
         >
