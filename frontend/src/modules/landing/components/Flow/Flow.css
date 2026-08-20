@@ -42,14 +42,14 @@ BEM
 
 .badge__header {
   margin: var(--space-md) 0 0;
-  color: var(--text-primary);
-  font-size: var(--font-3xl);
+  color: var(--action-active);
+  font-size: var(--heading-3);
   font-weight: var(--weight-semibold);
   line-height: 1.2;
 }
 
 .flow__heading {
-  margin: var(--space-md) 0 0;
+  margin: 0 0 var(--space-md);
   color: var(--text-primary);
   font-size: var(--font-xl);
   font-weight: var(--weight-semibold);
@@ -80,7 +80,7 @@ BEM
   height: 2px;
   background-color: var(--action-active);
   transform: translateY(-50%);
-  z-index: var(--z-dropdown);
+  z-index: var(--z-sticky);
 }
 
 /* Linha vertical*/
@@ -131,7 +131,7 @@ BEM
   max-width: 220px;
   z-index: var(--z-sticky);
   background-color: var(--brand);
-  padding: var(--space-sm;
+  padding: var(--space-xs);
 }
 
 .flow__title {
@@ -161,8 +161,7 @@ BEM
   border-radius: 50%;
   background-color: var(--background);
   flex-shrink: 0;
-  z-index: var(--z-sticky);
-  padding: var(--space-xs);
+  z-index: var(--z-fixed);
 }
 
 .flow__image img {
@@ -203,7 +202,7 @@ Já está sendo controlado pelo Vue com v-if, então não
   border-radius: 50%;
   background-color: var(--background);
   color: var(--text-inverse);
-  font-size: var(--font-md);
+  font-size: var(--font-sm);
   font-weight: var(--weight-semibold);
 }
 
@@ -217,8 +216,8 @@ Já está sendo controlado pelo Vue com v-if, então não
   position: absolute;
   z-index: var(--z-base);
   left: 50%;
-  width: 2px;
-  background-color: var(--action-active);
+  width: 1px;
+  background-color: var(--text-muted);
   transform: translateX(-50%);
 }
 
