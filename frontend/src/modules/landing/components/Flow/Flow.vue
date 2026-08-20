@@ -43,25 +43,52 @@ import './Flow.css'
         </header>
 
         <div class="flow__steps">
-          <article v-for="step in flowSteps" :key="step.id" class="flow__step">
-            <div class="flow__content">
-              <div class="flow__text">
-                <h3 class="flow__title">
-                  {{ step.title }}
-                </h3>
+          <article v-for="(step, index) in flowSteps" :key="step.id" class="flow__step">
+            <!-- Conteúdo superior -->
+            <div class="flow__top">
+              <template v-if="index % 2 === 0">
+                <div class="flow__text">
+                  <h3 class="flow__title">
+                    {{ step.title }}
+                  </h3>
 
-                <p class="flow__description">
-                  {{ step.description }}
-                </p>
-              </div>
+                  <p class="flow__description">
+                    {{ step.description }}
+                  </p>
+                </div>
+              </template>
 
-              <div class="flow__image">
-                <img :src="step.image" :alt="step.alt" />
-              </div>
+              <template v-else>
+                <div class="flow__image">
+                  <img :src="step.image" :alt="step.alt" />
+                </div>
+              </template>
             </div>
 
+            <!-- Marcador central -->
             <div class="flow__marker">
               {{ step.number }}
+            </div>
+
+            <!-- Conteúdo inferior -->
+            <div class="flow__bottom">
+              <template v-if="index % 2 === 0">
+                <div class="flow__image">
+                  <img :src="step.image" :alt="step.alt" />
+                </div>
+              </template>
+
+              <template v-else>
+                <div class="flow__text">
+                  <h3 class="flow__title">
+                    {{ step.title }}
+                  </h3>
+
+                  <p class="flow__description">
+                    {{ step.description }}
+                  </p>
+                </div>
+              </template>
             </div>
           </article>
         </div>
