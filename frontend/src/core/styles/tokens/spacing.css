@@ -4,13 +4,13 @@
        Base: 4px
     ====================================================== */
 
-  --space-xs: 4px;     /* space-1 */
-  --space-sm: 8px;     /* space-2 */
-  --space-md: 16px;    /* space-4 */
-  --space-lg: 20px;    /* space-5 */
-  --space-xl: 24px;    /* space-6 */
-  --space-2x1: 28px;   /* space-7 */
-  --space-3x1: 32px;   /* space-8 */
+  --space-xs: 4px; /* space-1 */
+  --space-sm: 8px; /* space-2 */
+  --space-md: 16px; /* space-4 */
+  --space-lg: 20px; /* space-5 */
+  --space-xl: 24px; /* space-6 */
+  --space-2x1: 28px; /* space-7 */
+  --space-3x1: 32px; /* space-8 */
 
   /* ======================================================
        COMPONENT SPACING
