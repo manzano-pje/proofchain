@@ -1,0 +1,195 @@
+Markdown
+# AGENTS.MD - Especificação Técnica: 3D Ring Carousel (Interactive Flip Cards)
+
+## Histórico de decisões
+- 2026-08-23: Criação inicial do documento, assumindo stack **React + Framer Motion** e Property Controls nativos do Framer.
+- 2026-08-23: Decisões arquiteturais definidas a partir de respostas:
+  - **Ghost Clicks**: Prevenção ativa interceptando pointer events com delta > 5px.
+  - **Profundidade (Back Cards)**: Aplicação de filtros adaptativos (Opacity/Blur) simulando *Depth of Field*.
+  - **Raio Matemático**: Implementação de raio mínimo com clonagem visual automática em arrays pequenos (garantia de circunferência).
+  - **Auto-Play**: Interrupção reativa (Pause) no hover/touchstart, retomando 1s após inatividade (idle).
+  - **Responsividade**: Uso de `ResizeObserver` para recalcular a projeção 3D baseada na largura da Viewport.
+- 2026-08-23: Removida qualquer dependência ou menção a redirecionamentos de links (CMS Framer). O clique no card agora aciona um efeito de **flip 3D**, revelando uma descrição no verso do respectivo card.
+
+---
+
+## 1) Contexto do App e Objetivo
+
+- **Produto**: Componente Code-Level de interface (Smart Component) para uso no construtor de sites **Framer**.
+- **Nome**: 3D Ring Carousel (Carrossel Interativo com Flip Cards).
+- **Objetivo**: Renderizar iterativamente um array de dados (imagens + textos) posicionando os itens como *Cards* suspensos num formato radial cilíndrico. Os cards possuem frente (imagem) e verso (descrição) acessíveis via clique (Flip 3D).
+- **Entregável**: Arquivo TSX único pronto para inserção no ambiente de Code Component do Framer.
+- **Público**: Designers / P.O.s que configuram visualmente sites de portfólios criativos ou vitrines interativas.
+
+## 2) Tech Stack & Coding Guideline
+
+### 2.1 Tecnologias
+- **React 18+ (TypeScript)**: Gestão de montagem DOM e lifecycle de instâncias. Adição de estado local nos cards para controle do flip (`isFlipped`).
+- **Framer Motion**: Motor base obrigatório para controle de animações físicas 3D pesadas; processamento de drag, interações em 60 fps e animação fluida do `rotateY` do card no flip.
+- **Framer API**: Registro via `addPropertyControls` para os atributos na lateral da interface.
+- **CSS 3D Transforms**: `perspective`, `rotateX`, `rotateY`, `translateZ`, e o fundamental `transform-style: preserve-3d` (aplicado tanto no anel principal quanto no invólucro do card para o flip).
+
+### 2.2 Padrões de Código
+
+#### Regras gerais
+- **Separação de Estados**: O ângulo interativo do carrossel (`dragDelta`, `rotationY`) é guardado em `MotionValue` (`useMotionValue`). O estado de flip do card (Frente/Verso) deve ser guardado via `useState` local no nível do componente `<CarouselCardItem>`.
+- O código deve ser inteiramente modulado no paradigma funcional (Sem Classes).
+- Comentários precisos delimitando blocos lógicos: `<!-- Cálculos Geométricos -->`, `<!-- Física de Arraste -->`, `<!-- Lógica de Flip -->`.
+- Omissão completa de referências "window" abertas na inicialização para evitar quebras de SSR (Server-Side Rendering).
+
+#### Matemática Isolada e Otimizada
+- Os loops de cálculo (definição do raio `Z`, `Math.PI`, `Math.tan()`) devem estar em diretivas `useMemo` com rastreamento estrito de dependências.
+
+## 3) Arquitetura Estrutural
+
+O Code Component deverá empacotar as rotinas em um arquivo exportável, seguindo a estrutura lógica abaixo:
+
+```txt
+3D-Ring-Carousel.tsx
+├── Interfaces (PropTypes, PropertyControls definition)
+├── Hook Customizado: useCylinderMath (cálculos do Raio Z, clonagem para anel mínimo)
+├── Hook Customizado: useCarouselPhysics (ligações com Drag, Spring, e Pause on Hover)
+├── Hook Customizado: useResizeObserver (recalcular perspectiva no resize)
+├── Componente Principal: <RingCarousel>
+└── Componente Filho: <FlipCardItem> (gerencia estado isFlipped e animação Frente/Verso)
+3.1 Responsabilidades por Estrutura
+Interfaces e Setup
+Definição do addPropertyControls com controle de arrays de objetos (cada objeto possuindo imagem para a frente e texto rico/string para o verso), controles de Autoplay, Sensibilidade de Drag e Gap.
+
+Hook Customizado: useCylinderMath
+Valida o items.length. Se for menor que 6 (limite mínimo para um cilindro decente), clona o array para gerar instâncias virtuais preenchendo a circunferência.
+
+Calcula o theta (ângulo) e o translateZ baseado no cardWidth e gapSize.
+
+Hook Customizado: useCarouselPhysics
+Associa o deslocamento Horizontal (X) a um ângulo Y virtual via useTransform().
+
+Cria listeners para pausar a animação (se Autoplay for true) em onMouseEnter ou onTouchStart, criando um timeout de 1s no onMouseLeave/onTouchEnd para retomar.
+
+Componente Filho: <FlipCardItem>
+Componente encapsulado contendo um motion.div com preserve-3d.
+
+Renderiza dois filhos absolutos (.front, .back) com backface-visibility: hidden. .back inicia com rotateY(180deg).
+
+Gerencia o clique validando o delta de arraste para evitar falsos flips.
+
+4) UI/UX — Especificação Visual
+4.1 Estrutura DOM e Plano Espacial (DOM Tree)
+View-Port Container: Delimita escopo, controla centralização, e define o perspective. Reage ao ResizeObserver para recalcular a câmera no Mobile.
+
+Câmera/Tilt Stage: motion.div que inclina globalmente a estrutura via rotateX.
+
+Cilindro Base (Rotator): Nó em preserve-3d no centro, onde as rotações de drag são aplicadas.
+
+Children (FlipCardItem):
+
+Afastados do centro via rotateY(theta * index) translateZ(radius).
+
+Herdam o sistema de Depth of Field: Opacidade e Blur dinâmicos via useTransform dependendo do ângulo atual em relação à câmera frontal.
+
+4.2 Property Controls (Controles Laterais do Usuário)
+Camada de Dados:
+
+Elemento tipo Array. Cada item deve ter:
+
+Front Image (Image Control).
+
+Back Title (String Control).
+
+Back Description (String/Text Control).
+
+Dimensionamento Espacial:
+
+Card Width & Card Height.
+
+Gap (Margeamento vazio perimetral).
+
+Câmera Global:
+
+Field of Perspective (Achatamento).
+
+Camera Tilt (X-Axis Rotations).
+
+Cinemática:
+
+Auto Spin (Boolean) & Spin Velocity.
+
+Drag Sensitivity (damping/stiffness).
+
+Estética do Verso (Flip):
+
+Card Background Color e Text Color para o design do verso.
+
+5) Mecânica das Interações
+5.1 Prevenção de Falsos Cliques (Ghost Clicks) no Drag
+O evento onPointerDown registra a coordenada inicial (startX, startY).
+
+O evento onPointerUp (ou evento de clique sintético) calcula a distância percorrida (deltaX, deltaY).
+
+Se a distância for maior que 5px, a ação é interpretada como Drag (Arraste) e o e.preventDefault() / e.stopPropagation() é invocado, bloqueando o flip.
+
+Se for menor que 5px, a ação é interpretada como Click/Tap, acionando a função toggleFlip().
+
+5.2 Lógica do Flip (Frente e Verso)
+Ao ocorrer um clique válido, o estado isFlipped inverte (!isFlipped).
+
+O invólucro do Card anima sua rotação local (rotateY) de 0deg para 180deg via Framer Motion.
+
+Como o verso está pré-rotacionado a 180 graus e ambos possuem backface-visibility: hidden, a transição revelará a descrição de forma natural sem vazar o conteúdo da frente.
+
+5.3 Auto-Play Responsivo a Interações
+Se Auto Spin ativo, useAnimationFrame incrementa o ângulo base progressivamente.
+
+onHoverStart (Mouse) ou onTouchStart (Mobile) altera uma ref interna (isInteracting = true), pausando instantaneamente a lógica de useAnimationFrame.
+
+onHoverEnd ou onTouchEnd aciona um setTimeout de 1000ms. Após o tempo, isInteracting vira false e o anel retoma a rotação de onde parou.
+
+5.4 Profundidade de Campo (Depth of Field)
+Durante a rotação, mapeia-se o ângulo global de cada card.
+
+Cards que passam de 90° e entram no quadrante de "trás" (90° a 270°) recebem um multiplicador via useTransform reduzindo opacidade (ex: para 0.2) e aplicando filter: blur(4px).
+
+Cards na frente (270° a 90°) retornam para opacidade 1 e blur 0, garantindo o foco na área de leitura/interação.
+
+6) Modelo de Assinatura de Dados / Interface Props
+TypeScript
+export interface CarouselItemData {
+    id: string;
+    image: string;
+    title: string;
+    description: string;
+}
+
+export interface RingCarouselProps {
+    items: CarouselItemData[];
+    cardWidth: number;
+    cardHeight: number;
+    radiusGap: number;
+    perspectiveConfig: number;
+    tiltAngleX: number;
+    autoRotate: boolean;
+    autoRotateSpeed: number;
+    allowDrag: boolean;
+    dragFrictionAmount: number;
+    cardBackColor: string;
+    cardTextColor: string;
+}
+7) Critérios de Aceite
+7.1 UX Base e Responsividade
+CA-001: O anel redimensiona automaticamente sua perspectiva e distanciamento quando a largura da tela (Viewport) muda, garantindo a exibição das frentes do card em qualquer dispositivo, acionado pelo ResizeObserver.
+
+CA-002: Se o usuário fornecer apenas 3 itens no framer, o script duplicará os nós visualmente (total 6) garantindo um espaçamento circular cilíndrico fluído.
+
+CA-003: Os cards traseiros ficam esmaecidos e desfocados (Depth of Field), melhorando a leitura e a tridimensionalidade espacial.
+
+7.2 Interação Física (Drag vs Flip)
+CA-004: Ao clicar num card fixamente, ele realiza uma rotação local de 180 graus sobre seu eixo Y (Flip), mostrando a camada traseira com título e descrição.
+
+CA-005: Ao tentar girar o carrossel clicando e arrastando um card (distância de toque > 5px), o arraste ocorre normalmente e o card NÃO DEVE realizar o flip.
+
+CA-006: O auto-play é interrompido imediatamente ao colocar o mouse/dedo sobre o componente, permitindo leitura da descrição no verso tranquilamente. A rotação recomeça 1 segundo após o cursor sair da área.
+
+8) Throws (Notas de Implementação)
+Preserve-3D e Safari: transform-style: preserve-3d exige atenção em ambientes iOS/Safari. Para o flip funcionar aninhado em outro contêiner 3D (O Cilindro Global), assegure que as divs .front e .back estejam no mesmo nível no nó de animação do <FlipCardItem>, e que a opacidade (Depth of Field) seja aplicada em um Wrapper acima da camada de flip para evitar achatamento de render layer no Webkit.
+
+Sem conflitos de Rotação: Importante diferenciar a Rotação Orbital (posição do card no cilindro, controlada pelo container) da Rotação Local (o Flip 3D). O Flip (rotateY animando entre 0 e 180) deve ser aplicado no filho direto do contêiner orbital para não destruir o posicionamento matemático translateZ.
