@@ -5,18 +5,19 @@
 // Version.......: 1.0.0
 //
 // Description...:
-// Composition API logic for the 3D cylindrical crown carousel.
+// Lógica de Composition API do carrossel cilíndrico 3D.
 //
 // Responsibility:
-// Geometry, auto-rotate motor, Pointer Events (drag vs click),
-// ResizeObserver, reduced-motion and lifecycle cleanup.
+// Geometria, auto-rotação, Pointer Events, ResizeObserver,
+// reduced-motion e limpeza de ciclo de vida.
 // =========================================================
 
 import { computed, onMounted, onUnmounted, ref, watch, type CSSProperties, type Ref } from 'vue'
 
-// ---------------------------------------------------------
-// Types
-// ---------------------------------------------------------
+/* ======================================================
+   TIPAGENS
+   Contrato de dados do card e da lista renderizada no anel.
+====================================================== */
 
 export interface CarouselItemData {
   id: string
@@ -34,22 +35,24 @@ export interface RenderCarouselItem extends CarouselItemData {
   sourceIndex: number
 }
 
-// ---------------------------------------------------------
-// Internal calibration (adjustable by developers)
-// ---------------------------------------------------------
+/* ======================================================
+   CALIBRAÇÃO INTERNA
+   Constantes de proporção e interação. Ajustar aqui,
+   sem expor controles visuais na interface.
+====================================================== */
 
 /** Largura base do card em pixels. */
 const CARD_WIDTH = 280
 /** Altura base do card em pixels. */
-const CARD_HEIGHT = 400
+const CARD_HEIGHT = 280
 /** Espaçamento entre as arestas dos cards no cilindro. */
-const RADIUS_GAP = 40
+const RADIUS_GAP = 60
 /** Perspectiva da câmera em pixels. */
 const PERSPECTIVE = 1200
 /** Inclinação global da câmera no eixo X (graus). */
-const TILT_ANGLE_X = -30
+const TILT_ANGLE_X = -10
 /** Velocidade do auto-rotate em graus por frame (60fps). */
-const AUTO_ROTATE_SPEED = 0.5
+const AUTO_ROTATE_SPEED = 0.2
 /** Multiplicador do deslocamento horizontal no eixo Y do anel. */
 const DRAG_SENSITIVITY = 1.2
 /** Limite em px para diferenciar drag de click (ghost clicks). */
@@ -61,9 +64,11 @@ const MIN_RING_SLOTS = 6
 /** Duração do flip 3D em milissegundos. */
 const FLIP_DURATION_MS = 600
 
-// ---------------------------------------------------------
-// Geometry helpers
-// ---------------------------------------------------------
+/* ======================================================
+   GEOMETRIA DO CILINDRO
+   Normalização angular, raio translateZ e profundidade
+   (opacidade/blur) da metade traseira do anel.
+====================================================== */
 
 function normalizeDegrees(value: number): number {
   const wrapped = value % 360
@@ -96,6 +101,12 @@ function getDepthOfField(worldAngle: number): { opacity: number; filter: string 
   }
 }
 
+/* ======================================================
+   MONTAGEM DA LISTA VISUAL
+   Garante no mínimo 6 slots. Clona itens com chave
+   item.id + '-clone-' + index, sem alterar o array original.
+====================================================== */
+
 function createRenderItems(items: CarouselItemData[]): RenderCarouselItem[] {
   if (items.length === 0) {
     return []
@@ -126,9 +137,10 @@ function pointerDistance(startX: number, startY: number, x: number, y: number): 
   return Math.hypot(x - startX, y - startY)
 }
 
-// ---------------------------------------------------------
-// Composable
-// ---------------------------------------------------------
+/* ======================================================
+   COMPOSABLE
+   Estado reativo, estilos 3D e orquestração de interação.
+====================================================== */
 
 export function useCrownCarousel(items: Ref<CarouselItemData[]>) {
   const viewportRef = ref<HTMLElement | null>(null)
@@ -138,11 +150,11 @@ export function useCrownCarousel(items: Ref<CarouselItemData[]>) {
   const prefersReducedMotion = ref(false)
   const containerWidth = ref(CARD_WIDTH * 3)
   const flippedIndexes = ref<boolean[]>([])
+  const hoverCount = ref(0)
 
   const pointer = {
     id: 0,
     down: false,
-    hovering: false,
     startX: 0,
     startY: 0,
     lastX: 0,
@@ -158,6 +170,7 @@ export function useCrownCarousel(items: Ref<CarouselItemData[]>) {
 
   const renderItems = computed(() => createRenderItems(items.value))
 
+  /* Escala os cards pela largura do viewport, mantendo a proporção do cilindro. */
   const cardScale = computed(() => {
     const available = Math.max(containerWidth.value, CARD_WIDTH)
     return Math.min(1, available / (CARD_WIDTH * 3.15))
@@ -206,6 +219,12 @@ export function useCrownCarousel(items: Ref<CarouselItemData[]>) {
     })
   })
 
+  /* ======================================================
+     ESTADO DE FLIP
+     Controle individual por card e reset coletivo
+     na retomada do auto-rotate.
+  ====================================================== */
+
   const syncFlippedState = (count: number) => {
     if (flippedIndexes.value.length === count) {
       return
@@ -229,6 +248,12 @@ export function useCrownCarousel(items: Ref<CarouselItemData[]>) {
     flippedIndexes.value = next
   }
 
+  /* ======================================================
+     AUTO-ROTATE
+     Pausa imediata na interação e retoma após RESUME_DELAY,
+     desvirando qualquer card aberto.
+  ====================================================== */
+
   const pauseInteraction = () => {
     isInteracting.value = true
     window.clearTimeout(resumeTimer)
@@ -236,7 +261,7 @@ export function useCrownCarousel(items: Ref<CarouselItemData[]>) {
   }
 
   const beginResumeCountdown = () => {
-    if (pointer.down || pointer.hovering) {
+    if (pointer.down || hoverCount.value > 0) {
       return
     }
 
@@ -248,6 +273,26 @@ export function useCrownCarousel(items: Ref<CarouselItemData[]>) {
       resumeTimer = 0
     }, RESUME_DELAY)
   }
+
+  const incrementHover = () => {
+    hoverCount.value++
+    if (hoverCount.value > 0) {
+      pauseInteraction()
+    }
+  }
+
+  const decrementHover = () => {
+    hoverCount.value = Math.max(0, hoverCount.value - 1)
+    if (hoverCount.value === 0 && !pointer.down) {
+      beginResumeCountdown()
+    }
+  }
+
+  /* ======================================================
+     ACESSIBILIDADE DE MOVIMENTO
+     Desliga auto-rotate e zera a duração do flip quando
+     o sistema pede prefers-reduced-motion.
+  ====================================================== */
 
   const applyMotionPreference = () => {
     prefersReducedMotion.value = motionQuery?.matches ?? false
@@ -283,6 +328,12 @@ export function useCrownCarousel(items: Ref<CarouselItemData[]>) {
     animationFrame = window.requestAnimationFrame(animate)
   }
 
+  /* ======================================================
+     POINTER EVENTS
+     Distingue drag de click com limiar de 5px e só inicia
+     arraste quando o alvo é um card.
+  ====================================================== */
+
   const resolveCardIndex = (event: PointerEvent): number => {
     const target = event.target
     if (!(target instanceof Element)) {
@@ -299,20 +350,13 @@ export function useCrownCarousel(items: Ref<CarouselItemData[]>) {
     return Number.isFinite(index) ? index : -1
   }
 
-  const onPointerEnter = () => {
-    pointer.hovering = true
-    pauseInteraction()
-  }
-
-  const onPointerLeave = () => {
-    pointer.hovering = false
-    if (!pointer.down) {
-      beginResumeCountdown()
-    }
-  }
-
   const onPointerDown = (event: PointerEvent) => {
     if (!viewportRef.value) {
+      return
+    }
+
+    const cardIndex = resolveCardIndex(event)
+    if (cardIndex < 0) {
       return
     }
 
@@ -321,7 +365,7 @@ export function useCrownCarousel(items: Ref<CarouselItemData[]>) {
     pointer.startX = event.clientX
     pointer.startY = event.clientY
     pointer.lastX = event.clientX
-    pointer.cardIndex = resolveCardIndex(event)
+    pointer.cardIndex = cardIndex
     pointer.exceededThreshold = false
     isDragging.value = false
 
@@ -383,6 +427,12 @@ export function useCrownCarousel(items: Ref<CarouselItemData[]>) {
     { immediate: true },
   )
 
+  /* ======================================================
+     CICLO DE VIDA
+     Observers, rAF e matchMedia só no client (onMounted).
+     Cleanup obrigatório no onUnmounted.
+  ====================================================== */
+
   onMounted(() => {
     updateDimensions()
 
@@ -421,11 +471,11 @@ export function useCrownCarousel(items: Ref<CarouselItemData[]>) {
     stageStyle,
     ringStyle,
     cardStyles,
-    onPointerEnter,
-    onPointerLeave,
     onPointerDown,
     onPointerMove,
     onPointerUp,
     onPointerCancel,
+    incrementHover,
+    decrementHover,
   }
 }

@@ -1,0 +1,292 @@
+/*
+=========================================================
+Project.......: ProofChain
+Component.....: CrownCarousel
+File..........: CrownCarousel.css
+Version.......: 1.0.0
+
+Description...:
+Estilos da seção "Por que escolher" e do carrossel 3D.
+
+Methodology...:
+BEM
+=========================================================
+*/
+
+/* ======================================================
+   SEÇÃO
+   Fundo e espaçamento vertical da área na landing page.
+====================================================== */
+
+.section-crown-carousel {
+  padding: var(--space-md) 0;
+  margin: 0;
+  background-color: var(--brand-hover);
+}
+
+.crown-carousel {
+  width: 100%;
+  margin: 0 auto;
+  padding-bottom: var(--space-xs);
+}
+
+/* ======================================================
+   CABEÇALHO
+   Badge e subtítulo alinhados ao padrão das outras seções.
+====================================================== */
+
+.crown-carousel__header {
+  max-width: 100%;
+  margin-left: var(--space-md);
+  margin-bottom: var(--space-md);
+  text-align: center;
+}
+
+.crown-carousel__badge {
+  margin: 0;
+  font-size: var(--heading-4);
+  font-weight: var(--weight-semibold);
+  color: var(--action);
+}
+
+.crown-carousel__header p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--font-xl);
+  font-weight: var(--weight-medium);
+}
+
+/* ======================================================
+   TEXTO PARA LEITORES DE TELA
+   Mantém a instrução de arraste/clique acessível sem
+   ocupar espaço visual.
+====================================================== */
+
+.crown-carousel__sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ======================================================
+   VIEWPORT 3D
+   Perspectiva, recorte e área de interação do anel.
+====================================================== */
+
+.crown-carousel__viewport {
+  --crown-card-width: 280px;
+  --crown-card-height: 280px;
+  --crown-flip-duration: var(--transition-slow);
+
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  perspective: 1200px;
+  perspective-origin: 50% 45%;
+  touch-action: none;
+  user-select: none;
+  cursor: grab;
+  /* background-color: var(--brand); */
+  /* margin-top: var(--space-xs); */
+}
+
+.crown-carousel__viewport--dragging {
+  cursor: grabbing;
+}
+
+/* ======================================================
+   PALCO E ANEL
+   Inclinação da câmera (stage) e rotação orbital (ring)
+   ficam em nós separados para não misturar com o flip.
+====================================================== */
+
+.crown-carousel__stage {
+  position: relative;
+  display: flex;
+  /* align-items: center; */
+  justify-content: center;
+  width: 100%;
+  height: 475px;
+  top: 200px;
+  min-height: inherit;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  transform-origin: center center;
+}
+
+.crown-carousel__ring {
+  position: relative;
+  width: 1px;
+  height: 1px;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/* ======================================================
+   CARD
+   Posicionamento radial. Opacidade e blur de profundidade
+   são aplicados neste nó, acima da camada de flip.
+====================================================== */
+
+.crown-carousel__card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--crown-card-width);
+  height: var(--crown-card-height);
+  margin-left: calc(var(--crown-card-width) / -2);
+  margin-top: calc(var(--crown-card-height) / -2);
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  transform-origin: center center;
+  will-change: transform, opacity, filter;
+}
+
+/* ======================================================
+   FLIP
+   Rotação local de 180° independente da órbita do anel.
+====================================================== */
+
+.crown-carousel__flip {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  transition: transform var(--crown-flip-duration);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-xl);
+  border: var(--border-width-thin) var(--border-style) var(--brand-light);
+  background: var(--brand-active);
+}
+
+.crown-carousel__flip--flipped {
+  transform: rotateY(180deg);
+}
+
+/* ======================================================
+   FACES
+   Frente (imagem + título) e verso (descrição),
+   com backface-visibility para o giro 3D.
+====================================================== */
+
+.crown-carousel__front,
+.crown-carousel__back {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: var(--radius-xl);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  background: var(--brand-active);
+}
+
+.crown-carousel__front {
+  justify-content: flex-end;
+}
+
+.crown-carousel__back {
+  transform: rotateY(180deg);
+  padding: var(--space-lg);
+  justify-content: center;
+  gap: var(--space-md);
+}
+
+.crown-carousel__image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.crown-carousel__front-title {
+  position: relative;
+  z-index: var(--z-base);
+  display: block;
+  width: 100%;
+  padding: var(--space-md) var(--space-lg);
+  color: var(--text-primary);
+  font-family: var(--font-heading);
+  font-size: var(--font-lg);
+  font-weight: var(--weight-semibold);
+  line-height: var(--line-tight);
+  background: linear-gradient(transparent, var(--overlay-dark));
+}
+
+.crown-carousel__back-title {
+  margin: 0;
+  color: var(--text-primary);
+  font-family: var(--font-heading);
+  font-size: var(--font-xl);
+  font-weight: var(--weight-semibold);
+  line-height: var(--line-tight);
+}
+
+.crown-carousel__description {
+  margin: 0;
+  color: var(--text-secondary);
+  font-family: var(--font-body);
+  font-size: var(--font-sm);
+  line-height: var(--line-relaxed);
+}
+
+/* ======================================================
+   RESPONSIVO
+   Recalibra perspectiva e espaçamento do cabeçalho.
+====================================================== */
+
+@media (max-width: 1023px) {
+  .crown-carousel__header {
+    margin-bottom: var(--space-xl);
+  }
+
+  .crown-carousel__viewport {
+    perspective: 1000px;
+  }
+}
+
+@media (max-width: 767px) {
+  .crown-carousel__header {
+    margin-bottom: var(--space-lg);
+  }
+
+  .crown-carousel__viewport {
+    perspective: 900px;
+  }
+
+  .crown-carousel__stage {
+    height: 420px;
+  }
+
+  .crown-carousel__back {
+    padding: var(--space-md);
+  }
+}
+
+/* ======================================================
+   REDUÇÃO DE MOVIMENTO
+   Flip instantâneo quando o sistema pede menos animação.
+====================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .crown-carousel__flip {
+    --crown-flip-duration: 0ms;
+    transition-duration: 0ms;
+  }
+}
+
+.crown-carousel__viewport--reduced-motion .crown-carousel__flip {
+  --crown-flip-duration: 0ms;
+  transition-duration: 0ms;
+}
