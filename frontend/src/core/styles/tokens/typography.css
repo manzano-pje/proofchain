@@ -2,92 +2,77 @@
    GOOGLE FONTS
 ========================================================== */
 
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
 :root {
-
   /* ======================================================
        FONT FAMILY
     ====================================================== */
 
-    --font-heading:
-        "Plus Jakarta Sans",
-        "Inter",
-        "Segoe UI",
-        sans-serif;
+  --font-heading: 'Plus Jakarta Sans', 'Inter', 'Segoe UI', sans-serif;
+  --font-body: 'Inter', 'Plus Jakarta Sans', 'Segoe UI', sans-serif;
+  --font-monospace: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
 
-    --font-body:
-        "Inter",
-        "Plus Jakarta Sans",
-        "Segoe UI",
-        sans-serif;
-
-    --font-monospace:
-        "JetBrains Mono",
-        "Fira Code",
-        Consolas,
-        monospace;
-
-    /* ======================================================
+  /* ======================================================
        FONT SIZE
     ====================================================== */
 
-    --font-xs: .75rem;      /* 12px */
-    --font-sm: .875rem;     /* 14px */
-    --font-md: 1rem;        /* 16px */
-    --font-lg: 1.125rem;    /* 18px */
-    --font-xl: 1.25rem;     /* 20px */
-    --font-2xl: 1.5rem;     /* 24px */
-    --font-3xl: 1.875rem;   /* 30px */
-    --font-4xl: 2.25rem;    /* 36px */
-    --font-5xl: 3rem;       /* 48px */
-    --font-6xl: 3.75rem;    /* 60px */
+  --font-xs: 0.75rem;
+  --font-sm: clamp(0.8125rem, 0.75rem + 0.15vw, 0.875rem);
+  --font-md: 1rem;
+  --font-lg: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+  --font-xl: clamp(1.125rem, 1rem + 0.35vw, 1.25rem);
+  --font-2xl: clamp(1.25rem, 1.1rem + 0.55vw, 1.5rem);
+  --font-3xl: clamp(1.5rem, 1.25rem + 0.8vw, 1.875rem);
+  --font-4xl: clamp(1.75rem, 1.4rem + 1.1vw, 2.25rem);
+  --font-5xl: clamp(2rem, 1.5rem + 1.7vw, 3rem);
+  --font-6xl: 3.75rem;
 
-    /* ======================================================
+  /* ======================================================
        FONT WEIGHT
     ====================================================== */
 
-    --weight-light: 300;
-    --weight-regular: 400;
-    --weight-medium: 500;
-    --weight-semibold: 600;
-    --weight-bold: 700;
+  --weight-light: 300;
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
 
-    /* ======================================================
+  /* ======================================================
        LINE HEIGHT
     ====================================================== */
 
-    --line-tight: 1.2;
-    --line-normal: 1.5;
-    --line-relaxed: 1.8;
+  --line-tight: 1.2;
+  --line-normal: 1.5;
+  --line-relaxed: 1.8;
 
-    /* ======================================================
+  /* ======================================================
        LETTER SPACING
     ====================================================== */
 
-    --tracking-tight: -.03em;
-    --tracking-normal: 0;
-    --tracking-wide: .03em;
+  --tracking-tight: -0.03em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.03em;
 
-    /* ======================================================
+  /* ======================================================
        HEADINGS
     ====================================================== */
 
-    --heading-1: var(--font-5xl);
-    --heading-2: var(--font-4xl);
-    --heading-3: var(--font-3xl);
-    --heading-4: var(--font-2xl);
-    --heading-5: var(--font-xl);
-    --heading-6: var(--font-lg);
+  --heading-0: var(--font-6xl);
+  --heading-1: var(--font-5xl);
+  --heading-2: var(--font-4xl);
+  --heading-3: var(--font-3xl);
+  --heading-4: var(--font-2xl);
+  --heading-5: var(--font-xl);
+  --heading-6: var(--font-lg);
 
-    /* ======================================================
+  /* ======================================================
        BODY
     ====================================================== */
 
-    --body-large: var(--font-lg);
-    --body-default: var(--font-md);
-    --body-small: var(--font-sm);
-
+  --body-large: var(--font-lg);
+  --body-default: var(--font-md);
+  --body-small: var(--font-sm);
 }
