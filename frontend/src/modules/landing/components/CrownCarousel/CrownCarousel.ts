@@ -151,6 +151,7 @@ export function useCrownCarousel(items: Ref<CarouselItemData[]>) {
   const containerWidth = ref(CARD_WIDTH * 3)
   const flippedIndexes = ref<boolean[]>([])
   const hoverCount = ref(0)
+  const hasFlippedCard = computed(() => flippedIndexes.value.some(Boolean))
 
   const pointer = {
     id: 0,
@@ -240,11 +241,15 @@ export function useCrownCarousel(items: Ref<CarouselItemData[]>) {
 
   const toggleFlip = (index: number) => {
     const current = flippedIndexes.value[index]
-    if (current === undefined) {
+    if (current) {
+      // Se já está virado, desvira (fecha)
+      const next = [...flippedIndexes.value]
+      next[index] = false
+      flippedIndexes.value = next
       return
     }
-    const next = [...flippedIndexes.value]
-    next[index] = !current
+    const next = flippedIndexes.value.map(() => false)
+    next[index] = true
     flippedIndexes.value = next
   }
 
@@ -261,7 +266,7 @@ export function useCrownCarousel(items: Ref<CarouselItemData[]>) {
   }
 
   const beginResumeCountdown = () => {
-    if (pointer.down || hoverCount.value > 0) {
+    if (pointer.down || hoverCount.value > 0 || hasFlippedCard.value) {
       return
     }
 
@@ -400,8 +405,16 @@ export function useCrownCarousel(items: Ref<CarouselItemData[]>) {
     const distance = pointerDistance(pointer.startX, pointer.startY, event.clientX, event.clientY)
     const isClick = distance <= FLIP_THRESHOLD && !pointer.exceededThreshold
 
-    if (isClick && pointer.cardIndex >= 0) {
-      toggleFlip(pointer.cardIndex)
+    if (isClick) {
+      if (pointer.cardIndex >= 0) {
+        toggleFlip(pointer.cardIndex)
+      } else if (hasFlippedCard.value) {
+        // Clique fora: fecha todos e retoma
+        resetFlips()
+        isInteracting.value = false // libera o auto-rotate
+        window.clearTimeout(resumeTimer)
+        resumeTimer = 0
+      }
     }
 
     pointer.down = false

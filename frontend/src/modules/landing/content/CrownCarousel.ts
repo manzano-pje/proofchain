@@ -25,14 +25,14 @@ export const crownCarouselItems: CarouselItemData[] = [
     image: reputationImage,
     title: 'Reputação',
     description:
-      'Fortaleça a credibilidade da sua instituição com certificados que transmitem confiança e tornam cada conquista mais reconhecida.',
+      'Fortaleça a credibilidade com certificados que transmitem confiança e reconhecimento.',
   },
   {
     id: 'security',
     image: securityImage,
     title: 'Segurança',
     description:
-      'Proteja seus certificados contra falsificações e alterações, preservando a integridade das informações e a confiança em cada registro.',
+      'Proteja seus certificados contra falsificações, mantendo a integridade dos registros.',
   },
   {
     id: 'agility',
