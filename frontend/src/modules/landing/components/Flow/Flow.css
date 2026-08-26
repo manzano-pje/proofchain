@@ -274,9 +274,7 @@ Já está sendo controlado pelo Vue com v-if, então não
   .flow__steps {
     display: flex;
     flex-direction: column;
-
-    min-height: auto;
-
+    height: auto;
     gap: 0;
   }
 
