@@ -82,6 +82,17 @@
   color: var(--text-inverse);
 }
 
+/* =========================================================
+   RESPONSIVO
+   Recalibra dimensãodo cabeçalho e visualisação da imagem
+============================================================ */
+
+@media (max-width: 992px) {
+}
+
+@media (max-width: 768px) {
+}
+
 @media (max-width: 575px) {
   .hero {
     height: auto;

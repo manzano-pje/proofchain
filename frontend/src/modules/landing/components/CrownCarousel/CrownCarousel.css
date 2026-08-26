@@ -243,7 +243,7 @@ BEM
    Recalibra perspectiva e espaçamento do cabeçalho.
 ====================================================== */
 
-@media (max-width: var(--desktop)) {
+@media (max-width: 1200px) {
   .crown-carousel__header {
     margin-bottom: var(--space-xl);
   }
@@ -253,7 +253,7 @@ BEM
   }
 }
 
-@media (max-width: var(--tablet)) {
+@media (max-width: 767px) {
   .crown-carousel__header {
     margin-bottom: var(--space-lg);
   }
@@ -286,7 +286,7 @@ BEM
   }
 }
 
-@media (max-width: var(--mobile)) {
+@media (max-width: 575px) {
   .crown-carousel__header {
     margin-bottom: var(--space-lg);
   }

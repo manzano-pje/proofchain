@@ -110,6 +110,6 @@ BEM
 @media (max-width: 576px) {
   .header {
     display: none;
-    width: 477px;
+    width: 576px;
   }
 }
