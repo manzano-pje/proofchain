@@ -1,13 +1,9 @@
 :root {
-
-    /* ======================================================
+  /* ======================================================
        TRANSITIONS
     ====================================================== */
 
-    --transition-fast: .15s ease-in-out;
-
-    --transition-default: .25s ease-in-out;
-
-    --transition-slow: .40s ease;
-
+  --transition-fast: 0.15s ease-in-out;
+  --transition-default: 0.25s ease-in-out;
+  --transition-slow: 0.4s ease;
 }
