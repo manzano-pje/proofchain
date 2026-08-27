@@ -2,22 +2,14 @@
 // Project.......: ProofChain
 // Component.....: CrownCarousel
 // File..........: CrownCarousel.ts
-// Version.......: 1.0.0
+// Version.......: 1.0.1
 //
 // Description...:
 // Lógica de Composition API do carrossel cilíndrico 3D.
-//
-// Responsibility:
-// Geometria, auto-rotação, Pointer Events, ResizeObserver,
-// reduced-motion e limpeza de ciclo de vida.
+// Responsividade com diferenciação touch/desktop.
 // =========================================================
 
 import { computed, onMounted, onUnmounted, ref, watch, type CSSProperties, type Ref } from 'vue'
-
-/* ======================================================
-   TIPAGENS
-   Contrato de dados do card e da lista renderizada no anel.
-====================================================== */
 
 export interface CarouselItemData {
   id: string
@@ -35,40 +27,18 @@ export interface RenderCarouselItem extends CarouselItemData {
   sourceIndex: number
 }
 
-/* ======================================================
-   CALIBRAÇÃO INTERNA
-   Constantes de proporção e interação. Ajustar aqui,
-   sem expor controles visuais na interface.
-====================================================== */
-
-/** Largura base do card em pixels. */
 const CARD_WIDTH = 280
-/** Altura base do card em pixels. */
 const CARD_HEIGHT = 280
-/** Espaçamento entre as arestas dos cards no cilindro. */
 const RADIUS_GAP = 60
-/** Perspectiva da câmera em pixels. */
 const PERSPECTIVE = 1200
-/** Inclinação global da câmera no eixo X (graus). */
 const TILT_ANGLE_X = -10
-/** Velocidade do auto-rotate em graus por frame (60fps). */
 const AUTO_ROTATE_SPEED = 0.2
-/** Multiplicador do deslocamento horizontal no eixo Y do anel. */
 const DRAG_SENSITIVITY = 1.2
-/** Limite em px para diferenciar drag de click (ghost clicks). */
 const FLIP_THRESHOLD = 5
-/** Pausa em ms antes de retomar o auto-rotate após desengajamento. */
 const RESUME_DELAY = 300
-/** Quantidade mínima de slots físicos no anel. */
 const MIN_RING_SLOTS = 6
-/** Duração do flip 3D em milissegundos. */
 const FLIP_DURATION_MS = 600
-
-/* ======================================================
-   GEOMETRIA DO CILINDRO
-   Normalização angular, raio translateZ e profundidade
-   (opacidade/blur) da metade traseira do anel.
-====================================================== */
+const AUTO_CLOSE_DELAY = 5000 // 5 segundos para fechamento automático em touch
 
 function normalizeDegrees(value: number): number {
   const wrapped = value % 360
@@ -76,56 +46,33 @@ function normalizeDegrees(value: number): number {
 }
 
 function computeRadius(slotCount: number, cardWidth: number, gap: number): number {
-  if (slotCount < 2) {
-    return cardWidth
-  }
-
+  if (slotCount < 2) return cardWidth
   return (cardWidth / 2 + gap / 2) / Math.tan(Math.PI / slotCount)
 }
 
 function getDepthOfField(worldAngle: number): { opacity: number; filter: string } {
   const angle = normalizeDegrees(worldAngle)
   const isBack = angle > 90 && angle < 270
-
-  if (!isBack) {
-    return { opacity: 1, filter: 'blur(0px)' }
-  }
-
+  if (!isBack) return { opacity: 1, filter: 'blur(0px)' }
   const rearProximity = 1 - Math.abs(angle - 180) / 90
-  const opacity = 1 - rearProximity * 0.7
-  const blur = rearProximity * 8
-
   return {
-    opacity,
-    filter: `blur(${blur}px)`,
+    opacity: 1 - rearProximity * 0.7,
+    filter: `blur(${rearProximity * 8}px)`,
   }
 }
 
-/* ======================================================
-   MONTAGEM DA LISTA VISUAL
-   Garante no mínimo 6 slots. Clona itens com chave
-   item.id + '-clone-' + index, sem alterar o array original.
-====================================================== */
-
 function createRenderItems(items: CarouselItemData[]): RenderCarouselItem[] {
-  if (items.length === 0) {
-    return []
-  }
-
+  if (items.length === 0) return []
   const packed: CarouselItemData[] = []
-
   if (items.length >= MIN_RING_SLOTS) {
     packed.push(...items)
   } else {
     while (packed.length < MIN_RING_SLOTS) {
       const source = items[packed.length % items.length]
-      if (!source) {
-        break
-      }
+      if (!source) break
       packed.push(source)
     }
   }
-
   return packed.map((item, index) => ({
     ...item,
     renderKey: `${item.id}-clone-${index}`,
@@ -137,12 +84,8 @@ function pointerDistance(startX: number, startY: number, x: number, y: number): 
   return Math.hypot(x - startX, y - startY)
 }
 
-/* ======================================================
-   COMPOSABLE
-   Estado reativo, estilos 3D e orquestração de interação.
-====================================================== */
-
 export function useCrownCarousel(items: Ref<CarouselItemData[]>) {
+  // ---------- ESTADOS REATIVOS ----------
   const viewportRef = ref<HTMLElement | null>(null)
   const rotationY = ref(0)
   const isInteracting = ref(false)
@@ -151,6 +94,11 @@ export function useCrownCarousel(items: Ref<CarouselItemData[]>) {
   const containerWidth = ref(CARD_WIDTH * 3)
   const flippedIndexes = ref<boolean[]>([])
   const hoverCount = ref(0)
+
+  // ALTERAÇÃO: detecção de touch e timeout automático
+  const isTouchDevice = ref(false)
+  const autoCloseTimer = ref(0)
+
   const hasFlippedCard = computed(() => flippedIndexes.value.some(Boolean))
 
   const pointer = {
@@ -171,7 +119,6 @@ export function useCrownCarousel(items: Ref<CarouselItemData[]>) {
 
   const renderItems = computed(() => createRenderItems(items.value))
 
-  /* Escala os cards pela largura do viewport, mantendo a proporção do cilindro. */
   const cardScale = computed(() => {
     const available = Math.max(containerWidth.value, CARD_WIDTH)
     return Math.min(1, available / (CARD_WIDTH * 3.15))
@@ -204,13 +151,11 @@ export function useCrownCarousel(items: Ref<CarouselItemData[]>) {
   const cardStyles = computed<CSSProperties[]>(() => {
     const count = renderItems.value.length || 1
     const step = 360 / count
-
     return renderItems.value.map((_, index) => {
       const localAngle = step * index
       const worldAngle = rotationY.value + localAngle
       const depth = getDepthOfField(worldAngle)
       const facing = Math.cos((normalizeDegrees(worldAngle) * Math.PI) / 180)
-
       return {
         transform: `rotateY(${localAngle}deg) translateZ(${radius.value}px)`,
         opacity: depth.opacity,
@@ -220,56 +165,62 @@ export function useCrownCarousel(items: Ref<CarouselItemData[]>) {
     })
   })
 
-  /* ======================================================
-     ESTADO DE FLIP
-     Controle individual por card e reset coletivo
-     na retomada do auto-rotate.
-  ====================================================== */
-
+  // ---------- FLIP ----------
   const syncFlippedState = (count: number) => {
-    if (flippedIndexes.value.length === count) {
-      return
-    }
+    if (flippedIndexes.value.length === count) return
     flippedIndexes.value = Array.from({ length: count }, () => false)
   }
 
+  // ALTERAÇÃO: reset também cancela o timer automático
   const resetFlips = () => {
     if (flippedIndexes.value.some(Boolean)) {
       flippedIndexes.value = flippedIndexes.value.map(() => false)
+      window.clearTimeout(autoCloseTimer.value)
+      autoCloseTimer.value = 0
     }
   }
 
+  // ALTERAÇÃO: toggle com timeout automático para touch
   const toggleFlip = (index: number) => {
     const current = flippedIndexes.value[index]
     if (current) {
-      // Se já está virado, desvira (fecha)
+      // Desvira
       const next = [...flippedIndexes.value]
       next[index] = false
       flippedIndexes.value = next
+      window.clearTimeout(autoCloseTimer.value)
+      autoCloseTimer.value = 0
       return
     }
+    // Fecha todos e abre o novo
     const next = flippedIndexes.value.map(() => false)
     next[index] = true
     flippedIndexes.value = next
+
+    // Se for touch, agenda fechamento automático
+    if (isTouchDevice.value) {
+      window.clearTimeout(autoCloseTimer.value)
+      autoCloseTimer.value = window.setTimeout(() => {
+        resetFlips()
+        isInteracting.value = false
+        isDragging.value = false
+        autoCloseTimer.value = 0
+      }, AUTO_CLOSE_DELAY)
+    }
   }
 
-  /* ======================================================
-     AUTO-ROTATE
-     Pausa imediata na interação e retoma após RESUME_DELAY,
-     desvirando qualquer card aberto.
-  ====================================================== */
-
+  // ---------- AUTO-ROTATE ----------
   const pauseInteraction = () => {
     isInteracting.value = true
     window.clearTimeout(resumeTimer)
     resumeTimer = 0
   }
 
+  // ALTERAÇÃO: bloqueia countdown apenas se for touch E houver card virado
   const beginResumeCountdown = () => {
-    if (pointer.down || hoverCount.value > 0 || hasFlippedCard.value) {
+    if (pointer.down || hoverCount.value > 0 || (isTouchDevice.value && hasFlippedCard.value)) {
       return
     }
-
     window.clearTimeout(resumeTimer)
     resumeTimer = window.setTimeout(() => {
       resetFlips()
@@ -281,9 +232,7 @@ export function useCrownCarousel(items: Ref<CarouselItemData[]>) {
 
   const incrementHover = () => {
     hoverCount.value++
-    if (hoverCount.value > 0) {
-      pauseInteraction()
-    }
+    if (hoverCount.value > 0) pauseInteraction()
   }
 
   const decrementHover = () => {
@@ -293,77 +242,46 @@ export function useCrownCarousel(items: Ref<CarouselItemData[]>) {
     }
   }
 
-  /* ======================================================
-     ACESSIBILIDADE DE MOVIMENTO
-     Desliga auto-rotate e zera a duração do flip quando
-     o sistema pede prefers-reduced-motion.
-  ====================================================== */
-
+  // ---------- PREFERS-REDUCED-MOTION ----------
   const applyMotionPreference = () => {
     prefersReducedMotion.value = motionQuery?.matches ?? false
-    if (prefersReducedMotion.value) {
-      isInteracting.value = false
-    }
+    if (prefersReducedMotion.value) isInteracting.value = false
   }
 
-  const onMotionPreferenceChange = () => {
-    applyMotionPreference()
-  }
+  const onMotionPreferenceChange = () => applyMotionPreference()
 
   const updateDimensions = () => {
-    if (!viewportRef.value) {
-      return
-    }
+    if (!viewportRef.value) return
     containerWidth.value = viewportRef.value.clientWidth
   }
 
   const animate = (time: number) => {
-    if (!lastTime) {
-      lastTime = time
-    }
-
+    if (!lastTime) lastTime = time
     const delta = Math.min(time - lastTime, 32)
     lastTime = time
-
     const canAutoRotate = !prefersReducedMotion.value && !isInteracting.value
     if (canAutoRotate) {
       rotationY.value += AUTO_ROTATE_SPEED * (delta / (1000 / 60))
     }
-
     animationFrame = window.requestAnimationFrame(animate)
   }
 
-  /* ======================================================
-     POINTER EVENTS
-     Distingue drag de click com limiar de 5px e só inicia
-     arraste quando o alvo é um card.
-  ====================================================== */
-
+  // ---------- POINTER EVENTS ----------
   const resolveCardIndex = (event: PointerEvent): number => {
     const target = event.target
-    if (!(target instanceof Element)) {
-      return -1
-    }
-
+    if (!(target instanceof Element)) return -1
     const card = target.closest<HTMLElement>('[data-crown-index]')
     const rawIndex = card?.dataset.crownIndex
-    if (!rawIndex) {
-      return -1
-    }
-
+    if (!rawIndex) return -1
     const index = Number.parseInt(rawIndex, 10)
     return Number.isFinite(index) ? index : -1
   }
 
+  // ALTERAÇÃO: cancela timeout automático ao iniciar interação
   const onPointerDown = (event: PointerEvent) => {
-    if (!viewportRef.value) {
-      return
-    }
-
+    if (!viewportRef.value) return
     const cardIndex = resolveCardIndex(event)
-    if (cardIndex < 0) {
-      return
-    }
+    if (cardIndex < 0) return
 
     pointer.down = true
     pointer.id = event.pointerId
@@ -374,33 +292,29 @@ export function useCrownCarousel(items: Ref<CarouselItemData[]>) {
     pointer.exceededThreshold = false
     isDragging.value = false
 
+    window.clearTimeout(autoCloseTimer.value)
+    autoCloseTimer.value = 0
+
     pauseInteraction()
     viewportRef.value.setPointerCapture?.(event.pointerId)
   }
 
   const onPointerMove = (event: PointerEvent) => {
-    if (!pointer.down) {
-      return
-    }
-
+    if (!pointer.down) return
     const distance = pointerDistance(pointer.startX, pointer.startY, event.clientX, event.clientY)
     if (distance > FLIP_THRESHOLD) {
       pointer.exceededThreshold = true
       isDragging.value = true
     }
-
     if (pointer.exceededThreshold) {
       const deltaX = event.clientX - pointer.lastX
       rotationY.value += deltaX * DRAG_SENSITIVITY
     }
-
     pointer.lastX = event.clientX
   }
 
   const onPointerUp = (event: PointerEvent) => {
-    if (!pointer.down) {
-      return
-    }
+    if (!pointer.down) return
 
     const distance = pointerDistance(pointer.startX, pointer.startY, event.clientX, event.clientY)
     const isClick = distance <= FLIP_THRESHOLD && !pointer.exceededThreshold
@@ -409,9 +323,9 @@ export function useCrownCarousel(items: Ref<CarouselItemData[]>) {
       if (pointer.cardIndex >= 0) {
         toggleFlip(pointer.cardIndex)
       } else if (hasFlippedCard.value) {
-        // Clique fora: fecha todos e retoma
+        // Clique fora: fecha todos e libera imediatamente
         resetFlips()
-        isInteracting.value = false // libera o auto-rotate
+        isInteracting.value = false
         window.clearTimeout(resumeTimer)
         resumeTimer = 0
       }
@@ -440,12 +354,7 @@ export function useCrownCarousel(items: Ref<CarouselItemData[]>) {
     { immediate: true },
   )
 
-  /* ======================================================
-     CICLO DE VIDA
-     Observers, rAF e matchMedia só no client (onMounted).
-     Cleanup obrigatório no onUnmounted.
-  ====================================================== */
-
+  // ---------- CICLO DE VIDA ----------
   onMounted(() => {
     updateDimensions()
 
@@ -458,6 +367,9 @@ export function useCrownCarousel(items: Ref<CarouselItemData[]>) {
     applyMotionPreference()
     motionQuery.addEventListener('change', onMotionPreferenceChange)
 
+    // ALTERAÇÃO: detecta se é dispositivo touch
+    isTouchDevice.value = window.matchMedia('(pointer: coarse)').matches
+
     lastTime = 0
     animationFrame = window.requestAnimationFrame(animate)
   })
@@ -465,9 +377,9 @@ export function useCrownCarousel(items: Ref<CarouselItemData[]>) {
   onUnmounted(() => {
     window.cancelAnimationFrame(animationFrame)
     window.clearTimeout(resumeTimer)
+    window.clearTimeout(autoCloseTimer.value)
     resizeObserver?.disconnect()
     motionQuery?.removeEventListener('change', onMotionPreferenceChange)
-
     animationFrame = 0
     resumeTimer = 0
     resizeObserver = null
