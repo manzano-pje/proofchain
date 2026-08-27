@@ -317,7 +317,7 @@ BEM
 
   .crown-carousel__description {
     font-size: 0.65rem;
-    line-height: var(--line-normal);
+    line-height: var(--line-tight);
   }
 }
 
