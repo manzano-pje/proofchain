@@ -39,27 +39,26 @@ export const crownCarouselItems: CarouselItemData[] = [
     image: agilityImage,
     title: 'Agilidade',
     description:
-      'Valide certificados em poucos segundos por meio do QR Code, sem processos manuais ou burocracia.',
+      'Valide certificados em segundos por QR Code, sem processos manuais ou burocracia.',
   },
   {
     id: 'utility',
     image: utilityImage,
     title: 'Utilidade',
     description:
-      'Mantenha o certificado útil após a emissão, permitindo que seja compartilhado e verificado sempre que necessário.',
+      'Mantenha o certificado útil, permitindo que seja compartilhado e verificado sempre.',
   },
   {
     id: 'leadership',
     image: leadershipImage,
     title: 'Liderança',
-    description:
-      'Destaque sua instituição com uma experiência moderna de certificação, alinhada às novas necessidades do mercado.',
+    description: 'Destaque sua instituição com uma experiência moderna de certificação digital.',
   },
   {
     id: 'simplicity',
     image: simplicityImage,
     title: 'Simplicidade',
     description:
-      'Simplifique a emissão, o gerenciamento e a validação, reduzindo tarefas manuais e tornando o processo mais eficiente.',
+      'Simplifique emissão, gestão e validação, reduzindo tarefas manuais e tornando tudo mais eficiente.',
   },
 ]
