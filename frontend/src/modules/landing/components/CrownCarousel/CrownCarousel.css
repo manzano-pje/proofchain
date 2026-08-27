@@ -269,6 +269,7 @@ BEM
 
   .crown-carousel__back {
     padding: var(--space-md);
+    gap: var(--space-ms);
   }
 
   .crown-carousel__front-title {
@@ -276,12 +277,12 @@ BEM
   }
 
   .crown-carousel__back-title {
-    font-size: var(--font-lg);
-    line-height: var(--line-normal);
+    font-size: var(--font-md);
+    line-height: var(--line-tight);
   }
 
   .crown-carousel__description {
-    font-size: var(--font-sm);
+    font-size: var(--font-xs);
     line-height: var(--line-normal);
   }
 }
@@ -302,6 +303,7 @@ BEM
 
   .crown-carousel__back {
     padding: var(--space-md);
+    gap: var(--space-xm);
   }
 
   .crown-carousel__front-title {
@@ -309,12 +311,12 @@ BEM
   }
 
   .crown-carousel__back-title {
-    font-size: var(--font-lg);
-    line-height: var(--line-normal);
+    font-size: var(--font-sm);
+    line-height: var(--line-tight);
   }
 
   .crown-carousel__description {
-    font-size: var(--font-sm);
+    font-size: 0.65rem;
     line-height: var(--line-normal);
   }
 }
