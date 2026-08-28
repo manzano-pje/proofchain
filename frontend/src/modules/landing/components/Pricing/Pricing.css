@@ -78,7 +78,7 @@
   min-width: 0;
   padding: var(--card-padding);
   background: var(--background);
-  border: 6px solid var(--border-focus);
+  border: 3px solid var(--border-focus);
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-sm);
   transition:
@@ -317,7 +317,8 @@
   width: 100%;
   min-height: 48px;
   padding: var(--button-padding-y) var(--button-padding-x);
-  border: 3px solid var(--border-hover);
+  border: 1px solid var(--border-buttom);
+  background-color: var(--text-secondary);
   border-radius: var(--radius-md);
   font-family: var(--font-body);
   font-size: var(--font-md);
@@ -335,12 +336,12 @@
 
 .pricing__button:hover {
   transform: translateY(-1px);
-  border-color: var(--border-focus);
+  border-color: var(--border-buttom-focus);
 }
 
 .pricing__button--secondary {
   background: transparent;
-  border-color: var(--border);
+  border-color: var(--border-buttom);
   color: var(--text-inverse);
 }
 

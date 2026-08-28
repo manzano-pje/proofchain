@@ -141,9 +141,9 @@
       ====================================================== -->
 
       <footer class="pricing__footer">
+        <p class="pricing__footer-text">Precisa de uma solução personalizada?</p>
         <p class="pricing__footer-text">
-          Precisa de uma solução personalizada? Fale com nossa equipe para encontrar a melhor
-          configuração para sua operação.
+          Fale com nossa equipe para encontrar a melhor configuração para sua operação.
         </p>
       </footer>
     </div>
