@@ -12,9 +12,9 @@
       ====================================================== -->
 
       <header class="pricing__header">
-        <span class="pricing__eyebrow"> PLANOS </span>
+        <div class="title">Planos</div>
 
-        <h2 id="pricing-title" class="pricing__title">Escolha o plano ideal para o seu negócio</h2>
+        <h2 class="subtitle">Escolha o plano ideal para o seu negócio</h2>
 
         <p class="pricing__subtitle">
           Tenha controle sobre seus certificados, garanta autenticidade e ofereça uma experiência
