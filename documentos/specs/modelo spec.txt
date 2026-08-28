@@ -1,0 +1,24 @@
+# AGENTS.MD - Prompt Drive
+
+## 1) Contexto do App e Objetivo
+
+- Produto: 
+- Organização: 
+- Seed inicial: 
+
+### Requisitos mínimos 
+
+## 2) Tech Stack & Coding Guideline
+    ### 2.1 Tecnologias
+    ### 2.2 Padrões de Código
+    ### 2.3 Responsividade
+## 3) Arquitetura e Organização de Diretórios
+    ### 3.1 Estrutura de Diretórios (Obrigatória)
+    ### 3.2 Responsabilidades dos Módulos
+## 4) UI/UX — Especificação
+    ### 4.1 Acessibilidade
+## 5) Funcionamento das Features (Passo a Passo)
+## 7) Critérios de Aceite
+### 7.1 UI/UX
+## 8) Definições Técnicas Adicionais
+## 10) Throws (Notas de Implementação)
