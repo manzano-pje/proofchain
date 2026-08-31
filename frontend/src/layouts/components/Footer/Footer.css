@@ -10,13 +10,93 @@ BEM
 =========================================================
 */
 
+/* ==========================================================
+   FOOTER
+   Seção de rodapé do ProofChain.
+========================================================== */
+
 .footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--spacing-lg);
   width: 100%;
+  padding: var(--section-padding-y) var(--section-padding-x);
+  background: var(--gradient-brand);
+  color: var(--text-primary);
+}
+
+.footer__content {
+  width: 100%;
+  max-width: 1440px;
+  display: flex;
+  /* grid-template-columns: repeat(3, minmax(0, 1fr)); */
+  align-items: stretch;
+  gap: var(--space-lg);
   padding-top: var(--spacing-xl);
   margin-top: var(--spacing-xl);
   border-top: 1px solid var(--color-border);
+  background-color: var(--gradient-brand);
+}
+
+/* ==========================================================
+  BRAND
+========================================================== */
+
+.footer__brand {
+  flex-shrink: 0;
+  align-items: center;
+  width: 40%;
+}
+
+.footer__logo {
+  height: 60px;
+  width: auto;
+  display: block;
+  object-fit: contain;
+}
+
+.footer__description {
+  font-family: var(--font-body);
+  font-size: var(--body-default);
+  font-weight: var(--weight-light);
+  color: var(--text-secondary);
+  max-width: 70%;
+  width: 100%;
+  margin: var(--space-md) 0;
+}
+
+/* ==========================================================
+  NAVIGATION
+========================================================== */
+
+.footer__menu {
+  display: flex;
+  gap: var(--space-md);
+  width: 40%;
+}
+
+.footer__nav {
+  width: 30%;
+  font-family: var(--font-body);
+  font-size: var(--body-small);
+  font-weight: var(--weight-light);
+  color: var(--text-secondary);
+}
+.footer__legal {
+  width: 50%;
+  font-family: var(--font-body);
+  font-size: var(--body-small);
+  font-weight: var(--weight-light);
+  color: var(--text-secondary);
+}
+
+.footer__copyroght {
+  width: 100%;
+  max-width: 1440px;
+  padding: var(--section-padding-y);
+  border-top: 1px solid var(--color-border);
+}
+
+.footer__copyright-description {
+  font-family: var(--font-body);
+  font-size: var(--body-small);
+  font-weight: var(--weight-light);
+  color: var(--text-secondary);
 }
