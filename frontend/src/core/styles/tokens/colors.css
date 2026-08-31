@@ -40,6 +40,7 @@
   --text-muted: #94a3b8;
   --text-disabled: #64748b;
   --text-inverse: #0f172a;
+  --brand-card: #163b66;
 
   /* ======================================================
        BORDER
@@ -47,7 +48,9 @@
 
   --border: #e2e8f0;
   --border-hover: #cbd5e1;
-  --border-focus: #06b6d4;
+  --border-focus: #22456d;
+  --border-buttom: #465161;
+  --border-buttom-focus: #15181b;
 
   /* ======================================================
        STATUS
@@ -82,4 +85,5 @@
   --gradient-action: linear-gradient(0deg, #2a5e8f, #5a8fc0);
   --gradient-light: linear-gradient(0deg, #102c4d, #0c56ce);
   --gradient-cta: linear-gradient(0deg, #005825, #0fb655);
+  --gradient-pricing: linear-gradient(135deg, #143f70, #195996);
 }
