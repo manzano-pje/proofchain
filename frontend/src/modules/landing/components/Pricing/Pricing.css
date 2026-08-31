@@ -347,7 +347,7 @@
 
 .pricing__footer {
   justify-content: center;
-  /* margin-top: var(--space-3xl); */
+  margin-top: var(--space-md);
 }
 
 .pricing__footer-text {

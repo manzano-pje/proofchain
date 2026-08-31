@@ -10,12 +10,12 @@
 
 import type { CarouselItemData } from '../components/CrownCarousel/CrownCarousel.ts'
 
-import reputationImage from '@/modules/landing/content/images/reputation.jpg'
-import securityImage from '@/modules/landing/content/images/security.jpg'
-import agilityImage from '@/modules/landing/content/images/agility.jpg'
-import utilityImage from '@/modules/landing/content/images/utility.jpg'
-import leadershipImage from '@/modules/landing/content/images/leadership.jpg'
-import simplicityImage from '@/modules/landing/content/images/simplcity.jpg'
+import reputationImage from '@/modules/landing/assets/images/CrownCarousel/reputation-300.jpg'
+import securityImage from '@/modules/landing/assets/images/CrownCarousel/security-300.jpg'
+import agilityImage from '@/modules/landing/assets/images/CrownCarousel/agility-300.jpg'
+import utilityImage from '@/modules/landing/assets/images/CrownCarousel/utility-300.jpg'
+import leadershipImage from '@/modules/landing/assets/images/CrownCarousel/leadership-300.jpg'
+import simplicityImage from '@/modules/landing/assets/images/CrownCarousel/simplcity-300.jpg'
 
 export type { CarouselItemData }
 

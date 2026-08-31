@@ -1,9 +1,9 @@
-import companiesImage from '../assets/images/audiences/company.jpg'
-import intustriesImage from '../assets/images/audiences/industries.jpg'
-import edtechImage from '../assets/images/audiences/edtech.jpg'
-import educationsImage from '../assets/images/audiences/education.jpg'
-import eventsImage from '../assets/images/audiences/event.jpg'
-import associationImage from '../assets/images/audiences/association.jpg'
+import companiesImage from '../assets/images/audiences/company-500.jpg'
+import intustriesImage from '../assets/images/audiences/industries-500.jpg'
+import edtechImage from '../assets/images/audiences/edtech-500.jpg'
+import educationsImage from '../assets/images/audiences/education-500.jpg'
+import eventsImage from '../assets/images/audiences/event-500.jpg'
+import associationImage from '../assets/images/audiences/association-500.jpg'
 
 export interface Audience {
   id: string
