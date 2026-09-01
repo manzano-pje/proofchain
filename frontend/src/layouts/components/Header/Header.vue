@@ -27,10 +27,10 @@ function closeMenu() {
 
       <!-- Navegação desktop/tablet -->
       <nav class="header__nav">
-        <a href="#" class="header__nav-link">Soluções</a>
-        <a href="#" class="header__nav-link">Como funciona</a>
-        <a href="#" class="header__nav-link">Aplicações</a>
-        <a href="#" class="header__nav-link">Planos</a>
+        <a href="#audiences" class="header__nav-link">Para quem é</a>
+        <a href="#flow" class="header__nav-link">Como funciona</a>
+        <a href="#crown-carousel" class="header__nav-link">Por que escolher</a>
+        <a href="#planos" class="header__nav-link">Planos</a>
       </nav>
 
       <!-- Ações (botões) -->

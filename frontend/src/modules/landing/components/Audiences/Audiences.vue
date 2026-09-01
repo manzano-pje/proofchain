@@ -34,7 +34,7 @@ import { audiences } from '../../content/Audiences.ts'
 </script>
 
 <template>
-  <Section class="section-audience">
+  <Section id="audiences" class="section-audience">
     <Container>
       <div class="audiences">
         <header class="audiences__header">
