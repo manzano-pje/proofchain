@@ -33,7 +33,7 @@ import './Flow.css'
 </script>
 
 <template>
-  <Section class="section-flow">
+  <Section id="flow" class="section-flow">
     <Container>
       <div class="flow">
         <header class="flow__header">

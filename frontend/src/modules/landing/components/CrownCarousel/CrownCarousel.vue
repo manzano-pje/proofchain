@@ -60,7 +60,7 @@ const {
 
 <template>
   <!-- Seção da landing: aplica o recorte vertical e o fundo padrão da página. -->
-  <Section class="section-crown-carousel">
+  <Section id="crown-carousel" class="section-crown-carousel">
     <!-- Container: limita a largura e o padding horizontal do conteúdo. -->
     <Container>
       <div class="crown-carousel">

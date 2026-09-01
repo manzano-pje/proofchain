@@ -43,25 +43,21 @@ import './Footer.css'
       <!-- Navegação desktop/tablet -->
       <div class="footer__menu">
         <ul class="footer__nav">
-          <li><a href="#" class="footer_nav-link">Início</a></li>
-          <li><a href="#" class="footer_nav-link">Soluções</a></li>
-          <li><a href="#" class="footer_nav-link">Como funciona</a></li>
-          <li><a href="#" class="footer_nav-link">Aplicações</a></li>
-          <li><a href="#" class="footer_nav-link">Planos</a></li>
+          <p class="footer__nav-titulo">PRODUTO</p>
+          <li><a href="#audiences" class="footer_nav-link">Para quem é</a></li>
+          <li><a href="#flow" class="footer_nav-link">Como funciona</a></li>
+          <li><a href="#crown-carousel" class="footer_nav-link">Por que escolher</a></li>
+          <li><a href="#planos" class="footer_nav-link">Planos</a></li>
         </ul>
         <ul class="footer__legal">
+          <p class="footer__nav-titulo">LEGAL</p>
           <li><a href="#" class="footer_legal-link">Termos de uso</a></li>
           <li><a href="#" class="footer_legal-link">Privacidade</a></li>
         </ul>
       </div>
-
-      <!--  CONTATO -->
-      <div class="footer_contato">
-        <a href="#" class="footer_contact-link">contato@proofchain.com.br</a>
-      </div>
     </div>
     <div class="footer__copyright">
-      <p class="footer_copyright-description">© 2026 ProofChain. Todos os direitos reservados.</p>
+      <p class="footer__copyright-description">© 2026 ProofChain. Todos os direitos reservados.</p>
     </div>
   </footer>
 </template>
