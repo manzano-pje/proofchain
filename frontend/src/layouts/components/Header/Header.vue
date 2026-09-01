@@ -62,10 +62,10 @@ function closeMenu() {
       aria-label="Menu principal"
     >
       <div class="header__menu-inner">
-        <a href="#" class="header__menu-link" @click="closeMenu">Soluções</a>
-        <a href="#" class="header__menu-link" @click="closeMenu">Como funciona</a>
-        <a href="#" class="header__menu-link" @click="closeMenu">Aplicações</a>
-        <a href="#" class="header__menu-link" @click="closeMenu">Planos</a>
+        <a href="#audiences" class="header__nav-link">Para quem é</a>
+        <a href="#flow" class="header__nav-link">Como funciona</a>
+        <a href="#crown-carousel" class="header__nav-link">Por que escolher</a>
+        <a href="#planos" class="header__nav-link">Planos</a>
       </div>
     </div>
   </header>
