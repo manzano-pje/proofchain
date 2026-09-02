@@ -28,7 +28,7 @@ import './Footer.css'
     <div class="footer__content">
       <!-- Logo -->
       <div class="footer__brand">
-        <a href="/" class="logo">
+        <a href="/" class="footer__logo">
           <img
             src="@/assets/images/logo/logo_horizontal_black.svg"
             alt="ProofChain Logo"

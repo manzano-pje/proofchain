@@ -26,7 +26,6 @@ BEM
   width: 100%;
   max-width: 1440px;
   display: flex;
-  /* grid-template-columns: repeat(3, minmax(0, 1fr)); */
   align-items: stretch;
   gap: var(--space-lg);
   padding-top: var(--spacing-xl);
@@ -42,7 +41,7 @@ BEM
 .footer__brand {
   flex-shrink: 0;
   align-items: center;
-  width: 40%;
+  width: 50%;
 }
 
 .footer__logo {
@@ -68,18 +67,17 @@ BEM
 
 .footer__menu {
   display: flex;
-  gap: var(--space-md);
-  width: 40%;
+  gap: var(--space-xl);
+  width: 60%;
 }
 
 .footer__nav-titulo {
   font-size: var(--body-small);
   font-weight: var(--weight-bold);
-  margin-bottom: var(--space-sm);
+  margin-bottom: var(--space-xs);
   color: var(--text-primary);
 }
 .footer__nav {
-  width: 30%;
   font-family: var(--font-body);
   font-size: var(--body-small);
   font-weight: var(--weight-light);
@@ -87,7 +85,6 @@ BEM
   line-height: VAR(--line-normal);
 }
 .footer__legal {
-  width: 50%;
   font-family: var(--font-body);
   font-size: var(--body-small);
   font-weight: var(--weight-light);
@@ -153,4 +150,97 @@ BEM
   font-weight: var(--weight-light);
   text-align: center;
   color: var(--text-secondary);
+}
+
+/* ==========================================================
+   RESPONSIVIDADE
+========================================================== */
+
+/* Tablet e mobile: ajustes gerais */
+@media (max-width: 1023px) {
+}
+
+/* Mobile: ativa hambúrguer e oculta navegação */
+@media (max-width: 767px) {
+  .footer__content {
+    display: block;
+  }
+
+  .footer__brand {
+    width: 100%;
+  }
+  .footer__logo {
+    height: 100px;
+    width: auto;
+    margin: auto;
+    display: block;
+    object-fit: contain;
+  }
+
+  .footer__description {
+    max-width: 75%;
+    width: 50%;
+    text-align: center;
+    font-size: var(--body-default);
+  }
+
+  .footer__menu {
+    display: block;
+    width: 100%;
+    gap: 0;
+    font-size: var(--body-default);
+    margin: var(--space-xl) 0;
+    text-align: center;
+  }
+
+  .footer__nav {
+    font-size: var(--body-default);
+  }
+
+  .footer__legal {
+    margin-top: var(--space-xl);
+    font-size: var(--body-default);
+  }
+}
+
+/* Mobile muito pequeno */
+@media (max-width: 576px) {
+  .footer__content {
+    display: block;
+  }
+
+  .footer__brand {
+    width: 100%;
+  }
+  .footer__logo {
+    height: 100px;
+    width: auto;
+    margin: auto;
+    display: block;
+    object-fit: contain;
+  }
+
+  .footer__description {
+    max-width: 75%;
+    width: 70%;
+    text-align: center;
+    font-size: var(--body-default);
+  }
+
+  .footer__menu {
+    display: block;
+    width: 100%;
+    gap: 0;
+    font-size: var(--body-default);
+    margin: var(--space-md) 0;
+    text-align: center;
+  }
+  .footer__nav {
+    font-size: var(--body-default);
+  }
+
+  .footer__legal {
+    margin-top: var(--space-xl);
+    font-size: var(--body-default);
+  }
 }

@@ -263,7 +263,7 @@ BEM
   }
 
   .crown-carousel__stage {
-    height: 420px;
+    /* height: 420px; */
     top: 100px;
   }
 
@@ -298,7 +298,11 @@ BEM
 
   .crown-carousel__stage {
     height: 420px;
-    top: 100px;
+    /* top: 100px; */
+  }
+
+  .crown-carousel__ring {
+    margin-top: 100px;
   }
 
   .crown-carousel__back {
