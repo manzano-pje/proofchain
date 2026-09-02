@@ -263,10 +263,13 @@ BEM
   }
 
   .crown-carousel__stage {
-    /* height: 420px; */
-    top: 100px;
+    /* height: 350px;
+    top: 00px; */
   }
-
+  .crown-carousel__ring {
+    margin-top: 100px;
+    height: 200px;
+  }
   .crown-carousel__back {
     padding: var(--space-md);
     gap: var(--space-ms);
@@ -297,12 +300,12 @@ BEM
   }
 
   .crown-carousel__stage {
-    height: 420px;
-    /* top: 100px; */
+    height: 275px;
+    top: 0;
   }
 
   .crown-carousel__ring {
-    margin-top: 100px;
+    margin-top: 125px;
   }
 
   .crown-carousel__back {
