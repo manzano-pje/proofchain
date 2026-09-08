@@ -1,245 +1,137 @@
-# Proofchain — Plataforma de Emissão e Validação de Certificados (MVP)
+# 🔗 ProofChain
 
-Este documento serve como o blueprint oficial para o desenvolvimento do MVP da plataforma **Proofchain**.  
-O projeto foca em **alta segurança**, **multi-tenancy**, **auditabilidade via blockchain** e uma arquitetura preparada para evolução, mantendo o frontend leve e simples.
+> **Plataforma SaaS para Emissão, Gestão e Validação Criptográfica de Certificados Digitais.**
 
----
-
-## 🏗️ Arquitetura do Projeto
-
-O sistema é dividido em três camadas principais: **API Restful (Backend)**, **SPA Leve (Frontend)** e **WEB3**.
-
----
-
-### 1. Backend: Java Spring Boot
-
-* **Linguagem**: Java 17 (LTS)
-* **Framework**: Spring Boot 3.x
-* **Segurança**: Spring Security 6 + JWT (Stateless)
-* **Arquitetura**: Hexagonal (Ports & Adapters)
-* **Banco de Dados**: PostgreSQL (produção) ou H2 (desenvolvimento)
-* **Migrations**: Flyway ou Liquibase
-* **Testes**: JUnit 5 + Mockito
-* **Mensageria / Eventos**:
-  * RabbitMQ (produção)
-  * Fila leve em memória (MVP)
-
-O backend é responsável por:
-* Gestão de usuários e organizações
-* Emissão de certificados
-* Cálculo do hash criptográfico
-* Orquestração do fluxo de registro on-chain
-* Exposição de APIs REST
+[![Status](https://img.shields.io/badge/status-em_desenvolvimento-yellow.svg)](https://github.com/)
+[![Java](https://img.shields.io/badge/Backend-Java_17_%7C_Spring_Boot_3-007396.svg)](https://spring.io/)
+[![Vue.js](https://img.shields.io/badge/Frontend-Vue_3_%7C_TypeScript-4FC08D.svg)](https://vuejs.org/)
+[![Web3](https://img.shields.io/badge/Web3-Blockchain_Evidences-3C3C3D.svg)](https://ethereum.org/)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 
 ---
 
-### 2. Frontend: Vanilla JS + Bootstrap 5
+## 📋 Sumário
 
-* **Tecnologia**: JavaScript puro (ES6+), HTML5, CSS3
-* **Framework CSS**: Bootstrap 5 (customizado conforme protótipo)
-* **Arquitetura**: SPA leve (sem frameworks pesados)
-* **Dependências**:
-  * `html2canvas` + `jspdf` para geração de PDF no cliente
+- [Sobre o ProofChain](#-sobre-o-proofchain)
+- [Principais Recursos](#-principais-recursos)
+- [Como Funciona](#-como-funciona)
+- [Tecnologias Utilizadas](#-tecnologias-utilizadas)
+- [Estrutura do Repositório](#-estrutura-do-repositório)
+- [Documentação Técnica](#-documentação-técnica)
+- [Como Executar o Projeto](#-como-executar-o-projeto)
+  - [Pré-requisitos](#pré-requisitos)
+  - [Execução com Docker Compose](#execução-com-docker-compose)
+- [Variáveis de Ambiente](#-variáveis-de-ambiente)
+- [Status e Roadmap](#-status-e-roadmap)
+- [Licença](#-licença)
 
-O frontend é responsável por:
-* Autenticação via Magic Link
-* Emissão visual de certificados
-* Dashboard administrativo
-* Validação pública de certificados
+---
 
-#### Estrutura de Pastas (Frontend)
+## 📌 Sobre o ProofChain
+
+O **ProofChain** é uma plataforma SaaS (*Software as a Service*) desenvolvida para modernizar, simplificar e garantir a autenticidade na emissão, gestão e verificação de certificados digitais acadêmicos e corporativos.
+
+A plataforma possibilita que **instituições de ensino, empresas e organizadores de eventos** emitam certificados digitais estruturados com rastreabilidade total. 
+
+A grande inovação do sistema reside no uso de **provas criptográficas (hashes SHA-256) e tecnologia Blockchain** como camada imutável de auditoria. Enquanto os dados operacionais e pessoais permanecem protegidos sob a responsabilidade da aplicação (em conformidade com a LGPD), a verificação de autenticidade é feita de maneira pública, rápida e inviolável.
+
+---
+
+## ✨ Principais Recursos
+
+- 📄 **Emissão Estruturada:** Geração de certificados com dados parametrizáveis e assinaturas digitais.
+- 🔍 **Validação Pública:** Portal aberto para qualquer pessoa ou entidade verificar a autenticidade de um certificado via QR Code ou hash.
+- 🏢 **Arquitetura Multi-Tenant:** Isolamento de dados e personalização por instituição.
+- 👥 **Gestão de Acessos e Permissões (RBAC):** Controle rigoroso de perfis (Administrador, Emissor, Auditor, Usuário).
+- 🔐 **Provas Criptográficas:** Geração de evidências imutáveis baseadas em hash SHA-256 para cada lote ou certificado.
+- ⛓️ **Registro em Blockchain:** Ancoragem de evidências em Smart Contracts para auditoria descentralizada.
+- 📊 **Dashboard Analítico:** Métricas de emissões, validações e status de ancoragem Web3.
+
+---
+
+## 🔄 Como Funciona
+
 ```text
-/public
-  /assets
-    /css
-      style.css
-      bootstrap.custom.css
-    /js
-      app.js
-      auth.js
-      dashboard.js
-      cert-generator.js
-    /img
-      logo.png
-  index.html
-```
+       ┌────────────────────────┐
+       │      Instituição       │
+       └───────────┬────────────┘
+                   │
+                   ▼
+       ┌────────────────────────┐
+       │ Emissão do Certificado │
+       └───────────┬────────────┘
+                   │
+                   ▼
+       ┌────────────────────────┐
+       │  Geração de Evidência  │  ---> Hash Criptográfico (SHA-256)
+       └───────────┬────────────┘
+                   │
+                   ▼
+       ┌────────────────────────┐
+       │ Registro em Blockchain │  ---> Camada Imutável de Auditoria
+       └───────────┬────────────┘
+                   │
+                   ▼
+       ┌────────────────────────┐
+       │     Certificado        │  ---> QR Code / URL de Verificação
+       │     Disponível         │
+       └───────────┬────────────┘
+                   │
+                   ▼
+       ┌────────────────────────┐
+       │   Validação Pública    │  ---> Checagem instantânea de autenticidade
+       └────────────────────────┘
 
----
+       💡 Nota Arquitetural: A blockchain atua exclusivamente como uma camada de prova de existência e integridade. Nenhuma informação pessoal sensível é gravada na rede pública, garantindo conformidade com regulações de privacidade (LGPD/GDPR).
+       
+       🛠️ Tecnologias UtilizadasCamadaTecnologias & FerramentasBackendJava 17 • Spring Boot 3 • Spring Security • Spring Data JPA • Hibernate • JWT • MavenFrontendVue 3 • TypeScript • Vite • Pinia • Vue Router • Tailwind CSSBanco de DadosPostgreSQL • Flyway (Database Migrations)Web3 / BlockchainSmart Contracts (Solidity) • Web3j / Ethers.js • Ethereum / Polygon TestnetDevOps & InfraDocker • Docker Compose • GitHub Actions (CI/CD)
+       
+       📁 Estrutura do RepositórioO repositório é organizado no formato mono-repositório com responsabilidades estritamente separadas:Plaintextproofchain/
 
-### 3. WEB3 / Blockchain
+├── backend/            # API RESTful em Java / Spring Boot
+│   ├── src/            # Código-fonte da aplicação
+│   ├── pom.xml         # Gerenciador de dependências Maven
+│   └── README.md       # Documentação detalhada do Backend
+│
+├── frontend/           # Interface Web SPA em Vue 3 + TypeScript
+│   ├── src/            # Componentes, views, stores e assets
+│   ├── package.json    # Gerenciador de dependências Node
+│   └── README.md       # Documentação detalhada do Frontend
+│
+├── docker-compose.yml  # Orquestração local dos serviços
+└── README.md           # Documentação principal (este arquivo)  
 
-A camada **WEB3** garante **imutabilidade, transparência e prova pública** dos certificados emitidos, funcionando como uma camada de confiança independente da aplicação.
+📚 Documentação TécnicaPara detalhes específicos de arquitetura, instalação e configuração de cada módulo:
 
-#### Blockchain
-* **Rede**: Polygon PoS
-* **Motivação**:
-  * Baixo custo de transação
-  * Compatibilidade com EVM
-  * Boa escalabilidade
+⚙️ Documentação do Backend: Arquitetura em camadas, endpoints da API, configuração do Spring Security e conexão com o banco.💻 Documentação do Frontend: Estrutura de componentes, gerenciamento de estado global com Pinia, rotas e guia do Design System.
 
-A blockchain é utilizada **exclusivamente como camada de prova**, e não como banco de dados.
+🚀 Como Executar o ProjetoPré-requisitosCertifique-se de ter instalado em sua máquina:GitDocker e Docker ComposeExecução com Docker Compose (Recomendado)A forma mais simples de subir todo o ecossistema (Backend, Frontend e Banco de Dados PostgreSQL) é utilizando o Docker Compose:Bash# 1. Clonar o repositório
 
-#### Smart Contract
+git clone [https://github.com/seu-usuario/proofchain.git](https://github.com/seu-usuario/proofchain.git)
 
-Contrato simples e enxuto, sem lógica complexa ou dados sensíveis.
+# 2. Navegar até o diretório do projeto
+cd proofchain
 
-Funções disponíveis:
+# 3. Subir todos os contêineres em segundo plano
+docker-compose up -d --build
 
-* registerCertificate(bytes32 hash, uint256 issuerId)
-* getCertificate(bytes32 hash)
+Após a inicialização dos contêineres:
+🌐 Frontend: http://localhost:5173
+⚙️ Backend API: http://localhost:8080/api/v1
+📚 Swagger Docs: http://localhost:8080/swagger-ui.html
+🐘 PostgreSQL: localhost:5432
+⚙️ Variáveis de AmbienteCrie um arquivo .env na raiz do projeto baseado no .env.example:Snippet de código# Database
 
-* `hash`: Hash criptográfico do certificado (PDF + metadados)
-* `issuerId`: Identificador da organização emissora
-* Nenhum dado pessoal é armazenado on-chain
+POSTGRES_DB=proofchain_db
+POSTGRES_USER=proofchain_user
+POSTGRES_PASSWORD=secret_password
 
-#### Integração com o Backend
+# Backend
+SPRING_PROFILES_ACTIVE=dev
+JWT_SECRET=sua_chave_secreta_jwt_super_segura_32_caracteres
+BLOCKCHAIN_RPC_URL=[https://polygon-mumbai.infura.io/v3/seu_project_id](https://polygon-mumbai.infura.io/v3/seu_project_id)
 
-* **Módulo de Blockchain desacoplado**
-  * Implementado seguindo arquitetura hexagonal
-  * O core da aplicação não depende diretamente de Web3j
-  * Facilita testes, manutenção e troca futura de tecnologia
+# Frontend
+VITE_API_BASE_URL=http://localhost:8080/api/v1
 
-* **Processamento orientado a eventos**
-  * O registro on-chain ocorre de forma assíncrona
-  * Permite emissão em lote e maior resiliência
-
-#### Banco de Dados (Relacionamento com Blockchain)
-
-* **PostgreSQL**
-  * Preparado para crescimento com particionamento de tabelas
-  * Persistência de:
-    * Hash do certificado
-    * Hash da transação on-chain
-    * Timestamp do registro
-
-#### Storage de Arquivos
-
-* **PDF armazenado off-chain**
-* Storage compatível com S3:
-  * Cloudflare R2
-* O hash do PDF é calculado antes do upload e registrado na blockchain
-
----
-
-## 🔒 Segurança e Autenticação (Prioridade Máxima)
-
-O sistema abandona senhas tradicionais em favor de um fluxo de **Magic Link** seguro.
-
-### Fluxo de Login ("Magic Link")
-1.  **Solicitação**: Usuário informa o e-mail no formulário de login.
-2.  **Geração de Token**: O backend gera um token único, criptograficamente forte, com validade curta (ex: 15 minutos) e o armazena (Redis ou Tabela `login_tokens` com hash).
-3.  **Envio**: Um e-mail é enviado contendo um link: `https://app.validapro.com/auth/verify?token=XYZ...`
-4.  **Validação**: Ao clicar, o frontend chama a API. Se válido, o backend invalida o token temporário e retorna um **Par de JWTs** (Access Token + Refresh Token).
-
-### Controle de Acesso (RBAC)
-O sistema implementa 3 níveis de permissão via Spring Security Authorities:
-*   `ROLE_SUPER_ADMIN`: Acesso total. Vê todas as empresas, gerencia planos, pagamentos e métricas globais.
-*   `ROLE_TENANT_ADMIN` (Admin da Empresa): Gerencia alunos, emissões e configurações apenas da sua empresa (Tenant).
-*   `ROLE_USER` (Operador): Apenas emite certificados, sem acesso a configurações financeiras ou de API.
-
----
-
-## 🏢 Múli-Tenancy (Multi-empresas)
-
-O sistema deve isolar dados de diferentes empresas.
-
-*   **Estratégia**: Discriminator Column (Coluna `organization_id` em todas as tabelas principais).
-*   **Implementação**:
-    *   Um `Filter` do Spring intercepta o JWT.
-    *   Extrai o `organization_id` do claim do token.
-    *   Injeta no contexto (`SecurityContextHolder` ou `ThreadLocal`).
-    *   Hibernate/JPA Filter aplica automaticamente `WHERE organization_id = ?` em todas as consultas.
-
----
-
-## 💰 Super Admin e Gestão de Planos
-
-O painel do Super Admin difere do painel comum. Ele foca em métricas de negócio (MRR, inadimplência).
-
-*   **Funcionalidades Exclusivas**:
-    *   Listagem de todas as Organizações (Tenants).
-    *   Bloqueio/Desbloqueio de acesso de empresas.
-    *   Visualização de faturas e status de pagamento (Integração futura com gateway como Stripe/Asaas).
-
----
-
-## 🎨 Frontend e Design System
-
-O frontend deve seguir estritamente os tokens visuais definidos no protótipo `certificados.html`.
-
-### Paleta de Cores (Tokens)
-```css
-:root {
-  --bg: #f6fafc;
-  --card: #ffffff;
-  --muted: #64748b;
-  --accent: #60a5fa;   /* Azul Principal */
-  --accent-2: #7dd3fc; /* Azul Secundário */
-  --success: #10b981;  /* Verde Flux */
-  --danger: #ef4444;
-  --navy: #0b2540;     /* Textos e Títulos */
-  --radius: 12px;
-}
-```
-
-### Estrutura de Pastas Sugerida (Frontend)
-```
-/public
-  /assets
-    /css
-      style.css
-      bootstrap.custom.css
-    /js
-      app.js (Router simples e lógica global)
-      auth.js (Login, Refresh Token)
-      dashboard.js
-      cert-generator.js (Canvas & PDF)
-    /img
-      logo.png
-  index.html (Single Page Application shell)
-```
-
----
-
-## 🗄️ Modelo de Dados (Sugestão ER)
-
-*   **Organizations**: `id`, `name`, `plan_type` (demo, pro), `status`, `wallet_address`.
-*   **Users**: `id`, `email`, `role`, `organization_id (FK)`.
-*   **Certificates**: `id (UUID)`, `student_name`, `course_name`, `issue_date`, `hash_proof`, `organization_id (FK)`.
-*   **Transactions**: `id`, `chain_tx_hash`, `certificate_id (FK)`, `timestamp`.
-
----
-
-## 🚀 Como Rodar o Projeto
-
-### Backend
-1.  Configure as variáveis de ambiente em `application.properties`:
-    ```properties
-    spring.datasource.url=jdbc:postgresql://localhost:5432/validapro
-    spring.datasource.username=postgres
-    spring.datasource.password=suasenha
-    app.jwt.secret=UMA_CHAVE_MUITO_LONGA_E_SEGURA_BASE64
-    app.domain.frontend=http://localhost:5500
-    ```
-2.  Execute `mvn spring-boot:run`.
-
-### Frontend
-1.  Basta servir a pasta estática.
-2.  Use o **Live Server** do VS Code ou `python -m http.server 5500`.
-
----
-
-## ✅ Checklist de Desenvolvimento (MVP)
-
-- [X] Criar projeto Spring Boot (Web, Security, JPA, Postgres, Mail).
-- [ ] Implementar fluxo de envio de e-mail (Mock para dev).
-- [X] Criar Entidades JPA e relacionamentos Multi-tenant.
-- [X] Configurar Spring Security com filtro JWT.
-- [ ] Migrar layout do `certificados.html` para estrutura SPA.
-- [ ] Conectar formulário de Login do Frontend com API `/auth/login`.
-- [ ] Implementar Dashboard com dados reais da API.
-- [ ] Implementar rotina de "Validação" pública (sem login).
-
----
-
-> Robson  CH: [![wakatime](https://wakatime.com/badge/user/7b985f77-0bde-4bbf-899e-c4bb0e25f27b/project/91eb7bd9-d37d-43cb-8663-6c384105ea9d.svg)](https://wakatime.com/badge/user/7b985f77-0bde-4bbf-899e-c4bb0e25f27b/project/91eb7bd9-d37d-43cb-8663-6c384105ea9d)
+🚧 Status e RoadmapO projeto encontra-se atualmente na fase Em Desenvolvimento (v0.5.0) 
