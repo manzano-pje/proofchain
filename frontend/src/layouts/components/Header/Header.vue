@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import './Header.css'
+import { RouterLink } from 'vue-router'
 
 const isMenuOpen = ref(false)
 
@@ -35,7 +36,7 @@ function closeMenu() {
 
       <!-- Ações (botões) -->
       <div class="header__actions">
-        <a href="#" class="header-button">Entrar</a>
+        <RouterLink to="/login" class="header-button">Entrar</RouterLink>
         <a href="#" class="header-button header-button--primary">Começar grátis</a>
       </div>
 
