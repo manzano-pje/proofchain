@@ -17,6 +17,12 @@ const router = createRouter({
       name: 'login',
       component: Login,
     },
+    {
+      path: '/onboarding',
+      name: 'Onboarding',
+      component: () => import('@/modules/business/views/onboarding/Onboarding.vue'),
+      // meta: { public: true } // se houver guard
+    },
   ],
 })
 
