@@ -32,32 +32,6 @@
               em poucos passos.
             </p>
           </section>
-
-          <!-- <nav class="onboarding-progress" aria-label="Progresso do cadastro">
-            <ol class="progress-list">
-              <li class="progress-item is-active">
-                <span class="progress-number">01</span>
-                <div class="progress-content">
-                  <span class="progress-title">Instituição</span>
-                  <span class="progress-sub">Dados da instituição</span>
-                </div>
-              </li>
-              <li class="progress-item">
-                <span class="progress-number">02</span>
-                <div class="progress-content">
-                  <span class="progress-title">Conta administrativa</span>
-                  <span class="progress-sub">Seu acesso ao sistema</span>
-                </div>
-              </li>
-              <li class="progress-item">
-                <span class="progress-number">03</span>
-                <div class="progress-content">
-                  <span class="progress-title">Plano</span>
-                  <span class="progress-sub">Configuração escolhida</span>
-                </div>
-              </li>
-            </ol>
-          </nav> -->
         </div>
 
         <!-- ============================================================
@@ -246,11 +220,8 @@ import Container from '@/core/components/ui/Container/Container.vue'
 import Section from '@/core/components/ui/Section/Section.vue'
 import Card from '@/core/components/ui/Card/Card.vue'
 import BaseButton from '@/core/components/base/BaseButton/BaseButton.vue'
-
 import { onboardingService } from '@/modules/business/services/Onboarding.service'
-
 import type { OnboardingRequest } from '@/modules/business/types/OnboardingRequest'
-
 import { validateCNPJ, validateEmail } from '@/core/utils/Validators'
 
 /* ============================================================
@@ -258,26 +229,30 @@ import { validateCNPJ, validateEmail } from '@/core/utils/Validators'
    ============================================================ */
 
 type FormField = keyof OnboardingRequest
-
 type EditableField = Exclude<FormField, 'idPlan'>
 
 /* ============================================================
-   MOCK DE PLANOS
-   Futuramente será substituído pela store/query real.
+   PLANOS
    ============================================================ */
 
-const mockPlans = [
+const plans = [
   {
     id: 1,
-    name: 'Plano Básico',
-    price: 'R$ 99,90/mês',
-    description: 'Ideal para pequenas instituições.',
+    name: 'Free',
+    price: 'R$ 0,00 /mês',
+    description: 'Para começar a emitir certificados digitais.',
   },
   {
     id: 2,
-    name: 'Plano Profissional',
-    price: 'R$ 199,90/mês',
-    description: 'Recursos completos para gestão.',
+    name: 'Starter',
+    price: 'R$ 49,00/mês',
+    description: 'Para pequenas operações que precisam de mais recursos.',
+  },
+  {
+    id: 3,
+    name: 'Professional',
+    price: 'R$ 99,00/mês',
+    description: 'Para instituições que precisam de escala e controle.',
   },
 ]
 
@@ -297,8 +272,10 @@ export default defineComponent({
        ========================================================== */
 
     const route = useRoute()
+    const queryPlanId = route.query.planId
 
-    const planId = Number(route.query.planId) || 1
+    const planId =
+      typeof queryPlanId === 'string' && /^\d+$/.test(queryPlanId) ? Number(queryPlanId) : 0
 
     /* ==========================================================
        FORMULÁRIO
@@ -345,7 +322,7 @@ export default defineComponent({
 
     const isSubmitting = ref(false)
 
-    const selectedPlan = ref<(typeof mockPlans)[number] | null>(null)
+    const selectedPlan = ref<(typeof plans)[number] | null>(null)
 
     /* ==========================================================
        VALIDAÇÃO DE CAMPO
@@ -452,7 +429,7 @@ export default defineComponent({
         case 'idPlan': {
           const value = form.idPlan
 
-          if (!value || value <= 0) {
+          if (!value || value <= 0 || value >= 4) {
             return 'Plano inválido'
           }
 
@@ -556,7 +533,7 @@ export default defineComponent({
        ========================================================== */
 
     onMounted(() => {
-      const plan = mockPlans.find((item) => item.id === planId)
+      const plan = plans.find((item) => item.id === planId)
 
       if (plan) {
         selectedPlan.value = plan

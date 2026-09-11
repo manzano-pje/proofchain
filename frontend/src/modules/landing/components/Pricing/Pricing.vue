@@ -121,8 +121,13 @@
           ================================================== -->
 
           <div class="pricing__actions">
-            <a
-              href="#"
+            <RouterLink
+              :to="{
+                path: '/onboarding',
+                query: {
+                  planId: plan.id,
+                },
+              }"
               class="pricing__button"
               :class="{
                 'pricing__button--primary': plan.featured,
@@ -130,22 +135,23 @@
               }"
             >
               {{ plan.cta }}
-            </a>
+            </RouterLink>
           </div>
         </article>
       </div>
 
-      <!-- ======================================================
+      <!--
+      ======================================================
            FOOTER
            Observação complementar da seção.
-      ====================================================== -->
+      ======================================================
 
       <footer class="pricing__footer">
         <p class="pricing__footer-text">Precisa de uma solução personalizada?</p>
         <p class="pricing__footer-text">
           Fale com nossa equipe para encontrar a melhor configuração para sua operação.
         </p>
-      </footer>
+      </footer> -->
     </div>
   </section>
 </template>
