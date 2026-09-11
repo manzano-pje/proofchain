@@ -1,19 +1,80 @@
 <template>
   <div class="onboarding-page">
-    <Container>
-      <Section>
-        <!-- Cabeçalho -->
+    <Section class="onboarding-section">
+      <Container class="onboarding-container">
+        <!-- ============================================================
+             HEADER
+             ============================================================ -->
         <header class="onboarding-header">
-          <h1>Crie sua instituição</h1>
-          <p class="subtitle">Comece a configurar sua conta ProofChain</p>
+          <div class="header-brand">
+            <!-- Utilizando ícone/logo como na referência image_e03306.jpg -->
+            <span class="brand-logo">
+              <img
+                src="@/assets/images/logo/logo_horizontal_light.svg"
+                alt="ProofChain Logo"
+                class="header__logo"
+              />
+            </span>
+          </div>
         </header>
 
-        <!-- Formulário -->
-        <form @submit.prevent="handleSubmit" class="onboarding-form">
-          <!-- Seção 1: Dados da instituição -->
-          <Card class="form-section">
-            <h2>Dados da instituição</h2>
-            <div class="field-group">
+        <!-- ============================================================
+             INTRODUÇÃO E PROGRESSO
+             ============================================================ -->
+        <div class="onboarding-top-layout">
+          <section class="onboarding-intro">
+            <div>
+              <span class="intro-badge">PRIMEIRO ACESSO</span>
+              <h1>Crie sua instituição</h1>
+            </div>
+            <p class="intro-description">
+              Configure sua conta ProofChain<br />
+              em poucos passos.
+            </p>
+          </section>
+
+          <!-- <nav class="onboarding-progress" aria-label="Progresso do cadastro">
+            <ol class="progress-list">
+              <li class="progress-item is-active">
+                <span class="progress-number">01</span>
+                <div class="progress-content">
+                  <span class="progress-title">Instituição</span>
+                  <span class="progress-sub">Dados da instituição</span>
+                </div>
+              </li>
+              <li class="progress-item">
+                <span class="progress-number">02</span>
+                <div class="progress-content">
+                  <span class="progress-title">Conta administrativa</span>
+                  <span class="progress-sub">Seu acesso ao sistema</span>
+                </div>
+              </li>
+              <li class="progress-item">
+                <span class="progress-number">03</span>
+                <div class="progress-content">
+                  <span class="progress-title">Plano</span>
+                  <span class="progress-sub">Configuração escolhida</span>
+                </div>
+              </li>
+            </ol>
+          </nav> -->
+        </div>
+
+        <!-- ============================================================
+             FORMULÁRIO
+             ============================================================ -->
+        <form class="onboarding-form" @submit.prevent="handleSubmit" novalidate>
+          <!-- SEÇÃO 01 -->
+          <section class="form-section">
+            <div class="section-heading">
+              <span class="section-number">01</span>
+              <div>
+                <h2>Dados da instituição</h2>
+                <p class="section-description">Informações básicas da organização.</p>
+              </div>
+            </div>
+
+            <div class="field-group field-group--two-col">
               <div class="field">
                 <label for="name">Nome da instituição</label>
                 <input
@@ -21,10 +82,12 @@
                   v-model="form.name"
                   type="text"
                   placeholder="Ex: Minha Escola"
-                  :class="{ 'is-invalid': errors.name }"
+                  :class="{ 'is-invalid': touched.name && errors.name }"
                   @blur="validateField('name')"
                 />
-                <span v-if="errors.name" class="error-message">{{ errors.name }}</span>
+                <span v-if="touched.name && errors.name" class="error-message">{{
+                  errors.name
+                }}</span>
               </div>
 
               <div class="field">
@@ -33,19 +96,30 @@
                   id="cnpj"
                   v-model="form.cnpj"
                   type="text"
+                  inputmode="numeric"
+                  autocomplete="organization"
                   placeholder="00.000.000/0000-00"
                   v-mask="'##.###.###/####-##'"
-                  :class="{ 'is-invalid': errors.cnpj }"
+                  :class="{ 'is-invalid': touched.cnpj && errors.cnpj }"
                   @blur="validateField('cnpj')"
                 />
-                <span v-if="errors.cnpj" class="error-message">{{ errors.cnpj }}</span>
+                <span v-if="touched.cnpj && errors.cnpj" class="error-message">{{
+                  errors.cnpj
+                }}</span>
               </div>
             </div>
-          </Card>
+          </section>
 
-          <!-- Seção 2: Conta administrativa -->
-          <Card class="form-section">
-            <h2>Conta administrativa</h2>
+          <!-- SEÇÃO 02 -->
+          <section class="form-section">
+            <div class="section-heading">
+              <span class="section-number">02</span>
+              <div>
+                <h2>Conta administrativa</h2>
+                <p class="section-description">Defina as credenciais de acesso.</p>
+              </div>
+            </div>
+
             <div class="field-group">
               <div class="field">
                 <label for="userName">Nome de usuário</label>
@@ -53,11 +127,14 @@
                   id="userName"
                   v-model="form.userName"
                   type="text"
+                  autocomplete="username"
                   placeholder="Seu nome de acesso"
-                  :class="{ 'is-invalid': errors.userName }"
+                  :class="{ 'is-invalid': touched.userName && errors.userName }"
                   @blur="validateField('userName')"
                 />
-                <span v-if="errors.userName" class="error-message">{{ errors.userName }}</span>
+                <span v-if="touched.userName && errors.userName" class="error-message">{{
+                  errors.userName
+                }}</span>
               </div>
 
               <div class="field">
@@ -66,72 +143,130 @@
                   id="email"
                   v-model="form.email"
                   type="email"
+                  autocomplete="email"
                   placeholder="seu@email.com"
-                  :class="{ 'is-invalid': errors.email }"
+                  :class="{ 'is-invalid': touched.email && errors.email }"
                   @blur="validateField('email')"
                 />
-                <span v-if="errors.email" class="error-message">{{ errors.email }}</span>
+                <span v-if="touched.email && errors.email" class="error-message">{{
+                  errors.email
+                }}</span>
               </div>
 
-              <div class="field">
-                <label for="password">Senha</label>
-                <input
-                  id="password"
-                  v-model="form.password"
-                  type="password"
-                  placeholder="Mínimo 8 caracteres"
-                  :class="{ 'is-invalid': errors.password }"
-                  @blur="validateField('password')"
-                />
-                <span v-if="errors.password" class="error-message">{{ errors.password }}</span>
+              <div class="field-group field-group--two-col">
+                <div class="field">
+                  <label for="password">Senha</label>
+                  <div class="input-wrapper">
+                    <input
+                      id="password"
+                      v-model="form.password"
+                      type="password"
+                      autocomplete="new-password"
+                      placeholder="Mínimo 8 caracteres"
+                      :class="{ 'is-invalid': touched.password && errors.password }"
+                      @blur="validateField('password')"
+                    />
+                    <!-- Ícone simulado visualmente via CSS baseado no DS -->
+                    <span class="password-toggle-icon"></span>
+                  </div>
+                  <span v-if="touched.password && errors.password" class="error-message">{{
+                    errors.password
+                  }}</span>
+                </div>
               </div>
             </div>
-          </Card>
+          </section>
 
-          <!-- Seção 3: Plano selecionado (resumo) -->
-          <Card class="plan-summary">
-            <h2>Plano selecionado</h2>
-            <div class="plan-details">
-              <p>
-                <strong>{{ selectedPlan?.name || 'Plano não identificado' }}</strong>
-              </p>
-              <p class="plan-price">{{ selectedPlan?.price || '--' }}</p>
-              <p class="plan-description">{{ selectedPlan?.description || '' }}</p>
+          <!-- SEÇÃO 03 -->
+          <section class="form-section plan-section">
+            <div class="section-heading">
+              <span class="section-number">03</span>
+              <div>
+                <h2>Plano selecionado</h2>
+                <p class="section-description">Configuração escolhida para sua instituição.</p>
+              </div>
             </div>
-          </Card>
 
-          <!-- Ação principal -->
+            <div class="plan-summary">
+              <div class="plan-details-left">
+                <span class="plan-label">PLANO</span>
+                <strong class="plan-name">{{
+                  selectedPlan?.name || 'Plano não identificado'
+                }}</strong>
+                <p class="plan-description">{{ selectedPlan?.description || '' }}</p>
+              </div>
+              <div class="plan-price">
+                {{ selectedPlan?.price || '--' }}
+              </div>
+            </div>
+          </section>
+
+          <!-- AÇÕES -->
           <div class="form-actions">
-            <BaseButton type="submit" :loading="isSubmitting" :disabled="!isValid">
-              Criar instituição
+            <span class="security-badge">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              </svg>
+              Configuração segura
+            </span>
+            <BaseButton
+              class="submit-btn"
+              type="submit"
+              :loading="isSubmitting"
+              :disabled="!isValid || isSubmitting"
+            >
+              Criar instituição &rarr;
             </BaseButton>
           </div>
         </form>
-      </Section>
-    </Container>
+
+        <!-- FOOTER -->
+        <footer class="onboarding-footer">
+          <span class="footer-copy">© ProofChain</span>
+          <span class="footer-label">Configuração inicial</span>
+        </footer>
+      </Container>
+    </Section>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref, computed, onMounted } from 'vue'
+import { computed, defineComponent, onMounted, reactive, ref, watch } from 'vue'
+
 import { useRoute } from 'vue-router'
+
 import Container from '@/core/components/ui/Container/Container.vue'
 import Section from '@/core/components/ui/Section/Section.vue'
 import Card from '@/core/components/ui/Card/Card.vue'
 import BaseButton from '@/core/components/base/BaseButton/BaseButton.vue'
+
 import { onboardingService } from '@/modules/business/services/Onboarding.service'
+
 import type { OnboardingRequest } from '@/modules/business/types/OnboardingRequest'
-import { validateCNPJ, validateEmail } from '@/core/utils/Validator' // supondo que existam
 
-interface PlanSummary {
-  id: number
-  name: string
-  price: string
-  description: string
-}
+import { validateCNPJ, validateEmail } from '@/core/utils/Validators'
 
-// Mock de plano (será substituído pela store/query real)
-const mockPlans: PlanSummary[] = [
+/* ============================================================
+   TIPOS
+   ============================================================ */
+
+type FormField = keyof OnboardingRequest
+
+type EditableField = Exclude<FormField, 'idPlan'>
+
+/* ============================================================
+   MOCK DE PLANOS
+   Futuramente será substituído pela store/query real.
+   ============================================================ */
+
+const mockPlans = [
   {
     id: 1,
     name: 'Plano Básico',
@@ -147,16 +282,27 @@ const mockPlans: PlanSummary[] = [
 ]
 
 export default defineComponent({
-  name: 'InstitutionOnboarding',
+  name: 'DataOnboarding',
+
   components: {
     Container,
     Section,
     Card,
     BaseButton,
   },
+
   setup() {
+    /* ==========================================================
+       ROTA
+       ========================================================== */
+
     const route = useRoute()
-    const planId = Number(route.query.planId) || 1 // fallback para testes
+
+    const planId = Number(route.query.planId) || 1
+
+    /* ==========================================================
+       FORMULÁRIO
+       ========================================================== */
 
     const form = reactive<OnboardingRequest>({
       name: '',
@@ -167,7 +313,11 @@ export default defineComponent({
       idPlan: planId,
     })
 
-    const errors = reactive<Record<keyof OnboardingRequest, string>>({
+    /* ==========================================================
+       ERROS
+       ========================================================== */
+
+    const errors = reactive<Record<FormField, string>>({
       name: '',
       cnpj: '',
       userName: '',
@@ -176,112 +326,306 @@ export default defineComponent({
       idPlan: '',
     })
 
-    const isSubmitting = ref(false)
-    const selectedPlan = ref<PlanSummary | null>(
-      mockPlans.find((plan) => plan.id === planId) ?? null,
-    )
+    /* ==========================================================
+       TOUCHED
+       Controla quando o erro deve aparecer visualmente.
+       ========================================================== */
 
-    // Carrega detalhes do plano
-    onMounted(() => {
-      const plan = mockPlans.find((p) => p.id === planId)
-      if (plan) {
-        selectedPlan.value = plan
-        form.idPlan = plan.id
-      } else {
-        // Plano não encontrado - redirecionar ou tratar erro
-        console.warn('Plano não encontrado')
-      }
+    const touched = reactive<Record<EditableField, boolean>>({
+      name: false,
+      cnpj: false,
+      userName: false,
+      email: false,
+      password: false,
     })
 
-    // Validação individual
-    const validateField = (field: keyof OnboardingRequest) => {
-      // const value = form[field]
-      let message = ''
+    /* ==========================================================
+       ESTADOS
+       ========================================================== */
 
+    const isSubmitting = ref(false)
+
+    const selectedPlan = ref<(typeof mockPlans)[number] | null>(null)
+
+    /* ==========================================================
+       VALIDAÇÃO DE CAMPO
+       ========================================================== */
+
+    const validateFieldPure = (field: FormField): string => {
       switch (field) {
+        /* ------------------------------------------------------
+           NOME DA INSTITUIÇÃO
+           ------------------------------------------------------ */
         case 'name': {
-          const value = form.name
+          const value = form.name.trim()
 
-          if (!value) message = 'Nome é obrigatório'
-          else if (value.length < 5) message = 'Mínimo 5 caracteres'
-          else if (value.length > 100) message = 'Máximo 100 caracteres'
-          break
+          if (!value) {
+            return 'Nome é obrigatório'
+          }
+
+          if (value.length < 5) {
+            return 'Mínimo 5 caracteres'
+          }
+
+          if (value.length > 100) {
+            return 'Máximo 100 caracteres'
+          }
+
+          return ''
         }
+
+        /* ------------------------------------------------------
+           CNPJ
+           ------------------------------------------------------ */
         case 'cnpj': {
-          const value = form.cnpj
-          if (!value) message = 'CNPJ é obrigatório'
-          else if (!validateCNPJ(value)) message = 'CNPJ inválido'
-          break
+          const value = form.cnpj.trim()
+
+          if (!value) {
+            return 'CNPJ é obrigatório'
+          }
+
+          if (!validateCNPJ(value)) {
+            return 'CNPJ inválido'
+          }
+
+          return ''
         }
+
+        /* ------------------------------------------------------
+           NOME DE USUÁRIO
+           ------------------------------------------------------ */
         case 'userName': {
-          const value = form.userName
+          const value = form.userName.trim()
 
-          if (!value) message = 'Nome de usuário é obrigatório'
-          else if (value.length < 5) message = 'Mínimo 5 caracteres'
-          else if (value.length > 30) message = 'Máximo 30 caracteres'
-          break
+          if (!value) {
+            return 'Nome de usuário é obrigatório'
+          }
+
+          if (value.length < 5) {
+            return 'Mínimo 5 caracteres'
+          }
+
+          if (value.length > 30) {
+            return 'Máximo 30 caracteres'
+          }
+
+          return ''
         }
+
+        /* ------------------------------------------------------
+           E-MAIL
+           ------------------------------------------------------ */
         case 'email': {
-          const value = form.email
+          const value = form.email.trim()
 
-          if (!value) message = 'E-mail é obrigatório'
-          else if (!validateEmail(value)) message = 'E-mail inválido'
-          break
+          if (!value) {
+            return 'E-mail é obrigatório'
+          }
+
+          if (!validateEmail(value)) {
+            return 'E-mail inválido'
+          }
+
+          return ''
         }
+
+        /* ------------------------------------------------------
+           SENHA
+           ------------------------------------------------------ */
         case 'password': {
           const value = form.password
 
-          if (!value) message = 'Senha é obrigatória'
-          else if (value.length < 8) message = 'Mínimo 8 caracteres'
-          break
+          if (!value) {
+            return 'Senha é obrigatória'
+          }
+
+          if (value.length < 8) {
+            return 'Mínimo 8 caracteres'
+          }
+
+          return ''
         }
+
+        /* ------------------------------------------------------
+           PLANO
+           ------------------------------------------------------ */
         case 'idPlan': {
           const value = form.idPlan
-          if (!value || value <= 0) message = 'Plano inválido'
-          break
+
+          if (!value || value <= 0) {
+            return 'Plano inválido'
+          }
+
+          return ''
         }
+
+        /* ------------------------------------------------------
+           SEGURANÇA DO TYPESCRIPT
+           ------------------------------------------------------ */
+        default:
+          return ''
+      }
+    }
+
+    /* ==========================================================
+       VALIDA UM CAMPO
+
+       Esta é a ÚNICA função pública validateField.
+       ========================================================== */
+
+    const validateField = (field: FormField): void => {
+      if (field !== 'idPlan') {
+        touched[field] = true
       }
 
-      errors[field] = message
+      errors[field] = validateFieldPure(field)
     }
 
-    // Validação global
-    const validateAll = (): boolean => {
-      const fields: (keyof OnboardingRequest)[] = [
-        'name',
-        'cnpj',
-        'userName',
-        'email',
-        'password',
-        'idPlan',
-      ]
-      fields.forEach((field) => validateField(field))
-      return fields.every((field) => !errors[field])
+    /* ==========================================================
+       CAMPOS DO FORMULÁRIO
+       ========================================================== */
+
+    const fields: FormField[] = ['name', 'cnpj', 'userName', 'email', 'password', 'idPlan']
+
+    /* ==========================================================
+       VALIDAÇÃO SILENCIOSA
+
+       Atualiza errors sem alterar touched.
+
+       Assim:
+       - errors pode ser atualizado internamente;
+       - mensagens não aparecem antes da interação;
+       - isValid sempre possui o estado correto.
+       ========================================================== */
+
+    const validateAllSilent = (): boolean => {
+      fields.forEach((field) => {
+        errors[field] = validateFieldPure(field)
+      })
+
+      return fields.every((field) => errors[field] === '')
     }
 
-    const isValid = computed(() => validateAll())
+    /* ==========================================================
+       TOUCH ALL
 
-    // Submissão
-    const handleSubmit = async () => {
-      if (!validateAll()) return
+       Usado quando o usuário tenta enviar o formulário.
+       ========================================================== */
+
+    const touchAll = (): void => {
+      const editableFields: EditableField[] = ['name', 'cnpj', 'userName', 'email', 'password']
+
+      editableFields.forEach((field) => {
+        touched[field] = true
+      })
+
+      validateAllSilent()
+    }
+
+    /* ==========================================================
+       VALIDADE DO FORMULÁRIO
+       ========================================================== */
+
+    const isValid = computed(() => {
+      return fields.every((field) => errors[field] === '')
+    })
+
+    /* ==========================================================
+       WATCH
+
+       Importante:
+       watch está no topo dos imports.
+
+       Não existe mais:
+       import { watch } from 'vue'
+       dentro do setup().
+       ========================================================== */
+
+    watch(
+      form,
+      () => {
+        validateAllSilent()
+      },
+      {
+        deep: true,
+      },
+    )
+
+    /* ==========================================================
+       CARREGAMENTO DO PLANO
+       ========================================================== */
+
+    onMounted(() => {
+      const plan = mockPlans.find((item) => item.id === planId)
+
+      if (plan) {
+        selectedPlan.value = plan
+        form.idPlan = plan.id
+
+        errors.idPlan = ''
+      } else {
+        selectedPlan.value = null
+        form.idPlan = 0
+        errors.idPlan = 'Plano inválido'
+
+        console.warn(`Plano não encontrado: ${planId}`)
+      }
+    })
+
+    /* ==========================================================
+       SUBMISSÃO
+       ========================================================== */
+
+    const handleSubmit = async (): Promise<void> => {
+      /* --------------------------------------------------------
+         Marca todos os campos como tocados.
+         -------------------------------------------------------- */
+
+      touchAll()
+
+      /* --------------------------------------------------------
+         Se existir qualquer erro, não envia.
+         -------------------------------------------------------- */
+
+      if (!isValid.value) {
+        return
+      }
+
+      /* --------------------------------------------------------
+         Inicia envio.
+         -------------------------------------------------------- */
 
       isSubmitting.value = true
+
       try {
         const response = await onboardingService.create(form)
-        // Sucesso - redirecionar ou exibir mensagem
+
         console.log('Criação bem-sucedida', response)
-        // Exemplo: router.push('/login')
+
+        /*
+         * Futuramente:
+         *
+         * router.push(...)
+         *
+         * ou
+         *
+         * mensagem de sucesso.
+         */
       } catch (error) {
         console.error('Erro ao criar instituição', error)
-        // Exibir mensagem de erro
       } finally {
         isSubmitting.value = false
       }
     }
 
+    /* ==========================================================
+       RETORNO PARA O TEMPLATE
+       ========================================================== */
+
     return {
       form,
       errors,
+      touched,
       selectedPlan,
       isSubmitting,
       isValid,
@@ -293,6 +637,8 @@ export default defineComponent({
 </script>
 
 <style scoped>
-/* Os estilos estão no arquivo separado Onboarding.css */
+/*
+ * Os estilos estão no arquivo separado.
+ */
 @import './Onboarding.css';
 </style>

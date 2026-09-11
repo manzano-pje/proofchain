@@ -4,7 +4,7 @@ import { ref } from 'vue'
 import BaseButton from '@/core/components/base/BaseButton/BaseButton.vue'
 import './Login.css'
 
-import lightLogo from '@/assets/images/logo/logo horizontal light.svg'
+import lightLogo from '@/assets/images/logo/logo_horizontal_light.svg'
 import darkLogo from '@/assets/images/logo/logo_horizontal_black.svg'
 import dashboardImage from '@/modules/auth/images/dashboard.webp'
 
