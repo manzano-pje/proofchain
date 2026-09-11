@@ -1,152 +1,394 @@
-/* ===== Onboarding Page ===== */
+/* ============================================================
+   TOKENS & BASE (Espelhando módulos Auth/Landing)
+   ============================================================ */
 .onboarding-page {
-  padding: var(--spacing-xl) 0;
   min-height: 100vh;
-  background: var(--color-background);
+  background-color: var(--brand-active); /* Fundo off-white suave da referência */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: var(--font-family-base, sans-serif);
+  color: #1e293b;
+  padding: var(--space-xl) 0;
 }
 
+.onboarding-section {
+  width: 100%;
+}
+
+.onboarding-container {
+  max-width: 1024px;
+  margin: 0 auto;
+  background: var(--background-card);
+  border-radius: var(--radius-xl);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.02);
+  padding: var(--space-3xl) 64px;
+}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
 .onboarding-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: var(--space-xl);
+  margin-bottom: var(--space-2xl);
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.brand__logo {
+  display: block;
+  width: 164px;
+  height: auto;
+}
+
+.meta-step {
+  font-weight: 600;
+  color: #0f172a;
+}
+
+/* ============================================================
+   LAYOUT SUPERIOR (Grid Intro + Progresso)
+   ============================================================ */
+.onboarding-top-layout {
+  display: grid;
+  align-items: flex-start;
+}
+
+.onboarding-intro {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: var(space-3xl);
+}
+
+.intro-badge {
+  display: inline-block;
+  color: var(--action-active);
+  font-size: var(--font-md);
+  font-weight: var(--weight-bold);
+  text-transform: uppercase;
+  font-family: var(--font-body);
+}
+
+.onboarding-intro h1 {
+  font-size: var(--font-3xl);
+  font-weight: bolder;
+  color: #0f172a;
+  line-height: var(--line-tight);
+  font-family: var(--font-heading);
+}
+
+.intro-description {
+  font-size: var(--font-2xl);
+  color: #475569;
+  margin: 0;
+  width: 100%;
   text-align: center;
-  margin-bottom: var(--spacing-xl);
+  font-family: var(--font-body);
 }
 
-.onboarding-header h1 {
-  font-size: var(--font-size-xxl);
-  font-weight: var(--font-weight-bold);
-  color: var(--color-text-primary);
-  margin-bottom: var(--spacing-sm);
+/* ============================================================
+   PROGRESSO (Fidelidade ao image_e03306.jpg)
+   ============================================================ */
+.onboarding-progress {
+  padding-top: 24px;
 }
 
-.onboarding-header .subtitle {
-  font-size: var(--font-size-lg);
-  color: var(--color-text-secondary);
+.progress-list {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
-/* ===== Formulário ===== */
+.progress-list::before {
+  content: '';
+  position: absolute;
+  top: 16px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: #e2e8f0;
+  z-index: 0;
+}
+
+.progress-item {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  background: #ffffff;
+  padding: 0 8px;
+}
+
+.progress-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  color: #64748b;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.progress-item.is-active .progress-number {
+  background: #2563eb;
+  border-color: #2563eb;
+  color: #ffffff;
+}
+
+.progress-content {
+  display: flex;
+  flex-direction: column;
+  margin-top: 4px;
+}
+
+.progress-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #64748b;
+}
+
+.progress-item.is-active .progress-title {
+  color: #0f172a;
+}
+
+.progress-sub {
+  font-size: 12px;
+  color: #94a3b8;
+  margin-top: 2px;
+}
+
+/* ============================================================
+   FORMULÁRIO E SEÇÕES
+   ============================================================ */
 .onboarding-form {
-  max-width: 720px;
+  max-width: 800px;
   margin: 0 auto;
 }
 
 .form-section {
-  margin-bottom: var(--spacing-lg);
+  display: grid;
+  /* grid-template-columns: 35% 65%; */
+  gap: var(--space-sd);
+  padding: 40px 0;
+  border-bottom: 1px solid #f1f5f9;
 }
 
+.section-heading {
+  display: flex;
+  gap: var(--space-md);
+}
+
+.section-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: #eff6ff;
+  color: #2563eb;
+  font-weight: 700;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.section-heading h2 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #0f172a;
+  margin: 0 0 4px 0;
+}
+
+.section-description {
+  font-size: 14px;
+  color: #64748b;
+  margin: 0;
+}
+
+/* ============================================================
+   CAMPOS DE ENTRADA
+   ============================================================ */
 .field-group {
   display: flex;
-  flex-direction: column;
-  gap: var(--spacing-md);
+  /* flex-direction: column; */
+  gap: 24px;
+}
+
+.field-group--two-col {
+  grid-template-columns: 1fr 1fr;
+  display: grid;
+  gap: 24px;
+  width: stretch;
 }
 
 .field {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-xs);
+  gap: 8px;
 }
 
 .field label {
-  font-weight: var(--font-weight-medium);
-  color: var(--color-text-primary);
-  font-size: var(--font-size-sm);
+  font-size: 14px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.input-wrapper {
+  position: relative;
 }
 
 .field input {
-  padding: var(--spacing-sm) var(--spacing-md);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  font-size: var(--font-size-base);
-  background: var(--color-white);
-  transition:
-    border-color 0.2s,
-    box-shadow 0.2s;
   width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #0f172a;
+  font-size: 15px;
+  transition: all 0.2s ease;
+}
+
+.field input::placeholder {
+  color: #94a3b8;
 }
 
 .field input:focus {
   outline: none;
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.15);
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
 .field input.is-invalid {
-  border-color: var(--color-danger);
-}
-
-.field input.is-invalid:focus {
-  box-shadow: 0 0 0 3px rgba(var(--color-danger-rgb), 0.15);
+  border-color: #ef4444;
 }
 
 .error-message {
-  font-size: var(--font-size-sm);
-  color: var(--color-danger);
-  margin-top: var(--spacing-xs);
+  font-size: 13px;
+  color: #ef4444;
 }
 
-/* ===== Resumo do plano ===== */
+/* ============================================================
+   PLANO SELECIONADO
+   ============================================================ */
 .plan-summary {
-  background: var(--color-primary-light);
-  border-left: 4px solid var(--color-primary);
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.plan-details {
-  padding: var(--spacing-sm) 0;
+.plan-label {
+  display: inline-block;
+  background: #dbeafe;
+  color: #1d4ed8;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 4px;
+  margin-bottom: 12px;
+  letter-spacing: 0.5px;
 }
 
-.plan-details p {
-  margin: var(--spacing-xs) 0;
-}
-
-.plan-price {
-  font-weight: var(--font-weight-bold);
-  font-size: var(--font-size-lg);
-  color: var(--color-primary);
+.plan-name {
+  display: block;
+  font-size: 18px;
+  color: #0f172a;
+  margin-bottom: 4px;
 }
 
 .plan-description {
-  color: var(--color-text-secondary);
-  font-size: var(--font-size-sm);
+  font-size: 14px;
+  color: #64748b;
+  margin: 0;
 }
 
-/* ===== Botão ===== */
+.plan-price {
+  font-size: 24px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+/* ============================================================
+   AÇÕES E FOOTER
+   ============================================================ */
 .form-actions {
-  margin-top: var(--spacing-xl);
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 40px;
 }
 
-/* ===== Responsividade ===== */
-@media (max-width: 768px) {
-  .onboarding-page {
-    padding: var(--spacing-lg) var(--spacing-md);
-  }
-
-  .onboarding-header h1 {
-    font-size: var(--font-size-xl);
-  }
-
-  .onboarding-header .subtitle {
-    font-size: var(--font-size-md);
-  }
-
-  .onboarding-form {
-    max-width: 100%;
-  }
-
-  .field input {
-    padding: var(--spacing-sm);
-  }
-
-  .form-actions {
-    margin-top: var(--spacing-lg);
-  }
+.security-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #64748b;
 }
 
-@media (max-width: 480px) {
-  .onboarding-header h1 {
-    font-size: var(--font-size-lg);
+.submit-btn {
+  background: #2563eb;
+  color: #ffffff;
+  padding: 14px 28px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 15px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.submit-btn:hover {
+  background: #1d4ed8;
+}
+
+.onboarding-footer {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 32px;
+  margin-top: 64px;
+  border-top: 1px solid #f1f5f9;
+  font-size: 13px;
+  color: #94a3b8;
+}
+
+/* ============================================================
+   RESPONSIVIDADE BÁSICA
+   ============================================================ */
+@media (max-width: 992px) {
+  .onboarding-top-layout,
+  .form-section {
+    grid-template-columns: 100%;
+
+    gap: 24px;
   }
 
-  .plan-summary .plan-details {
-    padding: var(--spacing-sm) 0;
+  .progress-list {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .progress-list::before {
+    display: none;
   }
 }
