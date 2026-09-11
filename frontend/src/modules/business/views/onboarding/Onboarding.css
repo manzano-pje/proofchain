@@ -1,14 +1,12 @@
-/* ============================================================
-   TOKENS & BASE (Espelhando módulos Auth/Landing)
-   ============================================================ */
+/* Base */
 .onboarding-page {
   min-height: 100vh;
-  background-color: var(--brand-active); /* Fundo off-white suave da referência */
+  background-color: var(--brand-active);
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-family: var(--font-family-base, sans-serif);
-  color: #1e293b;
+  font-family: var(--font-body);
+  color: var(--text-inverse);
   padding: var(--space-xl) 0;
 }
 
@@ -25,38 +23,34 @@
   padding: var(--space-3xl) 64px;
 }
 
-/* ============================================================
-   HEADER
-   ============================================================ */
+/* Header */
 .onboarding-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding-bottom: var(--space-xl);
   margin-bottom: var(--space-2xl);
-  border-bottom: 1px solid #f1f5f9;
+  border-bottom: 1px solid var(--text-muted);
 }
 
-.header-brand {
+.onboarding__header-brand {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-.brand__logo {
+.onboarding__brand-logo {
   display: block;
   width: 164px;
   height: auto;
 }
 
-.meta-step {
+.onboarding__meta-step {
   font-weight: 600;
   color: #0f172a;
 }
 
-/* ============================================================
-   LAYOUT SUPERIOR (Grid Intro + Progresso)
-   ============================================================ */
+/* Introduction */
 .onboarding-top-layout {
   display: grid;
   align-items: flex-start;
@@ -67,10 +61,18 @@
   flex-direction: row;
   gap: 16px;
   align-items: center;
-  margin-bottom: var(space-3xl);
+  margin-bottom: var(--space-3xl);
+  color: var(--brand);
 }
 
-.intro-badge {
+.onboarding__intro-title {
+  font-size: var(--font-3xl);
+  font-weight: bolder;
+  color: var(--text-inverse);
+  line-height: var(--line-tight);
+  font-family: var(--font-heading);
+}
+.onboarding__intro-badge {
   display: inline-block;
   color: var(--action-active);
   font-size: var(--font-md);
@@ -79,15 +81,7 @@
   font-family: var(--font-body);
 }
 
-.onboarding-intro h1 {
-  font-size: var(--font-3xl);
-  font-weight: bolder;
-  color: #0f172a;
-  line-height: var(--line-tight);
-  font-family: var(--font-heading);
-}
-
-.intro-description {
+.onboarding__intro-description {
   font-size: var(--font-2xl);
   color: #475569;
   margin: 0;
@@ -96,9 +90,7 @@
   font-family: var(--font-body);
 }
 
-/* ============================================================
-   PROGRESSO (Fidelidade ao image_e03306.jpg)
-   ============================================================ */
+/* Progress */
 .onboarding-progress {
   padding-top: 24px;
 }
@@ -175,28 +167,26 @@
   margin-top: 2px;
 }
 
-/* ============================================================
-   FORMULÁRIO E SEÇÕES
-   ============================================================ */
+/* Form sections */
 .onboarding-form {
   max-width: 800px;
   margin: 0 auto;
 }
 
-.form-section {
+.onboarding__form-section {
   display: grid;
-  /* grid-template-columns: 35% 65%; */
-  gap: var(--space-sd);
+  gap: var(--space-md);
   padding: 40px 0;
-  border-bottom: 1px solid #f1f5f9;
+  border-bottom: 1px solid var(--border);
+  width: stretch;
 }
 
-.section-heading {
+.onboarding__section-heading {
   display: flex;
   gap: var(--space-md);
 }
 
-.section-number {
+.onboarding__section-number {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -210,97 +200,95 @@
   flex-shrink: 0;
 }
 
-.section-heading h2 {
+.onboarding__section-heading h2 {
   font-size: 18px;
   font-weight: 600;
-  color: #0f172a;
+  color: var(--text-inverse);
   margin: 0 0 4px 0;
 }
 
-.section-description {
+.onboarding__section-description {
   font-size: 14px;
   color: #64748b;
   margin: 0;
 }
 
-/* ============================================================
-   CAMPOS DE ENTRADA
-   ============================================================ */
-.field-group {
+/* Fields */
+.onboarding__field-group {
   display: flex;
-  /* flex-direction: column; */
   gap: 24px;
 }
 
-.field-group--two-col {
+.onboarding__field-group--two-col {
   grid-template-columns: 1fr 1fr;
   display: grid;
   gap: 24px;
-  width: stretch;
+  margin-right: var(--space-3xl);
 }
 
-.field {
+.onboarding__field {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-.field label {
+.onboarding__field label {
   font-size: 14px;
   font-weight: 600;
-  color: #0f172a;
+  color: var(--text-inverse);
 }
 
-.input-wrapper {
+.onboarding__input-wrapper {
   position: relative;
 }
 
-.field input {
+.onboarding__field input {
   width: 100%;
   padding: 12px 16px;
-  border: 1px solid #e2e8f0;
   border-radius: 8px;
-  background: #ffffff;
-  color: #0f172a;
+  background: var(--background);
+  color: var(--text-inverse);
   font-size: 15px;
   transition: all 0.2s ease;
+  box-shadow: 0 1px 2px var(--brand);
+  border: 1px solid var(--border-buttom);
 }
 
-.field input::placeholder {
-  color: #94a3b8;
+.onboarding__field input::placeholder {
+  color: var(--text-muted);
 }
 
-.field input:focus {
+.onboarding__field input:focus {
   outline: none;
-  border-color: #2563eb;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px var(--overlay-light);
 }
 
-.field input.is-invalid {
-  border-color: #ef4444;
+.onboarding__field input.onboarding__input--invalid {
+  border-color: var(--danger);
 }
 
-.error-message {
+.onboarding__error-message {
   font-size: 13px;
-  color: #ef4444;
+  color: var(--danger);
 }
 
-/* ============================================================
-   PLANO SELECIONADO
-   ============================================================ */
-.plan-summary {
-  background: #f8fafc;
-  border-radius: 12px;
-  padding: 24px;
+/* Selected plan */
+.onboarding__plan-summary {
+  background: var(--background-secondary);
+  border-radius: var(--radius-md);
+  padding: var(--space-xl);
   display: flex;
   justify-content: space-between;
   align-items: center;
+  box-shadow: 0 1px 2px var(--brand);
+  border: 1px solid var(--border-buttom);
 }
 
-.plan-label {
+.onboarding__plan-label {
   display: inline-block;
-  background: #dbeafe;
-  color: #1d4ed8;
+  background: var(--info-light);
+  color: var(--info);
   font-size: 11px;
   font-weight: 700;
   padding: 4px 8px;
@@ -309,48 +297,46 @@
   letter-spacing: 0.5px;
 }
 
-.plan-name {
+.onboarding__plan-name {
   display: block;
   font-size: 18px;
-  color: #0f172a;
+  color: var(--text-inverse);
   margin-bottom: 4px;
 }
 
-.plan-description {
+.onboarding__plan-description {
   font-size: 14px;
-  color: #64748b;
+  color: var(--text-disabled);
   margin: 0;
 }
 
-.plan-price {
+.onboarding__plan-price {
   font-size: 24px;
   font-weight: 700;
-  color: #0f172a;
+  color: var(--text-inverse);
 }
 
-/* ============================================================
-   AÇÕES E FOOTER
-   ============================================================ */
-.form-actions {
+/* Actions and footer */
+.onboarding__form-actions {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding-top: 40px;
 }
 
-.security-badge {
+.onboarding__security-badge {
   display: flex;
   align-items: center;
   gap: 8px;
   font-size: 14px;
-  color: #64748b;
+  color: var(--text-disabled);
 }
 
-.submit-btn {
-  background: #2563eb;
-  color: #ffffff;
-  padding: 14px 28px;
-  border-radius: 8px;
+.onboarding__submit-button {
+  background: var(--info);
+  color: var(--text-primary);
+  padding: var(--space-md) var(--space-xl);
+  border-radius: var(--radius-md);
   font-weight: 600;
   font-size: 15px;
   border: none;
@@ -358,26 +344,24 @@
   transition: background 0.2s ease;
 }
 
-.submit-btn:hover {
-  background: #1d4ed8;
+.onboarding__submit-button:hover {
+  background: var(--action-active);
 }
 
-.onboarding-footer {
+.onboarding__footer {
   display: flex;
   justify-content: space-between;
   padding-top: 32px;
   margin-top: 64px;
-  border-top: 1px solid #f1f5f9;
+  border-top: 1px solid var(--border-buttom);
   font-size: 13px;
-  color: #94a3b8;
+  color: var(--text-muted);
 }
 
-/* ============================================================
-   RESPONSIVIDADE BÁSICA
-   ============================================================ */
+/* Responsive layout */
 @media (max-width: 992px) {
   .onboarding-top-layout,
-  .form-section {
+  .onboarding__form-section {
     grid-template-columns: 100%;
 
     gap: 24px;
