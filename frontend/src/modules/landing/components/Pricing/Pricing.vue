@@ -121,8 +121,13 @@
           ================================================== -->
 
           <div class="pricing__actions">
-            <a
-              href="#"
+            <RouterLink
+              :to="{
+                path: '/onboarding',
+                query: {
+                  planId: plan.id,
+                },
+              }"
               class="pricing__button"
               :class="{
                 'pricing__button--primary': plan.featured,
@@ -130,7 +135,7 @@
               }"
             >
               {{ plan.cta }}
-            </a>
+            </RouterLink>
           </div>
         </article>
       </div>

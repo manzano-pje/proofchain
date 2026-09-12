@@ -1,5 +1,5 @@
 /* Base */
-.onboarding-page {
+.onboarding__page {
   min-height: 100vh;
   background-color: var(--brand-active);
   display: flex;
@@ -10,11 +10,11 @@
   padding: var(--space-xl) 0;
 }
 
-.onboarding-section {
+.onboarding__section {
   width: 100%;
 }
 
-.onboarding-container {
+.onboarding__container {
   max-width: 1024px;
   margin: 0 auto;
   background: var(--background-card);
@@ -24,7 +24,7 @@
 }
 
 /* Header */
-.onboarding-header {
+.onboarding__header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -51,12 +51,12 @@
 }
 
 /* Introduction */
-.onboarding-top-layout {
+.onboarding__top-layout {
   display: grid;
   align-items: flex-start;
 }
 
-.onboarding-intro {
+.onboarding__intro {
   display: flex;
   flex-direction: row;
   gap: 16px;
@@ -90,85 +90,8 @@
   font-family: var(--font-body);
 }
 
-/* Progress */
-.onboarding-progress {
-  padding-top: 24px;
-}
-
-.progress-list {
-  display: flex;
-  justify-content: space-between;
-  position: relative;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.progress-list::before {
-  content: '';
-  position: absolute;
-  top: 16px;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: #e2e8f0;
-  z-index: 0;
-}
-
-.progress-item {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  gap: 16px;
-  align-items: flex-start;
-  background: #ffffff;
-  padding: 0 8px;
-}
-
-.progress-number {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: #f1f5f9;
-  border: 1px solid #e2e8f0;
-  color: #64748b;
-  font-weight: 600;
-  font-size: 13px;
-}
-
-.progress-item.is-active .progress-number {
-  background: #2563eb;
-  border-color: #2563eb;
-  color: #ffffff;
-}
-
-.progress-content {
-  display: flex;
-  flex-direction: column;
-  margin-top: 4px;
-}
-
-.progress-title {
-  font-size: 14px;
-  font-weight: 600;
-  color: #64748b;
-}
-
-.progress-item.is-active .progress-title {
-  color: #0f172a;
-}
-
-.progress-sub {
-  font-size: 12px;
-  color: #94a3b8;
-  margin-top: 2px;
-}
-
 /* Form sections */
-.onboarding-form {
+.onboarding__form {
   max-width: 800px;
   margin: 0 auto;
 }
@@ -176,8 +99,8 @@
 .onboarding__form-section {
   display: grid;
   gap: var(--space-md);
-  padding: 40px 0;
-  border-bottom: 1px solid var(--border);
+  padding: 20px 0;
+  border-bottom: 1px solid var(--text-muted);
   width: stretch;
 }
 
@@ -198,6 +121,7 @@
   font-weight: 700;
   font-size: 14px;
   flex-shrink: 0;
+  box-shadow: 0 1px 2px var(--border-buttom);
 }
 
 .onboarding__section-heading h2 {
@@ -215,8 +139,10 @@
 
 /* Fields */
 .onboarding__field-group {
-  display: flex;
-  gap: 24px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr) minmax(0, 1fr);
+  gap: var(--space-xl);
+  width: 100%;
 }
 
 .onboarding__field-group--two-col {
@@ -277,12 +203,12 @@
 .onboarding__plan-summary {
   background: var(--background-secondary);
   border-radius: var(--radius-md);
-  padding: var(--space-xl);
+  padding: var(--space-md) var(--space-xl) var(--space-xl);
   display: flex;
   justify-content: space-between;
   align-items: center;
   box-shadow: 0 1px 2px var(--brand);
-  border: 1px solid var(--border-buttom);
+  border: 1px solid var(--text-muted);
 }
 
 .onboarding__plan-label {
@@ -351,11 +277,11 @@
 .onboarding__footer {
   display: flex;
   justify-content: space-between;
-  padding-top: 32px;
-  margin-top: 64px;
+  padding-top: var(--space-2xl);
+  margin-top: var(--space-lg);
   border-top: 1px solid var(--border-buttom);
   font-size: 13px;
-  color: var(--text-muted);
+  color: var(--text-disabled);
 }
 
 /* Responsive layout */
@@ -374,5 +300,11 @@
 
   .progress-list::before {
     display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .onboarding__form-section--account .onboarding__field-group {
+    grid-template-columns: 1fr;
   }
 }
