@@ -9,7 +9,7 @@ export interface PricingFeature {
 }
 
 export interface PricingPlan {
-  id: string
+  id: number
   name: string
   description: string
   price: string
@@ -23,7 +23,7 @@ export interface PricingPlan {
 
 export const pricingPlans: PricingPlan[] = [
   {
-    id: 'free',
+    id: 1,
     name: 'Free',
     description: 'Para começar a emitir certificados digitais.',
     price: 'R$ 0',
@@ -59,7 +59,7 @@ export const pricingPlans: PricingPlan[] = [
   },
 
   {
-    id: 'starter',
+    id: 2,
     name: 'Starter',
     description: 'Para pequenas operações que precisam de mais recursos.',
     price: 'R$ 49',
@@ -95,7 +95,7 @@ export const pricingPlans: PricingPlan[] = [
   },
 
   {
-    id: 'professional',
+    id: 3,
     name: 'Professional',
     description: 'Para instituições que precisam de escala e controle.',
     price: 'R$ 99',
@@ -133,7 +133,7 @@ export const pricingPlans: PricingPlan[] = [
   },
 
   {
-    id: 'enterprise',
+    id: 4,
     name: 'Enterprise',
     description: 'Para operações maiores com necessidades personalizadas.',
     price: 'Personalizado',
