@@ -37,7 +37,9 @@ function closeMenu() {
       <!-- Ações (botões) -->
       <div class="header__actions">
         <RouterLink to="/login" class="header-button">Entrar</RouterLink>
-        <a href="#" class="header-button header-button--primary">Começar grátis</a>
+        <a href="/onboarding?planId=1" class="header-button header-button--primary"
+          >Começar grátis</a
+        >
       </div>
 
       <!-- Hambúrguer (mobile) -->

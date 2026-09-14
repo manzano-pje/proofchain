@@ -37,7 +37,7 @@ export function validateCNPJ(value: string): boolean {
     let sum = 0
 
     for (let index = 0; index < digits.length; index++) {
-      sum += Number(digits[index]) * weights[index]
+      sum += Number(digits[index]) * weights[index]!
     }
 
     const remainder = sum % 11
@@ -50,21 +50,20 @@ export function validateCNPJ(value: string): boolean {
      ---------------------------------------------------------- */
 
   const firstBase = clean.slice(0, 12)
-
   const firstDigit = calculateDigit(firstBase, [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2])
-
   /* ----------------------------------------------------------
      Segundo dígito verificador
      ---------------------------------------------------------- */
 
   const secondBase = firstBase + firstDigit
-
   const secondDigit = calculateDigit(secondBase, [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2])
+
   /* ----------------------------------------------------------
      Comparação
      ---------------------------------------------------------- */
 
-  return Number(clean[12]) === firstDigit && Number(clean[13]) === secondDigit
+  const calculatedCnpj = firstBase + firstDigit + secondDigit
+  return clean === calculatedCnpj
 }
 
 /**

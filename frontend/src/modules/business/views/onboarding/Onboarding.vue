@@ -1,19 +1,21 @@
 <template>
-  <div class="onboarding-page">
-    <Section class="onboarding-section">
-      <Container class="onboarding-container">
+  <div class="onboarding__page">
+    <Section class="onboarding__section">
+      <Container class="onboarding__container">
         <!-- ============================================================
              HEADER
              ============================================================ -->
-        <header class="onboarding-header">
-          <div class="header-brand">
+        <header class="onboarding__header">
+          <div class="onboarding__header-brand">
             <!-- Utilizando ícone/logo como na referência image_e03306.jpg -->
-            <span class="brand-logo">
-              <img
-                src="@/assets/images/logo/logo_horizontal_light.svg"
-                alt="ProofChain Logo"
-                class="header__logo"
-              />
+            <span class="onboarding__brand-logo">
+              <a href="/">
+                <img
+                  src="@/assets/images/logo/logo_horizontal_light.svg"
+                  alt="ProofChain Logo"
+                  class="onboarding__header-logo"
+                />
+              </a>
             </span>
           </div>
         </header>
@@ -21,13 +23,13 @@
         <!-- ============================================================
              INTRODUÇÃO E PROGRESSO
              ============================================================ -->
-        <div class="onboarding-top-layout">
-          <section class="onboarding-intro">
+        <div class="onboarding__top-layout">
+          <section class="onboarding__intro">
             <div>
-              <span class="intro-badge">PRIMEIRO ACESSO</span>
-              <h1>Crie sua instituição</h1>
+              <span class="onboarding__intro-badge">PRIMEIRO ACESSO</span>
+              <h1 class="onboarding__intro-title">Crie sua instituição</h1>
             </div>
-            <p class="intro-description">
+            <p class="onboarding__intro-description">
               Configure sua conta ProofChain<br />
               em poucos passos.
             </p>
@@ -37,19 +39,19 @@
         <!-- ============================================================
              FORMULÁRIO
              ============================================================ -->
-        <form class="onboarding-form" @submit.prevent="handleSubmit" novalidate>
+        <form class="onboarding__form" @submit.prevent="handleSubmit" novalidate>
           <!-- SEÇÃO 01 -->
-          <section class="form-section">
-            <div class="section-heading">
-              <span class="section-number">01</span>
+          <section class="onboarding__form-section onboarding__form-section--account">
+            <div class="onboarding__section-heading">
+              <span class="onboarding__section-number">01</span>
               <div>
                 <h2>Dados da instituição</h2>
-                <p class="section-description">Informações básicas da organização.</p>
+                <p class="onboarding__section-description">Informações básicas da organização.</p>
               </div>
             </div>
 
-            <div class="field-group field-group--two-col">
-              <div class="field">
+            <div class="onboarding__field-group onboarding__field-group--two-col">
+              <div class="onboarding__field">
                 <label for="name">Nome da instituição</label>
                 <input
                   id="name"
@@ -64,7 +66,7 @@
                 }}</span>
               </div>
 
-              <div class="field">
+              <div class="onboarding__field">
                 <label for="cnpj">CNPJ</label>
                 <input
                   id="cnpj"
@@ -85,17 +87,17 @@
           </section>
 
           <!-- SEÇÃO 02 -->
-          <section class="form-section">
-            <div class="section-heading">
-              <span class="section-number">02</span>
+          <section class="onboarding__form-section">
+            <div class="onboarding__section-heading">
+              <span class="onboarding__section-number">02</span>
               <div>
                 <h2>Conta administrativa</h2>
                 <p class="section-description">Defina as credenciais de acesso.</p>
               </div>
             </div>
 
-            <div class="field-group">
-              <div class="field">
+            <div class="onboarding__field-group">
+              <div class="onboarding__field">
                 <label for="userName">Nome de usuário</label>
                 <input
                   id="userName"
@@ -111,7 +113,7 @@
                 }}</span>
               </div>
 
-              <div class="field">
+              <div class="onboarding__field">
                 <label for="email">E-mail</label>
                 <input
                   id="email"
@@ -127,57 +129,54 @@
                 }}</span>
               </div>
 
-              <div class="field-group field-group--two-col">
-                <div class="field">
-                  <label for="password">Senha</label>
-                  <div class="input-wrapper">
-                    <input
-                      id="password"
-                      v-model="form.password"
-                      type="password"
-                      autocomplete="new-password"
-                      placeholder="Mínimo 8 caracteres"
-                      :class="{ 'is-invalid': touched.password && errors.password }"
-                      @blur="validateField('password')"
-                    />
-                    <!-- Ícone simulado visualmente via CSS baseado no DS -->
-                    <span class="password-toggle-icon"></span>
-                  </div>
-                  <span v-if="touched.password && errors.password" class="error-message">{{
-                    errors.password
-                  }}</span>
+              <div class="onboarding__field">
+                <label for="password">Senha</label>
+                <div class="onboarding__input-wrapper">
+                  <input
+                    id="password"
+                    v-model="form.password"
+                    type="password"
+                    autocomplete="new-password"
+                    placeholder="Mínimo 8 caracteres"
+                    :class="{ 'is-invalid': touched.password && errors.password }"
+                    @blur="validateField('password')"
+                  />
+                  <span class="password-toggle-icon"></span>
                 </div>
+                <span v-if="touched.password && errors.password" class="error-message">{{
+                  errors.password
+                }}</span>
               </div>
             </div>
           </section>
 
           <!-- SEÇÃO 03 -->
-          <section class="form-section plan-section">
-            <div class="section-heading">
-              <span class="section-number">03</span>
+          <section class="onboarding__form-section onboarding__plan-section">
+            <div class="onboarding__section-heading">
+              <span class="onboarding__section-number">03</span>
               <div>
                 <h2>Plano selecionado</h2>
                 <p class="section-description">Configuração escolhida para sua instituição.</p>
               </div>
             </div>
 
-            <div class="plan-summary">
-              <div class="plan-details-left">
-                <span class="plan-label">PLANO</span>
-                <strong class="plan-name">{{
+            <div class="onboarding__plan-summary">
+              <div class="onboarding__plan-details-left">
+                <span class="onboarding__plan-label">PLANO</span>
+                <strong class="onboarding__plan-name">{{
                   selectedPlan?.name || 'Plano não identificado'
                 }}</strong>
-                <p class="plan-description">{{ selectedPlan?.description || '' }}</p>
+                <p class="onboarding__plan-description">{{ selectedPlan?.description || '' }}</p>
               </div>
-              <div class="plan-price">
+              <div class="onboarding__plan-price">
                 {{ selectedPlan?.price || '--' }}
               </div>
             </div>
           </section>
 
           <!-- AÇÕES -->
-          <div class="form-actions">
-            <span class="security-badge">
+          <div class="onboarding__form-actions">
+            <span class="onboarding__security-badge">
               <svg
                 width="16"
                 height="16"
@@ -191,7 +190,7 @@
               Configuração segura
             </span>
             <BaseButton
-              class="submit-btn"
+              class="onboarding__submit-button"
               type="submit"
               :loading="isSubmitting"
               :disabled="!isValid || isSubmitting"
@@ -202,9 +201,9 @@
         </form>
 
         <!-- FOOTER -->
-        <footer class="onboarding-footer">
-          <span class="footer-copy">© ProofChain</span>
-          <span class="footer-label">Configuração inicial</span>
+        <footer class="onboarding__footer">
+          <span class="onboarding__footer-copy">© ProofChain</span>
+          <span class="onboarding__footer-label">Configuração inicial</span>
         </footer>
       </Container>
     </Section>
@@ -218,7 +217,6 @@ import { useRoute } from 'vue-router'
 
 import Container from '@/core/components/ui/Container/Container.vue'
 import Section from '@/core/components/ui/Section/Section.vue'
-import Card from '@/core/components/ui/Card/Card.vue'
 import BaseButton from '@/core/components/base/BaseButton/BaseButton.vue'
 import { onboardingService } from '@/modules/business/services/Onboarding.service'
 import type { OnboardingRequest } from '@/modules/business/types/OnboardingRequest'
@@ -262,7 +260,6 @@ export default defineComponent({
   components: {
     Container,
     Section,
-    Card,
     BaseButton,
   },
 
