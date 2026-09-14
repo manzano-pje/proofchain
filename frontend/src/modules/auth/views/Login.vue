@@ -42,8 +42,9 @@ async function handleSubmit() {
 <template>
   <main class="login">
     <section class="login__brand-panel" aria-labelledby="login-brand-title">
-      <img class="login__logo login__logo--light" :src="darkLogo" alt="ProofChain" />
-
+      <a href="/">
+        <img class="login__logo login__logo--light" :src="darkLogo" alt="ProofChain" />
+      </a>
       <div class="login__brand-content">
         <h1 id="login-brand-title" class="login__brand-title">
           Segurança e autenticidade<br />
