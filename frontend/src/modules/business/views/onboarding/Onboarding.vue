@@ -227,32 +227,24 @@ import { validateCNPJ, validateEmail } from '@/core/utils/Validators'
    ============================================================ */
 
 type FormField = keyof OnboardingRequest
-
 type EditableField = Exclude<FormField, 'idPlan'>
 
 /* ============================================================
-   MOCK DE PLANOS
-   Futuramente será substituído pela store/query real.
+   PLANOS
    ============================================================ */
 
-const mockPlans = [
+const plans = [
   {
     id: 1,
-    name: 'Plano Free',
-    price: 'R$ 0,00',
-    description: 'Para começar a emitir certificados digitais.',
+    name: 'Plano Básico',
+    price: 'R$ 99,90/mês',
+    description: 'Ideal para pequenas instituições.',
   },
   {
     id: 2,
-    name: 'Plano Starter',
-    price: 'R$ 49,90/mês',
-    description: 'Para pequenas operações que precisam de mais recursos',
-  },
-  {
-    id: 3,
-    name: 'Plano Starter',
-    price: 'R$ 99,90/mês',
-    description: 'Para instituições que precisam de escala e controle.',
+    name: 'Plano Profissional',
+    price: 'R$ 199,90/mês',
+    description: 'Recursos completos para gestão.',
   },
 ]
 
@@ -271,8 +263,10 @@ export default defineComponent({
        ========================================================== */
 
     const route = useRoute()
+    const queryPlanId = route.query.planId
 
-    const planId = Number(route.query.planId) || 1
+    const planId =
+      typeof queryPlanId === 'string' && /^\d+$/.test(queryPlanId) ? Number(queryPlanId) : 0
 
     /* ==========================================================
        FORMULÁRIO
@@ -319,7 +313,7 @@ export default defineComponent({
 
     const isSubmitting = ref(false)
 
-    const selectedPlan = ref<(typeof mockPlans)[number] | null>(null)
+    const selectedPlan = ref<(typeof plans)[number] | null>(null)
 
     /* ==========================================================
        VALIDAÇÃO DE CAMPO
@@ -426,7 +420,7 @@ export default defineComponent({
         case 'idPlan': {
           const value = form.idPlan
 
-          if (!value || value <= 0) {
+          if (!value || value <= 0 || value >= 4) {
             return 'Plano inválido'
           }
 
@@ -530,7 +524,7 @@ export default defineComponent({
        ========================================================== */
 
     onMounted(() => {
-      const plan = mockPlans.find((item) => item.id === planId)
+      const plan = plans.find((item) => item.id === planId)
 
       if (plan) {
         selectedPlan.value = plan

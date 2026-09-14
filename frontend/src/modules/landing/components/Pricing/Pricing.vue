@@ -140,17 +140,18 @@
         </article>
       </div>
 
-      <!-- ======================================================
+      <!--
+      ======================================================
            FOOTER
            Observação complementar da seção.
-      ====================================================== -->
+      ======================================================
 
       <footer class="pricing__footer">
         <p class="pricing__footer-text">Precisa de uma solução personalizada?</p>
         <p class="pricing__footer-text">
           Fale com nossa equipe para encontrar a melhor configuração para sua operação.
         </p>
-      </footer>
+      </footer> -->
     </div>
   </section>
 </template>
