@@ -41,7 +41,7 @@ BEM
 }
 
 .badge__header {
-  margin: var(--space-md) 0 0;
+  padding: var(--space-md) 0 0;
   color: var(--action-active);
   font-size: var(--heading-3);
   font-weight: var(--weight-semibold);

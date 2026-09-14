@@ -236,15 +236,21 @@ type EditableField = Exclude<FormField, 'idPlan'>
 const plans = [
   {
     id: 1,
-    name: 'Plano Básico',
-    price: 'R$ 99,90/mês',
-    description: 'Ideal para pequenas instituições.',
+    name: 'Free',
+    price: 'R$ 0,00 /mês',
+    description: 'Para começar a emitir certificados digitais.',
   },
   {
     id: 2,
-    name: 'Plano Profissional',
-    price: 'R$ 199,90/mês',
-    description: 'Recursos completos para gestão.',
+    name: 'Starter',
+    price: 'R$ 49,00/mês',
+    description: 'Para pequenas operações que precisam de mais recursos.',
+  },
+  {
+    id: 3,
+    name: 'Professional',
+    price: 'R$ 99,00/mês',
+    description: 'Para instituições que precisam de escala e controle.',
   },
 ]
 
