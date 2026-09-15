@@ -211,6 +211,12 @@
   border: 1px solid var(--text-muted);
 }
 
+.onboarding__plan-details-left {
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+}
+
 .onboarding__plan-label {
   display: inline-block;
   background: var(--info-light);
@@ -244,10 +250,9 @@
 
 /* Actions and footer */
 .onboarding__form-actions {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   padding-top: 40px;
+  display: flex;
+  justify-content: right;
 }
 
 .onboarding__security-badge {
@@ -303,8 +308,37 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .onboarding__form-section--account .onboarding__field-group {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 575px) {
+  .onboarding__intro {
+    gap: 16px;
+    align-items: center;
+    margin-bottom: var(--space-3xl);
+    color: var(--brand);
+  }
+  .onboarding__container {
+    padding: var(--space-3xl) var(--space-md);
+  }
+
+  .onboarding__plan-summary {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .onboarding__form-actions {
+    padding-top: 40px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .onboarding__plan-details-left {
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
   }
 }

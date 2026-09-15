@@ -176,19 +176,6 @@
 
           <!-- AÇÕES -->
           <div class="onboarding__form-actions">
-            <span class="onboarding__security-badge">
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-              </svg>
-              Configuração segura
-            </span>
             <BaseButton
               class="onboarding__submit-button"
               type="submit"
@@ -203,7 +190,19 @@
         <!-- FOOTER -->
         <footer class="onboarding__footer">
           <span class="onboarding__footer-copy">© ProofChain</span>
-          <span class="onboarding__footer-label">Configuração inicial</span>
+          <span class="onboarding__security-badge">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+            Configuração segura
+          </span>
         </footer>
       </Container>
     </Section>
