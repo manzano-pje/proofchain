@@ -33,9 +33,24 @@ function validateForm() {
 async function handleSubmit() {
   if (isSubmitting.value || !validateForm()) return
 
-  isSubmitting.value = true
-  await new Promise((resolve) => window.setTimeout(resolve, 700))
-  isSubmitting.value = false
+  // isSubmitting.value = true
+  // await new Promise((resolve) => window.setTimeout(resolve, 700))
+  // isSubmitting.value = false
+
+  const loginData = {
+    userName: email.value,
+    password: password.value,
+  }
+
+  const response = await fetch('http://localhost:8080/api/v1/auth/login', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(loginData),
+  })
+  const data = await response.json()
+  console.log(data)
 }
 </script>
 

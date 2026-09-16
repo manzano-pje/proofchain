@@ -1,9 +1,40 @@
+<!--
+=========================================================
+Project.......: ProofChain
+Module........: Business
+Feature.......: Onboarding
+File..........: Onboarding.vue
+Version.......: 1.0.0
+
+Description...:
+Tela de configuração inicial da instituição e da conta
+administrativa, com seleção do plano contratado.
+
+Responsibilities:
+- Apresentar o formulário de onboarding.
+- Validar os dados preenchidos pelo usuário.
+- Encaminhar os dados válidos para o serviço de onboarding.
+
+Dependencies..:
+- Section
+- Container
+- BaseButton
+- Onboarding.service.ts
+- OnboardingRequest
+- Validators
+
+Methodology...:
+BEM
+=========================================================
+-->
+
 <template>
   <div class="onboarding__page">
     <Section class="onboarding__section">
       <Container class="onboarding__container">
         <!-- ============================================================
              HEADER
+             Identidade visual da tela de configuração inicial.
              ============================================================ -->
         <header class="onboarding__header">
           <div class="onboarding__header-brand">
@@ -22,6 +53,7 @@
 
         <!-- ============================================================
              INTRODUÇÃO E PROGRESSO
+             Contextualiza a primeira etapa do cadastro.
              ============================================================ -->
         <div class="onboarding__top-layout">
           <section class="onboarding__intro">
@@ -38,9 +70,10 @@
 
         <!-- ============================================================
              FORMULÁRIO
+             Coleta os dados necessários para o cadastro.
              ============================================================ -->
         <form class="onboarding__form" @submit.prevent="handleSubmit" novalidate>
-          <!-- SEÇÃO 01 -->
+          <!-- SEÇÃO 01: DADOS DA INSTITUIÇÃO -->
           <section class="onboarding__form-section onboarding__form-section--account">
             <div class="onboarding__section-heading">
               <span class="onboarding__section-number">01</span>
@@ -75,7 +108,6 @@
                   inputmode="numeric"
                   autocomplete="organization"
                   placeholder="00.000.000/0000-00"
-                  v-mask="'##.###.###/####-##'"
                   :class="{ 'is-invalid': touched.cnpj && errors.cnpj }"
                   @blur="validateField('cnpj')"
                 />
@@ -86,7 +118,7 @@
             </div>
           </section>
 
-          <!-- SEÇÃO 02 -->
+          <!-- SEÇÃO 02: CONTA ADMINISTRATIVA -->
           <section class="onboarding__form-section">
             <div class="onboarding__section-heading">
               <span class="onboarding__section-number">02</span>
@@ -150,7 +182,7 @@
             </div>
           </section>
 
-          <!-- SEÇÃO 03 -->
+          <!-- SEÇÃO 03: PLANO SELECIONADO -->
           <section class="onboarding__form-section onboarding__plan-section">
             <div class="onboarding__section-heading">
               <span class="onboarding__section-number">03</span>
@@ -174,7 +206,7 @@
             </div>
           </section>
 
-          <!-- AÇÕES -->
+          <!-- AÇÕES: ENVIO DO FORMULÁRIO -->
           <div class="onboarding__form-actions">
             <span class="onboarding__security-badge">
               <svg
@@ -200,7 +232,7 @@
           </div>
         </form>
 
-        <!-- FOOTER -->
+        <!-- FOOTER: IDENTIFICAÇÃO DA CONFIGURAÇÃO -->
         <footer class="onboarding__footer">
           <span class="onboarding__footer-copy">© ProofChain</span>
           <span class="onboarding__footer-label">Configuração inicial</span>
@@ -212,9 +244,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, onMounted, reactive, ref, watch } from 'vue'
-
 import { useRoute } from 'vue-router'
-
 import Container from '@/core/components/ui/Container/Container.vue'
 import Section from '@/core/components/ui/Section/Section.vue'
 import BaseButton from '@/core/components/base/BaseButton/BaseButton.vue'
@@ -318,7 +348,6 @@ export default defineComponent({
        ========================================================== */
 
     const isSubmitting = ref(false)
-
     const selectedPlan = ref<(typeof plans)[number] | null>(null)
 
     /* ==========================================================
@@ -443,7 +472,6 @@ export default defineComponent({
 
     /* ==========================================================
        VALIDA UM CAMPO
-
        Esta é a ÚNICA função pública validateField.
        ========================================================== */
 
@@ -463,9 +491,7 @@ export default defineComponent({
 
     /* ==========================================================
        VALIDAÇÃO SILENCIOSA
-
        Atualiza errors sem alterar touched.
-
        Assim:
        - errors pode ser atualizado internamente;
        - mensagens não aparecem antes da interação;
@@ -482,7 +508,6 @@ export default defineComponent({
 
     /* ==========================================================
        TOUCH ALL
-
        Usado quando o usuário tenta enviar o formulário.
        ========================================================== */
 
@@ -506,10 +531,8 @@ export default defineComponent({
 
     /* ==========================================================
        WATCH
-
        Importante:
        watch está no topo dos imports.
-
        Não existe mais:
        import { watch } from 'vue'
        dentro do setup().
@@ -548,6 +571,7 @@ export default defineComponent({
 
     /* ==========================================================
        SUBMISSÃO
+       Valida os dados e delega o envio ao serviço da API.
        ========================================================== */
 
     const handleSubmit = async (): Promise<void> => {
@@ -566,24 +590,29 @@ export default defineComponent({
       }
 
       /* --------------------------------------------------------
-         Inicia envio.
-         -------------------------------------------------------- */
+        Inicia envio.
+        -------------------------------------------------------- */
 
       isSubmitting.value = true
 
       try {
+        // Envia o formulário com os dados no formato esperado pela API.
         const response = await onboardingService.create(form)
-
         console.log('Criação bem-sucedida', response)
 
         /*
-         * Futuramente:
+         * Caso a API exija o CNPJ sem máscara, substitua a chamada acima por:
+         *
+         * const response = await onboardingService.create({
+         *   ...form,
+         *   cnpj: form.cnpj.replace(/\D/g, ''),
+         * })
+         */
+
+        /*
+         * Quando houver uma tela de destino, o redirecionamento pode ser feito aqui:
          *
          * router.push(...)
-         *
-         * ou
-         *
-         * mensagem de sucesso.
          */
       } catch (error) {
         console.error('Erro ao criar instituição', error)
