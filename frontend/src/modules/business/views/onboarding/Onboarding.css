@@ -1,4 +1,24 @@
-/* Base */
+/*
+=========================================================
+Project.......: ProofChain
+Module........: Business
+Feature.......: Onboarding
+File..........: Onboarding.css
+Version.......: 1.0.0
+
+Description...:
+Estilos da tela de configuração inicial da instituição.
+
+Methodology...:
+BEM
+=========================================================
+*/
+
+/* ======================================================
+  BASE
+  Estrutura geral, superfície e tipografia da tela.
+====================================================== */
+
 .onboarding__page {
   min-height: 100vh;
   background-color: var(--brand-active);
@@ -23,7 +43,11 @@
   padding: var(--space-3xl) 64px;
 }
 
-/* Header */
+/* ======================================================
+  HEADER
+  Identidade visual e separação do cabeçalho.
+====================================================== */
+
 .onboarding__header {
   display: flex;
   justify-content: space-between;
@@ -50,7 +74,11 @@
   color: #0f172a;
 }
 
-/* Introduction */
+/* ======================================================
+  INTRODUÇÃO
+  Título, identificação da etapa e texto de apoio.
+====================================================== */
+
 .onboarding__top-layout {
   display: grid;
   align-items: flex-start;
@@ -90,7 +118,11 @@
   font-family: var(--font-body);
 }
 
-/* Form sections */
+/* ======================================================
+  SEÇÕES DO FORMULÁRIO
+  Organização visual das etapas de cadastro.
+====================================================== */
+
 .onboarding__form {
   max-width: 800px;
   margin: 0 auto;
@@ -137,7 +169,11 @@
   margin: 0;
 }
 
-/* Fields */
+/* ======================================================
+  CAMPOS
+  Controles de entrada e estados visuais de validação.
+====================================================== */
+
 .onboarding__field-group {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr) minmax(0, 1fr);
@@ -199,7 +235,11 @@
   color: var(--danger);
 }
 
-/* Selected plan */
+/* ======================================================
+  PLANO SELECIONADO
+  Resumo do plano escolhido para a instituição.
+====================================================== */
+
 .onboarding__plan-summary {
   background: var(--background-secondary);
   border-radius: var(--radius-md);
@@ -242,7 +282,11 @@
   color: var(--text-inverse);
 }
 
-/* Actions and footer */
+/* ======================================================
+  AÇÕES E RODAPÉ
+  Envio do formulário, indicação de segurança e assinatura.
+====================================================== */
+
 .onboarding__form-actions {
   display: flex;
   justify-content: space-between;
@@ -284,7 +328,11 @@
   color: var(--text-disabled);
 }
 
-/* Responsive layout */
+/* ======================================================
+  RESPONSIVO
+  Ajusta o formulário para telas menores.
+====================================================== */
+
 @media (max-width: 992px) {
   .onboarding-top-layout,
   .onboarding__form-section {
