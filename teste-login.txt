@@ -1,0 +1,5 @@
+username: admin@proofchain.com.br
+password: adm.proof123
+
+username: teste@proofchain.com.br
+password: 123456789

@@ -19,6 +19,7 @@ Dependencies..:
 - Section
 - Container
 - BaseButton
+- Modal
 - Onboarding.service.ts
 - OnboardingRequest
 - Validators
@@ -239,6 +240,20 @@ BEM
         </footer>
       </Container>
     </Section>
+
+    <!-- ==========================================================
+         MODAL DE ONBOARDING
+         O slot de ações mantém o OK sob controle da tela.
+         ========================================================== -->
+    <Modal :visible="showModal" :type="modalType" :title="modalTitle" @close="closeModal">
+      <p>{{ modalMessage }}</p>
+
+      <template #actions>
+        <BaseButton type="button" variant="primary" @click="continueToAdministration">
+          OK
+        </BaseButton>
+      </template>
+    </Modal>
   </div>
 </template>
 
@@ -248,6 +263,7 @@ import { useRoute } from 'vue-router'
 import Container from '@/core/components/ui/Container/Container.vue'
 import Section from '@/core/components/ui/Section/Section.vue'
 import BaseButton from '@/core/components/base/BaseButton/BaseButton.vue'
+import Modal from '@/core/components/ui/Modal/Modal.vue'
 import { onboardingService } from '@/modules/business/services/Onboarding.service'
 import type { OnboardingRequest } from '@/modules/business/types/OnboardingRequest'
 import { validateCNPJ, validateEmail } from '@/core/utils/Validators'
@@ -291,6 +307,7 @@ export default defineComponent({
     Container,
     Section,
     BaseButton,
+    Modal,
   },
 
   setup() {
@@ -349,6 +366,39 @@ export default defineComponent({
 
     const isSubmitting = ref(false)
     const selectedPlan = ref<(typeof plans)[number] | null>(null)
+    const showModal = ref(false)
+    const modalType = ref<'success' | 'warning' | 'error'>('error')
+    const modalTitle = ref('')
+    const modalMessage = ref('')
+
+    /* ==========================================================
+       MODAL
+       Mensagens e ações são definidas pelo onboarding.
+       ========================================================== */
+
+    const openModal = (
+      type: 'success' | 'warning' | 'error',
+      title: string,
+      message: string,
+    ): void => {
+      modalType.value = type
+      modalTitle.value = title
+      modalMessage.value = message
+      showModal.value = true
+    }
+
+    const closeModal = (): void => {
+      showModal.value = false
+    }
+
+    const continueToAdministration = (): void => {
+      closeModal()
+
+      /*
+       * Quando a rota administrativa estiver disponível, habilitar o redirecionamento:
+       * router.push({ name: 'admin' })
+       */
+    }
 
     /* ==========================================================
        VALIDAÇÃO DE CAMPO
@@ -599,6 +649,11 @@ export default defineComponent({
         // Envia o formulário com os dados no formato esperado pela API.
         const response = await onboardingService.create(form)
         console.log('Criação bem-sucedida', response)
+        openModal(
+          'success',
+          'Cadastro realizado',
+          response || 'A instituição foi criada com sucesso.',
+        )
 
         /*
          * Caso a API exija o CNPJ sem máscara, substitua a chamada acima por:
@@ -616,6 +671,11 @@ export default defineComponent({
          */
       } catch (error) {
         console.error('Erro ao criar instituição', error)
+
+        const message =
+          error instanceof Error ? error.message : 'Não foi possível criar a instituição.'
+
+        openModal('error', 'Não foi possível realizar o cadastro', message)
       } finally {
         isSubmitting.value = false
       }
@@ -632,8 +692,14 @@ export default defineComponent({
       selectedPlan,
       isSubmitting,
       isValid,
+      showModal,
+      modalType,
+      modalTitle,
+      modalMessage,
       validateField,
       handleSubmit,
+      closeModal,
+      continueToAdministration,
     }
   },
 })
