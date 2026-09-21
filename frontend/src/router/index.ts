@@ -23,6 +23,12 @@ const router = createRouter({
       component: () => import('@/modules/business/views/onboarding/Onboarding.vue'),
       // meta: { public: true } // se houver guard
     },
+    {
+      path: '/cadastros',
+      name: 'cadastros',
+      component: () => import('@/modules/business/views/cadastros/EntityManagementView.vue'),
+      // meta: { public: true } // se houver guard
+    },
   ],
 })
 
