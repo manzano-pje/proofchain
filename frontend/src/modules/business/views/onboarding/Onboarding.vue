@@ -249,8 +249,23 @@ BEM
       <p>{{ modalMessage }}</p>
 
       <template #actions>
-        <BaseButton type="button" variant="primary" @click="continueToAdministration">
+        <BaseButton
+          v-if="modalType === 'success'"
+          type="button"
+          variant="primary"
+          class="modal__button modal__button--primary"
+          @click="continueToAdministration"
+        >
           OK
+        </BaseButton>
+        <BaseButton
+          v-else
+          type="button"
+          variant="secondary"
+          class="modal__button modal__button--secondary"
+          @click="closeModal"
+        >
+          Fechar
         </BaseButton>
       </template>
     </Modal>
@@ -389,6 +404,39 @@ export default defineComponent({
 
     const closeModal = (): void => {
       showModal.value = false
+    }
+
+    const getReadableMessage = (responseText: string, fallback: string): string => {
+      const trimmedResponse = responseText.trim()
+
+      if (!trimmedResponse) {
+        return fallback
+      }
+
+      try {
+        const parsedResponse: unknown = JSON.parse(trimmedResponse)
+
+        if (typeof parsedResponse === 'string' && parsedResponse.trim()) {
+          return parsedResponse.trim()
+        }
+
+        if (typeof parsedResponse === 'object' && parsedResponse !== null) {
+          const responseData = parsedResponse as Record<string, unknown>
+          const messageKeys = ['message', 'detail', 'error', 'description']
+
+          for (const key of messageKeys) {
+            const message = responseData[key]
+
+            if (typeof message === 'string' && message.trim()) {
+              return message.trim()
+            }
+          }
+        }
+      } catch {
+        return trimmedResponse
+      }
+
+      return fallback
     }
 
     const continueToAdministration = (): void => {
@@ -652,7 +700,7 @@ export default defineComponent({
         openModal(
           'success',
           'Cadastro realizado',
-          response || 'A instituição foi criada com sucesso.',
+          getReadableMessage(response, 'A instituição foi criada com sucesso.'),
         )
 
         /*
@@ -673,7 +721,9 @@ export default defineComponent({
         console.error('Erro ao criar instituição', error)
 
         const message =
-          error instanceof Error ? error.message : 'Não foi possível criar a instituição.'
+          error instanceof Error
+            ? getReadableMessage(error.message, 'Não foi possível criar a instituição.')
+            : 'Não foi possível criar a instituição.'
 
         openModal('error', 'Não foi possível realizar o cadastro', message)
       } finally {

@@ -63,8 +63,8 @@
   --warning: #f59e0b;
   --warning-light: #fef3c7;
 
-  --danger: #ef4444;
-  --danger-light: #fee2e2;
+  --danger: #ee2727;
+  --danger-light: #dbacac;
 
   --info: #3b82f6;
   --info-light: #dbeafe;
@@ -74,7 +74,7 @@
     ====================================================== */
 
   --overlay-light: rgba(255, 255, 255, 0.7);
-  --overlay-dark: rgba(2, 6, 23, 0.65);
+  --overlay-dark: rgba(2, 6, 23, 0.5);
 
   /* ======================================================
        GRADIENTS

@@ -62,6 +62,39 @@ function closeModal(): void {
   showModal.value = false
 }
 
+function getReadableMessage(responseText: string, fallback: string): string {
+  const trimmedResponse = responseText.trim()
+
+  if (!trimmedResponse) {
+    return fallback
+  }
+
+  try {
+    const parsedResponse: unknown = JSON.parse(trimmedResponse)
+
+    if (typeof parsedResponse === 'string' && parsedResponse.trim()) {
+      return parsedResponse.trim()
+    }
+
+    if (typeof parsedResponse === 'object' && parsedResponse !== null) {
+      const responseData = parsedResponse as Record<string, unknown>
+      const messageKeys = ['message', 'detail', 'error', 'description']
+
+      for (const key of messageKeys) {
+        const message = responseData[key]
+
+        if (typeof message === 'string' && message.trim()) {
+          return message.trim()
+        }
+      }
+    }
+  } catch {
+    return trimmedResponse
+  }
+
+  return fallback
+}
+
 function continueToAdministration(): void {
   closeModal()
 
@@ -115,7 +148,7 @@ async function handleSubmit(): Promise<void> {
       openModal(
         'error',
         'Não foi possível realizar o login',
-        responseText || 'Verifique suas credenciais e tente novamente.',
+        getReadableMessage(responseText, 'Verifique suas credenciais e tente novamente.'),
       )
       return
     }
@@ -123,7 +156,10 @@ async function handleSubmit(): Promise<void> {
     console.log('conectado')
     openModal('success', 'Login realizado', 'Acesso autenticado com sucesso.')
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Não foi possível realizar o login.'
+    const message =
+      error instanceof Error
+        ? getReadableMessage(error.message, 'Não foi possível realizar o login.')
+        : 'Não foi possível realizar o login.'
 
     openModal('error', 'Erro de conexão', message)
   } finally {
@@ -261,11 +297,18 @@ async function handleSubmit(): Promise<void> {
           v-if="modalType === 'success'"
           type="button"
           variant="primary"
+          class="modal__button modal__button--primary"
           @click="continueToAdministration"
         >
           Continuar
         </BaseButton>
-        <BaseButton v-else type="button" variant="secondary" @click="closeModal">
+        <BaseButton
+          v-else
+          type="button"
+          variant="secondary"
+          class="modal__button modal__button--secondary"
+          @click="closeModal"
+        >
           Fechar
         </BaseButton>
       </template>

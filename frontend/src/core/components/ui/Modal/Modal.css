@@ -67,10 +67,11 @@ BEM
 .modal__header {
   position: relative;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   gap: var(--space-md);
-  padding: var(--space-2xl) var(--space-2xl) var(--space-md);
+  width: 100%;
+  /* padding: var(--space-xl) var(--space-2xl); */
   text-align: center;
 }
 
@@ -96,7 +97,7 @@ BEM
 .modal__title {
   max-width: calc(100% - 32px);
   margin: 0;
-  color: var(--text-inverse);
+  color: inherit;
   font-family: var(--font-heading);
   font-size: var(--font-xl);
   font-weight: var(--weight-semibold);
@@ -105,17 +106,17 @@ BEM
 
 .modal__close {
   position: absolute;
-  top: var(--space-md);
-  right: var(--space-md);
+  top: var(--space-sm);
+  right: var(--space-sm);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 20px;
+  height: 20px;
   border: 0;
   border-radius: var(--radius-md);
-  background: transparent;
-  color: var(--text-disabled);
+  background: var(--danger);
+  color: var(--text-primary);
   font-family: inherit;
   font-size: var(--font-xl);
   line-height: 1;
@@ -126,8 +127,8 @@ BEM
 }
 
 .modal__close:hover {
-  background: var(--background-secondary);
-  color: var(--text-inverse);
+  background: var(--overlay-light);
+  color: currentColor;
 }
 
 .modal__close:focus-visible {
@@ -140,18 +141,33 @@ BEM
    Cada tipo usa somente os tokens de status do Design System.
 ====================================================== */
 
-.modal--success .modal__icon {
+.modal--success .modal__header {
   background: var(--success-light);
   color: var(--success);
 }
 
-.modal--warning .modal__icon {
+.modal--success .modal__icon {
+  background: transparent;
+  color: var(--success);
+}
+
+.modal--warning .modal__header {
   background: var(--warning-light);
   color: var(--warning);
 }
 
-.modal--error .modal__icon {
+.modal--warning .modal__icon {
+  background: transparent;
+  color: var(--warning);
+}
+
+.modal--error .modal__header {
   background: var(--danger-light);
+  color: var(--danger);
+}
+
+.modal--error .modal__icon {
+  background: transparent;
   color: var(--danger);
 }
 
@@ -161,9 +177,9 @@ BEM
 ====================================================== */
 
 .modal__body {
-  padding: 0 var(--space-2xl) var(--space-xl);
-  color: var(--text-secondary);
-  font-size: var(--font-md);
+  padding: var(--space-xl);
+  color: var(--text-disabled);
+  font-size: var(--font-xl);
   line-height: var(--line-relaxed);
   text-align: center;
 }
@@ -182,6 +198,69 @@ BEM
   justify-content: center;
   gap: var(--space-md);
   padding: var(--space-md) var(--space-2xl) var(--space-2xl);
+}
+
+/* ======================================================
+   BOTÕES DE AÇÃO
+   Reutiliza o BaseButton com a linguagem visual do Header
+   e dos CTAs da seção Pricing. O slot aceita uma ou várias
+   ações sem acoplar o Modal às regras da tela consumidora.
+====================================================== */
+
+.modal__actions .modal__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 120px;
+  min-height: 48px;
+  padding: var(--button-padding-y) var(--button-padding-x);
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  font-family: var(--font-body);
+  font-size: var(--font-md);
+  font-weight: var(--weight-semibold);
+  line-height: var(--line-normal);
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.modal__actions .modal__button--primary {
+  border-color: var(--action);
+  background: var(--gradient-action);
+  color: var(--text-primary);
+  font-weight: var(--weight-bold);
+}
+
+.modal__actions .modal__button--primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.modal__actions .modal__button--secondary {
+  border-color: var(--border-buttom);
+  background: var(--text-secondary);
+  color: var(--text-inverse);
+}
+
+.modal__actions .modal__button--secondary:hover:not(:disabled) {
+  border-color: var(--border-buttom-focus);
+  background: var(--text-muted);
+  transform: translateY(-1px);
+}
+
+.modal__actions .modal__button:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus);
+}
+
+.modal__actions .modal__button:disabled {
+  cursor: not-allowed;
 }
 
 /* ======================================================

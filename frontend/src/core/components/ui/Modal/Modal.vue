@@ -172,6 +172,8 @@ const handleClose = (): void => {
         <!-- ======================================================
              AÇÕES
              O slot permite uma ou várias ações definidas pela tela.
+             As ações podem utilizar as classes modal__button e seus
+             modificadores para manter o padrão visual do Header e Pricing.
         ======================================================= -->
         <footer v-if="$slots.actions" class="modal__actions">
           <slot name="actions" />
