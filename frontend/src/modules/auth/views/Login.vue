@@ -1,7 +1,34 @@
+<!--
+=========================================================
+Project.......: ProofChain
+Module........: Auth
+Feature.......: Login
+File..........: Login.vue
+Version.......: 1.0.0
+
+Description...:
+Tela de autenticação da plataforma ProofChain.
+
+Responsibilities:
+- Validar as credenciais preenchidas.
+- Enviar a autenticação para a API.
+- Apresentar mensagens de sucesso e erro pelo Modal.
+
+Dependencies..:
+- BaseButton
+- Modal
+- Login.css
+
+Methodology...:
+BEM
+=========================================================
+-->
+
 <script setup lang="ts">
 import { ref } from 'vue'
 
 import BaseButton from '@/core/components/base/BaseButton/BaseButton.vue'
+import Modal from '@/core/components/ui/Modal/Modal.vue'
 import './Login.css'
 
 import lightLogo from '@/assets/images/logo/logo_horizontal_light.svg'
@@ -14,6 +41,68 @@ const showPassword = ref(false)
 const isSubmitting = ref(false)
 const emailError = ref('')
 const passwordError = ref('')
+const showModal = ref(false)
+const modalType = ref<'success' | 'warning' | 'error'>('error')
+const modalTitle = ref('')
+const modalMessage = ref('')
+
+/* ======================================================
+   MODAL
+   Mensagens de negócio permanecem sob responsabilidade da tela.
+====================================================== */
+
+function openModal(type: 'success' | 'warning' | 'error', title: string, message: string): void {
+  modalType.value = type
+  modalTitle.value = title
+  modalMessage.value = message
+  showModal.value = true
+}
+
+function closeModal(): void {
+  showModal.value = false
+}
+
+function getReadableMessage(responseText: string, fallback: string): string {
+  const trimmedResponse = responseText.trim()
+
+  if (!trimmedResponse) {
+    return fallback
+  }
+
+  try {
+    const parsedResponse: unknown = JSON.parse(trimmedResponse)
+
+    if (typeof parsedResponse === 'string' && parsedResponse.trim()) {
+      return parsedResponse.trim()
+    }
+
+    if (typeof parsedResponse === 'object' && parsedResponse !== null) {
+      const responseData = parsedResponse as Record<string, unknown>
+      const messageKeys = ['message', 'detail', 'error', 'description']
+
+      for (const key of messageKeys) {
+        const message = responseData[key]
+
+        if (typeof message === 'string' && message.trim()) {
+          return message.trim()
+        }
+      }
+    }
+  } catch {
+    return trimmedResponse
+  }
+
+  return fallback
+}
+
+function continueToAdministration(): void {
+  closeModal()
+
+  /*
+   * Quando a rota administrativa estiver disponível, habilitar o redirecionamento:
+   * router.push({ name: 'admin' })
+   */
+}
 
 function validateForm() {
   emailError.value = ''
@@ -30,7 +119,7 @@ function validateForm() {
   return !emailError.value && !passwordError.value
 }
 
-async function handleSubmit() {
+async function handleSubmit(): Promise<void> {
   if (isSubmitting.value || !validateForm()) return
 
   // isSubmitting.value = true
@@ -42,15 +131,40 @@ async function handleSubmit() {
     password: password.value,
   }
 
-  const response = await fetch('http://localhost:8080/api/v1/auth/login', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(loginData),
-  })
-  const data = await response.json()
-  console.log(data)
+  isSubmitting.value = true
+
+  try {
+    const response = await fetch('http://localhost:8080/api/v1/auth/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(loginData),
+    })
+
+    const responseText = await response.text()
+
+    if (!response.ok) {
+      openModal(
+        'error',
+        'Não foi possível realizar o login',
+        getReadableMessage(responseText, 'Verifique suas credenciais e tente novamente.'),
+      )
+      return
+    }
+
+    console.log('conectado')
+    openModal('success', 'Login realizado', 'Acesso autenticado com sucesso.')
+  } catch (error) {
+    const message =
+      error instanceof Error
+        ? getReadableMessage(error.message, 'Não foi possível realizar o login.')
+        : 'Não foi possível realizar o login.'
+
+    openModal('error', 'Erro de conexão', message)
+  } finally {
+    isSubmitting.value = false
+  }
 }
 </script>
 
@@ -170,5 +284,34 @@ async function handleSubmit() {
         </div>
       </div>
     </section>
+
+    <!-- ======================================================
+         MODAL DE AUTENTICAÇÃO
+         A tela define a mensagem e as ações do feedback.
+    ======================================================= -->
+    <Modal :visible="showModal" :type="modalType" :title="modalTitle" @close="closeModal">
+      <p>{{ modalMessage }}</p>
+
+      <template #actions>
+        <BaseButton
+          v-if="modalType === 'success'"
+          type="button"
+          variant="primary"
+          class="modal__button modal__button--primary"
+          @click="continueToAdministration"
+        >
+          Continuar
+        </BaseButton>
+        <BaseButton
+          v-else
+          type="button"
+          variant="secondary"
+          class="modal__button modal__button--secondary"
+          @click="closeModal"
+        >
+          Fechar
+        </BaseButton>
+      </template>
+    </Modal>
   </main>
 </template>

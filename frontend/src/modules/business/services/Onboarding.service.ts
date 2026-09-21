@@ -9,13 +9,14 @@
 // Encaminha os dados do onboarding para a API em formato JSON.
 // =========================================================
 
+import type { s } from 'vue-router/dist/options-P-0BPDru.mjs'
 import type { OnboardingRequest } from '../types/OnboardingRequest'
 
 const ONBOARDING_URL = 'http://localhost:8080/api/v1/institution/register'
 
 export const onboardingService = {
   // ---------- CADASTRO DA INSTITUIÇÃO ----------
-  async create(request: OnboardingRequest): Promise<String> {
+  async create(request: OnboardingRequest): Promise<string> {
     const response = await fetch(ONBOARDING_URL, {
       method: 'POST',
       headers: {
