@@ -1,0 +1,12 @@
+.app-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding: var(--space-md) var(--space-3xl);
+  border-top: 1px solid var(--border-buttom);
+  background: var(--brand);
+  color: var(--text-muted);
+  font-size: var(--font-xs);
+  margin-top: auto;
+}
