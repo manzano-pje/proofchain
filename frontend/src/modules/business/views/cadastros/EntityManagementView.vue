@@ -15,7 +15,6 @@ import { ADMIN_MENU } from '../../types/Entity.types'
  * ------------------------------------------------------------------------ */
 /* Domain state and actions. */
 const {
-  recentItems,
   selectedItem,
   isModalOpen,
   isLoading,
@@ -25,7 +24,6 @@ const {
   editingId,
   formData,
   roleOptions,
-  statusOptions,
   isFormValid,
   totalCount,
   totalIssuedCertificates,
@@ -100,13 +98,18 @@ const roleClass = (role: EntityItem['role']): string =>
     <!-- ==================================================================
          MENU PRINCIPAL (SIDEBAR LATERAL)
          ================================================================== -->
-    <aside class="sidebar" :class="{ 'sidebar--collapsed': isSidebarCollapsed }">
+    <aside class="sidebar">
       <div class="sidebar__brand">
-        <span class="sidebar__logo">⛓️</span>
-        <div class="sidebar__brand-text">
-          <strong class="sidebar__brand-name">ProofChain</strong>
-          <span class="sidebar__brand-sub">Admin Console</span>
-        </div>
+        <a href="#">
+          <img src="@/assets/images/logo/logo_adm_horizontal_black.svg" />
+        </a>
+      </div>
+
+      <nav
+        class="sidebar__nav"
+        :class="{ 'sidebar--collapsed': isSidebarCollapsed }"
+        aria-label="Navegação administrativa"
+      >
         <button
           type="button"
           class="sidebar__toggle"
@@ -115,9 +118,6 @@ const roleClass = (role: EntityItem['role']): string =>
         >
           ☰
         </button>
-      </div>
-
-      <nav class="sidebar__nav" aria-label="Navegação administrativa">
         <div v-for="group in menuGroups" :key="group.category" class="sidebar__group">
           <span class="sidebar__group-label">{{ group.label }}</span>
 
@@ -298,16 +298,27 @@ const roleClass = (role: EntityItem['role']): string =>
                   </select>
                 </div>
 
-                <!-- Status -->
+                <!-- Senha -->
                 <div class="form-card__field">
-                  <label class="form-card__label" for="entity-status">
-                    Status <span class="form-card__required">*</span>
+                  <label class="form-card__label" for="entity-password">
+                    Senha <span v-if="!isEditing" class="form-card__required">*</span>
                   </label>
-                  <select id="entity-status" v-model="formData.status" class="form-card__select">
-                    <option v-for="status in statusOptions" :key="status" :value="status">
-                      {{ status }}
-                    </option>
-                  </select>
+                  <input
+                    id="entity-password"
+                    v-model="formData.password"
+                    type="password"
+                    class="form-card__input"
+                    :placeholder="
+                      isEditing ? 'Deixe em branco para manter a atual' : 'Mínimo de 8 caracteres'
+                    "
+                    autocomplete="new-password"
+                  />
+                  <span
+                    v-if="formData.password.length > 0 && formData.password.length < 8"
+                    class="form-card__error"
+                  >
+                    Informe ao menos 8 caracteres.
+                  </span>
                 </div>
               </div>
 

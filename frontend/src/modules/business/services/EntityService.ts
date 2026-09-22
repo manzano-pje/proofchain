@@ -1,5 +1,4 @@
 /** Mock-ready CRUD service for administrative entities. */
-/** Mock-ready CRUD service for administrative entities. */
 
 // import api from '@/core/services/api'
 import type {
@@ -18,7 +17,7 @@ import type {
 const MOCK_LATENCY_MS = 550
 
 /** Quantidade máxima de registros considerados "recentes" na mini-tabela. */
-const RECENT_ITEMS_LIMIT = 8
+const RECENT_ITEMS_LIMIT = 5
 
 /**
  * Resolve após o tempo informado, simulando latência de rede.
@@ -58,30 +57,10 @@ let mockDatabase: EntityItem[] = [
     totalIssuedCertificates: 482,
   },
   {
-    id: 'c2e4b8d6-3d4f-4b88-ae42-1b2c3d4e5f61',
-    name: 'Carlos Eduardo Menezes',
-    email: 'carlos.menezes@proofchain.io',
-    role: 'Gestor',
-    status: 'Ativo',
-    createdAt: '2024-10-21T11:02:00.000Z',
-    lastAccess: '2025-01-17T08:11:00.000Z',
-    totalIssuedCertificates: 217,
-  },
-  {
-    id: 'd3f5c9e7-4e5a-4c99-bf53-2c3d4e5f6072',
-    name: 'Mariana Ribeiro Lopes',
-    email: 'mariana.lopes@proofchain.io',
-    role: 'Auditor',
-    status: 'Pendente',
-    createdAt: '2025-01-05T16:47:00.000Z',
-    lastAccess: '2025-01-16T19:05:00.000Z',
-    totalIssuedCertificates: 0,
-  },
-  {
     id: 'e4a6d0f8-5f6b-4daa-c064-3d4e5f607183',
     name: 'Rafael Nogueira Pires',
     email: 'rafael.pires@proofchain.io',
-    role: 'Gestor',
+    role: 'Usuário',
     status: 'Inativo',
     createdAt: '2024-08-13T07:25:00.000Z',
     lastAccess: '2024-12-28T10:40:00.000Z',
@@ -91,7 +70,7 @@ let mockDatabase: EntityItem[] = [
     id: 'f5b7e1a9-6a7c-4ebb-d175-4e5f60718294',
     name: 'Juliana Ferraz Andrade',
     email: 'juliana.andrade@proofchain.io',
-    role: 'Auditor',
+    role: 'Admin',
     status: 'Ativo',
     createdAt: '2024-12-01T13:58:00.000Z',
     lastAccess: '2025-01-18T07:22:00.000Z',
@@ -101,7 +80,7 @@ let mockDatabase: EntityItem[] = [
     id: 'a6c8f2b0-7b8d-4fcc-e286-5f60718293a5',
     name: 'Bruno Tavares Siqueira',
     email: 'bruno.siqueira@proofchain.io',
-    role: 'Gestor',
+    role: 'Usuário',
     status: 'Ativo',
     createdAt: '2024-09-27T15:33:00.000Z',
     lastAccess: '2025-01-15T17:49:00.000Z',
@@ -112,7 +91,7 @@ let mockDatabase: EntityItem[] = [
     name: 'Patrícia Almeida Rocha',
     email: 'patricia.rocha@proofchain.io',
     role: 'Admin',
-    status: 'Pendente',
+    status: 'Ativo',
     createdAt: '2025-01-12T10:06:00.000Z',
     lastAccess: '2025-01-12T10:06:00.000Z',
     totalIssuedCertificates: 0,
@@ -121,7 +100,7 @@ let mockDatabase: EntityItem[] = [
     id: 'c8e0b4d2-9d0f-4bee-a408-718293a4b5c7',
     name: 'Eduardo Lima Barreto',
     email: 'eduardo.barreto@proofchain.io',
-    role: 'Auditor',
+    role: 'Admin',
     status: 'Inativo',
     createdAt: '2024-07-19T18:21:00.000Z',
     lastAccess: '2024-11-30T09:15:00.000Z',
@@ -137,7 +116,7 @@ export const entityService = {
   /**
    * Recupera os registros mais recentes para exibição na mini-tabela.
    *
-   * @param limit Quantidade máxima de registros retornados (default: 8).
+   * @param limit Quantidade máxima de registros retornados (default: 5).
    * @returns Lista ordenada por `createdAt` decrescente.
    */
   async fetchRecentItems(limit: number = RECENT_ITEMS_LIMIT): Promise<EntityItem[]> {
@@ -242,7 +221,7 @@ export const entityService = {
       name: payload.name.trim(),
       email: payload.email.trim().toLowerCase(),
       role: payload.role,
-      status: payload.status,
+      status: 'Ativo',
       createdAt: now,
       lastAccess: now,
       totalIssuedCertificates: 0,

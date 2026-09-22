@@ -1,5 +1,4 @@
 /** Shared domain contracts for administrative entity management. */
-/** Shared domain contracts for administrative entity management. */
 
 /* --------------------------------------------------------------------------
  * 1. ENUMS E UNION TYPES DE DOMÍNIO
@@ -8,22 +7,22 @@
 /**
  * Papéis de acesso disponíveis na plataforma ProofChain.
  */
-export type UserRole = 'Admin' | 'Gestor' | 'Auditor'
+export type UserRole = 'Admin' | 'Usuário'
 
 /**
  * Estados possíveis de um registro administrativo.
  */
-export type EntityStatus = 'Ativo' | 'Inativo' | 'Pendente'
+export type EntityStatus = 'Ativo' | 'Inativo'
 
 /**
  * Lista imutável de papéis — útil para popular selects e validar payloads.
  */
-export const USER_ROLES: readonly UserRole[] = ['Admin', 'Gestor', 'Auditor'] as const
+export const USER_ROLES: readonly UserRole[] = ['Admin', 'Usuário'] as const
 
 /**
  * Lista imutável de estados — útil para popular selects e validar payloads.
  */
-export const ENTITY_STATUSES: readonly EntityStatus[] = ['Ativo', 'Inativo', 'Pendente'] as const
+export const ENTITY_STATUSES: readonly EntityStatus[] = ['Ativo', 'Inativo'] as const
 
 /* --------------------------------------------------------------------------
  * 2. ENTIDADE PRINCIPAL E DTOs
@@ -52,13 +51,10 @@ export interface EntityItem {
   totalIssuedCertificates: number
 }
 
-/**
- * Payload de criação — campos gerados pelo backend são omitidos.
- */
-export type CreateEntityDTO = Omit<
-  EntityItem,
-  'id' | 'createdAt' | 'lastAccess' | 'totalIssuedCertificates'
->
+/** Payload de criação do usuário; a senha não é retornada pela API. */
+export type CreateEntityDTO = Pick<EntityItem, 'name' | 'email' | 'role'> & {
+  password: string
+}
 
 /**
  * Payload de atualização parcial — todos os campos editáveis são opcionais.
@@ -72,7 +68,8 @@ export interface EntityFormModel {
   name: string
   email: string
   role: UserRole | ''
-  status: EntityStatus | ''
+  status: EntityStatus
+  password: string
 }
 
 /* --------------------------------------------------------------------------

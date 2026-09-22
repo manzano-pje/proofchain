@@ -1,0 +1,28 @@
+.role-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-xs) var(--space-sm);
+  border: 1px solid transparent;
+  border-radius: var(--radius-round);
+  font-size: var(--font-xs);
+  font-weight: var(--weight-semibold);
+}
+
+.role-badge--admin {
+  background: var(--brand-active);
+  border-color: var(--action);
+  color: var(--action-light);
+}
+
+.role-badge--gestor {
+  background: var(--info-light);
+  border-color: var(--info);
+  color: var(--info);
+}
+
+.role-badge--auditor {
+  background: var(--success-light);
+  border-color: var(--success);
+  color: var(--success-dark);
+}

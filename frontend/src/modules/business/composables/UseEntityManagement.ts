@@ -8,8 +8,9 @@ import type {
   EntityFormModel,
   EntityItem,
   EntityQueryParams,
+  UpdateEntityDTO,
 } from '../types/Entity.types'
-import { ENTITY_STATUSES, USER_ROLES } from '../types/Entity.types'
+import { USER_ROLES } from '../types/Entity.types'
 
 /* Validation and list configuration. */
 
@@ -18,6 +19,9 @@ const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
 
 /** Comprimento mínimo aceito para o campo `name`. */
 const NAME_MIN_LENGTH = 3
+
+/** Comprimento mínimo aceito para a senha de um novo usuário. */
+const PASSWORD_MIN_LENGTH = 8
 
 /** Quantidade máxima de registros mantidos na mini-tabela. */
 const RECENT_ITEMS_LIMIT = 8
@@ -28,8 +32,9 @@ const RECENT_ITEMS_LIMIT = 8
 const createInitialFormState = (): EntityFormModel => ({
   name: '',
   email: '',
-  role: 'Gestor',
+  role: 'Usuário',
   status: 'Ativo',
+  password: '',
 })
 
 /**
@@ -69,7 +74,6 @@ export function useEntityManagement() {
 
   /** Opções disponíveis para os selects do formulário. */
   const roleOptions = USER_ROLES
-  const statusOptions = ENTITY_STATUSES
 
   /* Derived state. */
 
@@ -87,7 +91,7 @@ export function useEntityManagement() {
       name.length >= NAME_MIN_LENGTH &&
       EMAIL_REGEX.test(email) &&
       formData.role !== '' &&
-      formData.status !== ''
+      (editingId.value !== null || formData.password.length >= PASSWORD_MIN_LENGTH)
     )
   })
 
@@ -232,12 +236,15 @@ export function useEntityManagement() {
       name: formData.name.trim(),
       email: formData.email.trim().toLowerCase(),
       role: formData.role as CreateEntityDTO['role'],
-      status: formData.status as CreateEntityDTO['status'],
+      password: formData.password,
     }
 
     try {
       if (editingId.value) {
-        const updated = await entityService.updateItem(editingId.value, payload)
+        const updatePayload: UpdateEntityDTO = { ...payload }
+        if (!updatePayload.password) delete updatePayload.password
+
+        const updated = await entityService.updateItem(editingId.value, updatePayload)
         recentItems.value = recentItems.value.map((item) =>
           item.id === updated.id ? updated : item,
         )
@@ -284,7 +291,7 @@ export function useEntityManagement() {
     formData.name = item.name
     formData.email = item.email
     formData.role = item.role
-    formData.status = item.status
+    formData.password = ''
     handleCloseModal()
     pushFeedback('info', `Editando "${item.name}". Altere os campos e salve.`)
   }
@@ -357,7 +364,6 @@ export function useEntityManagement() {
 
     // Options
     roleOptions,
-    statusOptions,
 
     // Computed
     isFormValid,

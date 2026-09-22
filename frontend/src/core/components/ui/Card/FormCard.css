@@ -1,0 +1,117 @@
+.form-card {
+  overflow: hidden;
+  border: 1px solid var(--border-focus);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow-md);
+}
+
+.form-card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-lg);
+  padding: var(--space-xl);
+  border-bottom: 1px solid var(--border-buttom);
+}
+
+.form-card__title {
+  margin: 0;
+  color: var(--text-primary);
+  font-family: var(--font-heading);
+  font-size: var(--heading-5);
+}
+
+.form-card__description {
+  margin: var(--space-xs) 0 0;
+  color: var(--text-muted);
+  font-size: var(--body-small);
+}
+
+.form-card__metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+.form-card__form {
+  padding: var(--space-xl);
+}
+
+.form-card__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-lg);
+}
+
+.form-card__actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-sm);
+  padding-top: var(--space-lg);
+  margin-top: var(--space-lg);
+  border-top: 1px solid var(--border-buttom);
+}
+
+.form-card__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-lg);
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  font: inherit;
+  font-size: var(--font-sm);
+  font-weight: var(--weight-semibold);
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+.form-card__button--primary {
+  background: var(--action);
+  color: var(--text-inverse);
+}
+
+.form-card__button--primary:hover:not(:disabled) {
+  background: var(--action-hover);
+}
+
+.form-card__button--primary:disabled {
+  opacity: var(--opacity-disabled);
+  cursor: not-allowed;
+}
+
+.form-card__button--ghost {
+  border-color: var(--border-buttom);
+  background: transparent;
+  color: var(--text-secondary);
+}
+
+.form-card__button--ghost:hover {
+  background: var(--brand-hover);
+  color: var(--text-primary);
+}
+
+.form-card__spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: var(--radius-round);
+  animation: entity-spin 0.7s linear infinite;
+}
+
+@keyframes entity-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 1024px) {
+  .form-card__grid {
+    grid-template-columns: 1fr;
+  }
+}
