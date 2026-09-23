@@ -1,7 +1,7 @@
 .admin-page {
   display: flex;
   min-height: 100vh;
-  background: var(--background-dark);
+  background: #cbd5e1;
   color: var(--text-primary);
   font-family: var(--font-body);
 }
@@ -20,10 +20,10 @@
 
 .admin-page__placeholder {
   max-width: 760px;
-  padding: var(--space-2xl);
+  /* padding: var(--space-2xl);
   border: 1px solid var(--border-buttom);
-  border-radius: var(--radius-lg);
-  background: var(--surface);
+  border-radius: var(--radius-lg); */
+  background: #cbd5e1;
 }
 
 .admin-page__placeholder-kicker {

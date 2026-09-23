@@ -19,6 +19,14 @@ const emit = defineEmits<{
 
 <template>
   <header class="top-header">
+    <a href="/" class="top-header__brand" aria-label="ProofChain, página inicial">
+      <img
+        src="@/assets/images/logo/logo_adm_horizontal_black.svg"
+        alt="ProofChain"
+        class="top-header__logo"
+      />
+    </a>
+
     <div class="top-header__title-block">
       <h1 class="top-header__title">{{ title }}</h1>
       <p v-if="subtitle" class="top-header__subtitle">{{ subtitle }}</p>

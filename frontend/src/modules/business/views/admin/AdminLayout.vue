@@ -2,7 +2,6 @@
 import { ref } from 'vue'
 import AppSidebar, { type MenuGroup } from '@/layouts/components/AppSidebar/AppSidebar.vue'
 import AppHeader, { type UserProfile } from '@/layouts/components/AppHeader/AppHeader.vue'
-import AppFooter from '@/layouts/components/AppFooter/AppFooter.vue'
 
 defineProps<{
   title: string
@@ -32,6 +31,7 @@ const toggleSidebar = () => {
       :menu-groups="menuGroups"
       :active-item-id="activeMenuItem"
       :is-collapsed="isCollapsed"
+      :app-version="appVersion"
       @select-menu="emit('select-menu', $event)"
       @toggle-collapse="toggleSidebar"
       @logout="emit('logout')"
@@ -63,8 +63,6 @@ const toggleSidebar = () => {
           </section>
         </slot>
       </main>
-
-      <AppFooter :version="appVersion" />
     </div>
   </div>
 </template>

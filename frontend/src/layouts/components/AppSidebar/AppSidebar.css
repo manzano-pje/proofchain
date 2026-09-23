@@ -6,9 +6,9 @@
   flex-direction: column;
   width: 264px;
   height: 100vh;
-  padding: var(--space-lg) var(--space-md);
+  padding: var(--space-md) var(--space-sm) var(--space-sm);
   overflow: hidden;
-  background: var(--background-dark);
+  background: var(--gradient-brand);
   border-right: 1px solid var(--border-buttom);
   transition:
     width var(--transition-default),
@@ -20,22 +20,13 @@
   width: 84px;
 }
 
-.sidebar__brand {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-sm);
-  padding: var(--space-xs) var(--space-xs) var(--space-lg);
-  margin-bottom: var(--space-lg);
-  border-bottom: 1px solid var(--border-buttom);
-}
-
 .sidebar__toggle {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 30px;
   height: 30px;
-  margin-left: auto;
+  margin: 0 0 var(--space-md) auto;
   border: 1px solid var(--border-buttom);
   border-radius: var(--radius-md);
   background: var(--brand);
@@ -60,6 +51,7 @@
 .sidebar__nav {
   flex: 1 1 auto;
   overflow-y: auto;
+  scrollbar-width: thin;
 }
 
 .sidebar__group {
@@ -68,7 +60,7 @@
 
 .sidebar__group-label {
   display: block;
-  padding: 0 var(--space-sm) var(--space-sm);
+  padding: 0 var(--space-sm);
   color: var(--text-muted);
   font-size: var(--font-xs);
   font-weight: var(--weight-bold);
@@ -79,7 +71,7 @@
 .sidebar__list {
   display: flex;
   flex-direction: column;
-  gap: var(--space-xs);
+  /* gap: var(--space-xs); */
   margin: 0;
   padding: 0;
   list-style: none;
@@ -153,18 +145,28 @@
 }
 
 .sidebar__footer {
-  padding-top: var(--space-md);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-xs);
+  padding: var(--space-sm) var(--space-xs) 0;
+  margin-top: var(--space-sm);
+  border-top: 1px solid var(--border-buttom);
+  color: var(--text-muted);
+  font-size: var(--font-xs);
+}
+
+.sidebar__list--logout {
+  padding-top: var(--space-sm);
   margin-top: var(--space-sm);
   border-top: 1px solid var(--border-buttom);
 }
 
 .sidebar__logout {
-  background: var(--brand);
-  border-color: var(--danger);
-  color: var(--danger-light);
+  color: var(--danger);
 }
 
 .sidebar__logout:hover {
-  background: var(--danger);
-  color: var(--text-primary);
+  background: color-mix(in srgb, var(--danger) 14%, transparent);
+  color: var(--danger);
 }
