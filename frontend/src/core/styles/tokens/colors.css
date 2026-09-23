@@ -41,6 +41,7 @@
   --text-disabled: #64748b;
   --text-inverse: #0f172a;
   --brand-card: #163b66;
+  --brand-light: #1e4d7a;
 
   /* ======================================================
        BORDER
@@ -82,6 +83,7 @@
 
   --gradient-dark: linear-gradient(120deg, #02020a, #102a4c);
   --gradient-brand: linear-gradient(135deg, #07111f 0%, #0b1f3a 50%, #163b66 100%);
+  --gradient-brand-v: linear-gradient(90deg, #002355 0%, #163b66 100%);
   --gradient-action: linear-gradient(0deg, #2a5e8f, #5a8fc0);
   --gradient-light: linear-gradient(0deg, #102c4d, #0c56ce);
   --gradient-cta: linear-gradient(0deg, #005825, #0fb655);

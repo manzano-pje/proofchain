@@ -1,4 +1,22 @@
 <script setup lang="ts">
+import type { Component } from 'vue'
+import {
+  Award,
+  BookOpen,
+  Building2,
+  ChevronLeft,
+  ChevronRight,
+  CircleHelp,
+  GraduationCap,
+  LayoutDashboard,
+  LogOut,
+  Search,
+  Settings,
+  Sparkles,
+  Users,
+  UsersRound,
+} from 'lucide-vue-next'
+
 export interface MenuItem {
   id: string
   label: string
@@ -17,6 +35,7 @@ defineProps<{
   menuGroups: readonly MenuGroup[]
   activeItemId: string
   isCollapsed?: boolean
+  appVersion?: string
 }>()
 
 const emit = defineEmits<{
@@ -24,26 +43,36 @@ const emit = defineEmits<{
   (e: 'toggle-collapse'): void
   (e: 'logout'): void
 }>()
+
+const iconsByItemId: Record<string, Component> = {
+  overview: LayoutDashboard,
+  participants: UsersRound,
+  courses: BookOpen,
+  classes: CircleHelp,
+  instructors: GraduationCap,
+  certificates: Award,
+  'generate-certificates': Sparkles,
+  validate: Search,
+  institution: Building2,
+  users: Users,
+  settings: Settings,
+}
+
+const iconFor = (itemId: string): Component => iconsByItemId[itemId] || CircleHelp
 </script>
 
 <template>
   <aside :class="['sidebar', { 'sidebar--collapsed': isCollapsed }]">
-    <div class="sidebar__brand">
-      <a href="#" class="sidebar__brand-link">
-        <slot name="brand">
-          <img src="@/assets/images/logo/logo_adm_horizontal_black.svg" alt="Logo" />
-        </slot>
-      </a>
-    </div>
-
     <nav class="sidebar__nav" aria-label="Navegação do sistema">
       <button
         type="button"
         class="sidebar__toggle"
-        aria-label="Recolher menu"
+        :aria-label="isCollapsed ? 'Expandir menu' : 'Recolher menu'"
+        :title="isCollapsed ? 'Expandir menu' : 'Recolher menu'"
         @click="emit('toggle-collapse')"
       >
-        ☰
+        <ChevronRight v-if="isCollapsed" :size="18" :stroke-width="2" aria-hidden="true" />
+        <ChevronLeft v-else :size="18" :stroke-width="2" aria-hidden="true" />
       </button>
 
       <div v-for="group in menuGroups" :key="group.category" class="sidebar__group">
@@ -62,20 +91,38 @@ const emit = defineEmits<{
               :aria-current="activeItemId === item.id ? 'page' : undefined"
               @click="emit('select-menu', item.id)"
             >
-              <span class="sidebar__icon" aria-hidden="true">{{ item.icon }}</span>
+              <component
+                :is="iconFor(item.id)"
+                class="sidebar__icon"
+                :size="18"
+                :stroke-width="2"
+                aria-hidden="true"
+              />
               <span class="sidebar__text">{{ item.label }}</span>
               <span v-if="item.badge" class="sidebar__badge">{{ item.badge }}</span>
             </button>
           </li>
         </ul>
       </div>
+
+      <ul class="sidebar__list sidebar__list--logout">
+        <li class="sidebar__item">
+          <button
+            type="button"
+            class="sidebar__link sidebar__logout"
+            title="Sair"
+            @click="emit('logout')"
+          >
+            <LogOut class="sidebar__icon" :size="18" :stroke-width="2" aria-hidden="true" />
+            <span class="sidebar__text">Sair</span>
+          </button>
+        </li>
+      </ul>
     </nav>
 
-    <div class="sidebar__footer">
-      <button type="button" class="sidebar__logout" @click="emit('logout')">
-        <span class="sidebar__icon" aria-hidden="true">⎋</span>
-        <span class="sidebar__text">Sair</span>
-      </button>
+    <div v-if="!isCollapsed" class="sidebar__footer">
+      <span>ProofChain</span>
+      <span v-if="appVersion">v{{ appVersion }}</span>
     </div>
   </aside>
 </template>

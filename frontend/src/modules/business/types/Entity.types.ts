@@ -222,13 +222,6 @@ export const ADMIN_MENU: readonly MenuGroupConfig[] = [
         route: '/admin/certificados/gerar',
         category: 'CERTIFICADOS',
       },
-      {
-        id: 'validate',
-        label: 'Validar',
-        icon: '🔎',
-        route: '/admin/certificados/validar',
-        category: 'CERTIFICADOS',
-      },
     ],
   },
   {
@@ -247,13 +240,6 @@ export const ADMIN_MENU: readonly MenuGroupConfig[] = [
         label: 'Usuários',
         icon: '👤',
         route: '/admin/usuarios',
-        category: 'ADMINISTRAÇÃO',
-      },
-      {
-        id: 'settings',
-        label: 'Configurações',
-        icon: '⚙️',
-        route: '/admin/configuracoes',
         category: 'ADMINISTRAÇÃO',
       },
     ],
