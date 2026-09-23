@@ -27,42 +27,44 @@ const toggleSidebar = () => {
 
 <template>
   <div class="admin-page">
-    <AppSidebar
-      :menu-groups="menuGroups"
-      :active-item-id="activeMenuItem"
-      :is-collapsed="isCollapsed"
-      :app-version="appVersion"
-      @select-menu="emit('select-menu', $event)"
-      @toggle-collapse="toggleSidebar"
-      @logout="emit('logout')"
+    <AppHeader
+      :title="title"
+      :subtitle="subtitle"
+      :current-user="currentUser"
+      :search-query="searchQuery"
+      @update:search-query="emit('update:searchQuery', $event)"
     />
 
-    <div class="admin-page__main">
-      <AppHeader
-        :title="title"
-        :subtitle="subtitle"
-        :current-user="currentUser"
-        :search-query="searchQuery"
-        @update:search-query="emit('update:searchQuery', $event)"
+    <div class="admin-page__body">
+      <AppSidebar
+        :menu-groups="menuGroups"
+        :active-item-id="activeMenuItem"
+        :is-collapsed="isCollapsed"
+        :app-version="appVersion"
+        @select-menu="emit('select-menu', $event)"
+        @toggle-collapse="toggleSidebar"
+        @logout="emit('logout')"
       />
 
-      <main class="admin-page__content">
-        <slot>
-          <!--
-            Conteúdo temporário da base administrativa.
-            As telas reais serão inseridas neste slot quando suas rotas e
-            fluxos de navegação forem definidos.
-          -->
-          <section class="admin-page__placeholder" aria-labelledby="admin-placeholder-title">
-            <span class="admin-page__placeholder-kicker">Área administrativa</span>
-            <h2 id="admin-placeholder-title">Base do painel pronta</h2>
-            <p>
-              O layout, o menu, o cabeçalho e o rodapé estão conectados. As opções do menu e a
-              pesquisa permanecem sem navegação enquanto as telas administrativas são construídas.
-            </p>
-          </section>
-        </slot>
-      </main>
+      <div class="admin-page__main">
+        <main class="admin-page__content">
+          <slot>
+            <!--
+              Conteúdo temporário da base administrativa.
+              As telas reais serão inseridas neste slot quando suas rotas e
+              fluxos de navegação forem definidos.
+            -->
+            <section class="admin-page__placeholder" aria-labelledby="admin-placeholder-title">
+              <span class="admin-page__placeholder-kicker">Área administrativa</span>
+              <h2 id="admin-placeholder-title">Base do painel pronta</h2>
+              <p>
+                O layout, o menu, o cabeçalho e o rodapé estão conectados. As opções do menu e a
+                pesquisa permanecem sem navegação enquanto as telas administrativas são construídas.
+              </p>
+            </section>
+          </slot>
+        </main>
+      </div>
     </div>
   </div>
 </template>

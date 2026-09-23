@@ -1,11 +1,9 @@
 .sidebar {
-  position: sticky;
-  top: 0;
   display: flex;
   flex: 0 0 264px;
   flex-direction: column;
   width: 264px;
-  height: 100vh;
+  height: calc(100vh - 76px);
   padding: var(--space-md) var(--space-sm) var(--space-sm);
   overflow: hidden;
   background: var(--gradient-brand);
@@ -149,7 +147,7 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--space-xs);
-  padding: var(--space-sm) var(--space-xs) 0;
+  padding: var(--space-sm) var(--space-xs);
   margin-top: var(--space-sm);
   border-top: 1px solid var(--border-buttom);
   color: var(--text-muted);

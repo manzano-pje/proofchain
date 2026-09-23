@@ -1,9 +1,16 @@
 .admin-page {
   display: flex;
+  flex-direction: column;
   min-height: 100vh;
   background: #cbd5e1;
   color: var(--text-primary);
   font-family: var(--font-body);
+}
+
+.admin-page__body {
+  display: flex;
+  flex: 1 1 auto;
+  min-height: 0;
 }
 
 .admin-page__main {
@@ -11,6 +18,7 @@
   flex: 1 1 auto;
   flex-direction: column;
   min-width: 0;
+  min-height: 0;
 }
 
 .admin-page__content {

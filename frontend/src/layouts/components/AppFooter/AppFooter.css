@@ -8,5 +8,5 @@
   background: var(--brand);
   color: var(--text-muted);
   font-size: var(--font-xs);
-  margin-top: auto;
+  margin: auto 0 var(--space-md);
 }
