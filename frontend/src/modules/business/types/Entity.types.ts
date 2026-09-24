@@ -1,5 +1,7 @@
 /** Shared domain contracts for administrative entity management. */
 
+import type { AuthRole } from '@/modules/auth/types/Auth.types'
+
 /* --------------------------------------------------------------------------
  * 1. ENUMS E UNION TYPES DE DOMÍNIO
  * ------------------------------------------------------------------------ */
@@ -99,6 +101,7 @@ export interface MenuItemConfig {
   badge?: number
   /** Indica se o item está temporariamente indisponível. */
   disabled?: boolean
+  allowedRoles?: readonly AuthRole[]
 }
 
 /**
@@ -167,6 +170,7 @@ export const ADMIN_MENU: readonly MenuGroupConfig[] = [
         icon: '◈',
         route: '/admin/dashboard',
         category: 'DASHBOARD',
+        allowedRoles: ['Super_admin', 'Admin', 'user'],
       },
     ],
   },
@@ -214,6 +218,7 @@ export const ADMIN_MENU: readonly MenuGroupConfig[] = [
         icon: '📜',
         route: '/admin/certificados',
         category: 'CERTIFICADOS',
+        allowedRoles: ['Super_admin', 'Admin', 'user'],
       },
       {
         id: 'generate-certificates',
@@ -221,6 +226,7 @@ export const ADMIN_MENU: readonly MenuGroupConfig[] = [
         icon: '✨',
         route: '/admin/certificados/gerar',
         category: 'CERTIFICADOS',
+        allowedRoles: ['Super_admin', 'Admin'],
       },
       {
         id: 'validate',
@@ -228,6 +234,7 @@ export const ADMIN_MENU: readonly MenuGroupConfig[] = [
         icon: '🔎',
         route: '/admin/certificados/validar',
         category: 'CERTIFICADOS',
+        allowedRoles: ['Super_admin', 'Admin', 'user'],
       },
     ],
   },
@@ -241,6 +248,7 @@ export const ADMIN_MENU: readonly MenuGroupConfig[] = [
         icon: '🏛️',
         route: '/admin/instituicao',
         category: 'ADMINISTRAÇÃO',
+        allowedRoles: ['Super_admin', 'Admin'],
       },
       {
         id: 'users',
@@ -248,6 +256,7 @@ export const ADMIN_MENU: readonly MenuGroupConfig[] = [
         icon: '👤',
         route: '/admin/usuarios',
         category: 'ADMINISTRAÇÃO',
+        allowedRoles: ['Super_admin', 'Admin'],
       },
       {
         id: 'settings',
@@ -255,7 +264,25 @@ export const ADMIN_MENU: readonly MenuGroupConfig[] = [
         icon: '⚙️',
         route: '/admin/configuracoes',
         category: 'ADMINISTRAÇÃO',
+        allowedRoles: ['Super_admin', 'Admin'],
       },
     ],
   },
 ] as const
+
+export function getAdminMenuForRole(role: AuthRole): readonly MenuGroupConfig[] {
+  return ADMIN_MENU.map((group) => ({
+    ...group,
+    items: group.items.filter((item) => !item.allowedRoles || item.allowedRoles.includes(role)),
+  })).filter((group) => group.items.length > 0)
+}
+
+export function canAccessAdminRoute(path: string, role: AuthRole): boolean {
+  if (path === '/admin') return true
+
+  return ADMIN_MENU.some((group) =>
+    group.items.some(
+      (item) => item.route === path && (!item.allowedRoles || item.allowedRoles.includes(role)),
+    ),
+  )
+}

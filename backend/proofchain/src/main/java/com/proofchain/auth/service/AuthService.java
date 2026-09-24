@@ -1,7 +1,9 @@
-package com.proofchain.auth;
+package com.proofchain.auth.service;
 
+import com.proofchain.auth.dtos.AuthRequest;
+import com.proofchain.auth.dtos.AuthResponse;
+import com.proofchain.auth.dtos.UserSummaryDto;
 import com.proofchain.shared.exception.ForbiddenException;
-import com.proofchain.shared.exception.NotFoundException;
 import com.proofchain.shared.exception.UnauthorizedException;
 import com.proofchain.shared.exception.messages.AuthMessages;
 import com.proofchain.shared.security.JwtService;
@@ -56,8 +58,30 @@ public class AuthService {
                     )
             );
             UserDetailsImpl user = (UserDetailsImpl) authentication.getPrincipal();
+
+            // 1. Gera os tokens
             String token = jwtService.generateToken(user);
-            return new AuthResponse(token);
+            String refreshToken = jwtService.generateRefreshToken(user);
+
+            // 2. AQUI A IDE RECONHECERÁ A CHAMADA:
+            Long expiresIn = jwtService.getExpirationInSeconds();
+
+            // 3. Monta os dados do usuário
+            UserSummaryDto userSummary = new UserSummaryDto(
+                    user.getId(),
+                    user.getUsername(),
+                    user.getUsername(),
+                    user.getRole(),
+                    user.getInstitutionId()
+            );
+
+            // 4. Retorna a resposta contendo o tempo em segundos (ex: 900)
+            return new AuthResponse(
+                    token,
+                    refreshToken,
+                    expiresIn, // <--- Passado para a resposta HTTP
+                    userSummary
+            );
         }catch (BadCredentialsException | InternalAuthenticationServiceException e){
             throw new UnauthorizedException(AuthMessages.INVALID_CREDENTIALS); // status 401
 

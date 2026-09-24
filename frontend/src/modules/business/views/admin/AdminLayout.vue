@@ -1,28 +1,59 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+
+import { useAuthStore } from '@/modules/auth/stores/Auth.store'
+import { getAdminMenuForRole } from '@/modules/business/types/Entity.types'
 import AppSidebar, { type MenuGroup } from '@/layouts/components/AppSidebar/AppSidebar.vue'
 import AppHeader, { type UserProfile } from '@/layouts/components/AppHeader/AppHeader.vue'
 import AppFooter from '@/layouts/components/AppFooter/AppFooter.vue'
 
-defineProps<{
-  title: string
-  subtitle?: string
-  menuGroups: readonly MenuGroup[]
-  activeMenuItem: string
-  currentUser: UserProfile
-  searchQuery?: string
-  appVersion?: string
-}>()
-
-const emit = defineEmits<{
-  (e: 'select-menu', id: string): void
-  (e: 'update:searchQuery', value: string): void
-  (e: 'logout'): void
-}>()
-
+const router = useRouter()
+const route = useRoute()
+const authStore = useAuthStore()
 const isCollapsed = ref(false)
+const searchQuery = ref('')
+
+const currentUser = computed<UserProfile | null>(() => {
+  if (!authStore.user) return null
+
+  return {
+    name: authStore.user.name,
+    role: authStore.user.role,
+    avatarInitials: authStore.user.name
+      .split(' ')
+      .map((namePart) => namePart[0])
+      .join('')
+      .slice(0, 2)
+      .toUpperCase(),
+  }
+})
+
+const menuGroups = computed<readonly MenuGroup[]>(() =>
+  authStore.role ? getAdminMenuForRole(authStore.role) : [],
+)
+
+const activeMenuItem = computed(() => {
+  const item = menuGroups.value
+    .flatMap((group) => group.items)
+    .find((menuItem) => menuItem.route === route.path)
+  return item?.id ?? 'overview'
+})
+
 const toggleSidebar = () => {
   isCollapsed.value = !isCollapsed.value
+}
+
+function selectMenu(id: string): void {
+  const item = menuGroups.value
+    .flatMap((group) => group.items)
+    .find((menuItem) => menuItem.id === id)
+  if (item) void router.push(item.route)
+}
+
+function logout(): void {
+  authStore.clearSession()
+  void router.push({ name: 'login' })
 }
 </script>
 
@@ -32,18 +63,19 @@ const toggleSidebar = () => {
       :menu-groups="menuGroups"
       :active-item-id="activeMenuItem"
       :is-collapsed="isCollapsed"
-      @select-menu="emit('select-menu', $event)"
+      @select-menu="selectMenu"
       @toggle-collapse="toggleSidebar"
-      @logout="emit('logout')"
+      @logout="logout"
     />
 
     <div class="admin-page__main">
       <AppHeader
-        :title="title"
-        :subtitle="subtitle"
+        v-if="currentUser"
+        title="Painel administrativo"
+        subtitle="Gestão da plataforma ProofChain"
         :current-user="currentUser"
         :search-query="searchQuery"
-        @update:search-query="emit('update:searchQuery', $event)"
+        @update:search-query="searchQuery = $event"
       />
 
       <main class="admin-page__content">
@@ -64,7 +96,7 @@ const toggleSidebar = () => {
         </slot>
       </main>
 
-      <AppFooter :version="appVersion" />
+      <AppFooter version="0.1.0" />
     </div>
   </div>
 </template>

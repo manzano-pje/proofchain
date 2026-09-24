@@ -1,4 +1,4 @@
-package com.proofchain.auth;
+package com.proofchain.auth.dtos;
 
 /**
  * AuthRequest

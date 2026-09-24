@@ -1,4 +1,4 @@
-package com.proofchain.auth;
+package com.proofchain.auth.dtos;
 
 /**
  * AuthResponse
@@ -26,6 +26,9 @@ package com.proofchain.auth;
  * Utilizado como payload de resposta do endpoint /auth/login, servindo como contrato de autenticação do sistema.
  */
 public record AuthResponse(
-        String token
+        String token,
+        String refreshToken,
+        Long expiresIn,
+        UserSummaryDto user
 ) {
 }
