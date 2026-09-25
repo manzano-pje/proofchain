@@ -12,7 +12,7 @@
 import type { s } from 'vue-router/dist/options-P-0BPDru.mjs'
 import type { OnboardingRequest } from '../types/OnboardingRequest'
 
-const ONBOARDING_URL = 'http://localhost:8080/api/v1/institution/register'
+const ONBOARDING_URL = 'https://proofchain.up.railway.app/api/v1/institution/register'
 
 export const onboardingService = {
   // ---------- CADASTRO DA INSTITUIÇÃO ----------
