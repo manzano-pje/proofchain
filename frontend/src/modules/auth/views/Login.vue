@@ -52,7 +52,7 @@ const modalTitle = ref('')
 const modalMessage = ref('')
 const router = useRouter()
 const authStore = useAuthStore()
-const URL = `${import.meta.env.VITE_API_URL}/login`
+const URL = `${import.meta.env.VITE_API_URL}/auth/login`
 
 /* ======================================================
    MODAL

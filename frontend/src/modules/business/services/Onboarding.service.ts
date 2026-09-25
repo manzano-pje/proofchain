@@ -11,7 +11,7 @@
 
 import type { OnboardingRequest } from '../types/OnboardingRequest'
 
-const URL = `${import.meta.env.VITE_API_URL}/api/v1`
+const URL = `${import.meta.env.VITE_API_URL}/institution/register`
 
 export const onboardingService = {
   // ---------- CADASTRO DA INSTITUIÇÃO ----------
