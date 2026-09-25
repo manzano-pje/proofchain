@@ -50,7 +50,6 @@ export const useAuthStore = defineStore('auth', () => {
         email: response.user.email,
         role: normalizedRole,
         tenantId: response.user.tenantId,
-        permissions: response.user.permissions,
       },
     }
 
