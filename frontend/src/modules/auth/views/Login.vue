@@ -138,7 +138,7 @@ async function handleSubmit(): Promise<void> {
   isSubmitting.value = true
 
   try {
-    const response = await fetch('http://localhost:8080/api/v1/auth/login', {
+    const response = await fetch('https://proofchain.up.railway.app/api/v1/auth/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
