@@ -1,5 +1,8 @@
-package com.proofchain.auth;
+package com.proofchain.auth.controller;
 
+import com.proofchain.auth.dtos.AuthRequest;
+import com.proofchain.auth.dtos.AuthResponse;
+import com.proofchain.auth.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -60,6 +63,7 @@ public class AuthController {
     })
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@Valid @RequestBody AuthRequest request) {
-        return ResponseEntity.ok(authService.login(request));
+        AuthResponse retorno = authService.login(request);
+        return ResponseEntity.ok(retorno);
     }
 }

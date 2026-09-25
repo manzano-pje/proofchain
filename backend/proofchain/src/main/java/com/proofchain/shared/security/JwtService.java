@@ -4,15 +4,13 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.converter.json.GsonBuilderUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
-import java.time.Instant;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -40,7 +38,7 @@ import java.util.Map;
 @Service
 public class JwtService {
 
-    public void JwtService() {}
+    public JwtService() {}
 
     /*
      * =========================================================
@@ -51,11 +49,18 @@ public class JwtService {
     @Value("${security.jwt.secret}")
     private String secret;
 
-    @Value("${security.jwt.access-token.expiration}")
+    @Value("${security.jwt-token.refresh-expiration}") // 12 horas padrão (43.200.000 ms)
+    private Long refreshExpiration;
+
+    @Value("${security.jwt.access-token.expiration}") // 15 minutos (900.000 ms)
     private Long expiration;
 
-    @Value("${security.jwt-token.refresh-expiration}")
-    private Long refreshExpiration;
+    /**
+     * Retorna o tempo de expiração do Access Token em segundos (ex: 900s)
+     */
+    public long getExpirationInSeconds() {
+        return expiration / 1000;
+    }
 
     /*
      * =========================================================
@@ -66,6 +71,7 @@ public class JwtService {
     private static final String CLAIM_USER_ID = "userId";
     private static final String CLAIM_INSTITUTION_ID = "institutionId";
     private static final String CLAIM_ROLE = "role";
+
 
     /*
      * =========================================================
@@ -80,17 +86,13 @@ public class JwtService {
      */
     private SecretKey getSigningKey() {
         byte[] keyBytes = Decoders.BASE64.decode(secret);
-        SecretKey key = Keys.hmacShaKeyFor(keyBytes);
-        return key;
+        return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    /*
-     * =========================================================
+     /* =========================================================
      * GERAÇÃO DE TOKEN
      * =========================================================
-     */
-
-    /**
+     *
      * Gera um JWT assinado contendo informações do usuário autenticado.
      *
      * @param user usuário autenticado contendo dados necessários para claims
@@ -98,15 +100,36 @@ public class JwtService {
      */
     public String generateToken(UserDetailsImpl user) {
 
-        Instant now = Instant.now();
-        Instant expirationTime = now.plusMillis(expiration);
+        Map<String, Object> claims = buildClaims(user);
+        return createToken(claims, user.getUsername(), expiration);
+    }
+
+    /* =========================================================
+     * GERAÇÃO DE REFRESH TOKEN
+     * =========================================================
+     *
+     * Gera um Refresh Token com tempo de expiração prolongado.
+     *
+     * @param user usuário autenticado
+     * @return refresh token JWT assinado
+     */
+    public String generateRefreshToken(UserDetailsImpl user) {
+        return createToken(new HashMap<>(), user.getUsername(), refreshExpiration);
+    }
+
+    /**
+     * Motor de construção de Tokens usando JJWT 0.12.x
+     */
+    private String createToken(Map<String, Object> claims, String subject, long expirationMs) {
+        Date now = new Date();
+        Date expirationDate = new Date(now.getTime() + expirationMs);
 
         return Jwts.builder()
-                .claims(buildClaims(user))
-                .subject(user.getUsername())
-                .issuedAt(Date.from(now))
-                .expiration(Date.from(expirationTime))
-                .signWith(getSigningKey())
+                .claims(claims)
+                .subject(subject)
+                .issuedAt(now)
+                .expiration(expirationDate)
+                .signWith(getSigningKey(), Jwts.SIG.HS256)
                 .compact();
     }
 
@@ -117,20 +140,17 @@ public class JwtService {
      * @return mapa de claims
      */
     private Map<String, Object> buildClaims(UserDetailsImpl user) {
-        return Map.of(
-                CLAIM_USER_ID, user.getId(),
-                CLAIM_INSTITUTION_ID, user.getInstitutionId(),
-                CLAIM_ROLE, user.getRole()
-        );
+         Map <String, Object> claims = new HashMap<>();
+         claims.put(CLAIM_USER_ID, user.getId());
+         claims.put(CLAIM_INSTITUTION_ID, user.getInstitutionId());
+         claims.put(CLAIM_ROLE, user.getRole());
+        return claims;
     }
 
-    /*
-     * =========================================================
+     /* =========================================================
      * EXTRAÇÃO DE CLAIMS
      * =========================================================
-     */
-
-    /**
+     *
      * Extrai todos os claims do token JWT.
      *
      * @param token token JWT
@@ -151,6 +171,7 @@ public class JwtService {
      * @return username
      */
     public String extractUsername(String token) {
+
         return extractAllClaims(token).getSubject();
     }
 
@@ -161,6 +182,7 @@ public class JwtService {
      * @return userId
      */
     public Long extractUserId(String token) {
+
         return extractAllClaims(token).get(CLAIM_USER_ID, Long.class);
     }
 
@@ -181,6 +203,7 @@ public class JwtService {
      * @return role do usuário
      */
     public String extractRole(String token) {
+
         return extractAllClaims(token).get(CLAIM_ROLE, String.class);
     }
 
@@ -191,6 +214,7 @@ public class JwtService {
      * @return claims completos
      */
     public Claims extractClaims(String token) {
+
         return extractAllClaims(token);
     }
 

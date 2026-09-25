@@ -26,14 +26,19 @@ BEM
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 import BaseButton from '@/core/components/base/BaseButton/BaseButton.vue'
 import Modal from '@/core/components/ui/Modal/Modal.vue'
+import { useAuthStore } from '@/modules/auth/stores/Auth.store'
+import type { LoginResponse } from '@/modules/auth/types/Auth.types'
 import './Login.css'
 
 import lightLogo from '@/assets/images/logo/logo_horizontal_light.svg'
 import darkLogo from '@/assets/images/logo/logo_horizontal_black.svg'
 import dashboardImage from '@/modules/auth/images/dashboard.webp'
+
+defineOptions({ name: 'LoginView' })
 
 const email = ref('')
 const password = ref('')
@@ -45,6 +50,8 @@ const showModal = ref(false)
 const modalType = ref<'success' | 'warning' | 'error'>('error')
 const modalTitle = ref('')
 const modalMessage = ref('')
+const router = useRouter()
+const authStore = useAuthStore()
 
 /* ======================================================
    MODAL
@@ -97,11 +104,8 @@ function getReadableMessage(responseText: string, fallback: string): string {
 
 function continueToAdministration(): void {
   closeModal()
-
-  /*
-   * Quando a rota administrativa estiver disponível, habilitar o redirecionamento:
-   * router.push({ name: 'admin' })
-   */
+  const routeName = Number(authStore.user?.tenantId) === 1 ? 'platformAdmin' : 'institutionAdmin'
+  void router.replace({ name: routeName })
 }
 
 function validateForm() {
@@ -127,7 +131,7 @@ async function handleSubmit(): Promise<void> {
   // isSubmitting.value = false
 
   const loginData = {
-    userName: email.value,
+    username: email.value,
     password: password.value,
   }
 
@@ -153,8 +157,34 @@ async function handleSubmit(): Promise<void> {
       return
     }
 
-    console.log('conectado')
-    openModal('success', 'Login realizado', 'Acesso autenticado com sucesso.')
+    let loginResponse: LoginResponse
+
+    try {
+      loginResponse = JSON.parse(responseText) as LoginResponse
+    } catch {
+      openModal('error', 'Resposta inválida', 'O servidor retornou uma resposta de login inválida.')
+      return
+    }
+
+    if (!loginResponse.token || !loginResponse.user || !loginResponse.user.role) {
+      openModal(
+        'error',
+        'Resposta incompleta',
+        'O servidor não retornou os dados necessários para o acesso.',
+      )
+      return
+    }
+
+    try {
+      authStore.setSession(loginResponse)
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'A role do usuário não é suportada.'
+      openModal('error', 'Acesso não configurado', message)
+      return
+    }
+
+    const routeName = Number(authStore.user?.tenantId) === 1 ? 'platformAdmin' : 'institutionAdmin'
+    void router.push({ name: routeName })
   } catch (error) {
     const message =
       error instanceof Error
