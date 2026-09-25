@@ -52,6 +52,7 @@ const modalTitle = ref('')
 const modalMessage = ref('')
 const router = useRouter()
 const authStore = useAuthStore()
+const URL = `${import.meta.env.VITE_API_URL}/login`
 
 /* ======================================================
    MODAL
@@ -136,9 +137,9 @@ async function handleSubmit(): Promise<void> {
   }
 
   isSubmitting.value = true
-
   try {
-    const response = await fetch('https://proofchain.up.railway.app/api/v1/auth/login', {
+    const response = await fetch(URL, {
+
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
