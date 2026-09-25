@@ -3,3 +3,11 @@ password: adm.proof123
 
 username: teste@proofchain.com.br
 password: 123456789
+
+energia@proofchain.com.br
+adm.proof123
+role: admin
+
+52866268000104
+
+https://proofchain.up.railway.app/api/v1

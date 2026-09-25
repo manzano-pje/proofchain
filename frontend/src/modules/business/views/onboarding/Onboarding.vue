@@ -29,249 +29,6 @@ BEM
 =========================================================
 -->
 
-<template>
-  <div class="onboarding__page">
-    <Section class="onboarding__section">
-      <Container class="onboarding__container">
-        <!-- ============================================================
-             HEADER
-             Identidade visual da tela de configuração inicial.
-             ============================================================ -->
-        <header class="onboarding__header">
-          <div class="onboarding__header-brand">
-            <!-- Utilizando ícone/logo como na referência image_e03306.jpg -->
-            <span class="onboarding__brand-logo">
-              <a href="/">
-                <img
-                  src="@/assets/images/logo/logo_horizontal_light.svg"
-                  alt="ProofChain Logo"
-                  class="onboarding__header-logo"
-                />
-              </a>
-            </span>
-          </div>
-        </header>
-
-        <!-- ============================================================
-             INTRODUÇÃO E PROGRESSO
-             Contextualiza a primeira etapa do cadastro.
-             ============================================================ -->
-        <div class="onboarding__top-layout">
-          <section class="onboarding__intro">
-            <div>
-              <span class="onboarding__intro-badge">PRIMEIRO ACESSO</span>
-              <h1 class="onboarding__intro-title">Crie sua instituição</h1>
-            </div>
-            <p class="onboarding__intro-description">
-              Configure sua conta ProofChain<br />
-              em poucos passos.
-            </p>
-          </section>
-        </div>
-
-        <!-- ============================================================
-             FORMULÁRIO
-             Coleta os dados necessários para o cadastro.
-             ============================================================ -->
-        <form class="onboarding__form" @submit.prevent="handleSubmit" novalidate>
-          <!-- SEÇÃO 01: DADOS DA INSTITUIÇÃO -->
-          <section class="onboarding__form-section onboarding__form-section--account">
-            <div class="onboarding__section-heading">
-              <span class="onboarding__section-number">01</span>
-              <div>
-                <h2>Dados da instituição</h2>
-                <p class="onboarding__section-description">Informações básicas da organização.</p>
-              </div>
-            </div>
-
-            <div class="onboarding__field-group onboarding__field-group--two-col">
-              <div class="onboarding__field">
-                <label for="name">Nome da instituição</label>
-                <input
-                  id="name"
-                  v-model="form.name"
-                  type="text"
-                  placeholder="Ex: Minha Escola"
-                  :class="{ 'is-invalid': touched.name && errors.name }"
-                  @blur="validateField('name')"
-                />
-                <span v-if="touched.name && errors.name" class="error-message">{{
-                  errors.name
-                }}</span>
-              </div>
-
-              <div class="onboarding__field">
-                <label for="cnpj">CNPJ</label>
-                <input
-                  id="cnpj"
-                  v-model="form.cnpj"
-                  type="text"
-                  inputmode="numeric"
-                  autocomplete="organization"
-                  placeholder="00.000.000/0000-00"
-                  :class="{ 'is-invalid': touched.cnpj && errors.cnpj }"
-                  @blur="validateField('cnpj')"
-                />
-                <span v-if="touched.cnpj && errors.cnpj" class="error-message">{{
-                  errors.cnpj
-                }}</span>
-              </div>
-            </div>
-          </section>
-
-          <!-- SEÇÃO 02: CONTA ADMINISTRATIVA -->
-          <section class="onboarding__form-section">
-            <div class="onboarding__section-heading">
-              <span class="onboarding__section-number">02</span>
-              <div>
-                <h2>Conta administrativa</h2>
-                <p class="section-description">Defina as credenciais de acesso.</p>
-              </div>
-            </div>
-
-            <div class="onboarding__field-group">
-              <div class="onboarding__field">
-                <label for="userName">Nome de usuário</label>
-                <input
-                  id="userName"
-                  v-model="form.userName"
-                  type="text"
-                  autocomplete="username"
-                  placeholder="Seu nome de acesso"
-                  :class="{ 'is-invalid': touched.userName && errors.userName }"
-                  @blur="validateField('userName')"
-                />
-                <span v-if="touched.userName && errors.userName" class="error-message">{{
-                  errors.userName
-                }}</span>
-              </div>
-
-              <div class="onboarding__field">
-                <label for="email">E-mail</label>
-                <input
-                  id="email"
-                  v-model="form.email"
-                  type="email"
-                  autocomplete="email"
-                  placeholder="seu@email.com"
-                  :class="{ 'is-invalid': touched.email && errors.email }"
-                  @blur="validateField('email')"
-                />
-                <span v-if="touched.email && errors.email" class="error-message">{{
-                  errors.email
-                }}</span>
-              </div>
-
-              <div class="onboarding__field">
-                <label for="password">Senha</label>
-                <div class="onboarding__input-wrapper">
-                  <input
-                    id="password"
-                    v-model="form.password"
-                    type="password"
-                    autocomplete="new-password"
-                    placeholder="Mínimo 8 caracteres"
-                    :class="{ 'is-invalid': touched.password && errors.password }"
-                    @blur="validateField('password')"
-                  />
-                  <span class="password-toggle-icon"></span>
-                </div>
-                <span v-if="touched.password && errors.password" class="error-message">{{
-                  errors.password
-                }}</span>
-              </div>
-            </div>
-          </section>
-
-          <!-- SEÇÃO 03: PLANO SELECIONADO -->
-          <section class="onboarding__form-section onboarding__plan-section">
-            <div class="onboarding__section-heading">
-              <span class="onboarding__section-number">03</span>
-              <div>
-                <h2>Plano selecionado</h2>
-                <p class="section-description">Configuração escolhida para sua instituição.</p>
-              </div>
-            </div>
-
-            <div class="onboarding__plan-summary">
-              <div class="onboarding__plan-details-left">
-                <span class="onboarding__plan-label">PLANO</span>
-                <strong class="onboarding__plan-name">{{
-                  selectedPlan?.name || 'Plano não identificado'
-                }}</strong>
-                <p class="onboarding__plan-description">{{ selectedPlan?.description || '' }}</p>
-              </div>
-              <div class="onboarding__plan-price">
-                {{ selectedPlan?.price || '--' }}
-              </div>
-            </div>
-          </section>
-
-          <!-- AÇÕES: ENVIO DO FORMULÁRIO -->
-          <div class="onboarding__form-actions">
-            <span class="onboarding__security-badge">
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-              </svg>
-              Configuração segura
-            </span>
-            <BaseButton
-              class="onboarding__submit-button"
-              type="submit"
-              :loading="isSubmitting"
-              :disabled="!isValid || isSubmitting"
-            >
-              Criar instituição &rarr;
-            </BaseButton>
-          </div>
-        </form>
-
-        <!-- FOOTER: IDENTIFICAÇÃO DA CONFIGURAÇÃO -->
-        <footer class="onboarding__footer">
-          <span class="onboarding__footer-copy">© ProofChain</span>
-          <span class="onboarding__footer-label">Configuração inicial</span>
-        </footer>
-      </Container>
-    </Section>
-
-    <!-- ==========================================================
-         MODAL DE ONBOARDING
-         O slot de ações mantém o OK sob controle da tela.
-         ========================================================== -->
-    <Modal :visible="showModal" :type="modalType" :title="modalTitle" @close="closeModal">
-      <p>{{ modalMessage }}</p>
-
-      <template #actions>
-        <BaseButton
-          v-if="modalType === 'success'"
-          type="button"
-          variant="primary"
-          class="modal__button modal__button--primary"
-          @click="continueToLogin"
-        >
-          OK
-        </BaseButton>
-        <BaseButton
-          v-else
-          type="button"
-          variant="secondary"
-          class="modal__button modal__button--secondary"
-          @click="closeModal"
-        >
-          Fechar
-        </BaseButton>
-      </template>
-    </Modal>
-  </div>
-</template>
-
 <script lang="ts">
 import { computed, defineComponent, onMounted, reactive, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -746,6 +503,251 @@ export default defineComponent({
   },
 })
 </script>
+
+
+<template>
+  <div class="onboarding__page">
+    <Section class="onboarding__section">
+      <Container class="onboarding__container">
+        <!-- ============================================================
+             HEADER
+             Identidade visual da tela de configuração inicial.
+             ============================================================ -->
+        <header class="onboarding__header">
+          <div class="onboarding__header-brand">
+            <!-- Utilizando ícone/logo como na referência image_e03306.jpg -->
+            <span class="onboarding__brand-logo">
+              <a href="/">
+                <img
+                  src="@/assets/images/logo/logo_horizontal_light.svg"
+                  alt="ProofChain Logo"
+                  class="onboarding__header-logo"
+                />
+              </a>
+            </span>
+          </div>
+        </header>
+
+        <!-- ============================================================
+             INTRODUÇÃO E PROGRESSO
+             Contextualiza a primeira etapa do cadastro.
+             ============================================================ -->
+        <div class="onboarding__top-layout">
+          <section class="onboarding__intro">
+            <div>
+              <span class="onboarding__intro-badge">PRIMEIRO ACESSO</span>
+              <h1 class="onboarding__intro-title">Crie sua instituição</h1>
+            </div>
+            <p class="onboarding__intro-description">
+              Configure sua conta ProofChain<br />
+              em poucos passos.
+            </p>
+          </section>
+        </div>
+
+        <!-- ============================================================
+             FORMULÁRIO
+             Coleta os dados necessários para o cadastro.
+             ============================================================ -->
+        <form class="onboarding__form" @submit.prevent="handleSubmit" novalidate>
+          <!-- SEÇÃO 01: DADOS DA INSTITUIÇÃO -->
+          <section class="onboarding__form-section onboarding__form-section--account">
+            <div class="onboarding__section-heading">
+              <span class="onboarding__section-number">01</span>
+              <div>
+                <h2>Dados da instituição</h2>
+                <p class="onboarding__section-description">Informações básicas da organização.</p>
+              </div>
+            </div>
+
+            <div class="onboarding__field-group onboarding__field-group--two-col">
+              <div class="onboarding__field">
+                <label for="name">Nome da instituição</label>
+                <input
+                  id="name"
+                  v-model="form.name"
+                  type="text"
+                  placeholder="Ex: Minha Escola"
+                  :class="{ 'is-invalid': touched.name && errors.name }"
+                  @blur="validateField('name')"
+                />
+                <span v-if="touched.name && errors.name" class="error-message">{{
+                  errors.name
+                }}</span>
+              </div>
+
+              <div class="onboarding__field">
+                <label for="cnpj">CNPJ</label>
+                <input
+                  id="cnpj"
+                  v-model="form.cnpj"
+                  type="text"
+                  inputmode="numeric"
+                  autocomplete="organization"
+                  placeholder="00.000.000/0000-00"
+                  :class="{ 'is-invalid': touched.cnpj && errors.cnpj }"
+                  @blur="validateField('cnpj')"
+                />
+                <span v-if="touched.cnpj && errors.cnpj" class="error-message">{{
+                  errors.cnpj
+                }}</span>
+              </div>
+            </div>
+          </section>
+
+          <!-- SEÇÃO 02: CONTA ADMINISTRATIVA -->
+          <section class="onboarding__form-section">
+            <div class="onboarding__section-heading">
+              <span class="onboarding__section-number">02</span>
+              <div>
+                <h2>Conta administrativa</h2>
+                <p class="section-description">Defina as credenciais de acesso.</p>
+              </div>
+            </div>
+
+            <div class="onboarding__field-group">
+              <div class="onboarding__field">
+                <label for="userName">Nome de usuário</label>
+                <input
+                  id="userName"
+                  v-model="form.userName"
+                  type="text"
+                  autocomplete="username"
+                  placeholder="Seu nome de acesso"
+                  :class="{ 'is-invalid': touched.userName && errors.userName }"
+                  @blur="validateField('userName')"
+                />
+                <span v-if="touched.userName && errors.userName" class="error-message">{{
+                  errors.userName
+                }}</span>
+              </div>
+
+              <div class="onboarding__field">
+                <label for="email">E-mail</label>
+                <input
+                  id="email"
+                  v-model="form.email"
+                  type="email"
+                  autocomplete="email"
+                  placeholder="seu@email.com"
+                  :class="{ 'is-invalid': touched.email && errors.email }"
+                  @blur="validateField('email')"
+                />
+                <span v-if="touched.email && errors.email" class="error-message">{{
+                  errors.email
+                }}</span>
+              </div>
+
+              <div class="onboarding__field">
+                <label for="password">Senha</label>
+                <div class="onboarding__input-wrapper">
+                  <input
+                    id="password"
+                    v-model="form.password"
+                    type="password"
+                    autocomplete="new-password"
+                    placeholder="Mínimo 8 caracteres"
+                    :class="{ 'is-invalid': touched.password && errors.password }"
+                    @blur="validateField('password')"
+                  />
+                  <span class="password-toggle-icon"></span>
+                </div>
+                <span v-if="touched.password && errors.password" class="error-message">{{
+                  errors.password
+                }}</span>
+              </div>
+            </div>
+          </section>
+
+          <!-- SEÇÃO 03: PLANO SELECIONADO -->
+          <section class="onboarding__form-section onboarding__plan-section">
+            <div class="onboarding__section-heading">
+              <span class="onboarding__section-number">03</span>
+              <div>
+                <h2>Plano selecionado</h2>
+                <p class="section-description">Configuração escolhida para sua instituição.</p>
+              </div>
+            </div>
+
+            <div class="onboarding__plan-summary">
+              <div class="onboarding__plan-details-left">
+                <span class="onboarding__plan-label">PLANO</span>
+                <strong class="onboarding__plan-name">{{
+                  selectedPlan?.name || 'Plano não identificado'
+                }}</strong>
+                <p class="onboarding__plan-description">{{ selectedPlan?.description || '' }}</p>
+              </div>
+              <div class="onboarding__plan-price">
+                {{ selectedPlan?.price || '--' }}
+              </div>
+            </div>
+          </section>
+
+          <!-- AÇÕES: ENVIO DO FORMULÁRIO -->
+          <div class="onboarding__form-actions">
+            <span class="onboarding__security-badge">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              </svg>
+              Configuração segura
+            </span>
+            <BaseButton
+              class="onboarding__submit-button"
+              type="submit"
+              :loading="isSubmitting"
+              :disabled="!isValid || isSubmitting"
+            >
+              Criar instituição &rarr;
+            </BaseButton>
+          </div>
+        </form>
+
+        <!-- FOOTER: IDENTIFICAÇÃO DA CONFIGURAÇÃO -->
+        <footer class="onboarding__footer">
+          <span class="onboarding__footer-copy">© ProofChain</span>
+          <span class="onboarding__footer-label">Configuração inicial</span>
+        </footer>
+      </Container>
+    </Section>
+
+    <!-- ==========================================================
+         MODAL DE ONBOARDING
+         O slot de ações mantém o OK sob controle da tela.
+         ========================================================== -->
+    <Modal :visible="showModal" :type="modalType" :title="modalTitle" @close="closeModal">
+      <p>{{ modalMessage }}</p>
+
+      <template #actions>
+        <BaseButton
+          v-if="modalType === 'success'"
+          type="button"
+          variant="primary"
+          class="modal__button modal__button--primary"
+          @click="continueToLogin"
+        >
+          OK
+        </BaseButton>
+        <BaseButton
+          v-else
+          type="button"
+          variant="secondary"
+          class="modal__button modal__button--secondary"
+          @click="closeModal"
+        >
+          Fechar
+        </BaseButton>
+      </template>
+    </Modal>
+  </div>
+</template>
+
 
 <style scoped>
 /*

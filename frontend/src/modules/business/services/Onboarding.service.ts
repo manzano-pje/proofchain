@@ -9,15 +9,14 @@
 // Encaminha os dados do onboarding para a API em formato JSON.
 // =========================================================
 
-import type { s } from 'vue-router/dist/options-P-0BPDru.mjs'
 import type { OnboardingRequest } from '../types/OnboardingRequest'
 
-const ONBOARDING_URL = 'https://proofchain.up.railway.app/api/v1/institution/register'
+const URL = `${import.meta.env.VITE_API_URL}/institution/register`
 
 export const onboardingService = {
   // ---------- CADASTRO DA INSTITUIÇÃO ----------
   async create(request: OnboardingRequest): Promise<string> {
-    const response = await fetch(ONBOARDING_URL, {
+    const response = await fetch(URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
