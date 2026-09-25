@@ -104,7 +104,8 @@ function getReadableMessage(responseText: string, fallback: string): string {
 
 function continueToAdministration(): void {
   closeModal()
-  void router.push({ name: 'admin' })
+  const routeName = Number(authStore.user?.tenantId) === 1 ? 'platformAdmin' : 'institutionAdmin'
+  void router.replace({ name: routeName })
 }
 
 function validateForm() {
@@ -182,7 +183,8 @@ async function handleSubmit(): Promise<void> {
       return
     }
 
-    openModal('success', 'Login realizado', 'Acesso autenticado com sucesso.')
+    const routeName = Number(authStore.user?.tenantId) === 1 ? 'platformAdmin' : 'institutionAdmin'
+    void router.push({ name: routeName })
   } catch (error) {
     const message =
       error instanceof Error

@@ -26,8 +26,14 @@ const router = createRouter({
       // meta: { public: true } // se houver guard
     },
     {
-      path: '/admin/:section(.*)*',
-      name: 'admin',
+      path: '/admin',
+      name: 'platformAdmin',
+      component: () => import('@/modules/business/views/admin/AdminLayout.vue'),
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/institutionAdmin',
+      name: 'institutionAdmin',
       component: () => import('@/modules/business/views/admin/AdminLayout.vue'),
       meta: { requiresAuth: true },
     },
@@ -36,17 +42,30 @@ const router = createRouter({
 
 router.beforeEach((to) => {
   const authStore = useAuthStore()
+  const isPlatformInstitution = Number(authStore.user?.tenantId) === 1
+
+  if (to.name === 'login' && authStore.isAuthenticated && isPlatformInstitution) {
+    return { name: 'platformAdmin' }
+  }
 
   if (to.name === 'login' && authStore.isAuthenticated) {
-    return { name: 'admin' }
+    return { name: 'institutionAdmin' }
   }
 
   if (to.meta.requiresAuth && !authStore.isAuthenticated) {
     return { name: 'login', query: { redirect: to.fullPath } }
   }
 
+  if (to.name === 'platformAdmin' && !isPlatformInstitution) {
+    return { name: 'institutionAdmin' }
+  }
+
+  if (to.name === 'institutionAdmin' && isPlatformInstitution) {
+    return { name: 'platformAdmin' }
+  }
+
   if (to.meta.requiresAuth && authStore.role && !canAccessAdminRoute(to.path, authStore.role)) {
-    return { name: 'admin' }
+    return { name: isPlatformInstitution ? 'platformAdmin' : 'institutionAdmin' }
   }
 
   return true

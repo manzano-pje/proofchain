@@ -41,7 +41,7 @@ export const useAuthStore = defineStore('auth', () => {
     }
 
     const nextSession: AuthSession = {
-      accessToken: response.accessToken,
+      accessToken: response.token,
       ...(response.refreshToken ? { refreshToken: response.refreshToken } : {}),
       expiresAt: Date.now() + response.expiresIn * 1000,
       user: {

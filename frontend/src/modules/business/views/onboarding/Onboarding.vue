@@ -254,7 +254,7 @@ BEM
           type="button"
           variant="primary"
           class="modal__button modal__button--primary"
-          @click="continueToAdministration"
+          @click="continueToLogin"
         >
           OK
         </BaseButton>
@@ -274,7 +274,7 @@ BEM
 
 <script lang="ts">
 import { computed, defineComponent, onMounted, reactive, ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import Container from '@/core/components/ui/Container/Container.vue'
 import Section from '@/core/components/ui/Section/Section.vue'
 import BaseButton from '@/core/components/base/BaseButton/BaseButton.vue'
@@ -331,6 +331,7 @@ export default defineComponent({
        ========================================================== */
 
     const route = useRoute()
+    const router = useRouter()
     const queryPlanId = route.query.planId
 
     const planId =
@@ -439,13 +440,9 @@ export default defineComponent({
       return fallback
     }
 
-    const continueToAdministration = (): void => {
+    const continueToLogin = (): void => {
       closeModal()
-
-      /*
-       * Quando a rota administrativa estiver disponível, habilitar o redirecionamento:
-       * router.push({ name: 'admin' })
-       */
+      void router.push({ name: 'login' })
     }
 
     /* ==========================================================
@@ -712,11 +709,6 @@ export default defineComponent({
          * })
          */
 
-        /*
-         * Quando houver uma tela de destino, o redirecionamento pode ser feito aqui:
-         *
-         * router.push(...)
-         */
       } catch (error) {
         console.error('Erro ao criar instituição', error)
 
@@ -749,7 +741,7 @@ export default defineComponent({
       validateField,
       handleSubmit,
       closeModal,
-      continueToAdministration,
+      continueToLogin,
     }
   },
 })

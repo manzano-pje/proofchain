@@ -278,7 +278,7 @@ export function getAdminMenuForRole(role: AuthRole): readonly MenuGroupConfig[] 
 }
 
 export function canAccessAdminRoute(path: string, role: AuthRole): boolean {
-  if (path === '/admin') return true
+  if (path === '/admin' || path === '/institutionAdmin') return true
 
   return ADMIN_MENU.some((group) =>
     group.items.some(
