@@ -1,0 +1,158 @@
+.institution-form {
+  display: grid;
+  gap: var(--space-xl);
+  max-width: 960px;
+}
+
+/* ------------------------------------------------------------------ */
+/* Cards                                                              */
+/* ------------------------------------------------------------------ */
+
+.institution-form__card {
+  padding: var(--card-padding);
+  border: var(--border-width-thin) solid var(--border-buttom);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow-xs);
+}
+
+/* ------------------------------------------------------------------ */
+/* Grid + campos                                                      */
+/* ------------------------------------------------------------------ */
+
+.institution-form__grid {
+  display: grid;
+  gap: var(--space-lg);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.institution-form__field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  min-width: 0;
+}
+
+.institution-form__field--full {
+  grid-column: 1 / -1;
+}
+
+.institution-form__label {
+  color: var(--text-secondary);
+  font-size: var(--font-sm);
+  font-weight: var(--weight-medium);
+}
+
+.institution-form__input {
+  width: 100%;
+  padding: var(--input-padding-y) var(--input-padding-x);
+  border: var(--border-width-thin) solid var(--border-buttom);
+  border-radius: var(--radius-md);
+  background: var(--background-dark);
+  color: var(--text-primary);
+  font-size: var(--body-default);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast),
+    background-color var(--transition-fast);
+}
+
+.institution-form__input::placeholder {
+  color: var(--text-muted);
+}
+
+.institution-form__input:hover:not(.institution-form__input--readonly) {
+  border-color: var(--border-hover);
+}
+
+.institution-form__input:focus-visible {
+  border-color: var(--action);
+  box-shadow: var(--shadow-focus);
+  outline: none;
+}
+
+/* Read-only: aparência coerente com campo desabilitado, sem perder legibilidade */
+.institution-form__input--readonly {
+  color: var(--text-secondary);
+  border-style: dashed;
+  border-color: rgba(70, 81, 97, 0.6);
+  background: rgba(255, 255, 255, 0.02);
+  cursor: not-allowed;
+}
+
+.institution-form__input--readonly:hover,
+.institution-form__input--readonly:focus {
+  border-color: rgba(70, 81, 97, 0.6);
+  box-shadow: none;
+}
+
+/* Erro */
+.institution-form__input--error {
+  border-color: var(--danger);
+}
+
+.institution-form__input--error:focus-visible {
+  border-color: var(--danger);
+  box-shadow: 0 0 0 3px rgba(238, 39, 39, 0.25);
+}
+
+.institution-form__error {
+  color: var(--danger);
+  font-size: var(--font-xs);
+  line-height: var(--line-normal);
+}
+
+/* ------------------------------------------------------------------ */
+/* Ações                                                              */
+/* ------------------------------------------------------------------ */
+
+.institution-form__actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.institution-form__button {
+  padding: var(--button-padding-y) var(--button-padding-x);
+  border: none;
+  border-radius: var(--radius-md);
+  background: var(--action);
+  color: var(--text-inverse);
+  font-size: var(--body-default);
+  font-weight: var(--weight-semibold);
+  transition: background-color var(--transition-fast), opacity var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+.institution-form__button:hover:not(:disabled) {
+  background: var(--action-hover);
+}
+
+.institution-form__button:active:not(:disabled) {
+  background: var(--action-active);
+}
+
+.institution-form__button:focus-visible {
+  box-shadow: var(--shadow-focus);
+  outline: none;
+}
+
+.institution-form__button:disabled {
+  opacity: var(--opacity-disabled);
+  cursor: not-allowed;
+}
+
+/* ------------------------------------------------------------------ */
+/* Responsivo                                                         */
+/* ------------------------------------------------------------------ */
+
+@media (max-width: 767px) {
+  .institution-form__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .institution-form__actions {
+    justify-content: stretch;
+  }
+
+  .institution-form__button {
+    width: 100%;
+  }
+}

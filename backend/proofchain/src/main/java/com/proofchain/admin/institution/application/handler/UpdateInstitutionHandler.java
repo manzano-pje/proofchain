@@ -34,4 +34,14 @@ public class UpdateInstitutionHandler {
         institution.updateFrom(UpdateInstitutionRequest);
         institutionRepository.save(institution);
     }
+
+    public void updateCurrentInstitution(UpdateInstitutionRequest request) {
+        Long institutionId = SecurityUtils.getInstitutionId();
+        tenantValidation.validateInstitution(institutionId);
+
+        Institution institution = institutionRepository.findByIdAndDeletedAtIsNull(institutionId)
+                .orElseThrow(() -> new NotFoundException(InstitutionMessages.INSTITUTION_NOT_FOUND));
+        institution.updateFrom(request);
+        institutionRepository.save(institution);
+    }
 }

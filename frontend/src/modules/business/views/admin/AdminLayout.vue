@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import { RouterView } from 'vue-router'
 
 import { useAuthStore } from '@/modules/auth/stores/Auth.store'
 import { getAdminMenuForRole } from '@/modules/business/types/Entity.types'
@@ -34,9 +35,10 @@ const menuGroups = computed<readonly MenuGroup[]>(() =>
 )
 
 const activeMenuItem = computed(() => {
+  const normalizedPath = route.path.replace(/^\/institutionAdmin(?=\/)/, '/admin')
   const item = menuGroups.value
     .flatMap((group) => group.items)
-    .find((menuItem) => menuItem.route === route.path)
+    .find((menuItem) => menuItem.route === normalizedPath)
   return item?.id ?? 'overview'
 })
 
@@ -48,7 +50,13 @@ function selectMenu(id: string): void {
   const item = menuGroups.value
     .flatMap((group) => group.items)
     .find((menuItem) => menuItem.id === id)
-  if (item) void router.push(item.route)
+  if (item) {
+    const adminBasePath = route.path.startsWith('/institutionAdmin')
+      ? '/institutionAdmin'
+      : '/admin'
+    const targetPath = item.route.replace(/^\/admin/, adminBasePath)
+    void router.push(targetPath)
+  }
 }
 
 function logout(): void {
@@ -79,21 +87,7 @@ function logout(): void {
       />
 
       <main class="admin-page__content">
-        <slot>
-          <!--
-            Conteúdo temporário da base administrativa.
-            As telas reais serão inseridas neste slot quando suas rotas e
-            fluxos de navegação forem definidos.
-          -->
-          <section class="admin-page__placeholder" aria-labelledby="admin-placeholder-title">
-            <span class="admin-page__placeholder-kicker">Área administrativa</span>
-            <h2 id="admin-placeholder-title">Base do painel pronta</h2>
-            <p>
-              O layout, o menu, o cabeçalho e o rodapé estão conectados. As opções do menu e a
-              pesquisa permanecem sem navegação enquanto as telas administrativas são construídas.
-            </p>
-          </section>
-        </slot>
+        <RouterView/>
       </main>
 
       <AppFooter version="0.1.0" />
