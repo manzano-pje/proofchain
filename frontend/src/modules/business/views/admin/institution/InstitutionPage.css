@@ -1,0 +1,34 @@
+/*
+=========================================================
+Project.......: ProofChain
+Module........: Business / Admin
+Feature.......: Gestão de instituição
+File..........: InstitutionPage.css
+
+Description...:
+Estilos da área de feedback da página institucional.
+
+Methodology...:
+BEM
+=========================================================
+*/
+
+.institution-page {
+  min-width: 0;
+}
+
+.institution-page__message {
+  margin: 0 0 var(--space-md);
+}
+
+.institution-page__message--error {
+  color: var(--danger);
+}
+
+.institution-page__message--success {
+  color: var(--success);
+}
+
+.institution-page__retry {
+  margin-bottom: var(--space-md);
+}

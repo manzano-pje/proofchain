@@ -18,6 +18,12 @@
   padding: var(--space-2xl) var(--space-3xl);
 }
 
+@media (max-width: 767px) {
+  .admin-page__content {
+    padding: var(--space-xl) var(--space-md);
+  }
+}
+
 .admin-page__placeholder {
   max-width: 760px;
   padding: var(--space-2xl);

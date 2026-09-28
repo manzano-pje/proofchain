@@ -1,3 +1,18 @@
+/*
+=========================================================
+Project.......: ProofChain
+Module........: Business / Admin
+Feature.......: Formulário de instituição
+File..........: InstitutionForm.css
+
+Description...:
+Estilos responsivos do formulário administrativo.
+
+Methodology...:
+BEM
+=========================================================
+*/
+
 .institution-form {
   display: grid;
   gap: var(--space-xl);
@@ -101,6 +116,13 @@
   line-height: var(--line-normal);
 }
 
+.institution-form__notice {
+  margin: 0 0 var(--space-md);
+  color: var(--text-inverse);
+  font-size: var(--body-small);
+  line-height: var(--line-normal);
+}
+
 /* ------------------------------------------------------------------ */
 /* Ações                                                              */
 /* ------------------------------------------------------------------ */
@@ -112,7 +134,7 @@
 
 .institution-form__button {
   padding: var(--button-padding-y) var(--button-padding-x);
-  border: var(--border-width-default) solid var(--);
+  border: var(--border-width-default) solid var(--brand);
   border-radius: var(--radius-md);
   background: var(--gradient-cta);
   color: var(--text-primary);
@@ -147,6 +169,10 @@
 @media (max-width: 767px) {
   .institution-form__grid {
     grid-template-columns: 1fr;
+  }
+
+  .institution-form__card {
+    padding: var(--space-md);
   }
 
   .institution-form__actions {

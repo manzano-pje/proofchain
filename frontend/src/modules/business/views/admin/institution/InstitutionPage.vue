@@ -1,3 +1,27 @@
+<!--
+=========================================================
+Project.......: ProofChain
+Module........: Business / Admin
+Feature.......: Gestão de instituição
+File..........: InstitutionPage.vue
+
+Description...:
+Carrega e atualiza os dados da instituição autenticada.
+
+Responsibilities:
+- Consultar os dados da instituição atual.
+- Coordenar o envio do formulário e apresentar feedback.
+
+Dependencies..:
+- InstitutionForm.vue
+- Institution.service.ts
+- Auth.store.ts
+
+Methodology...:
+BEM
+=========================================================
+-->
+
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 
@@ -52,7 +76,7 @@ async function loadInstitution(): Promise<void> {
 
 async function saveInstitution(payload: InstitutionUpdatePayload): Promise<void> {
   if (payload.logo || payload.removeLogo) {
-    errorMessage.value = 'A API ainda não oferece suporte à atualização da logo.'
+    errorMessage.value = 'A API ainda não permite salvar ou remover a logo. Remova essa alteração para salvar os demais dados.'
     return
   }
 
@@ -94,9 +118,7 @@ onMounted(loadInstitution)
 </script>
 
 <template>
-  <section class="institution-page" aria-labelledby="institution-page-title">
-    <h1 id="institution-page-title">Instituição</h1>
-
+  <section class="institution-page" aria-label="Dados da instituição">
     <p v-if="isLoading" role="status">Carregando dados da instituição...</p>
     <p v-if="errorMessage" class="institution-page__message institution-page__message--error" role="alert">
       {{ errorMessage }}
@@ -105,7 +127,12 @@ onMounted(loadInstitution)
       {{ successMessage }}
     </p>
 
-    <button v-if="errorMessage && !institution" type="button" @click="loadInstitution">
+    <button
+      v-if="errorMessage && !institution"
+      class="institution-page__retry"
+      type="button"
+      @click="loadInstitution"
+    >
       Tentar novamente
     </button>
 
@@ -114,29 +141,9 @@ onMounted(loadInstitution)
       :readonly-data="readonlyData"
       :initial-data="initialData"
       :submitting="isSubmitting"
-      :logo-supported="false"
       @submit="saveInstitution"
     />
   </section>
 </template>
 
-<style scoped>
-.institution-page h1 {
-  margin: 0 0 1.5rem;
-  font-family: var(--font-heading);
-  font-size: var(--heading-2);
-  color: var(--brand-light);
-}
-
-.institution-page__message {
-  margin: 0 0 1rem;
-}
-
-.institution-page__message--error {
-  color: var(--status-error, #b42318);
-}
-
-.institution-page__message--success {
-  color: var(--status-success, #067647);
-}
-</style>
+<style scoped src="./InstitutionPage.css"></style>

@@ -34,6 +34,16 @@ const menuGroups = computed<readonly MenuGroup[]>(() =>
   authStore.role ? getAdminMenuForRole(authStore.role) : [],
 )
 
+const headerTitle = computed(() =>
+  typeof route.meta.pageTitle === 'string' ? route.meta.pageTitle : 'Painel administrativo',
+)
+
+const headerSubtitle = computed(() =>
+  typeof route.meta.pageSubtitle === 'string'
+    ? route.meta.pageSubtitle
+    : 'Gestão da plataforma ProofChain',
+)
+
 const activeMenuItem = computed(() => {
   const normalizedPath = route.path.replace(/^\/institutionAdmin(?=\/)/, '/admin')
   const item = menuGroups.value
@@ -79,8 +89,8 @@ function logout(): void {
     <div class="admin-page__main">
       <AppHeader
         v-if="currentUser"
-        title="Painel administrativo"
-        subtitle="Gestão da plataforma ProofChain"
+        :title="headerTitle"
+        :subtitle="headerSubtitle"
         :current-user="currentUser"
         :search-query="searchQuery"
         @update:search-query="searchQuery = $event"

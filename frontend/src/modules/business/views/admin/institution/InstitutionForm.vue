@@ -1,12 +1,28 @@
+<!--
+=========================================================
+Project.......: ProofChain
+Module........: Business / Admin
+Feature.......: Formulário de instituição
+File..........: InstitutionForm.vue
+
+Description...:
+Edita dados cadastrais e emite o payload para a página administrativa.
+
+Responsibilities:
+- Exibir dados imutáveis e campos editáveis.
+- Validar e formatar os dados antes do envio.
+- Permitir selecionar e recortar uma logo localmente.
+
+Dependencies..:
+- InstitutionLogoUploader.vue
+- Types.ts
+
+Methodology...:
+BEM
+=========================================================
+-->
+
 <script setup lang="ts">
-/**
- * Formulário administrativo de edição da Instituição.
- *
- * É montado pela página InstitutionPage dentro do AdminLayout. Não faz
- * chamadas HTTP: recebe os dados e emite `submit` para o componente pai.
- * O backend ainda não oferece persistência de logo; esse controle permanece
- * desativado até existir um contrato de upload.
- */
 import { computed, reactive, ref, watch } from 'vue'
 
 import InstitutionLogoUploader from './InstitutionLogoUploader.vue'
@@ -25,14 +41,11 @@ interface Props {
   initialData?: InstitutionEditableInitialData
   /** Controla o estado de carregamento do botão de submit. */
   submitting?: boolean
-  /** O backend ainda não persiste logos de instituição. */
-  logoSupported?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
   initialData: () => ({}),
   submitting: false,
-  logoSupported: false,
 })
 
 const emit = defineEmits<{
@@ -81,16 +94,16 @@ watch(() => props.initialData, applyInitialData, { immediate: true })
 /* ------------------------------------------------------------------ */
 
 const formatCnpj = (value: string | null | undefined): string => {
-  if (!value) return '';
+  if (!value) return ''
 
-  const digits = value.replace(/\D/g, '').slice(0, 14);
+  const digits = value.replace(/\D/g, '').slice(0, 14)
 
   return digits
     .replace(/^(\d{2})(\d)/, '$1.$2')
     .replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3')
     .replace(/\.(\d{3})(\d)/, '.$1/$2')
-    .replace(/(\d{4})(\d)/, '$1-$2');
-};
+    .replace(/(\d{4})(\d)/, '$1-$2')
+  }
 
 function maskPostalCode(value: string): string {
   const digits = value.replace(/\D/g, '').slice(0, 8)
@@ -451,7 +464,11 @@ function onSubmit(): void {
     </section>
 
     <!-- Card 3 — logo -->
-    <section v-if="props.logoSupported" class="institution-form__card" aria-label="Logo da instituição">
+    <section class="institution-form__card" aria-label="Logo da instituição">
+      <p class="institution-form__notice" role="status">
+        A imagem pode ser selecionada e recortada, mas a API ainda não permite salvá-la ou removê-la.
+        Para salvar os demais dados, não mantenha uma alteração de logo pendente.
+      </p>
       <InstitutionLogoUploader v-model="logoFile" @remove="onLogoRemove" />
     </section>
 

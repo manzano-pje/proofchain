@@ -1,3 +1,18 @@
+/*
+=========================================================
+Project.......: ProofChain
+Module........: Business / Admin
+Feature.......: Seleção e recorte de logo
+File..........: InstitutionLogoUploader.css
+
+Description...:
+Estilos responsivos de seleção, recorte e pré-visualização.
+
+Methodology...:
+BEM
+=========================================================
+*/
+
 .institution-logo {
   display: flex;
   flex-direction: column;
@@ -47,19 +62,19 @@
 }
 
 .institution-logo__dropzone-title {
-  color: var(--text-primary);
+  color: var(--border-hover);
   font-size: var(--body-default);
   font-weight: var(--weight-medium);
 }
 
 .institution-logo__dropzone-subtitle {
-  color: var(--text-secondary);
+  color: var(--text-disabled);
   font-size: var(--body-small);
 }
 
 .institution-logo__dropzone-hint {
   margin-top: var(--space-sm);
-  color: var(--text-muted);
+  color: var(--text-disabled);
   font-size: var(--font-xs);
 }
 
@@ -236,6 +251,10 @@
 
   .institution-logo__crop-actions {
     justify-content: stretch;
+  }
+
+  .institution-logo__crop-actions .institution-logo__btn {
+    flex: 1 1 0;
   }
 
   .institution-logo__crop-actions .institution-logo__btn {

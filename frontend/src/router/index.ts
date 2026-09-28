@@ -4,7 +4,6 @@ import Landing from '@/modules/landing/views/Landing.vue'
 import Login from '@/modules/auth/views/Login.vue'
 import { useAuthStore } from '@/modules/auth/stores/Auth.store'
 import { canAccessAdminRoute } from '@/modules/business/types/Entity.types'
-import AdminLayout from '@/modules/business/views/admin/AdminLayout.vue'
 
 const institutionRoute = () =>
   import('@/modules/business/views/admin/institution/InstitutionPage.vue')
@@ -39,7 +38,11 @@ const router = createRouter({
           path: 'instituicao',
           name: 'institution',
           component: institutionRoute,
-          meta: { allowedRoles: ['Super_admin', 'Admin'] },
+          meta: {
+            allowedRoles: ['Super_admin', 'Admin'],
+            pageTitle: 'Instituição',
+            pageSubtitle: 'Consulte e atualize os dados cadastrais da instituição.',
+          },
         },
       ],
     },
@@ -53,7 +56,11 @@ const router = createRouter({
           path: 'instituicao',
           name: 'institutionAdmin-institution',
           component: institutionRoute,
-          meta: { allowedRoles: ['Super_admin', 'Admin'] },
+          meta: {
+            allowedRoles: ['Super_admin', 'Admin'],
+            pageTitle: 'Instituição',
+            pageSubtitle: 'Consulte e atualize os dados cadastrais da instituição.',
+          },
         },
       ],
     },

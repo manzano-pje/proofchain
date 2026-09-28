@@ -1,3 +1,21 @@
+<!--
+=========================================================
+Project.......: ProofChain
+Module........: Layout
+Feature.......: Cabeçalho administrativo
+File..........: AppHeader.vue
+
+Description...:
+Apresenta o título da rota, busca global e perfil autenticado.
+
+Dependencies..:
+- AppHeader.css
+
+Methodology...:
+BEM
+=========================================================
+-->
+
 <script setup lang="ts">
 export interface UserProfile {
   name: string

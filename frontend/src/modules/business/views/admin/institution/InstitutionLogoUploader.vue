@@ -1,4 +1,23 @@
- <script setup lang="ts">
+<!--
+=========================================================
+Project.......: ProofChain
+Module........: Business / Admin
+Feature.......: Seleção e recorte de logo
+File..........: InstitutionLogoUploader.vue
+
+Description...:
+Seleciona, enquadra e pré-visualiza uma imagem no navegador.
+
+Dependencies..:
+- InstitutionLogoUploader.css
+- useImageCrop.ts
+
+Methodology...:
+BEM
+=========================================================
+-->
+
+<script setup lang="ts">
 /**
  * Uploader da logo da instituição.
  *
@@ -7,19 +26,15 @@
  *   cropping → enquadramento com pan + zoom
  *   ready    → pré-visualização do arquivo final + alterar/remover
  *
- * [PROVISÓRIO] `aspectRatio` ainda não é definitivo — deve ser ajustado
- * quando o layout do certificado definir a área exata da logo.
- * A prop é configurável para que essa mudança não exija reescrita.
+ * `aspectRatio` pode ser ajustado quando a área da logo no certificado for
+ * definida. A imagem processada permanece local até a API aceitar upload.
  */
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
 
 import { useImageCrop } from './useImageCrop'
 
 interface Props {
-  /**
-   * Proporção (largura / altura) da área de crop.
-   * [PROVISÓRIO] Ajustar quando a área da logo no certificado for definida.
-   */
+  /** Proporção (largura / altura) da área de crop. */
   aspectRatio?: number
   /** Largura final do arquivo exportado, em px. */
   outputWidth?: number
@@ -32,7 +47,6 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  // [PROVISÓRIO] — não é decisão de negócio final; só permite o componente operar.
   aspectRatio: 4 / 1,
   outputWidth: 800,
   maxBytes: 2 * 1024 * 1024,
@@ -158,11 +172,12 @@ async function handleFile(file: File): Promise<void> {
     return
   }
 
+  const url = URL.createObjectURL(file)
   try {
-    const url = URL.createObjectURL(file)
     await crop.loadFromUrl(url, true)
     state.value = 'cropping'
   } catch {
+    URL.revokeObjectURL(url)
     errorMessage.value = 'Não foi possível carregar a imagem selecionada.'
   }
 }
@@ -235,6 +250,11 @@ async function confirmCrop(): Promise<void> {
 
 function cancelCrop(): void {
   crop.reset()
+  if (model.value) {
+    setPreviewUrl(model.value)
+    state.value = 'ready'
+    return
+  }
   state.value = 'idle'
 }
 
@@ -345,7 +365,7 @@ function removeLogo(): void {
         v-if="previewUrl"
         class="institution-logo__preview-image"
         :src="previewUrl"
-        alt="Pré-visualização da logo que será enviada"
+        alt="Pré-visualização local da logo selecionada"
       />
       <div class="institution-logo__preview-actions">
         <button type="button" class="institution-logo__btn" @click="restart">
