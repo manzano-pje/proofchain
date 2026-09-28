@@ -80,6 +80,18 @@ watch(() => props.initialData, applyInitialData, { immediate: true })
 /* Máscaras                                                            */
 /* ------------------------------------------------------------------ */
 
+const formatCnpj = (value: string | null | undefined): string => {
+  if (!value) return '';
+
+  const digits = value.replace(/\D/g, '').slice(0, 14);
+
+  return digits
+    .replace(/^(\d{2})(\d)/, '$1.$2')
+    .replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3')
+    .replace(/\.(\d{3})(\d)/, '.$1/$2')
+    .replace(/(\d{4})(\d)/, '$1-$2');
+};
+
 function maskPostalCode(value: string): string {
   const digits = value.replace(/\D/g, '').slice(0, 8)
   return digits.length > 5 ? `${digits.slice(0, 5)}-${digits.slice(5)}` : digits
@@ -230,7 +242,7 @@ function onSubmit(): void {
             id="institution-cnpj"
             class="institution-form__input institution-form__input--readonly"
             type="text"
-            :value="props.readonlyData.cnpj"
+            :value="formatCnpj(props.readonlyData.cnpj)"
             readonly
             aria-readonly="true"
           />

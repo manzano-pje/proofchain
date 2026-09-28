@@ -10,9 +10,9 @@
 
 .institution-form__card {
   padding: var(--card-padding);
-  border: var(--border-width-thin) solid var(--border-buttom);
+  border: var(--border-width-thin) solid var(--text-muted);
   border-radius: var(--radius-lg);
-  background: var(--surface);
+  background: var(--background-card);
   box-shadow: var(--shadow-xs);
 }
 
@@ -48,11 +48,12 @@
   padding: var(--input-padding-y) var(--input-padding-x);
   border: var(--border-width-thin) solid var(--border-buttom);
   border-radius: var(--radius-md);
-  background: var(--background-dark);
-  color: var(--text-primary);
+  background: var(--background);
+  color: var(--text-inverse);
   font-size: var(--body-default);
-  transition: border-color var(--transition-fast), box-shadow var(--transition-fast),
-    background-color var(--transition-fast);
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px var(--brand);
+  border: 1px solid var(--border-buttom);
 }
 
 .institution-form__input::placeholder {
