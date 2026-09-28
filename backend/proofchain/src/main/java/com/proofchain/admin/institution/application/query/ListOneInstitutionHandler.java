@@ -37,4 +37,13 @@ public class ListOneInstitutionHandler {
         }
         return InstitutionResponse.from(institutionOptional.get());
     }
+
+    public InstitutionResponse getCurrentInstitution() {
+        Long institutionId = SecurityUtils.getInstitutionId();
+        tenantValidation.validateInstitution(institutionId);
+
+        Institution institution = institutionRepository.findByIdAndDeletedAtIsNull(institutionId)
+                .orElseThrow(() -> new NotFoundException(InstitutionMessages.INSTITUTION_NOT_FOUND));
+        return InstitutionResponse.from(institution);
+    }
 }

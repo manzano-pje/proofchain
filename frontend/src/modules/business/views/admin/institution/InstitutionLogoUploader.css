@@ -1,0 +1,244 @@
+.institution-logo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.institution-logo__input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------- Dropzone ---------- */
+
+.institution-logo__dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  padding: var(--space-2xl) var(--space-xl);
+  border: var(--border-width-default) dashed var(--border-buttom);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--text-secondary);
+  text-align: center;
+  cursor: pointer;
+  transition: border-color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.institution-logo__dropzone:hover,
+.institution-logo__dropzone:focus-visible {
+  border-color: var(--action);
+  background: rgba(6, 182, 212, 0.06);
+  outline: none;
+}
+
+.institution-logo__dropzone--drag {
+  border-color: var(--action-hover);
+  background: rgba(6, 182, 212, 0.1);
+}
+
+.institution-logo__dropzone-title {
+  color: var(--text-primary);
+  font-size: var(--body-default);
+  font-weight: var(--weight-medium);
+}
+
+.institution-logo__dropzone-subtitle {
+  color: var(--text-secondary);
+  font-size: var(--body-small);
+}
+
+.institution-logo__dropzone-hint {
+  margin-top: var(--space-sm);
+  color: var(--text-muted);
+  font-size: var(--font-xs);
+}
+
+/* ---------- Crop ---------- */
+
+.institution-logo__crop {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.institution-logo__crop-viewport {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border: var(--border-width-thin) solid var(--border-buttom);
+  border-radius: var(--radius-md);
+  background: var(--background-dark);
+  cursor: grab;
+  touch-action: none;
+}
+
+.institution-logo__crop-viewport:active {
+  cursor: grabbing;
+}
+
+.institution-logo__crop-viewport:focus-visible {
+  border-color: var(--action);
+  box-shadow: var(--shadow-focus);
+  outline: none;
+}
+
+.institution-logo__crop-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  user-select: none;
+  pointer-events: none;
+  will-change: transform;
+  max-width: none;
+  height: auto;
+}
+
+.institution-logo__crop-frame {
+  position: absolute;
+  inset: 0;
+  border: var(--border-width-default) solid rgba(6, 182, 212, 0.7);
+  border-radius: var(--radius-md);
+  pointer-events: none;
+  box-shadow: 0 0 0 9999px rgba(2, 6, 23, 0.35);
+}
+
+.institution-logo__crop-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+  align-items: center;
+  justify-content: space-between;
+}
+
+.institution-logo__zoom {
+  display: flex;
+  flex: 1 1 220px;
+  gap: var(--space-sm);
+  align-items: center;
+  min-width: 0;
+}
+
+.institution-logo__zoom-label {
+  color: var(--text-secondary);
+  font-size: var(--font-sm);
+  font-weight: var(--weight-medium);
+}
+
+.institution-logo__zoom-range {
+  flex: 1 1 auto;
+  accent-color: var(--action);
+}
+
+.institution-logo__crop-actions {
+  display: flex;
+  gap: var(--space-sm);
+  flex: 0 0 auto;
+}
+
+/* ---------- Preview ---------- */
+
+.institution-logo__preview {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  align-items: center;
+  padding: var(--space-lg);
+  border: var(--border-width-thin) solid var(--border-buttom);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.institution-logo__preview-image {
+  width: 100%;
+  max-width: 480px;
+  height: auto;
+  border-radius: var(--radius-sm);
+  background: var(--background-dark);
+}
+
+.institution-logo__preview-actions {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* ---------- Botões ---------- */
+
+.institution-logo__btn {
+  padding: var(--button-padding-y) var(--button-padding-x);
+  border: var(--border-width-thin) solid var(--border-buttom);
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--text-primary);
+  font-size: var(--body-small);
+  font-weight: var(--weight-medium);
+  transition: background-color var(--transition-fast), border-color var(--transition-fast),
+    opacity var(--transition-fast);
+}
+
+.institution-logo__btn:hover:not(:disabled) {
+  border-color: var(--border-hover);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.institution-logo__btn:focus-visible {
+  border-color: var(--action);
+  box-shadow: var(--shadow-focus);
+  outline: none;
+}
+
+.institution-logo__btn--primary {
+  border-color: transparent;
+  background: var(--action);
+  color: var(--text-inverse);
+  font-weight: var(--weight-semibold);
+}
+
+.institution-logo__btn--primary:hover:not(:disabled) {
+  background: var(--action-hover);
+  border-color: transparent;
+}
+
+.institution-logo__btn--danger {
+  color: var(--danger);
+  border-color: rgba(238, 39, 39, 0.4);
+}
+
+.institution-logo__btn--danger:hover:not(:disabled) {
+  background: rgba(238, 39, 39, 0.12);
+  border-color: var(--danger);
+}
+
+/* ---------- Erro ---------- */
+
+.institution-logo__error {
+  color: var(--danger);
+  font-size: var(--font-sm);
+  line-height: var(--line-normal);
+}
+
+@media (max-width: 767px) {
+  .institution-logo__crop-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .institution-logo__crop-actions {
+    justify-content: stretch;
+  }
+
+  .institution-logo__crop-actions .institution-logo__btn {
+    flex: 1 1 auto;
+  }
+}

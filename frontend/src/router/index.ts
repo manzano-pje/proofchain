@@ -4,6 +4,10 @@ import Landing from '@/modules/landing/views/Landing.vue'
 import Login from '@/modules/auth/views/Login.vue'
 import { useAuthStore } from '@/modules/auth/stores/Auth.store'
 import { canAccessAdminRoute } from '@/modules/business/types/Entity.types'
+import AdminLayout from '@/modules/business/views/admin/AdminLayout.vue'
+
+const institutionRoute = () =>
+  import('@/modules/business/views/admin/institution/InstitutionPage.vue')
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -30,12 +34,28 @@ const router = createRouter({
       name: 'platformAdmin',
       component: () => import('@/modules/business/views/admin/AdminLayout.vue'),
       meta: { requiresAuth: true },
+      children: [
+        {
+          path: 'instituicao',
+          name: 'institution',
+          component: institutionRoute,
+          meta: { allowedRoles: ['Super_admin', 'Admin'] },
+        },
+      ],
     },
     {
       path: '/institutionAdmin',
       name: 'institutionAdmin',
       component: () => import('@/modules/business/views/admin/AdminLayout.vue'),
       meta: { requiresAuth: true },
+      children: [
+        {
+          path: 'instituicao',
+          name: 'institutionAdmin-institution',
+          component: institutionRoute,
+          meta: { allowedRoles: ['Super_admin', 'Admin'] },
+        },
+      ],
     },
   ],
 })

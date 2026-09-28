@@ -1,8 +1,8 @@
 .admin-page {
   display: flex;
   min-height: 100vh;
-  background: var(--background-dark);
-  color: var(--text-primary);
+  background: var(--background-card);
+  color: var(--text-inverse);
   font-family: var(--font-body);
 }
 

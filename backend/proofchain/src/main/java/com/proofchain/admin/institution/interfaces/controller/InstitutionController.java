@@ -51,6 +51,20 @@ public class InstitutionController {
                 .body("Instituição atualizada com sucesso.");
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
+    @PatchMapping("/me")
+    public ResponseEntity<String> updateCurrentInstitution(
+            @Valid @RequestBody UpdateInstitutionRequest request) {
+        updateInstitution.updateCurrentInstitution(request);
+        return ResponseEntity.ok("Instituição atualizada com sucesso.");
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
+    @GetMapping("/me")
+    public InstitutionResponse getCurrentInstitution() {
+        return listOneInstitution.getCurrentInstitution();
+    }
+
     @PreAuthorize("hasRole('SUPER_ADMIN')")
     @GetMapping("/list")
     public List<InstitutionResponse> getAllInstitution(){
