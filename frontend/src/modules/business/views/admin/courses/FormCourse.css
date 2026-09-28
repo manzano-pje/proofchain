@@ -1,0 +1,94 @@
+/* ============================================================
+   FORM COURSE
+   ============================================================ */
+.form-course {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.form-course__title {
+  margin: 0;
+  font-size: var(--font-xl);
+  font-weight: var(--weight-semibold);
+  color: var(--text-inverse);
+}
+
+.form-course__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.form-course__field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.form-course__label {
+  font-size: var(--font-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-inverse);
+}
+
+.form-course__input,
+.form-course__textarea {
+  width: 100%;
+  padding: var(--space-sm) var(--space-md);
+  border: var(--border-width-thin) solid var(--border);
+  border-radius: var(--radius-md);
+  background: #ffffff;
+  color: var(--text-inverse);
+  font-size: var(--font-md);
+  font-family: var(--font-body);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-course__input:focus,
+.form-course__textarea:focus {
+  outline: none;
+  border-color: var(--action);
+  box-shadow: var(--shadow-focus);
+}
+
+.form-course__input--error,
+.form-course__textarea--error {
+  border-color: var(--danger);
+}
+
+.form-course__input--error:focus,
+.form-course__textarea--error:focus {
+  border-color: var(--danger);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.25);
+}
+
+.form-course__textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.form-course__error {
+  font-size: var(--font-sm);
+  color: var(--danger);
+}
+
+.form-course__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-md);
+  margin-top: var(--space-md);
+}
+
+/* ============================================================
+   RESPONSIVIDADE
+   ============================================================ */
+@media (max-width: 576px) {
+  .form-course__actions {
+    flex-direction: column-reverse;
+  }
+
+  .form-course__actions > * {
+    width: 100%;
+  }
+}
