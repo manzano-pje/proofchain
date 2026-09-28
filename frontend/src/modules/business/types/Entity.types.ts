@@ -189,7 +189,7 @@ export const ADMIN_MENU: readonly MenuGroupConfig[] = [
         id: 'courses',
         label: 'Cursos',
         icon: '📚',
-        route: '/admin/cursos',
+        route: '/admin/curses',
         category: 'GESTÃO',
       },
       {
@@ -228,14 +228,6 @@ export const ADMIN_MENU: readonly MenuGroupConfig[] = [
         category: 'CERTIFICADOS',
         allowedRoles: ['Super_admin', 'Admin'],
       },
-      {
-        id: 'validate',
-        label: 'Validar',
-        icon: '🔎',
-        route: '/admin/certificados/validar',
-        category: 'CERTIFICADOS',
-        allowedRoles: ['Super_admin', 'Admin', 'user'],
-      },
     ],
   },
   {
@@ -257,15 +249,7 @@ export const ADMIN_MENU: readonly MenuGroupConfig[] = [
         route: '/admin/usuarios',
         category: 'ADMINISTRAÇÃO',
         allowedRoles: ['Super_admin', 'Admin'],
-      },
-      {
-        id: 'settings',
-        label: 'Configurações',
-        icon: '⚙️',
-        route: '/admin/configuracoes',
-        category: 'ADMINISTRAÇÃO',
-        allowedRoles: ['Super_admin', 'Admin'],
-      },
+      }
     ],
   },
 ] as const

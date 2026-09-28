@@ -62,6 +62,18 @@ const router = createRouter({
             pageSubtitle: 'Consulte e atualize os dados cadastrais da instituição.',
           },
         },
+        {
+          path: '/admin/curses',
+          name: 'CoursesAdmin',
+          component: () => import('@/modules/business/views/admin/courses/CoursePage.vue'),
+          meta: {
+            requiresAuth: true,
+            allowedRoles: ['Super_admin', 'Admin'],
+            pageTitle: 'Cursos',
+            pageSubtitle: 'Consulte e atualize os dados referente aos cursos da instituição.',
+           },
+
+        }
       ],
     },
   ],

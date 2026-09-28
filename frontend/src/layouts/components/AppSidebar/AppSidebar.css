@@ -160,11 +160,10 @@
 
 .sidebar__logout {
   background: var(--brand);
-  border-color: var(--danger);
   color: var(--danger-light);
 }
 
 .sidebar__logout:hover {
-  background: var(--danger);
+  background: var(--brand);
   color: var(--text-primary);
 }
