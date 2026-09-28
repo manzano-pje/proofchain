@@ -12,7 +12,7 @@
   padding: var(--card-padding);
   border: var(--border-width-thin) solid var(--text-muted);
   border-radius: var(--radius-lg);
-  background: var(--background-card);
+  background: var(--background-card-form);
   box-shadow: var(--shadow-xs);
 }
 
@@ -38,19 +38,19 @@
 }
 
 .institution-form__label {
-  color: var(--text-secondary);
+  color: var(--brand-hover);
   font-size: var(--font-sm);
   font-weight: var(--weight-medium);
 }
 
 .institution-form__input {
   width: 100%;
-  padding: var(--input-padding-y) var(--input-padding-x);
-  border: var(--border-width-thin) solid var(--border-buttom);
+  padding: var(--space-sm);
+  border: var(--border-width-default) solid var(--border-buttom);
   border-radius: var(--radius-md);
   background: var(--background);
   color: var(--text-inverse);
-  font-size: var(--body-default);
+  font-size: var(--body-small);
   transition: all 0.2s ease;
   box-shadow: 0 1px 2px var(--brand);
   border: 1px solid var(--border-buttom);
@@ -72,10 +72,10 @@
 
 /* Read-only: aparência coerente com campo desabilitado, sem perder legibilidade */
 .institution-form__input--readonly {
-  color: var(--text-secondary);
-  border-style: dashed;
+  color: var(--text-disabled);
+  border-style: solid;
   border-color: rgba(70, 81, 97, 0.6);
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--background-card);
   cursor: not-allowed;
 }
 
@@ -112,10 +112,10 @@
 
 .institution-form__button {
   padding: var(--button-padding-y) var(--button-padding-x);
-  border: none;
+  border: var(--border-width-default) solid var(--);
   border-radius: var(--radius-md);
-  background: var(--action);
-  color: var(--text-inverse);
+  background: var(--gradient-cta);
+  color: var(--text-primary);
   font-size: var(--body-default);
   font-weight: var(--weight-semibold);
   transition: background-color var(--transition-fast), opacity var(--transition-fast),
@@ -123,11 +123,11 @@
 }
 
 .institution-form__button:hover:not(:disabled) {
-  background: var(--action-hover);
+  background: var(--gradient-cta-inverse);
 }
 
 .institution-form__button:active:not(:disabled) {
-  background: var(--action-active);
+  background: var(--gradient-cta);
 }
 
 .institution-form__button:focus-visible {

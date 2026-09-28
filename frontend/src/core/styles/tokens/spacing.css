@@ -21,7 +21,7 @@
   --section-padding-y: var(--space-lg);
   --section-padding-x: var(--space-xl);
 
-  --card-padding: var(--space-xl);
+  --card-padding: var(--space-md);
 
   --button-padding-y: var(--space-sm);
   --button-padding-x: var(--space-lg);

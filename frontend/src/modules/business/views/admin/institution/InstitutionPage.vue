@@ -125,6 +125,7 @@ onMounted(loadInstitution)
   margin: 0 0 1.5rem;
   font-family: var(--font-heading);
   font-size: var(--heading-2);
+  color: var(--brand-light);
 }
 
 .institution-page__message {
