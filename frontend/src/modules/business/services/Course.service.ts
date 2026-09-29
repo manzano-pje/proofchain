@@ -3,28 +3,26 @@
  * Encapsula as chamadas HTTP para o backend, seguindo o padrão dos
  * demais services do projeto (ex.: Institution.service.ts).
  *
- * A URL base é obtida de VITE_API_URL e não contém duplicação de /api/v1.
+ * VITE_API_URL já inclui /api/v1; este serviço acrescenta apenas /course.
  */
 
 import type { Course, CourseCreatePayload, CourseUpdatePayload } from '../types/Course.types'
 
-const API_URL = import.meta.env.VITE_API_URL
-const BASE_PATH = '/api/v1/course'
+const COURSE_URL = `${import.meta.env.VITE_API_URL.replace(/\/$/, '')}/course`
 
 export const courseService = {
   /**
    * GET /api/v1/course/list
    * Retorna todos os cursos da instituição do usuário autenticado.
    */
-  async getAll(): Promise<Course[]> {
-    const response = await fetch(`${API_URL}${BASE_PATH}/list`, {
+  async getAll(token: string): Promise<Course[]> {
+    const response = await fetch(`${COURSE_URL}/list`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        // O token JWT é gerenciado pelo interceptor global do projeto.
-        // Não é necessário adicionar manualmente.
+        Authorization: `Bearer ${token}`,
       },
-      credentials: 'include', // preserva cookies de sessão, se houver
+      credentials: 'include',
     })
 
     if (!response.ok) {
@@ -38,11 +36,12 @@ export const courseService = {
    * GET /api/v1/course/list/{id}
    * Retorna um curso específico.
    */
-  async getById(id: number): Promise<Course> {
-    const response = await fetch(`${API_URL}${BASE_PATH}/list/${id}`, {
+  async getById(id: number, token: string): Promise<Course> {
+    const response = await fetch(`${COURSE_URL}/list/${id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
       credentials: 'include',
     })
@@ -58,11 +57,12 @@ export const courseService = {
    * POST /api/v1/course/register
    * Cria um novo curso.
    */
-  async create(payload: CourseCreatePayload): Promise<Course> {
-    const response = await fetch(`${API_URL}${BASE_PATH}/register`, {
+  async create(token: string, payload: CourseCreatePayload): Promise<Course> {
+    const response = await fetch(`${COURSE_URL}/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
       credentials: 'include',
       body: JSON.stringify(payload),
@@ -79,11 +79,12 @@ export const courseService = {
    * PATCH /api/v1/course/update/{id}
    * Atualiza um curso existente.
    */
-  async update(id: number, payload: CourseUpdatePayload): Promise<Course> {
-    const response = await fetch(`${API_URL}${BASE_PATH}/update/${id}`, {
+  async update(token: string, id: number, payload: CourseUpdatePayload): Promise<Course> {
+    const response = await fetch(`${COURSE_URL}/update/${id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
       credentials: 'include',
       body: JSON.stringify(payload),
@@ -101,7 +102,7 @@ export const courseService = {
    * O backend atual não possui endpoint DELETE de curso validado.
    *
    * async delete(id: number): Promise<void> {
-   *   const response = await fetch(`${API_URL}${BASE_PATH}/delete/${id}`, {
+  *   const response = await fetch(`${COURSE_URL}/delete/${id}`, {
    *     method: 'DELETE',
    *     headers: { 'Content-Type': 'application/json' },
    *     credentials: 'include',

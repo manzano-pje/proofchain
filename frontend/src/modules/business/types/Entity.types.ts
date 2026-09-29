@@ -285,7 +285,8 @@ export function canAccessAdminRoute(path: string, role: AuthRole): boolean {
   return ADMIN_MENU.some((group) =>
     group.items.some(
       (item) =>
-        item.route === normalizedPath && (!item.allowedRoles || item.allowedRoles.includes(role)),
+        item.route.split('?')[0] === normalizedPath &&
+      (!item.allowedRoles || item.allowedRoles.includes(role)),
     ),
   )
 }

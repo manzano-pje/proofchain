@@ -118,9 +118,11 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { useAuthStore } from '@/modules/auth/stores/Auth.store'
 import BaseButton from '@/core/components/base/BaseButton/BaseButton.vue'
-import FormCourse from './FormCourse.vue'
+import FormCourse from './Formcourse.vue'
 import { courseService } from '@/modules/business/services/Course.service'
 import type {
   Course,
@@ -133,6 +135,9 @@ import type {
    ESTADO
    ============================================================ */
 const courses = ref<Course[]>([])
+const authStore = useAuthStore()
+const route = useRoute()
+const router = useRouter()
 const isLoading = ref(false)
 const isSubmitting = ref(false)
 const errorMessage = ref('')
@@ -145,6 +150,15 @@ const pageSize = 10
 const isFormOpen = ref(false)
 const formMode = ref<FormMode>('create')
 const selectedCourse = ref<Course | null>(null)
+
+const getAccessToken = (): string | null => {
+  const token = authStore.session?.accessToken
+  if (!token) {
+    errorMessage.value = 'Sua sessão expirou. Entre novamente para continuar.'
+    return null
+  }
+  return token
+}
 
 /* ============================================================
    COMPUTADOS
@@ -176,10 +190,13 @@ const setSearchTerm = (value: string) => {
    CARREGAMENTO
    ============================================================ */
 const loadCourses = async () => {
-  isLoading.value = true
   errorMessage.value = ''
+  const token = getAccessToken()
+  if (!token) return
+
+  isLoading.value = true
   try {
-    courses.value = await courseService.getAll()
+    courses.value = await courseService.getAll(token)
   } catch (err) {
     errorMessage.value = 'Não foi possível carregar os cursos.'
     console.error(err)
@@ -198,11 +215,14 @@ const openCreateForm = () => {
 }
 
 const openEditForm = async (course: Course) => {
+  const token = getAccessToken()
+  if (!token) return
+
   formMode.value = 'edit'
   selectedCourse.value = null
   isFormOpen.value = true
   try {
-    selectedCourse.value = await courseService.getById(course.id)
+    selectedCourse.value = await courseService.getById(course.id, token)
   } catch (err) {
     errorMessage.value = 'Não foi possível carregar o curso.'
     console.error(err)
@@ -211,11 +231,14 @@ const openEditForm = async (course: Course) => {
 }
 
 const openViewForm = async (course: Course) => {
+  const token = getAccessToken()
+  if (!token) return
+
   formMode.value = 'view'
   selectedCourse.value = null
   isFormOpen.value = true
   try {
-    selectedCourse.value = await courseService.getById(course.id)
+    selectedCourse.value = await courseService.getById(course.id, token)
   } catch (err) {
     errorMessage.value = 'Não foi possível carregar o curso.'
     console.error(err)
@@ -227,23 +250,44 @@ const closeForm = () => {
   isFormOpen.value = false
   selectedCourse.value = null
   successMessage.value = ''
+  if (route.query.form === 'create') {
+    const query = { ...route.query }
+    delete query.form
+    void router.replace({ query })
+  }
 }
+
+watch(
+  () => route.query.form,
+  (form) => {
+    if (form === 'create') {
+      openCreateForm()
+    } else if (formMode.value === 'create') {
+      isFormOpen.value = false
+      selectedCourse.value = null
+    }
+  },
+  { immediate: true },
+)
 
 /* ============================================================
    SUBMIT DO FORMULÁRIO
    ============================================================ */
 const handleFormSubmit = async (payload: CourseCreatePayload | CourseUpdatePayload) => {
-  isSubmitting.value = true
   errorMessage.value = ''
   successMessage.value = ''
+  const token = getAccessToken()
+  if (!token) return
+
+  isSubmitting.value = true
 
   try {
     if (formMode.value === 'create') {
-      await courseService.create(payload as CourseCreatePayload)
+      await courseService.create(token, payload as CourseCreatePayload)
       successMessage.value = 'Curso cadastrado com sucesso.'
     } else if (formMode.value === 'edit') {
       const updatePayload = payload as CourseUpdatePayload
-      await courseService.update(updatePayload.id, updatePayload)
+      await courseService.update(token, updatePayload.id, updatePayload)
       successMessage.value = 'Curso atualizado com sucesso.'
     }
 

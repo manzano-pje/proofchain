@@ -114,6 +114,7 @@ public class CourseController {
 
         return ResponseEntity.ok(
                 new CourseResponse(
+                        updated.getId(),
                         updated.getName(),
                         updated.getDescription(),
                         updated.getHours()

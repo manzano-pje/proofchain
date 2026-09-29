@@ -7,9 +7,7 @@
  *   cropping → enquadramento com pan + zoom
  *   ready    → pré-visualização do arquivo final + alterar/remover
  *
- * [PROVISÓRIO] `aspectRatio` ainda não é definitivo — deve ser ajustado
- * quando o layout do certificado definir a área exata da logo.
- * A prop é configurável para que essa mudança não exija reescrita.
+   * A imagem final é exportada nas dimensões de 1300 × 472 px.
  */
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
 
@@ -17,8 +15,7 @@ import { useImageCrop } from './useImageCrop'
 
 interface Props {
   /**
-   * Proporção (largura / altura) da área de crop.
-   * [PROVISÓRIO] Ajustar quando a área da logo no certificado for definida.
+  * Proporção da área de crop.
    */
   aspectRatio?: number
   /** Largura final do arquivo exportado, em px. */
@@ -32,9 +29,8 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  // [PROVISÓRIO] — não é decisão de negócio final; só permite o componente operar.
-  aspectRatio: 4 / 1,
-  outputWidth: 800,
+  aspectRatio: 1300 / 472,
+  outputWidth: 1300,
   maxBytes: 2 * 1024 * 1024,
   acceptedMimeTypes: () => ['image/png', 'image/jpeg', 'image/svg+xml'] as const,
   acceptedExtensions: () => ['.png', '.jpg', '.jpeg', '.svg'] as const,
