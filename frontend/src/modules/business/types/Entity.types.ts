@@ -189,6 +189,7 @@ export const ADMIN_MENU: readonly MenuGroupConfig[] = [
         id: 'courses',
         label: 'Cursos',
         icon: '📚',
+        // O caminho deve corresponder às rotas filhas registradas no router.
         route: '/admin/cursos',
         category: 'GESTÃO',
       },

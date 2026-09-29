@@ -1,3 +1,30 @@
+<!--
+=========================================================
+Project.......: ProofChain
+Module........: Business / Courses
+Feature.......: Course administration
+File..........: CoursePage.vue
+Version.......: 1.0.0
+
+Description...:
+Página administrativa para consultar e manter os cursos da instituição.
+
+Responsibilities:
+- Carregar, filtrar e paginar cursos.
+- Orquestrar consulta individual e submissão do formulário.
+- Sincronizar o modal de criação com a query `form=create`.
+
+Dependencies..:
+- Auth.store
+- Course.service
+- Formcourse.vue
+- BaseButton
+
+Methodology...:
+BEM
+=========================================================
+-->
+
 <template>
   <div class="course-page">
     <!-- Cabeçalho -->
@@ -102,7 +129,7 @@
       </button>
     </nav>
 
-    <!-- Formulário (modal ou inline) -->
+    <!-- Teleport mantém o backdrop acima do layout administrativo. -->
     <Teleport to="body">
       <div v-if="isFormOpen" class="course-page__form-overlay">
         <div class="course-page__form-container">
@@ -134,8 +161,9 @@ import type {
 } from '@/modules/business/types/Course.types'
 
 /* ============================================================
-   ESTADO
-   ============================================================ */
+  ESTADO E SESSÃO
+  Token obrigatório: as rotas de cursos exigem autenticação.
+  ============================================================ */
 const courses = ref<Course[]>([])
 const authStore = useAuthStore()
 const route = useRoute()
@@ -163,8 +191,8 @@ const getAccessToken = (): string | null => {
 }
 
 /* ============================================================
-   COMPUTADOS
-   ============================================================ */
+  FILTRO E PAGINAÇÃO
+  ============================================================ */
 const filteredCourses = computed(() => {
   const term = searchTerm.value.trim().toLowerCase()
   if (!term) return courses.value
@@ -189,8 +217,9 @@ const setSearchTerm = (value: string) => {
 }
 
 /* ============================================================
-   CARREGAMENTO
-   ============================================================ */
+  LEITURA DA API
+  O contrato de GET /course/list deve corresponder ao tipo Course.
+  ============================================================ */
 const loadCourses = async () => {
   errorMessage.value = ''
   const token = getAccessToken()
@@ -208,8 +237,9 @@ const loadCourses = async () => {
 }
 
 /* ============================================================
-   ABERTURA DO FORMULÁRIO
-   ============================================================ */
+  ABERTURA E FECHAMENTO DO FORMULÁRIO
+  A query `form=create` é removida ao fechar o modal.
+  ============================================================ */
 const openCreateForm = () => {
   formMode.value = 'create'
   selectedCourse.value = null
@@ -273,8 +303,9 @@ watch(
 )
 
 /* ============================================================
-   SUBMIT DO FORMULÁRIO
-   ============================================================ */
+  SUBMISSÃO E ATUALIZAÇÃO DA LISTA
+  Após POST/PATCH bem-sucedido, fechar o modal e reler os dados.
+  ============================================================ */
 const handleFormSubmit = async (payload: CourseCreatePayload | CourseUpdatePayload) => {
   errorMessage.value = ''
   successMessage.value = ''
@@ -309,8 +340,9 @@ const handleFormSubmit = async (payload: CourseCreatePayload | CourseUpdatePaylo
 }
 
 /* ============================================================
-   EXCLUSÃO — preparada, mas não executada
-   ============================================================ */
+  EXCLUSÃO — aguardando endpoint
+  Necessário confirmar contrato e autorização antes de habilitar.
+  ============================================================ */
 const handleDeleteCourse = (_course: Course) => {
   // O endpoint DELETE ainda não existe no backend.
   // Quando estiver disponível, descomentar:

@@ -1,3 +1,29 @@
+<!--
+=========================================================
+Project.......: ProofChain
+Module........: Business / Courses
+Feature.......: Course form
+File..........: Formcourse.vue
+Version.......: 1.0.0
+
+Description...:
+Formulário reutilizável para criar, editar e visualizar cursos.
+
+Responsibilities:
+- Manter os campos e validar os dados localmente.
+- Emitir `submit` com o payload ou `cancel` para a página responsável.
+- Alternar campos e ações conforme o modo recebido.
+
+Dependencies..:
+- BaseButton
+- Course.types
+- FormCourse.css
+
+Methodology...:
+BEM
+=========================================================
+-->
+
 <template>
   <div class="form-course">
     <h2 class="form-course__title">
@@ -116,8 +142,9 @@ import BaseButton from '@/core/components/base/BaseButton/BaseButton.vue'
 import type { Course, FormMode, CourseCreatePayload, CourseUpdatePayload } from '@/modules/business/types/Course.types'
 
 /* ============================================================
-   PROPS
-   ============================================================ */
+  CONTRATO COM A PÁGINA
+  `initialData` e `mode` controlam preenchimento e somente leitura.
+  ============================================================ */
 const props = defineProps<{
   initialData?: Course | null
   mode: FormMode
@@ -125,8 +152,9 @@ const props = defineProps<{
 }>()
 
 /* ============================================================
-   EMITS
-   ============================================================ */
+  EVENTOS
+  O componente não acessa a API; o pai trata submit e cancel.
+  ============================================================ */
 const emit = defineEmits<{
   (e: 'submit', payload: CourseCreatePayload | CourseUpdatePayload): void
   (e: 'cancel'): void
@@ -160,8 +188,9 @@ const title = computed(() => {
 })
 
 /* ============================================================
-   PREENCHIMENTO INICIAL
-   ============================================================ */
+  PREENCHIMENTO INICIAL
+  Reaplica dados ao trocar de registro ou limpa o formulário ao criar.
+  ============================================================ */
 watch(
   () => props.initialData,
   (data) => {
@@ -179,8 +208,9 @@ watch(
 )
 
 /* ============================================================
-   VALIDAÇÃO
-   ============================================================ */
+  VALIDAÇÃO
+  Limites locais devem permanecer alinhados às validações do backend.
+  ============================================================ */
 const validateField = (field: keyof typeof errors) => {
   switch (field) {
     case 'name': {
@@ -215,8 +245,9 @@ const validateAll = (): boolean => {
 }
 
 /* ============================================================
-   SUBMIT
-   ============================================================ */
+  MONTAGEM DO PAYLOAD
+  O ID é incluído somente na edição e depende do contrato de resposta.
+  ============================================================ */
 const handleSubmit = () => {
   if (isViewMode.value) return
   if (!validateAll()) return

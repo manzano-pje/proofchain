@@ -1,6 +1,22 @@
-/* ============================================================
-   COURSE PAGE
-   ============================================================ */
+/*
+=========================================================
+Project.......: ProofChain
+Module........: Business / Courses
+Feature.......: Course administration styles
+File..........: CoursePage.css
+Version.......: 1.0.0
+
+Description...:
+Estilos da listagem, feedback, paginação e camada modal de cursos.
+
+Dependencies..:
+- Design tokens em core/styles/tokens
+- CoursePage.vue
+
+Methodology...:
+BEM
+=========================================================
+*/
 .course-page {
   display: flex;
   flex-direction: column;
@@ -168,7 +184,7 @@
   color: var(--text-muted);
 }
 
-/* Overlay do formulário (modal) */
+/* O backdrop é teletransportado para body e deve cobrir todo o viewport. */
 .course-page__form-overlay {
   position: fixed;
   inset: 0;
