@@ -102,7 +102,6 @@
       </button>
     </nav>
 
-    <!--inserido por copilot para resolver overlay -->
     <!-- Formulário (modal ou inline) -->
     <Teleport to="body">
       <div v-if="isFormOpen" class="course-page__form-overlay">
