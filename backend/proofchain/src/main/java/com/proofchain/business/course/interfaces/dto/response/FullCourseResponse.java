@@ -29,6 +29,7 @@ import java.time.Instant;
  * informações completas do curso.
  */
 public record FullCourseResponse (
+        Long id,
         String name,
         String description,
         int hours,
@@ -37,6 +38,7 @@ public record FullCourseResponse (
 ){
     public FullCourseResponse(Course course){
         this(
+                course.getId(),
                 course.getName(),
                 course.getDescription(),
                 course.getHours(),

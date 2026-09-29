@@ -38,7 +38,7 @@ const activeMenuItem = computed(() => {
   const normalizedPath = route.path.replace(/^\/institutionAdmin(?=\/)/, '/admin')
   const item = menuGroups.value
     .flatMap((group) => group.items)
-    .find((menuItem) => menuItem.route === normalizedPath)
+    .find((menuItem) => menuItem.route.split('?')[0] === normalizedPath)
   return item?.id ?? 'overview'
 })
 

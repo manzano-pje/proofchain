@@ -24,6 +24,7 @@ import com.proofchain.business.course.domain.model.Course;
  * Utilizado como contrato de resposta do módulo de cursos na API REST.
  */
 public record CourseResponse(
+        Long id,
         String name,
         String description,
         int hours
@@ -31,6 +32,7 @@ public record CourseResponse(
 
     public CourseResponse(Course course) {
         this(
+                course.getId(),
                 course.getName(),
                 course.getDescription(),
                 course.getHours()
