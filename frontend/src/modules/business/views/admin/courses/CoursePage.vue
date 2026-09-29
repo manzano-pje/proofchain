@@ -282,17 +282,22 @@ const handleFormSubmit = async (payload: CourseCreatePayload | CourseUpdatePaylo
   isSubmitting.value = true
 
   try {
+    let confirmationMessage = ''
+
     if (formMode.value === 'create') {
       await courseService.create(token, payload as CourseCreatePayload)
-      successMessage.value = 'Curso cadastrado com sucesso.'
+      confirmationMessage = 'Curso cadastrado com sucesso.'
     } else if (formMode.value === 'edit') {
       const updatePayload = payload as CourseUpdatePayload
       await courseService.update(token, updatePayload.id, updatePayload)
-      successMessage.value = 'Curso atualizado com sucesso.'
+      confirmationMessage = 'Curso atualizado com sucesso.'
     }
 
-    await loadCourses()
+    searchTerm.value = ''
+    currentPage.value = 1
     closeForm()
+    successMessage.value = confirmationMessage
+    await loadCourses()
   } catch (err) {
     errorMessage.value = 'Não foi possível salvar o curso.'
     console.error(err)

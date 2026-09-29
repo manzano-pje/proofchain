@@ -57,7 +57,7 @@ export const courseService = {
    * POST /api/v1/course/register
    * Cria um novo curso.
    */
-  async create(token: string, payload: CourseCreatePayload): Promise<Course> {
+  async create(token: string, payload: CourseCreatePayload): Promise<void> {
     const response = await fetch(`${COURSE_URL}/register`, {
       method: 'POST',
       headers: {
@@ -72,7 +72,6 @@ export const courseService = {
       throw new Error('Não foi possível salvar o curso.')
     }
 
-    return response.json() as Promise<Course>
   },
 
   /**

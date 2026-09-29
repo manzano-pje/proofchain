@@ -88,7 +88,7 @@ public class UpdateCourseHandler {
                 institutionId
         );
 
-        if (exists && !course.getName().equals(command.getName())) {
+        if (exists && course.getName().equals(command.getName())) {
             throw new AlreadyExistsException(CourseMessages.COURSE_ALREADY_EXISTS);
         }
 
