@@ -149,7 +149,7 @@
 }
 
 .course-page__page-btn {
-  background: #ffffff;
+  background:var(--background);
   border: var(--border-width-thin) solid var(--border);
   border-radius: var(--radius-sm);
   padding: var(--space-xs) var(--space-sm);
@@ -172,7 +172,7 @@
 .course-page__form-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(2, 6, 23, 0.65);
+  background: var(--overlay-dark);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -180,7 +180,7 @@
 }
 
 .course-page__form-container {
-  background: #ffffff;
+  background: var(--background-card-form);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-xl);
   padding: var(--space-xl);

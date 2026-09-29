@@ -87,7 +87,9 @@
   --gradient-brand: linear-gradient(135deg, #07111f 0%, #0b1f3a 50%, #163b66 100%);
   --gradient-action: linear-gradient(0deg, #2a5e8f, #5a8fc0);
   --gradient-light: linear-gradient(0deg, #102c4d, #0c56ce);
-  --gradient-cta: linear-gradient(0deg, #005825, #0fb655);
-  --gradient-cta-inverse: linear-gradient(180deg, #005825, #0fb655);
+  --gradient-buttom-primary: linear-gradient(0deg, #005825, #0fb655);
+  --gradient-buttom-primary-inverse: linear-gradient(180deg, #005825, #0fb655);
+  --gradient-buttom-secondary:linear-gradient(0deg, #f70606, #ff7676);
+  --gradient-buttom-secondary-inverse: linear-gradient(180deg, #ff7676, #f70606);
   --gradient-pricing: linear-gradient(135deg, #143f70, #195996);
 }

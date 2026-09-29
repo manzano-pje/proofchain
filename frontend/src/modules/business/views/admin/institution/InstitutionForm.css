@@ -112,9 +112,9 @@
 
 .institution-form__button {
   padding: var(--button-padding-y) var(--button-padding-x);
-  border: var(--border-width-default) solid var(--);
+  border: var(--border-width-default) solid var(--border-buttom);
   border-radius: var(--radius-md);
-  background: var(--gradient-cta);
+  background: var(--gradient-buttom-primary);
   color: var(--text-primary);
   font-size: var(--body-default);
   font-weight: var(--weight-semibold);
@@ -123,11 +123,11 @@
 }
 
 .institution-form__button:hover:not(:disabled) {
-  background: var(--gradient-cta-inverse);
+  background: var(--gradient-buttom-primary-inverse);
 }
 
 .institution-form__button:active:not(:disabled) {
-  background: var(--gradient-cta);
+  background: var(--gradient-buttom-primary);
 }
 
 .institution-form__button:focus-visible {

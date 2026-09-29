@@ -3,7 +3,7 @@
     <!-- Cabeçalho -->
     <header class="course-page__header">
       <h1 class="course-page__title">Cursos</h1>
-      <BaseButton @click="openCreateForm">+ Novo Curso</BaseButton>
+      <BaseButton class="Buttom" @click="openCreateForm">Novo Curso</BaseButton>
     </header>
 
     <!-- Pesquisa -->
@@ -102,18 +102,21 @@
       </button>
     </nav>
 
+    <!--inserido por copilot para resolver overlay -->
     <!-- Formulário (modal ou inline) -->
-    <div v-if="isFormOpen" class="course-page__form-overlay">
-      <div class="course-page__form-container">
-        <FormCourse
-          :initial-data="selectedCourse"
-          :mode="formMode"
-          :submitting="isSubmitting"
-          @submit="handleFormSubmit"
-          @cancel="closeForm"
-        />
+    <Teleport to="body">
+      <div v-if="isFormOpen" class="course-page__form-overlay">
+        <div class="course-page__form-container">
+          <FormCourse
+            :initial-data="selectedCourse"
+            :mode="formMode"
+            :submitting="isSubmitting"
+            @submit="handleFormSubmit"
+            @cancel="closeForm"
+          />
+        </div>
       </div>
-    </div>
+    </Teleport>
   </div>
 </template>
 
