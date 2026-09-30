@@ -11,7 +11,7 @@ Grade administrativa com busca, filtros, paginação e cadastro.
 
 Responsibilities:
 - Consultar cursos recentes via courseclass.
-- Manter registros criados nesta sessão enquanto o GET não existe.
+- Carregar a grade pelo endpoint de resumo e manter o ID apenas internamente.
 - Abrir modal central para cadastro.
 - Deixar ações de edição/exclusão prontas apenas visualmente.
 
@@ -29,7 +29,13 @@ import BaseButton from '@/core/components/base/BaseButton/BaseButton.vue'
 import { useAuthStore } from '@/modules/auth/stores/Auth.store'
 import ParticipantForm from './ParticipantForm.vue'
 import { participantService } from '@/modules/business/services/Participant.service'
-import { emptyParticipant, type CourseClassAssignment, type ParticipantGridItem, type ParticipantRequest } from '@/modules/business/types/Participant.types'
+import {
+  emptyParticipant,
+  type CourseClassAssignment,
+  type ParticipantGridItem,
+  type ParticipantRequest,
+  type ParticipantSummary,
+} from '@/modules/business/types/Participant.types'
 
 const authStore = useAuthStore()
 const participants = ref<ParticipantGridItem[]>([])
@@ -45,6 +51,7 @@ const statusFilter = ref<'all' | 'active' | 'inactive'>('all')
 const currentPage = ref(1)
 const pageSize = 5
 const formModel = ref<ParticipantRequest>(emptyParticipant())
+const formMode = ref<'create' | 'view'>('create')
 
 const getAccessToken = (): string | null => {
   const token = authStore.session?.accessToken
@@ -55,6 +62,8 @@ const getAccessToken = (): string | null => {
 const latestCourseForParticipant = (participantId?: number): string => {
   if (participantId == null) return '—'
 
+  // CourseClassReturn currently omits participants; this mapping becomes effective
+  // when the existing endpoint includes participant IDs in its response.
   const latestAssignment = courseAssignments.value
     .filter((assignment) => assignment.participants?.some((participant) =>
       typeof participant === 'number' ? participant === participantId : participant.id === participantId,
@@ -73,6 +82,9 @@ const courseOptions = computed(() => [...new Set(
     .map((assignment) => assignment.course?.name)
     .filter((name): name is string => Boolean(name)),
 )])
+const hasParticipantCourseData = computed(() =>
+  participants.value.some((participant) => participant.latestCourseName !== '—'),
+)
 
 const filteredParticipants = computed(() => {
   const search = searchTerm.value.trim().toLocaleLowerCase()
@@ -94,6 +106,7 @@ const paginatedParticipants = computed(() => {
 })
 
 const openCreateForm = (): void => {
+  formMode.value = 'create'
   formModel.value = emptyParticipant()
   errorMessage.value = ''
   successMessage.value = ''
@@ -120,11 +133,31 @@ const loadCourseAssignments = async (): Promise<void> => {
 }
 
 const loadParticipants = async (): Promise<void> => {
-  // Ativar quando GET /api/v1/participants/list for disponibilizado.
-  // Resposta vazia ([]) deve permanecer como estado vazio, sem mensagem de erro.
-  // const token = getAccessToken()
-  // if (!token) return
-  // participants.value = await participantService.getAll(token)
+  const token = getAccessToken()
+  if (!token) return
+
+  try {
+    // 404/204 e corpos vazios são convertidos pelo service em uma lista vazia.
+    const records = await participantService.getAll(token)
+    const persistedParticipants = records.map((record: ParticipantSummary) => ({
+      ...emptyParticipant(),
+      ...record,
+      phone: record.phone ?? '',
+      id: record.id,
+      clientKey: `participant-${record.id}`,
+      latestCourseName: record.latestCourseName || latestCourseForParticipant(record.id),
+    }))
+    const sessionParticipants = participants.value.filter((participant) =>
+      participant.id == null
+      && !persistedParticipants.some((record) => record.cpf && record.cpf === participant.cpf),
+    )
+    participants.value = [...sessionParticipants, ...persistedParticipants]
+    currentPage.value = 1
+  } catch (error) {
+    errorMessage.value = error instanceof Error
+      ? error.message
+      : 'Não foi possível carregar participantes.'
+  }
 }
 
 const handleSubmit = async (payload: ParticipantRequest): Promise<void> => {
@@ -148,6 +181,7 @@ const handleSubmit = async (payload: ParticipantRequest): Promise<void> => {
     currentPage.value = 1
     successMessage.value = 'Participante cadastrado com sucesso.'
     closeForm()
+    await loadParticipants()
   } catch (error) {
     errorMessage.value = error instanceof Error ? error.message : 'Não foi possível salvar o participante.'
   } finally {
@@ -159,6 +193,25 @@ const handleSubmit = async (payload: ParticipantRequest): Promise<void> => {
 // Futuramente, receberão o id real retornado pelo GET e chamarão os endpoints.
 const onUpdatePlaceholder = (_participant: ParticipantGridItem): void => {}
 const onDeletePlaceholder = (_participant: ParticipantGridItem): void => {}
+
+const openParticipantView = async (participant: ParticipantGridItem): Promise<void> => {
+  formMode.value = 'view'
+  formModel.value = { ...participant }
+  isFormOpen.value = true
+
+  if (participant.id == null) return
+  const token = getAccessToken()
+  if (!token) return
+
+  try {
+    formModel.value = await participantService.getById(participant.id, token)
+  } catch (error) {
+    isFormOpen.value = false
+    errorMessage.value = error instanceof Error
+      ? error.message
+      : 'Não foi possível carregar os dados do participante.'
+  }
+}
 
 onMounted(async () => {
   isLoading.value = true
@@ -197,7 +250,7 @@ onMounted(async () => {
           @input="currentPage = 1"
         />
       </label>
-      <select v-model="courseFilter" class="participant-page__filter" aria-label="Filtrar por curso" @change="currentPage = 1">
+      <select v-model="courseFilter" class="participant-page__filter" aria-label="Filtrar por curso" :disabled="!hasParticipantCourseData" @change="currentPage = 1">
         <option value="">Todos os cursos</option>
         <option v-for="course in courseOptions" :key="course" :value="course">{{ course }}</option>
       </select>
@@ -226,13 +279,16 @@ onMounted(async () => {
             <td>{{ participant.name }}</td>
             <td>{{ participant.email }}</td>
             <td>{{ participant.phone || '—' }}</td>
-            <td>{{ participant.latestCourseName }}</td>
+            <td :title="participant.latestCourseName === '—' ? 'O endpoint courseclass ainda não retorna os participantes associados.' : undefined">
+              {{ participant.latestCourseName }}
+            </td>
             <td>
               <span :class="['participant-page__status', participant.isActive ? 'participant-page__status--active' : 'participant-page__status--inactive']">
                 {{ participant.isActive ? 'Ativo' : 'Inativo' }}
               </span>
             </td>
             <td class="participant-page__actions">
+              <button type="button" class="participant-page__action" title="Visualizar participante" aria-label="Visualizar participante" @click="openParticipantView(participant)">◉</button>
               <button type="button" class="participant-page__action" title="Atualização será integrada quando PATCH estiver disponível" aria-label="Atualizar participante" @click="onUpdatePlaceholder(participant)">✎</button>
               <button type="button" class="participant-page__action participant-page__action--danger" title="Exclusão será integrada quando DELETE estiver disponível" aria-label="Excluir participante" @click="onDeletePlaceholder(participant)">×</button>
             </td>
@@ -257,12 +313,11 @@ onMounted(async () => {
       <div v-if="isFormOpen" class="participant-page__modal-backdrop" @click.self="closeForm" @keydown.esc.stop.prevent="closeForm">
         <section class="participant-page__modal" role="dialog" aria-modal="true" aria-labelledby="participant-modal-title">
           <header class="participant-page__modal-header">
-            <h2 id="participant-modal-title">Novo Participante</h2>
             <button type="button" class="participant-page__modal-close" aria-label="Fechar" @click="closeForm">×</button>
           </header>
           <div class="participant-page__modal-body">
             <ParticipantForm
-              mode="create"
+              :mode="formMode"
               :initial-data="formModel"
               :submitting="isSubmitting"
               @submit="handleSubmit"

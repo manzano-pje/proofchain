@@ -55,4 +55,11 @@ public class ParticipantController {
         ParticipantResponse response = listOneParticipantQuery.listOneParticipant(id);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'ADMIN', 'USER')")
+    @PatchMapping("/update/{id}")
+    public ResponseEntity<ParticipantResponse> listOneParticipant(@PathVariable Long id){
+        ParticipantResponse response = listOneParticipantQuery.listOneParticipant(id);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
 }

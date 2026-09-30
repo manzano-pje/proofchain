@@ -2,10 +2,9 @@
   ============================================================
   FORM PARTICIPANT
   ============================================================
-  Formulário reutilizável para criação de participantes.
+  Formulário reutilizável para cadastro e visualização de participantes.
 
-  Modos suportados: create (edit e view estão preparados,
-  mas dependem de endpoints inexistentes no backend atual).
+  Edição permanece visualmente preparada e depende da futura integração PATCH.
 
   Responsabilidade: coletar, validar e emitir payload.
   NÃO realiza chamadas HTTP.
@@ -13,7 +12,7 @@
 -->
 
 <script setup lang="ts">
-import { reactive, watch } from 'vue';
+import { computed, reactive, watch } from 'vue';
 import BaseButton from '@/core/components/base/BaseButton/BaseButton.vue';
 import type { ParticipantRequest } from '../../../types/Participant.types';
 import { emptyParticipant } from '../../../types/Participant.types';
@@ -92,22 +91,28 @@ const validate = (): boolean => {
 // ============================================================
 const handleSubmit = () => {
   if (!validate()) return;
-  emit('submit', { ...form });
+  const numberValue = Number(form.number);
+  emit('submit', {
+    ...form,
+    number: Number.isFinite(numberValue) && numberValue > 0 ? numberValue : null,
+  });
 };
 
 // ============================================================
 // HELPERS
 // ============================================================
 const isReadonly = () => props.mode === 'view';
+const title = computed(() => {
+  if (props.mode === 'view') return 'Visualizar Participante';
+  if (props.mode === 'edit') return 'Editar Participante';
+  return 'Novo Participante';
+});
 </script>
 
 <template>
   <form class="form-participant" @submit.prevent="handleSubmit">
-    <!-- ========================================================
-         DADOS PESSOAIS
-         ======================================================== -->
-    <fieldset class="form-participant__section">
-      <legend class="form-participant__legend">Dados pessoais</legend>
+    <h2 id="participant-modal-title" class="form-participant__title">{{ title }}</h2>
+    <div class="form-participant__body">
 
       <div class="form-participant__field">
         <label for="participant-name" class="form-participant__label">Nome</label>
@@ -167,14 +172,6 @@ const isReadonly = () => props.mode === 'view';
           :readonly="isReadonly()"
         />
       </div>
-    </fieldset>
-
-    <!-- ========================================================
-         ENDEREÇO
-         ======================================================== -->
-    <fieldset class="form-participant__section">
-      <legend class="form-participant__legend">Endereço</legend>
-
       <div class="form-participant__field">
         <label for="participant-postal-code" class="form-participant__label">CEP</label>
         <input
@@ -277,14 +274,6 @@ const isReadonly = () => props.mode === 'view';
           {{ errors.state }}
         </span>
       </div>
-    </fieldset>
-
-    <!-- ========================================================
-         SITUAÇÃO
-         ======================================================== -->
-    <fieldset class="form-participant__section">
-      <legend class="form-participant__legend">Situação</legend>
-
       <div class="form-participant__field form-participant__field--checkbox">
         <label class="form-participant__checkbox-label">
           <input
@@ -296,7 +285,7 @@ const isReadonly = () => props.mode === 'view';
           <span>Ativo</span>
         </label>
       </div>
-    </fieldset>
+    </div>
 
     <!-- ========================================================
          AÇÕES
@@ -321,3 +310,6 @@ const isReadonly = () => props.mode === 'view';
     </div>
   </form>
 </template>
+<style scoped>
+@import './ParticipantForm.css';
+</style>
