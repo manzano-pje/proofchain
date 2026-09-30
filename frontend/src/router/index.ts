@@ -11,6 +11,8 @@ const institutionRoute = () =>
 // A mesma página de cursos é compartilhada pelos dois contextos administrativos.
 const courseRoute = () =>
   import('@/modules/business/views/admin/courses/CoursePage.vue')
+const participantRoute = () =>
+  import('@/modules/business/views/admin/prticipant/ParticipantPage.vue')
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -51,6 +53,12 @@ const router = createRouter({
           // Manter permissões alinhadas ao endpoint de leitura do backend.
           meta: { allowedRoles: ['Super_admin', 'Admin', 'user'] },
         },
+        {
+          path: 'participantes',
+          name: 'admin-participants',
+          component: participantRoute,
+          meta: { allowedRoles: ['Super_admin', 'Admin', 'user'] },
+        },
         // Rotas para telas ainda não disponibilizadas; habilitar conforme a implementação:
         // { path: 'dashboard', name: 'admin-dashboard', component: () => import('@/modules/business/views/admin/dashboard/DashboardPage.vue') },
         // { path: 'participantes', name: 'admin-participants', component: () => import('@/modules/business/views/admin/participants/ParticipantsPage.vue') },
@@ -83,13 +91,14 @@ const router = createRouter({
           meta: { allowedRoles: ['Super_admin', 'Admin', 'user'] },
         },
         {
-          path: 'dashboard',
-          name: 'admin-dashboard',
-          redirect: { name: 'admin-home' },
+          path: 'participantes',
+          name: 'institutionAdmin-participants',
+          component: participantRoute,
+          meta: { allowedRoles: ['Super_admin', 'Admin', 'user'] },
         },
         {
-          path: 'participantes',
-          name: 'admin-participants',
+          path: 'dashboard',
+          name: 'admin-dashboard',
           redirect: { name: 'admin-home' },
         },
         {

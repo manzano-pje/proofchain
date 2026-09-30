@@ -2,6 +2,7 @@ package com.proofchain.business.participant.domain.model;
 
 import com.proofchain.business.course.domain.model.Course;
 import com.proofchain.admin.institution.domain.model.Institution;
+import com.proofchain.business.couseClass.domain.model.CourseClass;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
@@ -17,7 +18,13 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name = "tb_participants")
+@Table(
+    name = "tb_participants",
+    uniqueConstraints = @UniqueConstraint(
+        name = "uk_participant_institution_cpf",
+        columnNames = {"institution_id", "cpf"}
+    )
+)
 public class Participant {
 
     @Id
@@ -34,7 +41,7 @@ public class Participant {
     @Pattern(regexp = "^[1-9]{2}(9\\d{8}|[2-5]\\d{7})$")
     private String phone;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     @CPF
     private String cpf;
 
@@ -69,14 +76,18 @@ public class Participant {
 
     /// //// RELACIONAMENTO //////
 
-    // Course
-    @ManyToMany(mappedBy = "participants")
-    private List<Course> courses;
+//    // Course
+//    @ManyToMany(mappedBy = "participants")
+//    private List<Course> courses;
 
     // EM Instituition
     @ManyToOne
     @JoinColumn(name = "institution_id")
     private Institution institution;
+
+    // EM COURSECLASS
+    @ManyToMany(mappedBy = "participants")
+    private List<CourseClass> courseClasses;
 
     public static Participant createParticipant(
             String name,

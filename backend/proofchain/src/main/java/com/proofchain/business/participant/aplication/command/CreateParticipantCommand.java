@@ -9,7 +9,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.validator.constraints.UniqueElements;
 import org.hibernate.validator.constraints.br.CPF;
 
 @Getter
@@ -29,7 +28,6 @@ public class CreateParticipantCommand {
     private String phone;
 
     @NotBlank
-    @UniqueElements
     @CPF
     private String cpf;
 
@@ -53,7 +51,6 @@ public class CreateParticipantCommand {
     @Pattern(regexp = "\\d{5}-\\d{3}", message = "O cep deve ser no fornato XXXXX-XXX")
     private String postalCode;
 
-    @NotBlank
     private boolean isActive;
 
     public CreateParticipantCommand(ParticipantRequest dto) {

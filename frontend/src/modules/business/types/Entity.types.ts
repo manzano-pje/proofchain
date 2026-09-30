@@ -184,6 +184,7 @@ export const ADMIN_MENU: readonly MenuGroupConfig[] = [
         icon: '👥',
         route: '/admin/participantes',
         category: 'GESTÃO',
+        allowedRoles: ['Super_admin', 'Admin', 'user'],
       },
       {
         id: 'courses',
