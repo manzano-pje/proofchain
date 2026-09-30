@@ -20,7 +20,25 @@ public record ParticipantResponse(
         String state,
         String postalCode,
         Instant createdAt,
-        Instant DeletedAt,
+        Instant deletedAt,
         boolean isActive
 ) {
+    public ParticipantResponse(ParticipantResponse participant) {
+        this.id    = participant.id();
+        this.name  = participant.name();
+        this.email = participant.email();
+        this.phone = participant.phone();
+        this.cpf   = participant.cpf();
+        this.address = participant.address();
+        this.number = participant.number();
+        this.complement = participant.complement();
+        this.neighborhood = participant.neighborhood();
+        this.city = participant.city();
+        this.state = participant.state();
+        this.postalCode = participant.postalCode();
+        this.createdAt = participant.createdAt();
+        this.deletedAt = participant.deletedAt();
+        this.isActive = participant.isActive();
+
+    }
 }
