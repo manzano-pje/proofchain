@@ -127,7 +127,7 @@ public class SecurityBeansConfig {
                                          "http://localhost:5173",
                                          "https://proofchain-alpha.vercel.app")
         ); // ou frontend
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        config.setAllowedMethods(List.of("GET", "POST", "PATCH", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
 

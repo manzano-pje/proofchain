@@ -34,7 +34,7 @@ public record CourseRequestDto(
 
     Long id,
 
-    @Size(max = 100)
+    @Size(max = 30)
     String name,
 
     @Size(max = 200)
