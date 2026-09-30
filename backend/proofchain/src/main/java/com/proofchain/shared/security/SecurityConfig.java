@@ -2,9 +2,6 @@ package com.proofchain.shared.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
@@ -81,6 +78,8 @@ public class SecurityConfig {
                                 "/api/v1"
                         ).permitAll()
                         .requestMatchers("/api/v1/institution/me").hasAnyRole("ADMIN", "SUPER_ADMIN")
+                        .requestMatchers("/api/v1/participants/**")
+                        .hasAnyRole("ADMIN", "SUPER_ADMIN", "USER")
                         .anyRequest()
                         .authenticated()
                 )

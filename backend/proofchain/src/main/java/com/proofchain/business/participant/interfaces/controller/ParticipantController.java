@@ -29,7 +29,7 @@ public class ParticipantController {
      * ENDPOINT: CREATE PARTICIPANT
      * =========================================================
      */
-    @PreAuthorize("hasRole('SUPER_ADMIN','ADMIN', 'USER')")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'ADMIN', 'USER')")
     @PostMapping("/register")
     public ResponseEntity<Void> createParticipant (@Valid @RequestBody ParticipantRequest dto){
         CreateParticipantCommand command = new CreateParticipantCommand(dto);

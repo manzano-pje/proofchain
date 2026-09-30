@@ -2,6 +2,7 @@ package com.proofchain.business.couseClass.domain.model;
 
 import com.proofchain.business.course.domain.model.Course;
 import com.proofchain.admin.institution.domain.model.Institution;
+import com.proofchain.business.participant.domain.model.Participant;
 import com.proofchain.user.domain.model.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -9,6 +10,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -34,6 +36,14 @@ public class CourseClass {
     @ManyToOne
     @JoinColumn(name = "course_id")
     private Course course;
+
+    @ManyToMany
+    @JoinTable(
+            name = "Course_Class_participant",
+            joinColumns = @JoinColumn(name = "course_Class_id"),
+            inverseJoinColumns = @JoinColumn(name = "participant_id")
+    )
+    private List<Participant> participants;
 
     @CreationTimestamp
     private Instant createAt;

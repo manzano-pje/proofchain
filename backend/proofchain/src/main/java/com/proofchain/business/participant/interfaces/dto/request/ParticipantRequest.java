@@ -4,11 +4,11 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.validator.constraints.UniqueElements;
 import org.hibernate.validator.constraints.br.CPF;
 
 @NoArgsConstructor
@@ -28,7 +28,6 @@ public class ParticipantRequest {
     private String phone;
 
     @NotBlank
-    @UniqueElements
     @CPF
     private String cpf;
 
@@ -52,7 +51,7 @@ public class ParticipantRequest {
     @Pattern(regexp = "\\d{5}-\\d{3}", message = "O cep deve ser no fornato XXXXX-XXX")
     private String postalCode;
 
-    @NotBlank
+    @JsonProperty("isActive")
     private boolean isActive;
 
 }
