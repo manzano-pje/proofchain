@@ -28,6 +28,23 @@ export interface ParticipantRequest {
   isActive: boolean;
 }
 
+/** Dados exibidos na grade; clientKey mantém a chave da linha sem expor o ID. */
+export interface ParticipantGridItem extends ParticipantRequest {
+  id?: number;
+  clientKey: string;
+  latestCourseName: string;
+}
+
+/** Estrutura consumida do endpoint existente de turmas para obter o curso mais recente. */
+export interface CourseClassAssignment {
+  id: number;
+  course?: { id: number; name: string } | null;
+  participants?: Array<{ id: number } | number> | null;
+  createAt?: string | null;
+  updateAt?: string | null;
+  isActive?: boolean;
+}
+
 /** Estado inicial do formulário (modo create) */
 export const emptyParticipant = (): ParticipantRequest => ({
   name: '',
