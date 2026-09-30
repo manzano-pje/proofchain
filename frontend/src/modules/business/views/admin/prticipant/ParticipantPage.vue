@@ -1,154 +1,333 @@
 <!--
-  ============================================================
-  PARTICIPANT PAGE
-  ============================================================
-  Página administrativa de participantes.
+=========================================================
+Project.......: ProofChain
+Module........: Business / Participants
+Feature.......: Participant administration
+File..........: ParticipantPage.vue
+Version.......: 1.0.0
 
-  LIMITAÇÃO CRÍTICA DO BACKEND:
-  O backend atual expõe APENAS o endpoint de criação
-  (POST /api/v1/participants/register).
+Description...:
+Grade administrativa com busca, filtros, paginação e cadastro.
 
-  Endpoints de listagem, busca por ID, atualização e exclusão
-  NÃO EXISTEM. Portanto, as funcionalidades de listagem,
-  pesquisa, paginação, edição, visualização e exclusão NÃO
-  podem ser implementadas sem inventar contratos.
+Responsibilities:
+- Consultar cursos recentes via courseclass.
+- Carregar a grade pelo endpoint de resumo e manter o ID apenas internamente.
+- Abrir modal central para cadastro.
+- Deixar ações de edição/exclusão prontas apenas visualmente.
 
-  Esta página implementa apenas a criação de participantes.
-  A estrutura visual está preparada para expansão futura
-  quando os endpoints forem disponibilizados no backend.
-  ============================================================
+Dependencies..:
+- Auth.store
+- Participant.service
+- ParticipantForm.vue
+- BaseButton
+=========================================================
 -->
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import BaseButton from '@/core/components/base/BaseButton/BaseButton.vue'
 import { useAuthStore } from '@/modules/auth/stores/Auth.store'
 import ParticipantForm from './ParticipantForm.vue'
-import { participantService } from '../../../services/Participant.service'
-import type { ParticipantRequest } from '../../../types/Participant.types'
+import { participantService } from '@/modules/business/services/Participant.service'
+import {
+  emptyParticipant,
+  type CourseClassAssignment,
+  type ParticipantGridItem,
+  type ParticipantRequest,
+  type ParticipantSummary,
+} from '@/modules/business/types/Participant.types'
 
-// ============================================================
-// ESTADO
-// ============================================================
 const authStore = useAuthStore()
+const participants = ref<ParticipantGridItem[]>([])
+const courseAssignments = ref<CourseClassAssignment[]>([])
+const isLoading = ref(false)
 const isFormOpen = ref(false)
 const isSubmitting = ref(false)
 const successMessage = ref('')
 const errorMessage = ref('')
+const searchTerm = ref('')
+const courseFilter = ref('')
+const statusFilter = ref<'all' | 'active' | 'inactive'>('all')
+const currentPage = ref(1)
+const pageSize = 5
+const formModel = ref<ParticipantRequest>(emptyParticipant())
+const formMode = ref<'create' | 'view'>('create')
 
-// ============================================================
-// AÇÕES
-// ============================================================
-const openCreateForm = () => {
-  successMessage.value = ''
-  errorMessage.value = ''
-  isFormOpen.value = true
-};
-
-const closeForm = () => {
-  isFormOpen.value = false
-};
-
-const handleSubmit = async (payload: ParticipantRequest) => {
-  errorMessage.value = ''
-  successMessage.value = ''
+const getAccessToken = (): string | null => {
   const token = authStore.session?.accessToken
-  if (!token) {
-    errorMessage.value = 'Sua sessão expirou. Entre novamente para continuar.'
-    return
-  }
+  if (!token) errorMessage.value = 'Sua sessão expirou. Entre novamente para continuar.'
+  return token ?? null
+}
 
-  isSubmitting.value = true
+const latestCourseForParticipant = (participantId?: number): string => {
+  if (participantId == null) return '—'
+
+  // CourseClassReturn currently omits participants; this mapping becomes effective
+  // when the existing endpoint includes participant IDs in its response.
+  const latestAssignment = courseAssignments.value
+    .filter((assignment) => assignment.participants?.some((participant) =>
+      typeof participant === 'number' ? participant === participantId : participant.id === participantId,
+    ))
+    .sort((left, right) => {
+      const leftDate = new Date(left.createAt ?? left.updateAt ?? 0).getTime()
+      const rightDate = new Date(right.createAt ?? right.updateAt ?? 0).getTime()
+      return rightDate - leftDate
+    })[0]
+
+  return latestAssignment?.course?.name ?? '—'
+}
+
+const courseOptions = computed(() => [...new Set(
+  courseAssignments.value
+    .map((assignment) => assignment.course?.name)
+    .filter((name): name is string => Boolean(name)),
+)])
+const hasParticipantCourseData = computed(() =>
+  participants.value.some((participant) => participant.latestCourseName !== '—'),
+)
+
+const filteredParticipants = computed(() => {
+  const search = searchTerm.value.trim().toLocaleLowerCase()
+  return participants.value.filter((participant) => {
+    const matchesSearch = !search || [participant.name, participant.email, participant.cpf]
+      .some((value) => value.toLocaleLowerCase().includes(search))
+    const matchesCourse = !courseFilter.value || participant.latestCourseName === courseFilter.value
+    const matchesStatus = statusFilter.value === 'all'
+      || (statusFilter.value === 'active' && participant.isActive)
+      || (statusFilter.value === 'inactive' && !participant.isActive)
+    return matchesSearch && matchesCourse && matchesStatus
+  })
+})
+
+const totalPages = computed(() => Math.max(1, Math.ceil(filteredParticipants.value.length / pageSize)))
+const paginatedParticipants = computed(() => {
+  const start = (currentPage.value - 1) * pageSize
+  return filteredParticipants.value.slice(start, start + pageSize)
+})
+
+const openCreateForm = (): void => {
+  formMode.value = 'create'
+  formModel.value = emptyParticipant()
+  errorMessage.value = ''
+  successMessage.value = ''
+  isFormOpen.value = true
+}
+
+const closeForm = (): void => {
+  isFormOpen.value = false
+}
+
+const loadCourseAssignments = async (): Promise<void> => {
+  const token = getAccessToken()
+  if (!token) return
 
   try {
-    await participantService.create(token, payload)
-    successMessage.value = 'Participante cadastrado com sucesso.'
-    isFormOpen.value = false
+    courseAssignments.value = await participantService.getCourseClassAssignments(token)
+    participants.value = participants.value.map((participant) => ({
+      ...participant,
+      latestCourseName: latestCourseForParticipant(participant.id),
+    }))
   } catch (error) {
-    console.error('[ParticipantPage] Erro ao cadastrar participante:', error)
+    errorMessage.value = error instanceof Error ? error.message : 'Não foi possível carregar as turmas.'
+  }
+}
+
+const loadParticipants = async (): Promise<void> => {
+  const token = getAccessToken()
+  if (!token) return
+
+  try {
+    // 404/204 e corpos vazios são convertidos pelo service em uma lista vazia.
+    const records = await participantService.getAll(token)
+    const persistedParticipants = records.map((record: ParticipantSummary) => ({
+      ...emptyParticipant(),
+      ...record,
+      phone: record.phone ?? '',
+      id: record.id,
+      clientKey: `participant-${record.id}`,
+      latestCourseName: record.latestCourseName || latestCourseForParticipant(record.id),
+    }))
+    const sessionParticipants = participants.value.filter((participant) =>
+      participant.id == null
+      && !persistedParticipants.some((record) => record.cpf && record.cpf === participant.cpf),
+    )
+    participants.value = [...sessionParticipants, ...persistedParticipants]
+    currentPage.value = 1
+  } catch (error) {
     errorMessage.value = error instanceof Error
       ? error.message
-      : 'Não foi possível salvar o participante.'
+      : 'Não foi possível carregar participantes.'
+  }
+}
+
+const handleSubmit = async (payload: ParticipantRequest): Promise<void> => {
+  errorMessage.value = ''
+  successMessage.value = ''
+  const token = getAccessToken()
+  if (!token) return
+
+  isSubmitting.value = true
+  try {
+    await participantService.create(token, payload)
+    const localKey = globalThis.crypto?.randomUUID?.() ?? `session-${Date.now()}`
+    participants.value = [
+      {
+        ...payload,
+        clientKey: localKey,
+        latestCourseName: '—',
+      },
+      ...participants.value,
+    ]
+    currentPage.value = 1
+    successMessage.value = 'Participante cadastrado com sucesso.'
+    closeForm()
+    await loadParticipants()
+  } catch (error) {
+    errorMessage.value = error instanceof Error ? error.message : 'Não foi possível salvar o participante.'
   } finally {
     isSubmitting.value = false
   }
-};
+}
 
-// ============================================================
-// EXCLUSÃO — PREPARADA MAS NÃO IMPLEMENTADA
-// ============================================================
-// O backend NÃO possui endpoint DELETE.
-// A função abaixo está preparada para quando o endpoint existir.
-//
-// const handleDeleteParticipant = async (id: number) => {
-//   // Implementar quando DELETE /api/v1/participants/{id} existir.
-//   //
-//   // await participantService.delete(id);
-//   //
-//   // await loadParticipants();
-// };
+// Ações apenas visuais enquanto PATCH e DELETE não estiverem disponíveis.
+// Futuramente, receberão o id real retornado pelo GET e chamarão os endpoints.
+const onUpdatePlaceholder = (_participant: ParticipantGridItem): void => {}
+const onDeletePlaceholder = (_participant: ParticipantGridItem): void => {}
+
+const openParticipantView = async (participant: ParticipantGridItem): Promise<void> => {
+  formMode.value = 'view'
+  formModel.value = { ...participant }
+  isFormOpen.value = true
+
+  if (participant.id == null) return
+  const token = getAccessToken()
+  if (!token) return
+
+  try {
+    formModel.value = await participantService.getById(participant.id, token)
+  } catch (error) {
+    isFormOpen.value = false
+    errorMessage.value = error instanceof Error
+      ? error.message
+      : 'Não foi possível carregar os dados do participante.'
+  }
+}
+
+onMounted(async () => {
+  isLoading.value = true
+  await Promise.all([loadCourseAssignments(), loadParticipants()])
+  isLoading.value = false
+})
 </script>
 
 <template>
-  <div class="participant-page">
-    <!-- ========================================================
-         CABEÇALHO
-         ======================================================== -->
+  <main class="participant-page">
     <header class="participant-page__header">
-      <h1 class="participant-page__title">Participantes</h1>
-        <BaseButton
-        v-if="!isFormOpen"
-        type="button"
-          variant="primary"
-        @click="openCreateForm"
-      >
-          + Novo Participante
-        </BaseButton>
+      <div>
+        <h1 class="participant-page__title">Participantes</h1>
+        <p class="participant-page__subtitle">Gerencie os participantes e seus cursos.</p>
+      </div>
+      <BaseButton type="button" variant="primary" @click="openCreateForm">
+        + Novo Participante
+      </BaseButton>
     </header>
 
-    <!-- ========================================================
-         FEEDBACK
-         ======================================================== -->
-    <div
-      v-if="successMessage"
-      class="participant-page__feedback participant-page__feedback--success"
-      role="status"
-    >
+    <div v-if="successMessage" class="participant-page__feedback participant-page__feedback--success" role="status">
       {{ successMessage }}
     </div>
-
-    <div
-      v-if="errorMessage"
-      class="participant-page__feedback participant-page__feedback--error"
-      role="alert"
-    >
+    <div v-if="errorMessage" class="participant-page__feedback participant-page__feedback--error" role="alert">
       {{ errorMessage }}
     </div>
 
-    <!-- ========================================================
-         FORMULÁRIO
-         ======================================================== -->
-    <section v-if="isFormOpen" class="participant-page__form-container">
-      <h2 class="participant-page__form-title">Novo Participante</h2>
-      <ParticipantForm
-        mode="create"
-        :submitting="isSubmitting"
-        @submit="handleSubmit"
-        @cancel="closeForm"
-      />
+    <section class="participant-page__filters" aria-label="Filtros de participantes">
+      <label class="participant-page__search-wrap">
+        <span class="participant-page__sr-only">Buscar participantes</span>
+        <input
+          v-model="searchTerm"
+          class="participant-page__search"
+          type="search"
+          placeholder="Buscar por nome, e-mail ou CPF..."
+          @input="currentPage = 1"
+        />
+      </label>
+      <select v-model="courseFilter" class="participant-page__filter" aria-label="Filtrar por curso" :disabled="!hasParticipantCourseData" @change="currentPage = 1">
+        <option value="">Todos os cursos</option>
+        <option v-for="course in courseOptions" :key="course" :value="course">{{ course }}</option>
+      </select>
+      <select v-model="statusFilter" class="participant-page__filter" aria-label="Filtrar por situação" @change="currentPage = 1">
+        <option value="all">Todas as situações</option>
+        <option value="active">Ativo</option>
+        <option value="inactive">Inativo</option>
+      </select>
     </section>
 
-    <!-- ========================================================
-         ESTADO VAZIO / LIMITAÇÃO
-         ======================================================== -->
-    <section v-else class="participant-page__empty">
-      <p class="participant-page__empty-text">
-        Cadastro de participantes
-      </p>
-      <p class="participant-page__empty-note">
-        O cadastro está disponível. A listagem ainda depende da implementação
-        de um endpoint de consulta no backend.
-      </p>
-    </section>
-  </div>
+    <div v-if="isLoading" class="participant-page__state" role="status">Carregando participantes...</div>
+    <div v-else class="participant-page__table-wrap">
+      <table class="participant-page__table">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>E-mail</th>
+            <th>Telefone</th>
+            <th>Curso mais recente</th>
+            <th>Situação</th>
+            <th class="participant-page__actions-heading">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="participant in paginatedParticipants" :key="participant.clientKey">
+            <td>{{ participant.name }}</td>
+            <td>{{ participant.email }}</td>
+            <td>{{ participant.phone || '—' }}</td>
+            <td :title="participant.latestCourseName === '—' ? 'O endpoint courseclass ainda não retorna os participantes associados.' : undefined">
+              {{ participant.latestCourseName }}
+            </td>
+            <td>
+              <span :class="['participant-page__status', participant.isActive ? 'participant-page__status--active' : 'participant-page__status--inactive']">
+                {{ participant.isActive ? 'Ativo' : 'Inativo' }}
+              </span>
+            </td>
+            <td class="participant-page__actions">
+              <button type="button" class="participant-page__action" title="Visualizar participante" aria-label="Visualizar participante" @click="openParticipantView(participant)">◉</button>
+              <button type="button" class="participant-page__action" title="Atualização será integrada quando PATCH estiver disponível" aria-label="Atualizar participante" @click="onUpdatePlaceholder(participant)">✎</button>
+              <button type="button" class="participant-page__action participant-page__action--danger" title="Exclusão será integrada quando DELETE estiver disponível" aria-label="Excluir participante" @click="onDeletePlaceholder(participant)">×</button>
+            </td>
+          </tr>
+          <tr v-if="paginatedParticipants.length === 0">
+            <td colspan="6" class="participant-page__empty">Nenhum participante encontrado.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <footer class="participant-page__table-footer">
+      <span>{{ filteredParticipants.length }} participante(s)</span>
+      <nav v-if="totalPages > 1" class="participant-page__pagination" aria-label="Paginação">
+        <button type="button" :disabled="currentPage === 1" @click="currentPage--">‹</button>
+        <span>{{ currentPage }} / {{ totalPages }}</span>
+        <button type="button" :disabled="currentPage === totalPages" @click="currentPage++">›</button>
+      </nav>
+    </footer>
+
+    <Teleport to="body">
+      <div v-if="isFormOpen" class="participant-page__modal-backdrop" @click.self="closeForm" @keydown.esc.stop.prevent="closeForm">
+        <section class="participant-page__modal" role="dialog" aria-modal="true" aria-labelledby="participant-modal-title">
+          <header class="participant-page__modal-header">
+            <button type="button" class="participant-page__modal-close" aria-label="Fechar" @click="closeForm">×</button>
+          </header>
+          <div class="participant-page__modal-body">
+            <ParticipantForm
+              :mode="formMode"
+              :initial-data="formModel"
+              :submitting="isSubmitting"
+              @submit="handleSubmit"
+              @cancel="closeForm"
+            />
+          </div>
+        </section>
+      </div>
+    </Teleport>
+  </main>
 </template>
+
+<style scoped src="./ParticipantPage.css"></style>

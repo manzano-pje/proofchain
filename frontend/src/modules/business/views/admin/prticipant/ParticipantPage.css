@@ -1,15 +1,30 @@
-/* ============================================================
-   PARTICIPANT PAGE — BEM
-   ============================================================
-   Estilos da página administrativa de participantes.
-   Utiliza tokens do Design System existente.
-   ============================================================ */
+/*
+=========================================================
+Project.......: ProofChain
+Module........: Business / Participants
+Feature.......: Participant grid styles
+File..........: ParticipantPage.css
+Version.......: 1.0.0
+
+Description...:
+Grade administrativa, filtros, status, paginação e modal central.
+
+Dependencies..:
+- Design tokens em core/styles/tokens
+- ParticipantPage.vue
+
+Methodology...:
+BEM
+=========================================================
+*/
 
 .participant-page {
   display: flex;
   flex-direction: column;
   gap: var(--space-lg);
   width: 100%;
+  min-height: 100%;
+  color: var(--text-primary);
 }
 
 /* ============================================================
@@ -26,8 +41,43 @@
 .participant-page__title {
   font-size: var(--font-2xl);
   font-weight: var(--weight-bold);
-  color: var(--text-inverse);
+  color: var(--text-primary);
   margin: 0;
+}
+
+.participant-page__subtitle {
+  margin: var(--space-xs) 0 0;
+  color: var(--text-secondary);
+  font-size: var(--font-sm);
+}
+
+.participant-page__filters {
+  display: grid;
+  grid-template-columns: minmax(240px, 1fr) minmax(160px, 220px) minmax(160px, 220px);
+  gap: var(--space-sm);
+}
+
+.participant-page__search,
+.participant-page__filter {
+  width: 100%;
+  min-height: 2.5rem;
+  padding: 0 var(--space-md);
+  border: 1px solid var(--border-buttom);
+  border-radius: var(--radius-md);
+  background: var(--background-dark);
+  color: var(--text-primary);
+  font: inherit;
+}
+
+.participant-page__search::placeholder {
+  color: var(--text-muted);
+}
+
+.participant-page__search:focus-visible,
+.participant-page__filter:focus-visible {
+  outline: none;
+  border-color: var(--action);
+  box-shadow: var(--shadow-focus);
 }
 
 /* ============================================================
@@ -38,6 +88,150 @@
   padding: var(--space-md);
   border-radius: var(--radius-md);
   font-size: var(--font-sm);
+}
+
+.participant-page__feedback--success {
+  background: var(--success-light);
+  color: var(--success-dark);
+}
+
+.participant-page__feedback--error {
+  background: var(--danger-light);
+  color: var(--danger);
+}
+
+.participant-page__state {
+  padding: var(--space-xl);
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+.participant-page__table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border-buttom);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+}
+
+.participant-page__table {
+  width: 100%;
+  min-width: 720px;
+  border-collapse: collapse;
+}
+
+.participant-page__table th,
+.participant-page__table td {
+  padding: var(--space-md);
+  border-bottom: 1px solid var(--border-buttom);
+  text-align: left;
+  font-size: var(--font-sm);
+}
+
+.participant-page__table th {
+  background: var(--brand-card);
+  color: var(--text-primary);
+  font-weight: var(--weight-semibold);
+}
+
+.participant-page__table td {
+  color: var(--text-secondary);
+}
+
+.participant-page__table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.participant-page__actions-heading,
+.participant-page__actions {
+  width: 104px;
+  text-align: center !important;
+}
+
+.participant-page__actions {
+  white-space: nowrap;
+}
+
+.participant-page__action {
+  width: 2rem;
+  height: 2rem;
+  margin: 0 var(--space-xs);
+  border: 1px solid var(--border-buttom);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.participant-page__action:hover {
+  border-color: var(--action);
+  color: var(--action-light);
+}
+
+.participant-page__action--danger:hover {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.participant-page__status {
+  display: inline-flex;
+  padding: 2px var(--space-sm);
+  border-radius: 999px;
+  font-size: var(--font-xs);
+  font-weight: var(--weight-semibold);
+}
+
+.participant-page__status--active {
+  background: rgba(16, 185, 86, 0.16);
+  color: var(--success);
+}
+
+.participant-page__status--inactive {
+  background: rgba(238, 39, 39, 0.16);
+  color: #ff7777;
+}
+
+.participant-page__empty {
+  padding: var(--space-2xl) var(--space-lg) !important;
+  color: var(--text-muted) !important;
+  text-align: center !important;
+}
+
+.participant-page__table-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--text-secondary);
+  font-size: var(--font-xs);
+}
+
+.participant-page__pagination {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.participant-page__pagination button {
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid var(--border-buttom);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.participant-page__pagination button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.participant-page__sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
 }
 
 .participant-page__feedback--success {
@@ -52,52 +246,59 @@
   border: 1px solid var(--danger);
 }
 
-/* ============================================================
-   FORMULÁRIO
-   ============================================================ */
-
-.participant-page__form-container {
-  background-color: var(--background-card-form);
-  border: 1px solid var(--border-buttom);
-  border-radius: var(--radius-lg);
-  padding: var(--space-xl);
-}
-
-.participant-page__form-title {
-  font-size: var(--font-xl);
-  font-weight: var(--weight-semibold);
-  color: var(--text-inverse);
-  margin: 0 0 var(--space-lg) 0;
-}
-
-/* ============================================================
-   ESTADO VAZIO
-   ============================================================ */
-
-.participant-page__empty {
+/* O modal fica fora da árvore do layout para cobrir a viewport inteira. */
+.participant-page__modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--space-sm);
-  padding: var(--space-2xl) var(--space-lg);
-  background-color: var(--background);
-  border: 1px dashed var(--border-hover);
+  padding: var(--space-lg);
+  background: var(--overlay-dark);
+}
+
+.participant-page__modal {
+  display: flex;
+  flex-direction: column;
+  width: min(100%, 760px);
+  max-height: min(90vh, 900px);
+  overflow: hidden;
+  border: 1px solid var(--border-buttom);
   border-radius: var(--radius-lg);
-  text-align: center;
+  background: var(--background-card-form);
+  box-shadow: var(--shadow-xl);
 }
 
-.participant-page__empty-text {
-  font-size: var(--font-md);
-  color: var(--text-muted);
-  margin: 0;
+.participant-page__modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding: var(--space-lg) var(--space-xl);
+  border-bottom: 1px solid var(--border-buttom);
 }
 
-.participant-page__empty-note {
-  font-size: var(--font-sm);
-  color: var(--text-muted);
+.participant-page__modal-header h2 {
   margin: 0;
-  max-width: 480px;
+  color: var(--text-inverse);
+  font-size: var(--font-xl);
+}
+
+.participant-page__modal-close {
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid var(--border-buttom);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-inverse);
+  cursor: pointer;
+  font-size: var(--font-lg);
+}
+
+.participant-page__modal-body {
+  padding: var(--space-lg) var(--space-xl);
+  overflow-y: auto;
 }
 
 /* ============================================================
@@ -114,7 +315,16 @@
     width: 100%;
   }
 
-  .participant-page__form-container {
-    padding: var(--space-lg);
+  .participant-page__filters {
+    grid-template-columns: 1fr;
+  }
+
+  .participant-page__modal-backdrop {
+    padding: var(--space-sm);
+  }
+
+  .participant-page__modal-body,
+  .participant-page__modal-header {
+    padding: var(--space-md);
   }
 }

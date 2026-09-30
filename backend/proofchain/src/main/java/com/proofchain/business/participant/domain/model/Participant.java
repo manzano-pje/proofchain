@@ -68,7 +68,7 @@ public class Participant {
     @Column(nullable = false)
     private Instant createdAt;
 
-    private Instant DeletedAt;
+    private Instant deletedAt;
 
     @Column(nullable = false)
     private boolean isActive;
