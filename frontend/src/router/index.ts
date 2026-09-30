@@ -8,6 +8,7 @@ import AdminLayout from '@/modules/business/views/admin/AdminLayout.vue'
 
 const institutionRoute = () =>
   import('@/modules/business/views/admin/institution/InstitutionPage.vue')
+// A mesma página de cursos é compartilhada pelos dois contextos administrativos.
 const courseRoute = () =>
   import('@/modules/business/views/admin/courses/CoursePage.vue')
 
@@ -47,6 +48,7 @@ const router = createRouter({
           path: 'cursos',
           name: 'admin-courses',
           component: courseRoute,
+          // Manter permissões alinhadas ao endpoint de leitura do backend.
           meta: { allowedRoles: ['Super_admin', 'Admin', 'user'] },
         },
         // Rotas para telas ainda não disponibilizadas; habilitar conforme a implementação:
@@ -77,6 +79,7 @@ const router = createRouter({
           path: 'cursos',
           name: 'institutionAdmin-courses',
           component: courseRoute,
+          // Manter permissões alinhadas ao endpoint de leitura do backend.
           meta: { allowedRoles: ['Super_admin', 'Admin', 'user'] },
         },
         {

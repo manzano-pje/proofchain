@@ -1,7 +1,24 @@
-/**
- * Tipos para o módulo de Cursos.
- * Refletem o contrato real do backend (CourseResponse / FullCourseResponse).
- */
+/*
+=========================================================
+Project.......: ProofChain
+Module........: Business / Courses
+Feature.......: Course contracts
+File..........: Course.types.ts
+Version.......: 1.0.0
+
+Description...:
+Define os modelos usados pela interface e pela integração com a API.
+
+Responsibilities:
+- Representar dados retornados para um curso.
+- Tipar payloads de criação e atualização.
+- Compartilhar o modo de exibição do formulário.
+
+Notes.........:
+Manter estes campos alinhados a CourseResponse e FullCourseResponse.
+O ID é necessário para as operações de leitura e edição por registro.
+=========================================================
+*/
 
 export interface Course {
   id: number

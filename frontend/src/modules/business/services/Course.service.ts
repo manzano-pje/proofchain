@@ -1,15 +1,36 @@
-/**
- * Serviço de Cursos.
- * Encapsula as chamadas HTTP para o backend, seguindo o padrão dos
- * demais services do projeto (ex.: Institution.service.ts).
- *
- * VITE_API_URL já inclui /api/v1; este serviço acrescenta apenas /course.
- */
+/*
+=========================================================
+Project.......: ProofChain
+Module........: Business / Courses
+Feature.......: Course API integration
+File..........: Course.service.ts
+Version.......: 1.0.0
+
+Description...:
+Centraliza as chamadas HTTP do módulo de cursos.
+
+Responsibilities:
+- Montar os endpoints relativos a `/api/v1/course`.
+- Encaminhar o token Bearer nas rotas protegidas.
+- Converter respostas JSON e sinalizar respostas HTTP inválidas.
+
+Dependencies..:
+- VITE_API_URL
+- Course.types
+
+Notes.........:
+VITE_API_URL já inclui `/api/v1`; a base deste serviço acrescenta `/course`.
+=========================================================
+*/
 
 import type { Course, CourseCreatePayload, CourseUpdatePayload } from '../types/Course.types'
 
 const COURSE_URL = `${import.meta.env.VITE_API_URL.replace(/\/$/, '')}/course`
 
+/* ============================================================
+  CONTRATO DE LEITURA
+  Confirmar com o backend se lista vazia retorna [] ou status 404.
+  ============================================================ */
 export const courseService = {
   /**
    * GET /api/v1/course/list
@@ -71,7 +92,7 @@ export const courseService = {
     if (!response.ok) {
       throw new Error('Não foi possível salvar o curso.')
     }
-
+    // O endpoint responde 201 Created sem corpo; não tentar ler JSON.
   },
 
   /**

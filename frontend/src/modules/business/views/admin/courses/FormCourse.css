@@ -1,6 +1,23 @@
-/* ============================================================
-   FORM COURSE
-   ============================================================ */
+/*
+=========================================================
+Project.......: ProofChain
+Module........: Business / Courses
+Feature.......: Course form styles
+File..........: FormCourse.css
+Version.......: 1.0.0
+
+Description...:
+Estilos dos campos, validação e ações do formulário de cursos.
+
+Dependencies..:
+- Design tokens em core/styles/tokens
+- Formcourse.vue
+- BaseButton para variantes e estados dos botões
+
+Methodology...:
+BEM
+=========================================================
+*/
 .form-course {
   display: flex;
   flex-direction: column;
@@ -76,6 +93,7 @@
 }
 
 .form-course__actions {
+  /* As variantes visuais pertencem ao BaseButton; este bloco só organiza. */
   display: flex;
   justify-content: flex-end;
   gap: var(--space-md);
