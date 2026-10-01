@@ -27,10 +27,11 @@ const API_URL = import.meta.env.VITE_API_URL.replace(/\/$/, '')
 const PARTICIPANT_CREATE_URL = `${API_URL}/participants/register`
 const PARTICIPANT_SUMMARY_URL = `${API_URL}/participants/listSumary`
 const PARTICIPANT_DETAILS_URL = (id: number): string => `${API_URL}/participants/listOne/${id}`
-const COURSE_CLASS_URL = `${API_URL}/couseClass`
+const COURSE_CLASS_URL = `${API_URL}/courseClass`
 
 export const participantService = {
   /**
+   *
    * GET /api/v1/participantslistSumary
    * 404, 204 e corpo vazio representam a grade sem registros.
    */
@@ -101,5 +102,16 @@ async function readArrayResponse<T>(response: Response): Promise<T[]> {
   if (!body.trim()) return []
 
   const parsedBody: unknown = JSON.parse(body)
-  return Array.isArray(parsedBody) ? parsedBody as T[] : []
+  if (Array.isArray(parsedBody)) return parsedBody as T[]
+
+  if (
+    typeof parsedBody === 'object' &&
+    parsedBody !== null &&
+    'content' in parsedBody &&
+    Array.isArray(parsedBody.content)
+  ) {
+    return parsedBody.content as T[]
+  }
+
+  return []
 }

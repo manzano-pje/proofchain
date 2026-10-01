@@ -5,6 +5,7 @@ public record ParticipantSumaryResponse(
         String name,
         String email,
         String phone,
-        boolean isActive
+        boolean isActive,
+        String latestCourseName
 ) {
 }

@@ -44,7 +44,6 @@ export interface ParticipantSummary {
   name: string;
   email: string;
   phone?: string | null;
-  cpf?: string;
   isActive: boolean;
   latestCourseName?: string | null;
 }

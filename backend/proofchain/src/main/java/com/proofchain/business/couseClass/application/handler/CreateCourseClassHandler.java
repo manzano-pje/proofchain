@@ -95,7 +95,7 @@ public class CreateCourseClassHandler {
 
         CourseClass courseClass = new CourseClass();
 
-        courseClass.setUser(user.get());
+        courseClass.setUser(user.get()); // instrutor
         courseClass.setCourse(course.get());
         courseClass.setCreateAt(Instant.now());
         courseClass.setUpdateAt(null);
