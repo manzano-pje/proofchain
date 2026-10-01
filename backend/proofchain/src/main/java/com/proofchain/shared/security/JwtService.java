@@ -85,6 +85,9 @@ public class JwtService {
      * (ex: environment variables / vault / CI/CD pipelines).
      */
     private SecretKey getSigningKey() {
+        System.out.println("JWT secret length: " + secret.length());
+        System.out.println("JWT secret contains '-': " + secret.contains("-"));
+        System.out.println("JWT secret contains '_': " + secret.contains("_"));
         byte[] keyBytes = Decoders.BASE64.decode(secret);
         return Keys.hmacShaKeyFor(keyBytes);
     }
