@@ -2,6 +2,8 @@ package com.proofchain.business.couseClass.infraestructure.repository;
 
 import com.proofchain.business.couseClass.domain.model.CourseClass;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -31,9 +33,20 @@ import java.util.List;
 @Repository
 public interface CourseClassRepository extends JpaRepository<CourseClass, Long> {
 
-    List<CourseClass> findAllByInstitution_IdAndInstitution_DeletedAtIsNullOrderByUser_NameAscCourse_NameAsc(Long idInstitution);
+    @Query("""
+        SELECT DISTINCT cc
+        FROM CourseClass cc
+        LEFT JOIN FETCH cc.participants p
+        LEFT JOIN FETCH cc.user u
+        LEFT JOIN FETCH cc.course c
+        WHERE cc.institution.id = :institutionId
+          AND cc.institution.deletedAt IS NULL
+        ORDER BY u.name ASC, c.name ASC
+        """)
+    List<CourseClass> findAllByInstitution_IdAndInstitution_DeletedAtIsNullOrderByUser_NameAscCourse_NameAsc(@Param("institutionId") Long institutionId);
 
     boolean existsByIdAndCourse_IdAndInstitution_IdAndInstitution_DeletedAtIsNull(
             Long userId,
             Long courseId,
-            Long institutionId);}
+            Long institutionId);
+}

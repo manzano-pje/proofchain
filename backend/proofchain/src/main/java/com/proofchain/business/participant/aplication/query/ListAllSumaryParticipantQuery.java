@@ -46,14 +46,9 @@ public class ListAllSumaryParticipantQuery {
                 10,                         // registros por página
                 Sort.by("name").ascending() // ordenação
         );
-
-        Page<ParticipantSumaryResponse> result = participantRepository.listParticipantSumary(institutionId, pageable );
-        if(result.isEmpty()){
-            throw new NotFoundException("Não existem alunos cadastrados.");
-        }
-        return result;
-
-
+        Page<ParticipantSumaryResponse> participantSumaryResponse = participantRepository.listParticipantSumary(institutionId, pageable);
+        return participantSumaryResponse;
     }
-
 }
+
+

@@ -64,12 +64,5 @@ public class CreateParticipantHandler {
         participant.setInstitution(institution);
 
         participantRepository.save(participant);
-
-
-
-
-
-
     }
-
 }

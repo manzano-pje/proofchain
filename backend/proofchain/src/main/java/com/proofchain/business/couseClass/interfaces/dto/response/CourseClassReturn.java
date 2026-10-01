@@ -1,30 +1,40 @@
 package com.proofchain.business.couseClass.interfaces.dto.response;
 
-import com.proofchain.business.course.domain.model.Course;
 import com.proofchain.business.couseClass.domain.model.CourseClass;
-import com.proofchain.admin.institution.domain.model.Institution;
-import com.proofchain.user.domain.model.User;
+import com.proofchain.business.participant.domain.model.Participant;
 
 import java.time.Instant;
+import java.util.List;
 
 public record CourseClassReturn(
         Long id,
-        User user,
-        Course course,
+        Long userId,
+        String userName,
+        Long courseId,
+        String courseName,
+        List<Long> participantIds,
         Instant createAt,
         Instant updateAt,
-        Boolean isActive,
-        Institution institution
-){
-    public static CourseClassReturn from(CourseClass courseClass){
+        Boolean isActive
+) {
+
+    public static CourseClassReturn from(CourseClass courseClass) {
+        List<Long> participantIds = courseClass.getParticipants() == null
+                ? List.of()
+                : courseClass.getParticipants().stream()
+                    .map(Participant::getId)
+                    .toList();
+
         return new CourseClassReturn(
                 courseClass.getId(),
-                courseClass.getUser(),
-                courseClass.getCourse(),
+                courseClass.getUser() != null ? courseClass.getUser().getId() : null,
+                courseClass.getUser() != null ? courseClass.getUser().getName() : null,
+                courseClass.getCourse() != null ? courseClass.getCourse().getId() : null,
+                courseClass.getCourse() != null ? courseClass.getCourse().getName() : null,
+                participantIds,
                 courseClass.getCreateAt(),
                 courseClass.getUpdateAt(),
-                courseClass.isActive(),
-                courseClass.getInstitution()
+                courseClass.isActive()
         );
     }
 }

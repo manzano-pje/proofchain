@@ -40,7 +40,7 @@ import java.util.List;
  @RestController
 @AllArgsConstructor
 
-@RequestMapping("/api/v1/couseClass")
+@RequestMapping("/api/v1/courseClass")
 public class CourseClassController {
 
     /*
@@ -59,7 +59,7 @@ public class CourseClassController {
      * ENDPOINT: CREATE COURSECLASS
      * =========================================================
      */
-    @PreAuthorize("hasRole('SUPER_ADMIN','ADMIN', 'USER')")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN', 'USER')")
     @PostMapping("/register")
     public ResponseEntity<Void> createInstructor(@Valid @RequestBody RequestCourseClassDto dto){
         RequestCourseClassCommand command = new RequestCourseClassCommand(dto);
@@ -72,12 +72,11 @@ public class CourseClassController {
      * ENDPOINT: LISTALL COURSECLASS
      * =========================================================
      */
-    @PreAuthorize("hasRole('SUPER_ADMIN','ADMIN', 'USER')")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN', 'USER')")
     @GetMapping("/list")
     public List<CourseClassReturn> listAllcourseClass(){
         return listAll.listAllcourseClass();
     }
-
 
     /*
      * =========================================================

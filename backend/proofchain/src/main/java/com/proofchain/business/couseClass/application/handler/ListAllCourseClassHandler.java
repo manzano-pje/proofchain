@@ -7,6 +7,7 @@ import com.proofchain.shared.exception.NotFoundException;
 import com.proofchain.shared.exception.messages.CourseMessages;
 import com.proofchain.shared.security.SecurityUtils;
 import com.proofchain.shared.util.TenantValidation;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +20,7 @@ public class ListAllCourseClassHandler {
     private final CourseClassRepository courseClassRepository;
     private final TenantValidation tenantValidation;
 
+    @Transactional
     public List<CourseClassReturn> listAllcourseClass(){
 
         /*
@@ -36,12 +38,12 @@ public class ListAllCourseClassHandler {
          * =========================================================
          */
 
-        List<CourseClass> courseClass = courseClassRepository.findAllByInstitution_IdAndInstitution_DeletedAtIsNullOrderByUser_NameAscCourse_NameAsc(institutionId);
-        if(courseClass.isEmpty()){
+        List<CourseClass> courseClasses = courseClassRepository.findAllByInstitution_IdAndInstitution_DeletedAtIsNullOrderByUser_NameAscCourse_NameAsc(institutionId);
+        if(courseClasses.isEmpty()){
             throw new NotFoundException(CourseMessages.COURSE_NOT_FOUND);
         }
-        return courseClass
-                .stream()
+
+        return courseClasses.stream()
                 .map(CourseClassReturn::from)
                 .toList();
     }
