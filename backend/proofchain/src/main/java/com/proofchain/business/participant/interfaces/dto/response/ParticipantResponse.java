@@ -1,5 +1,6 @@
 package com.proofchain.business.participant.interfaces.dto.response;
 
+import com.proofchain.business.participant.domain.model.Participant;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -41,7 +42,24 @@ public record ParticipantResponse(
                 participant.deletedAt(),
                 participant.isActive()
         );
+    }
 
-
+    public ParticipantResponse(Participant participant) {
+        this(participant.getId(),
+                participant.getName(),
+                participant.getEmail(),
+                participant.getPhone(),
+                participant.getCpf(),
+                participant.getAddress(),
+                participant.getNumber(),
+                participant.getComplement(),
+                participant.getNeighborhood(),
+                participant.getCity(),
+                participant.getState(),
+                participant.getPostalCode(),
+                participant.getCreatedAt(),
+                participant.getDeletedAt(),
+                participant.isActive()
+        );
     }
 }

@@ -25,6 +25,8 @@ import type {
 
 const API_URL = import.meta.env.VITE_API_URL.replace(/\/$/, '')
 const PARTICIPANT_CREATE_URL = `${API_URL}/participants/register`
+const PARTICIPANT_UPDATE_URL = (id: number): string => `${API_URL}/participants/update/${id}`
+const PARTICIPANT_DELETE_URL = (id: number): string => `${API_URL}/participants/delete/${id}`
 const PARTICIPANT_SUMMARY_URL = `${API_URL}/participants/listSumary`
 const PARTICIPANT_DETAILS_URL = (id: number): string => `${API_URL}/participants/listOne/${id}`
 const COURSE_CLASS_URL = `${API_URL}/courseClass`
@@ -91,6 +93,45 @@ export const participantService = {
       const errorData = await response.json().catch(() => null)
       throw new Error(
         errorData?.message ?? `Erro ao cadastrar participante (${response.status})`,
+      )
+    }
+  },
+
+  /** Atualiza participante existente. PATCH /participants/update/{id} */
+  async update(token: string, id: number, payload: ParticipantRequest): Promise<void> {
+    const requestPayload = {
+      ...payload,
+      phone: payload.phone.replace(/\D/g, '') || null,
+    }
+
+    const response = await fetch(PARTICIPANT_UPDATE_URL(id), {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(requestPayload),
+    })
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => null)
+      throw new Error(
+        errorData?.message ?? `Erro ao atualizar participante (${response.status})`,
+      )
+    }
+  },
+
+  /** Exclui participante. DELETE /participants/delete/{id} */
+  async delete(token: string, id: number): Promise<void> {
+    const response = await fetch(PARTICIPANT_DELETE_URL(id), {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${token}` },
+    })
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => null)
+      throw new Error(
+        errorData?.message ?? `Erro ao excluir participante (${response.status})`,
       )
     }
   },
