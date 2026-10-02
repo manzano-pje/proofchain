@@ -1,10 +1,13 @@
 package com.proofchain.business.participant.interfaces.controller;
 
 import com.proofchain.business.participant.aplication.command.CreateParticipantCommand;
+import com.proofchain.business.participant.aplication.command.UpdateParticipantCommand;
 import com.proofchain.business.participant.aplication.handler.CreateParticipantHandler;
+import com.proofchain.business.participant.aplication.handler.UpdateParticipantHandler;
 import com.proofchain.business.participant.aplication.query.ListAllSumaryParticipantQuery;
 import com.proofchain.business.participant.aplication.query.ListOneParticipantQuery;
 import com.proofchain.business.participant.interfaces.dto.request.ParticipantRequest;
+import com.proofchain.business.participant.interfaces.dto.request.ParticipantUpdate;
 import com.proofchain.business.participant.interfaces.dto.response.ParticipantResponse;
 import com.proofchain.business.participant.interfaces.dto.response.ParticipantSumaryResponse;
 import jakarta.validation.Valid;
@@ -26,6 +29,7 @@ public class ParticipantController {
      * =========================================================
      */
     private final CreateParticipantHandler createParticipantHandler;
+    private final UpdateParticipantHandler updateParticipantHandler;
     private final ListOneParticipantQuery listOneParticipantQuery;
     private final ListAllSumaryParticipantQuery listAllSumaryParticipantQuery;
 
@@ -55,11 +59,13 @@ public class ParticipantController {
         ParticipantResponse response = listOneParticipantQuery.listOneParticipant(id);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
-//    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'ADMIN', 'USER')")
-//    @PatchMapping("/update/{id}")
-//    public ResponseEntity<ParticipantResponse> listOneParticipant(@PathVariable Long id){
-//        ParticipantResponse response = listOneParticipantQuery.listOneParticipant(id);
-//        return ResponseEntity.status(HttpStatus.OK).body(response);
-//    }
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'ADMIN', 'USER')")
+    @PatchMapping("/update/{id}")
+    public ResponseEntity<ParticipantResponse> updateParticipant(@PathVariable Long id,
+                                                                 @Valid @RequestBody ParticipantUpdate dto){
+        UpdateParticipantCommand command = new UpdateParticipantCommand(id, dto);
+        updateParticipantHandler.updateParticipant(command);
+        return ResponseEntity.ok().build();
+    }
 
 }
