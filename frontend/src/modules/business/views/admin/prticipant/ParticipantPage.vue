@@ -51,7 +51,8 @@ const statusFilter = ref<'all' | 'active' | 'inactive'>('all')
 const currentPage = ref(1)
 const pageSize = 5
 const formModel = ref<ParticipantRequest>(emptyParticipant())
-const formMode = ref<'create' | 'view'>('create')
+const formMode = ref<'create' | 'edit' | 'view'>('create')
+const editingParticipantId = ref<number | null>(null)
 
 const getAccessToken = (): string | null => {
   const token = authStore.session?.accessToken
@@ -107,6 +108,7 @@ const paginatedParticipants = computed(() => {
 
 const openCreateForm = (): void => {
   formMode.value = 'create'
+  editingParticipantId.value = null
   formModel.value = emptyParticipant()
   errorMessage.value = ''
   successMessage.value = ''
@@ -168,18 +170,19 @@ const handleSubmit = async (payload: ParticipantRequest): Promise<void> => {
 
   isSubmitting.value = true
   try {
-    await participantService.create(token, payload)
-    const localKey = globalThis.crypto?.randomUUID?.() ?? `session-${Date.now()}`
-    participants.value = [
-      {
-        ...payload,
-        clientKey: localKey,
-        latestCourseName: '—',
-      },
-      ...participants.value,
-    ]
+    if (formMode.value === 'edit' && editingParticipantId.value != null) {
+      await participantService.update(token, editingParticipantId.value, payload)
+      successMessage.value = 'Participante atualizado com sucesso.'
+    } else {
+      await participantService.create(token, payload)
+      const localKey = globalThis.crypto?.randomUUID?.() ?? `session-${Date.now()}`
+      participants.value = [
+        { ...payload, clientKey: localKey, latestCourseName: '—' },
+        ...participants.value,
+      ]
+      successMessage.value = 'Participante cadastrado com sucesso.'
+    }
     currentPage.value = 1
-    successMessage.value = 'Participante cadastrado com sucesso.'
     closeForm()
     await loadParticipants()
   } catch (error) {
@@ -189,10 +192,51 @@ const handleSubmit = async (payload: ParticipantRequest): Promise<void> => {
   }
 }
 
-// Ações apenas visuais enquanto PATCH e DELETE não estiverem disponíveis.
-// Futuramente, receberão o id real retornado pelo GET e chamarão os endpoints.
-const onUpdatePlaceholder = (_participant: ParticipantGridItem): void => {}
-const onDeletePlaceholder = (_participant: ParticipantGridItem): void => {}
+const onUpdate = async (participant: ParticipantGridItem): Promise<void> => {
+  if (participant.id == null) {
+    errorMessage.value = 'Não foi possível identificar o participante para edição.'
+    return
+  }
+
+  const token = getAccessToken()
+  if (!token) return
+
+  errorMessage.value = ''
+  successMessage.value = ''
+  try {
+    formModel.value = await participantService.getById(participant.id, token)
+    editingParticipantId.value = participant.id
+    formMode.value = 'edit'
+    isFormOpen.value = true
+  } catch (error) {
+    errorMessage.value = error instanceof Error
+      ? error.message
+      : 'Não foi possível carregar os dados do participante.'
+  }
+}
+
+const onDelete = async (participant: ParticipantGridItem): Promise<void> => {
+  if (participant.id == null) {
+    errorMessage.value = 'Não foi possível identificar o participante para exclusão.'
+    return
+  }
+  if (!globalThis.confirm(`Deseja excluir o participante ${participant.name}?`)) return
+
+  const token = getAccessToken()
+  if (!token) return
+
+  errorMessage.value = ''
+  successMessage.value = ''
+  try {
+    await participantService.delete(token, participant.id)
+    participants.value = participants.value.filter((item) => item.id !== participant.id)
+    successMessage.value = 'Participante excluído com sucesso.'
+  } catch (error) {
+    errorMessage.value = error instanceof Error
+      ? error.message
+      : 'Não foi possível excluir o participante.'
+  }
+}
 
 const openParticipantView = async (participant: ParticipantGridItem): Promise<void> => {
   formMode.value = 'view'
@@ -289,8 +333,8 @@ onMounted(async () => {
             </td>
             <td class="participant-page__actions">
               <button type="button" class="participant-page__action" title="Visualizar participante" aria-label="Visualizar participante" @click="openParticipantView(participant)">◉</button>
-              <button type="button" class="participant-page__action" title="Atualização será integrada quando PATCH estiver disponível" aria-label="Atualizar participante" @click="onUpdatePlaceholder(participant)">✎</button>
-              <button type="button" class="participant-page__action participant-page__action--danger" title="Exclusão será integrada quando DELETE estiver disponível" aria-label="Excluir participante" @click="onDeletePlaceholder(participant)">×</button>
+              <button type="button" class="participant-page__action" title="Editar participante" aria-label="Editar participante" @click="onUpdate(participant)">✎</button>
+              <button type="button" class="participant-page__action participant-page__action--danger" title="Excluir participante" aria-label="Excluir participante" @click="onDelete(participant)">×</button>
             </td>
           </tr>
           <tr v-if="paginatedParticipants.length === 0">

@@ -3,6 +3,7 @@ package com.proofchain.business.participant.interfaces.controller;
 import com.proofchain.business.participant.aplication.command.CreateParticipantCommand;
 import com.proofchain.business.participant.aplication.command.UpdateParticipantCommand;
 import com.proofchain.business.participant.aplication.handler.CreateParticipantHandler;
+import com.proofchain.business.participant.aplication.handler.DeleteParticipantHandler;
 import com.proofchain.business.participant.aplication.handler.UpdateParticipantHandler;
 import com.proofchain.business.participant.aplication.query.ListAllSumaryParticipantQuery;
 import com.proofchain.business.participant.aplication.query.ListOneParticipantQuery;
@@ -29,9 +30,10 @@ public class ParticipantController {
      * =========================================================
      */
     private final CreateParticipantHandler createParticipantHandler;
-    private final UpdateParticipantHandler updateParticipantHandler;
     private final ListOneParticipantQuery listOneParticipantQuery;
     private final ListAllSumaryParticipantQuery listAllSumaryParticipantQuery;
+    private final UpdateParticipantHandler updateParticipantHandler;
+    private final DeleteParticipantHandler deleteParticipantHandler;
 
     /*
      * =========================================================
@@ -64,7 +66,14 @@ public class ParticipantController {
     public ResponseEntity<ParticipantResponse> updateParticipant(@PathVariable Long id,
                                                                  @Valid @RequestBody ParticipantUpdate dto){
         UpdateParticipantCommand command = new UpdateParticipantCommand(id, dto);
-        updateParticipantHandler.updateParticipant(command);
+        updateParticipantHandler.updateParticipant(id, command);
+        return ResponseEntity.ok().build();
+    }
+
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'ADMIN', 'USER')")
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteParticipant(@PathVariable Long id){
+        deleteParticipantHandler.deleteParticipant(id);
         return ResponseEntity.ok().build();
     }
 

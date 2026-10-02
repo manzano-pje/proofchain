@@ -15,6 +15,7 @@ import java.util.Optional;
 @Repository
 public interface ParticipantRepository extends JpaRepository<Participant, Long> {
 
+    boolean existsByIdAndInstitutionIdAndInstitutionDeletedAtIsNull(Long id, Long institutionId);
     boolean existsByCpfAndInstitutionIdAndInstitutionDeletedAtIsNull(String cpf, Long institutionId);
     Optional<Participant> findByIdAndInstitutionId(Long id, Long institutionId);
 
