@@ -73,7 +73,7 @@ public class ListAllCourseHandler {
          * =========================================================
          */
 
-        List<Course> courseList = courseRepository.findAllByInstitutionId(institutionId);
+        List<Course> courseList = courseRepository.findAllByInstitutionIdAndDeletedAtIsNull(institutionId);
 
         if (courseList.isEmpty()) {
             throw new NotFoundException(CourseMessages.COURSE_NOT_FOUND);

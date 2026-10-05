@@ -39,6 +39,7 @@ const props = withDefaults(
 const emit = defineEmits<{
   (e: 'submit', payload: ParticipantRequest): void;
   (e: 'cancel'): void;
+  (e: 'validation-error'): void;
 }>();
 
 // ============================================================
@@ -90,7 +91,10 @@ const validate = (): boolean => {
 // SUBMIT
 // ============================================================
 const handleSubmit = () => {
-  if (!validate()) return;
+  if (!validate()) {
+    emit('validation-error');
+    return;
+  }
   const numberValue = Number(form.number);
   emit('submit', {
     ...form,
@@ -110,7 +114,7 @@ const title = computed(() => {
 </script>
 
 <template>
-  <form class="form-participant" @submit.prevent="handleSubmit">
+  <form class="form-participant" novalidate @submit.prevent="handleSubmit">
     <h2 id="participant-modal-title" class="form-participant__title">{{ title }}</h2>
     <div class="form-participant__body">
 
@@ -125,7 +129,11 @@ const title = computed(() => {
           :aria-invalid="!!errors.name"
           aria-describedby="participant-name-error"
         />
-        <span v-if="errors.name" id="participant-name-error" class="form-participant__error">
+        <span
+          v-if="errors.name"
+          id="participant-name-error"
+          class="form-participant__error"
+        >
           {{ errors.name }}
         </span>
       </div>

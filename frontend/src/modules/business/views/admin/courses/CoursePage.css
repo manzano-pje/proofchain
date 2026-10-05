@@ -54,8 +54,8 @@ BEM
   border: var(--border-width-thin) solid var(--border);
   border-radius: var(--radius-md);
   font-size: var(--font-md);
-  background: #ffffff;
-  color: var(--text-inverse);
+  background: var(--brand-card);
+  color: var(--text-primary);
 }
 
 .course-page__search:focus {
@@ -93,7 +93,7 @@ BEM
 .course-page__table {
   width: 100%;
   border-collapse: collapse;
-  background: #ffffff;
+  background: var(--surface);
   border-radius: var(--radius-md);
   overflow: hidden;
   box-shadow: var(--shadow-sm);
@@ -107,15 +107,15 @@ BEM
 }
 
 .course-page__table th {
-  background: var(--background-secondary);
+  background: var(--brand-card);
   font-weight: var(--weight-semibold);
-  color: var(--text-inverse);
+  color: var(--text-secondary);
   font-size: var(--font-sm);
 }
 
 .course-page__table td {
   font-size: var(--font-sm);
-  color: var(--text-inverse);
+  color: var(--text-secondary);
 }
 
 .course-page__table tr:last-child td {
@@ -204,6 +204,123 @@ BEM
   max-width: 560px;
   max-height: 90vh;
   overflow-y: auto;
+}
+
+.course-page__delete-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1050;
+  display: grid;
+  place-items: center;
+  padding: var(--space-lg);
+  background: var(--overlay-dark);
+}
+
+.course-page__delete-modal {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  width: min(100%, 420px);
+  padding: var(--space-xl);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  box-shadow: var(--shadow-xl);
+}
+
+.course-page__delete-title,
+.course-page__delete-message,
+.course-page__delete-warning {
+  margin: 0;
+}
+
+.course-page__delete-title {
+  color: var(--text-primary);
+  font-size: var(--font-lg);
+}
+
+.course-page__delete-message,
+.course-page__delete-warning {
+  color: var(--text-secondary);
+  font-size: var(--font-sm);
+}
+
+.course-page__delete-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-sm);
+  margin-top: var(--space-sm);
+}
+
+.course-page__delete-cancel,
+.course-page__delete-confirm {
+  padding: var(--space-sm) var(--space-lg);
+  border: 0;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.course-page__delete-cancel {
+  background: var(--background-secondary);
+  color: var(--text-inverse);
+}
+
+.course-page__delete-confirm {
+  background: var(--danger);
+  color: var(--text-inverse);
+}
+
+.course-page__delete-cancel:disabled,
+.course-page__delete-confirm:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.course-page__feedback-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  display: grid;
+  place-items: center;
+  padding: var(--space-lg);
+  background: var(--overlay-dark);
+}
+
+.course-page__feedback-modal {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  width: min(100%, 420px);
+  padding: var(--space-xl);
+  border: 1px solid var(--border-buttom);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  box-shadow: var(--shadow-xl);
+}
+
+.course-page__feedback-modal h2,
+.course-page__feedback-modal p {
+  margin: 0;
+}
+
+.course-page__feedback-modal h2 {
+  color: var(--text-primary);
+  font-size: var(--font-lg);
+}
+
+.course-page__feedback-modal p {
+  color: var(--text-secondary);
+  font-size: var(--font-sm);
+}
+
+.course-page__feedback-ok {
+  align-self: flex-end;
+  min-width: 5rem;
+  padding: var(--space-sm) var(--space-lg);
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: var(--action);
+  color: var(--text-inverse);
+  cursor: pointer;
 }
 
 /* Responsividade */

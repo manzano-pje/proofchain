@@ -2,10 +2,7 @@ package com.proofchain.business.course.interfaces.controller;
 
 import com.proofchain.business.course.application.command.CreateCourseCommand;
 import com.proofchain.business.course.application.command.UpdateCourseCommand;
-import com.proofchain.business.course.application.handler.CreateCourseHandler;
-import com.proofchain.business.course.application.handler.ListAllCourseHandler;
-import com.proofchain.business.course.application.handler.ListOneCourseHandler;
-import com.proofchain.business.course.application.handler.UpdateCourseHandler;
+import com.proofchain.business.course.application.handler.*;
 import com.proofchain.business.course.domain.model.Course;
 import com.proofchain.business.course.interfaces.dto.request.CourseRequestDto;
 import com.proofchain.business.course.interfaces.dto.response.CourseResponse;
@@ -56,6 +53,7 @@ public class CourseController {
     private final CreateCourseHandler createCourseHandler;
     private final ListAllCourseHandler listAllCourses;
     private final ListOneCourseHandler listOneCourse;
+    private final DeleteCourseHandler deleteCourseHandler;
 
     /*
      * =========================================================
@@ -79,7 +77,7 @@ public class CourseController {
      * =========================================================
      */
 
-    @PreAuthorize("hasRole('ADMIN', 'USER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping("/list")
     public List<FullCourseResponse> listAllCourses() {
         return listAllCourses.listAllCourses();
@@ -94,6 +92,7 @@ public class CourseController {
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     @GetMapping("/list/{id}")
     public CourseResponse listOneCourse(@PathVariable Long id) {
+
         return listOneCourse.listOneCourse(id);
     }
 
@@ -127,4 +126,11 @@ public class CourseController {
      * ENDPOINT: DELETE COURSE
      * =========================================================
      */
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity delete(@PathVariable Long id){
+        deleteCourseHandler.deleteCourse(id);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
 }

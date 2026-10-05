@@ -117,17 +117,17 @@ export const courseService = {
     return response.json() as Promise<Course>
   },
 
-  /**
-   * Método de exclusão preparado, mas NÃO chamado nesta tarefa.
-   * O backend atual não possui endpoint DELETE de curso validado.
-   *
-   * async delete(id: number): Promise<void> {
-  *   const response = await fetch(`${COURSE_URL}/delete/${id}`, {
-   *     method: 'DELETE',
-   *     headers: { 'Content-Type': 'application/json' },
-   *     credentials: 'include',
-   *   })
-   *   if (!response.ok) throw new Error('Não foi possível excluir o curso.')
-   * },
-   */
+
+  async delete(token: string, id: number): Promise<void> {
+    const response = await fetch(`${COURSE_URL}/delete/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      credentials: 'include',
+    })
+    if (!response.ok) throw new Error('Não foi possível excluir o curso.')
+  },
+
 }

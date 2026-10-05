@@ -44,14 +44,6 @@ BEM
       />
     </div>
 
-    <!-- Feedback -->
-    <div v-if="errorMessage" class="course-page__feedback course-page__feedback--error">
-      {{ errorMessage }}
-    </div>
-    <div v-if="successMessage" class="course-page__feedback course-page__feedback--success">
-      {{ successMessage }}
-    </div>
-
     <!-- Loading -->
     <div v-if="isLoading" class="course-page__loading">
       Carregando cursos...
@@ -142,6 +134,70 @@ BEM
           />
         </div>
       </div>
+
+      <!-- Modal de confirmação de exclusão -->
+      <div
+        v-if="isDeleteModalOpen"
+        class="course-page__delete-overlay"
+        @click.self="closeDeleteModal"
+      >
+        <section
+          class="course-page__delete-modal"
+          role="alertdialog"
+          aria-modal="true"
+          aria-labelledby="course-delete-title"
+          aria-describedby="course-delete-description"
+        >
+          <h2
+            id="course-delete-title"
+            class="course-page__delete-title"
+          >
+            Excluir curso
+          </h2>
+
+          <p
+            id="course-delete-description"
+            class="course-page__delete-message"
+          >
+            Tem certeza que deseja excluir
+            <strong>{{ selectedCourse?.name }}</strong>?
+          </p>
+
+          <p class="course-page__delete-warning">
+            Essa ação não poderá ser desfeita.
+          </p>
+
+          <div class="course-page__delete-actions">
+            <button
+              type="button"
+              class="course-page__delete-cancel"
+              :disabled="isSubmitting"
+              @click="closeDeleteModal"
+            >
+              Cancelar
+            </button>
+
+            <button
+              type="button"
+              class="course-page__delete-confirm"
+              :disabled="isSubmitting"
+              @click="confirmDeleteCourse"
+            >
+              {{ isSubmitting ? 'Excluindo...' : 'Excluir' }}
+            </button>
+          </div>
+        </section>
+      </div>
+    </Teleport>
+
+    <Teleport to="body">
+      <div v-if="feedbackMessage" class="course-page__feedback-backdrop">
+        <section class="course-page__feedback-modal" role="alertdialog" aria-modal="true" aria-labelledby="course-feedback-title">
+          <h2 id="course-feedback-title">{{ feedbackType === 'error' ? 'Não foi possível concluir' : 'Concluído' }}</h2>
+          <p>{{ feedbackMessage }}</p>
+          <button type="button" class="course-page__feedback-ok" @click="closeFeedback">OK</button>
+        </section>
+      </div>
     </Teleport>
   </div>
 </template>
@@ -170,8 +226,8 @@ const route = useRoute()
 const router = useRouter()
 const isLoading = ref(false)
 const isSubmitting = ref(false)
-const errorMessage = ref('')
-const successMessage = ref('')
+const feedbackMessage = ref('')
+const feedbackType = ref<'success' | 'error'>('success')
 
 const searchTerm = ref('')
 const currentPage = ref(1)
@@ -184,10 +240,19 @@ const selectedCourse = ref<Course | null>(null)
 const getAccessToken = (): string | null => {
   const token = authStore.session?.accessToken
   if (!token) {
-    errorMessage.value = 'Sua sessão expirou. Entre novamente para continuar.'
+    showFeedback('Sua sessão expirou. Entre novamente para continuar.', 'error')
     return null
   }
   return token
+}
+
+const showFeedback = (message: string, type: 'success' | 'error'): void => {
+  feedbackMessage.value = message
+  feedbackType.value = type
+}
+
+const closeFeedback = (): void => {
+  feedbackMessage.value = ''
 }
 
 /* ============================================================
@@ -221,7 +286,7 @@ const setSearchTerm = (value: string) => {
   O contrato de GET /course/list deve corresponder ao tipo Course.
   ============================================================ */
 const loadCourses = async () => {
-  errorMessage.value = ''
+  closeFeedback()
   const token = getAccessToken()
   if (!token) return
 
@@ -229,7 +294,7 @@ const loadCourses = async () => {
   try {
     courses.value = await courseService.getAll(token)
   } catch (err) {
-    errorMessage.value = 'Não foi possível carregar os cursos.'
+    showFeedback('Não foi possível carregar os cursos.', 'error')
     console.error(err)
   } finally {
     isLoading.value = false
@@ -256,7 +321,7 @@ const openEditForm = async (course: Course) => {
   try {
     selectedCourse.value = await courseService.getById(course.id, token)
   } catch (err) {
-    errorMessage.value = 'Não foi possível carregar o curso.'
+    showFeedback('Não foi possível carregar o curso.', 'error')
     console.error(err)
     isFormOpen.value = false
   }
@@ -272,7 +337,7 @@ const openViewForm = async (course: Course) => {
   try {
     selectedCourse.value = await courseService.getById(course.id, token)
   } catch (err) {
-    errorMessage.value = 'Não foi possível carregar o curso.'
+    showFeedback('Não foi possível carregar o curso.', 'error')
     console.error(err)
     isFormOpen.value = false
   }
@@ -281,7 +346,6 @@ const openViewForm = async (course: Course) => {
 const closeForm = () => {
   isFormOpen.value = false
   selectedCourse.value = null
-  successMessage.value = ''
   if (route.query.form === 'create') {
     const query = { ...route.query }
     delete query.form
@@ -307,8 +371,7 @@ watch(
   Após POST/PATCH bem-sucedido, fechar o modal e reler os dados.
   ============================================================ */
 const handleFormSubmit = async (payload: CourseCreatePayload | CourseUpdatePayload) => {
-  errorMessage.value = ''
-  successMessage.value = ''
+  closeFeedback()
   const token = getAccessToken()
   if (!token) return
 
@@ -325,17 +388,15 @@ const handleFormSubmit = async (payload: CourseCreatePayload | CourseUpdatePaylo
       await courseService.update(token, updatePayload.id, updatePayload)
       confirmationMessage = 'Curso atualizado com sucesso.'
     }
-
-    searchTerm.value = ''
-    currentPage.value = 1
-    closeForm()
-    successMessage.value = confirmationMessage
-    await loadCourses()
-  } catch (err) {
-    errorMessage.value = 'Não foi possível salvar o curso.'
-    console.error(err)
-  } finally {
-    isSubmitting.value = false
+      searchTerm.value = ''
+      currentPage.value = 1
+      await loadCourses()
+      if (!feedbackMessage.value) showFeedback(confirmationMessage, 'success')
+    } catch (err) {
+      showFeedback('Não foi possível salvar o curso.', 'error')
+      console.error(err)
+    } finally {
+      isSubmitting.value = false
   }
 }
 
@@ -343,16 +404,43 @@ const handleFormSubmit = async (payload: CourseCreatePayload | CourseUpdatePaylo
   EXCLUSÃO — aguardando endpoint
   Necessário confirmar contrato e autorização antes de habilitar.
   ============================================================ */
-const handleDeleteCourse = (_course: Course) => {
-  // O endpoint DELETE ainda não existe no backend.
-  // Quando estiver disponível, descomentar:
-  //
-  // await courseService.delete(course.id)
-  // await loadCourses()
-  //
-  // Por enquanto, nenhuma requisição é feita.
-  alert('A exclusão de cursos estará disponível em breve.')
-}
+  const isDeleteModalOpen = ref(false)
+
+  const handleDeleteCourse = (course: Course) => {
+    selectedCourse.value = course
+    isDeleteModalOpen.value = true
+  }
+
+  const confirmDeleteCourse = async () => {
+    const token = getAccessToken()
+    if (!token || !selectedCourse.value) return
+
+    isSubmitting.value = true
+
+    try {
+      await courseService.delete(token, selectedCourse.value.id)
+
+      isDeleteModalOpen.value = false
+      selectedCourse.value = null
+
+      searchTerm.value = ''
+      currentPage.value = 1
+
+      await loadCourses()
+
+      showFeedback('Curso excluído com sucesso.', 'success')
+    } catch (err) {
+      showFeedback('Não foi possível excluir o curso.', 'error')
+      console.error(err)
+    } finally {
+      isSubmitting.value = false
+    }
+  }
+
+  const closeDeleteModal = () => {
+    isDeleteModalOpen.value = false
+    selectedCourse.value = null
+  }
 
 /* ============================================================
    CICLO DE VIDA

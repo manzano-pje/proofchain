@@ -4,7 +4,7 @@ import Landing from '@/modules/landing/views/Landing.vue'
 import Login from '@/modules/auth/views/Login.vue'
 import { useAuthStore } from '@/modules/auth/stores/Auth.store'
 import { canAccessAdminRoute } from '@/modules/business/types/Entity.types'
-import AdminLayout from '@/modules/business/views/admin/AdminLayout.vue'
+
 
 const institutionRoute = () =>
   import('@/modules/business/views/admin/institution/InstitutionPage.vue')
