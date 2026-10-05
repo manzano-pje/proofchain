@@ -41,7 +41,7 @@ BEM
 .participant-page__title {
   font-size: var(--font-2xl);
   font-weight: var(--weight-bold);
-  color: var(--text-primary);
+  color: var(--text-inverse);
   margin: 0;
 }
 
@@ -299,6 +299,44 @@ BEM
 .participant-page__modal-body {
   padding: var(--space-lg) var(--space-xl);
   overflow-y: auto;
+}
+
+.participant-page__feedback-modal {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  width: min(100%, 420px);
+  padding: var(--space-xl);
+  border: 1px solid var(--border-buttom);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  box-shadow: var(--shadow-xl);
+}
+
+.participant-page__feedback-modal h2,
+.participant-page__feedback-modal p {
+  margin: 0;
+}
+
+.participant-page__feedback-modal h2 {
+  color: var(--text-primary);
+  font-size: var(--font-lg);
+}
+
+.participant-page__feedback-modal p {
+  color: var(--text-secondary);
+  font-size: var(--font-sm);
+}
+
+.participant-page__feedback-ok {
+  align-self: flex-end;
+  min-width: 5rem;
+  padding: var(--space-sm) var(--space-lg);
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: var(--action);
+  color: var(--text-inverse);
+  cursor: pointer;
 }
 
 /* ============================================================

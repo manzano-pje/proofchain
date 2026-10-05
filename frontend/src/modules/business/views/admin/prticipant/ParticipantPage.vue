@@ -43,8 +43,8 @@ const courseAssignments = ref<CourseClassAssignment[]>([])
 const isLoading = ref(false)
 const isFormOpen = ref(false)
 const isSubmitting = ref(false)
-const successMessage = ref('')
-const errorMessage = ref('')
+const feedbackMessage = ref('')
+const feedbackType = ref<'success' | 'error'>('success')
 const searchTerm = ref('')
 const courseFilter = ref('')
 const statusFilter = ref<'all' | 'active' | 'inactive'>('all')
@@ -54,9 +54,18 @@ const formModel = ref<ParticipantRequest>(emptyParticipant())
 const formMode = ref<'create' | 'edit' | 'view'>('create')
 const editingParticipantId = ref<number | null>(null)
 
+const showFeedback = (message: string, type: 'success' | 'error'): void => {
+  feedbackMessage.value = message
+  feedbackType.value = type
+}
+
+const closeFeedback = (): void => {
+  feedbackMessage.value = ''
+}
+
 const getAccessToken = (): string | null => {
   const token = authStore.session?.accessToken
-  if (!token) errorMessage.value = 'Sua sessão expirou. Entre novamente para continuar.'
+  if (!token) showFeedback('Sua sessão expirou. Entre novamente para continuar.', 'error')
   return token ?? null
 }
 
@@ -110,8 +119,7 @@ const openCreateForm = (): void => {
   formMode.value = 'create'
   editingParticipantId.value = null
   formModel.value = emptyParticipant()
-  errorMessage.value = ''
-  successMessage.value = ''
+  closeFeedback()
   isFormOpen.value = true
 }
 
@@ -130,11 +138,11 @@ const loadCourseAssignments = async (): Promise<void> => {
       latestCourseName: latestCourseForParticipant(participant.id),
     }))
   } catch (error) {
-    errorMessage.value = error instanceof Error ? error.message : 'Não foi possível carregar as turmas.'
+    showFeedback(error instanceof Error ? error.message : 'Não foi possível carregar as turmas.', 'error')
   }
 }
 
-const loadParticipants = async (): Promise<void> => {
+const loadParticipants = async (showErrors = true): Promise<void> => {
   const token = getAccessToken()
   if (!token) return
 
@@ -156,15 +164,16 @@ const loadParticipants = async (): Promise<void> => {
     participants.value = [...sessionParticipants, ...persistedParticipants]
     currentPage.value = 1
   } catch (error) {
-    errorMessage.value = error instanceof Error
-      ? error.message
-      : 'Não foi possível carregar participantes.'
+    if (showErrors) {
+      showFeedback(error instanceof Error
+        ? error.message
+        : 'Não foi possível carregar participantes.', 'error')
+    }
   }
 }
 
 const handleSubmit = async (payload: ParticipantRequest): Promise<void> => {
-  errorMessage.value = ''
-  successMessage.value = ''
+  closeFeedback()
   const token = getAccessToken()
   if (!token) return
 
@@ -172,7 +181,6 @@ const handleSubmit = async (payload: ParticipantRequest): Promise<void> => {
   try {
     if (formMode.value === 'edit' && editingParticipantId.value != null) {
       await participantService.update(token, editingParticipantId.value, payload)
-      successMessage.value = 'Participante atualizado com sucesso.'
     } else {
       await participantService.create(token, payload)
       const localKey = globalThis.crypto?.randomUUID?.() ?? `session-${Date.now()}`
@@ -180,13 +188,15 @@ const handleSubmit = async (payload: ParticipantRequest): Promise<void> => {
         { ...payload, clientKey: localKey, latestCourseName: '—' },
         ...participants.value,
       ]
-      successMessage.value = 'Participante cadastrado com sucesso.'
     }
     currentPage.value = 1
-    closeForm()
-    await loadParticipants()
+    showFeedback(
+      formMode.value === 'edit' ? 'Participante atualizado com sucesso.' : 'Participante cadastrado com sucesso.',
+      'success',
+    )
+    void loadParticipants(false)
   } catch (error) {
-    errorMessage.value = error instanceof Error ? error.message : 'Não foi possível salvar o participante.'
+    showFeedback(error instanceof Error ? error.message : 'Não foi possível salvar o participante.', 'error')
   } finally {
     isSubmitting.value = false
   }
@@ -194,30 +204,29 @@ const handleSubmit = async (payload: ParticipantRequest): Promise<void> => {
 
 const onUpdate = async (participant: ParticipantGridItem): Promise<void> => {
   if (participant.id == null) {
-    errorMessage.value = 'Não foi possível identificar o participante para edição.'
+    showFeedback('Não foi possível identificar o participante para edição.', 'error')
     return
   }
 
   const token = getAccessToken()
   if (!token) return
 
-  errorMessage.value = ''
-  successMessage.value = ''
+  closeFeedback()
   try {
     formModel.value = await participantService.getById(participant.id, token)
     editingParticipantId.value = participant.id
     formMode.value = 'edit'
     isFormOpen.value = true
   } catch (error) {
-    errorMessage.value = error instanceof Error
+    showFeedback(error instanceof Error
       ? error.message
-      : 'Não foi possível carregar os dados do participante.'
+      : 'Não foi possível carregar os dados do participante.', 'error')
   }
 }
 
 const onDelete = async (participant: ParticipantGridItem): Promise<void> => {
   if (participant.id == null) {
-    errorMessage.value = 'Não foi possível identificar o participante para exclusão.'
+    showFeedback('Não foi possível identificar o participante para exclusão.', 'error')
     return
   }
   if (!globalThis.confirm(`Deseja excluir o participante ${participant.name}?`)) return
@@ -225,16 +234,15 @@ const onDelete = async (participant: ParticipantGridItem): Promise<void> => {
   const token = getAccessToken()
   if (!token) return
 
-  errorMessage.value = ''
-  successMessage.value = ''
+  closeFeedback()
   try {
     await participantService.delete(token, participant.id)
     participants.value = participants.value.filter((item) => item.id !== participant.id)
-    successMessage.value = 'Participante excluído com sucesso.'
+    showFeedback('Participante excluído com sucesso.', 'success')
   } catch (error) {
-    errorMessage.value = error instanceof Error
+    showFeedback(error instanceof Error
       ? error.message
-      : 'Não foi possível excluir o participante.'
+      : 'Não foi possível excluir o participante.', 'error')
   }
 }
 
@@ -250,10 +258,9 @@ const openParticipantView = async (participant: ParticipantGridItem): Promise<vo
   try {
     formModel.value = await participantService.getById(participant.id, token)
   } catch (error) {
-    isFormOpen.value = false
-    errorMessage.value = error instanceof Error
+    showFeedback(error instanceof Error
       ? error.message
-      : 'Não foi possível carregar os dados do participante.'
+      : 'Não foi possível carregar os dados do participante.', 'error')
   }
 }
 
@@ -276,13 +283,6 @@ onMounted(async () => {
       </BaseButton>
     </header>
 
-    <div v-if="successMessage" class="participant-page__feedback participant-page__feedback--success" role="status">
-      {{ successMessage }}
-    </div>
-    <div v-if="errorMessage" class="participant-page__feedback participant-page__feedback--error" role="alert">
-      {{ errorMessage }}
-    </div>
-
     <section class="participant-page__filters" aria-label="Filtros de participantes">
       <label class="participant-page__search-wrap">
         <span class="participant-page__sr-only">Buscar participantes</span>
@@ -290,7 +290,7 @@ onMounted(async () => {
           v-model="searchTerm"
           class="participant-page__search"
           type="search"
-          placeholder="Buscar por nome, e-mail ou CPF..."
+          placeholder="Buscar por nome ou e-mail"
           @input="currentPage = 1"
         />
       </label>
@@ -354,8 +354,24 @@ onMounted(async () => {
     </footer>
 
     <Teleport to="body">
-      <div v-if="isFormOpen" class="participant-page__modal-backdrop" @click.self="closeForm" @keydown.esc.stop.prevent="closeForm">
-        <section class="participant-page__modal" role="dialog" aria-modal="true" aria-labelledby="participant-modal-title">
+      <div
+        v-if="isFormOpen || feedbackMessage"
+        class="participant-page__modal-backdrop"
+        @click.self="!feedbackMessage && closeForm()"
+        @keydown.esc.stop.prevent="!feedbackMessage && closeForm()"
+      >
+        <section
+          v-if="feedbackMessage"
+          class="participant-page__feedback-modal"
+          role="alertdialog"
+          aria-modal="true"
+          aria-labelledby="participant-feedback-title"
+        >
+          <h2 id="participant-feedback-title">{{ feedbackType === 'error' ? 'Não foi possível concluir' : 'Concluído' }}</h2>
+          <p>{{ feedbackMessage }}</p>
+          <button type="button" class="participant-page__feedback-ok" @click="closeFeedback">OK</button>
+        </section>
+        <section v-show="isFormOpen && !feedbackMessage" class="participant-page__modal" role="dialog" aria-modal="true" aria-labelledby="participant-modal-title">
           <header class="participant-page__modal-header">
             <button type="button" class="participant-page__modal-close" aria-label="Fechar" @click="closeForm">×</button>
           </header>
@@ -365,6 +381,7 @@ onMounted(async () => {
               :initial-data="formModel"
               :submitting="isSubmitting"
               @submit="handleSubmit"
+              @validation-error="showFeedback('Confira os campos obrigatórios e corrija os dados destacados.', 'error')"
               @cancel="closeForm"
             />
           </div>
