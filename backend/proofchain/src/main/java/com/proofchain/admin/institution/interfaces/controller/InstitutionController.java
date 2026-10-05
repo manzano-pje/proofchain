@@ -52,7 +52,7 @@ public class InstitutionController {
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
-    @PatchMapping("/me")
+    @PatchMapping("/update")
     public ResponseEntity<String> updateCurrentInstitution(
             @Valid @RequestBody UpdateInstitutionRequest request) {
         updateInstitution.updateCurrentInstitution(request);
@@ -60,25 +60,25 @@ public class InstitutionController {
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
-    @GetMapping("/me")
+    @GetMapping("/update")
     public InstitutionResponse getCurrentInstitution() {
+
         return listOneInstitution.getCurrentInstitution();
     }
 
     @PreAuthorize("hasRole('SUPER_ADMIN')")
     @GetMapping("/list")
     public List<InstitutionResponse> getAllInstitution(){
-
         return listAllInstitution.getAllinstitution();
     }
 
-    @PreAuthorize("hasRole('SUPER_ADMIN')")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN')")
     @GetMapping("/get/{cnpj}")
     public InstitutionResponse getOneInstitution(@PathVariable String cnpj){
         return listOneInstitution.getOneinstitution(cnpj);
     }
 
-    @PreAuthorize("hasRole('SUPER_ADMIN', 'ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN')")
     @DeleteMapping("/delete/{cnpj}")
     public ResponseEntity<String> deleteInstitution(@PathVariable String cnpj){
         deleteInstitution.deleteinstitution(cnpj);
