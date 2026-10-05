@@ -121,7 +121,7 @@ BEM
       </button>
     </nav>
 
-    <!-- Teleport mantém o backdrop acima do layout administrativo. -->
+    <!-- Formulário -->
     <Teleport to="body">
       <div v-if="isFormOpen" class="course-page__form-overlay">
         <div class="course-page__form-container">
@@ -135,7 +135,7 @@ BEM
         </div>
       </div>
 
-      <!-- Modal de confirmação de exclusão -->
+      <!-- Modal de exclusão -->
       <div
         v-if="isDeleteModalOpen"
         class="course-page__delete-overlay"
@@ -148,13 +148,9 @@ BEM
           aria-labelledby="course-delete-title"
           aria-describedby="course-delete-description"
         >
-          <h2
-            id="course-delete-title"
-            class="course-page__delete-title"
-          >
+          <h2 id="course-delete-title" class="course-page__delete-title">
             Excluir curso
           </h2>
-
           <p
             id="course-delete-description"
             class="course-page__delete-message"
@@ -162,11 +158,9 @@ BEM
             Tem certeza que deseja excluir
             <strong>{{ selectedCourse?.name }}</strong>?
           </p>
-
           <p class="course-page__delete-warning">
             Essa ação não poderá ser desfeita.
           </p>
-
           <div class="course-page__delete-actions">
             <button
               type="button"
@@ -176,7 +170,6 @@ BEM
             >
               Cancelar
             </button>
-
             <button
               type="button"
               class="course-page__delete-confirm"
@@ -188,14 +181,26 @@ BEM
           </div>
         </section>
       </div>
-    </Teleport>
 
-    <Teleport to="body">
-      <div v-if="feedbackMessage" class="course-page__feedback-backdrop">
-        <section class="course-page__feedback-modal" role="alertdialog" aria-modal="true" aria-labelledby="course-feedback-title">
-          <h2 id="course-feedback-title">{{ feedbackType === 'error' ? 'Não foi possível concluir' : 'Concluído' }}</h2>
-          <p>{{ feedbackMessage }}</p>
-          <button type="button" class="course-page__feedback-ok" @click="closeFeedback">OK</button>
+      <!-- Modal de feedback -->
+      <div v-if="feedback" class="course-page__feedback-backdrop">
+        <section
+          class="course-page__feedback-modal"
+          role="alertdialog"
+          aria-modal="true"
+          aria-labelledby="course-feedback-title"
+        >
+          <h2 id="course-feedback-title">
+            {{ feedback.type === 'error' ? 'Não foi possível concluir' : 'Concluído' }}
+          </h2>
+          <p>{{ feedback.message }}</p>
+          <button
+            type="button"
+            class="course-page__feedback-ok"
+            @click="dismissFeedback"
+          >
+            OK
+          </button>
         </section>
       </div>
     </Teleport>
@@ -217,17 +222,18 @@ import type {
 } from '@/modules/business/types/Course.types'
 
 /* ============================================================
-  ESTADO E SESSÃO
-  Token obrigatório: as rotas de cursos exigem autenticação.
-  ============================================================ */
-const courses = ref<Course[]>([])
-const authStore = useAuthStore()
+   Dependências
+   ============================================================ */
 const route = useRoute()
 const router = useRouter()
+const authStore = useAuthStore()
+
+/* ============================================================
+   Estado
+   ============================================================ */
+const courses = ref<Course[]>([])
 const isLoading = ref(false)
 const isSubmitting = ref(false)
-const feedbackMessage = ref('')
-const feedbackType = ref<'success' | 'error'>('success')
 
 const searchTerm = ref('')
 const currentPage = ref(1)
@@ -236,33 +242,42 @@ const pageSize = 10
 const isFormOpen = ref(false)
 const formMode = ref<FormMode>('create')
 const selectedCourse = ref<Course | null>(null)
+const isDeleteModalOpen = ref(false)
 
-const getAccessToken = (): string | null => {
+type Feedback = { message: string; type: 'success' | 'error' }
+const feedback = ref<Feedback | null>(null)
+
+/* ============================================================
+   Helpers
+   ============================================================ */
+const notify = (message: string, type: Feedback['type'] = 'success') => {
+  feedback.value = { message, type }
+}
+
+const dismissFeedback = () => {
+  feedback.value = null
+}
+
+/**
+ * Devolve o access token da sessão ou notifica o usuário e retorna `null`.
+ */
+const requireToken = (): string | null => {
   const token = authStore.session?.accessToken
   if (!token) {
-    showFeedback('Sua sessão expirou. Entre novamente para continuar.', 'error')
+    notify('Sua sessão expirou. Entre novamente para continuar.', 'error')
     return null
   }
   return token
 }
 
-const showFeedback = (message: string, type: 'success' | 'error'): void => {
-  feedbackMessage.value = message
-  feedbackType.value = type
-}
-
-const closeFeedback = (): void => {
-  feedbackMessage.value = ''
-}
-
 /* ============================================================
-  FILTRO E PAGINAÇÃO
-  ============================================================ */
+   Filtro e paginação
+   ============================================================ */
 const filteredCourses = computed(() => {
   const term = searchTerm.value.trim().toLowerCase()
   if (!term) return courses.value
-  return courses.value.filter((c) =>
-    c.name.toLowerCase().includes(term),
+  return courses.value.filter((course) =>
+    course.name.toLowerCase().includes(term),
   )
 })
 
@@ -275,90 +290,80 @@ const paginatedCourses = computed(() => {
   return filteredCourses.value.slice(start, start + pageSize)
 })
 
-/* Reset da página ao pesquisar */
-const setSearchTerm = (value: string) => {
-  searchTerm.value = value
+// Reset automático de página sempre que o filtro muda.
+watch(searchTerm, () => {
   currentPage.value = 1
-}
+})
 
 /* ============================================================
-  LEITURA DA API
-  O contrato de GET /course/list deve corresponder ao tipo Course.
-  ============================================================ */
+   Leitura
+   ============================================================ */
 const loadCourses = async () => {
-  closeFeedback()
-  const token = getAccessToken()
+  const token = requireToken()
   if (!token) return
 
   isLoading.value = true
   try {
     courses.value = await courseService.getAll(token)
   } catch (err) {
-    showFeedback('Não foi possível carregar os cursos.', 'error')
     console.error(err)
+    notify('Não foi possível carregar os cursos.', 'error')
   } finally {
     isLoading.value = false
   }
 }
 
 /* ============================================================
-  ABERTURA E FECHAMENTO DO FORMULÁRIO
-  A query `form=create` é removida ao fechar o modal.
-  ============================================================ */
-const openCreateForm = () => {
-  formMode.value = 'create'
-  selectedCourse.value = null
+   Formulário — abertura / fechamento
+   ============================================================ */
+const openForm = (mode: FormMode, course: Course | null = null) => {
+  formMode.value = mode
+  selectedCourse.value = course
   isFormOpen.value = true
 }
 
-const openEditForm = async (course: Course) => {
-  const token = getAccessToken()
+const openCreateForm = () => openForm('create')
+
+/**
+ * `edit` e `view` compartilham a mesma rotina: abrir e hidratar com o
+ * registro completo retornado pela API.
+ */
+const openExistingCourseForm = async (mode: 'edit' | 'view', course: Course) => {
+  const token = requireToken()
   if (!token) return
 
-  formMode.value = 'edit'
-  selectedCourse.value = null
-  isFormOpen.value = true
+  openForm(mode)
   try {
     selectedCourse.value = await courseService.getById(course.id, token)
   } catch (err) {
-    showFeedback('Não foi possível carregar o curso.', 'error')
     console.error(err)
-    isFormOpen.value = false
+    notify('Não foi possível carregar o curso.', 'error')
+    closeForm()
   }
 }
 
-const openViewForm = async (course: Course) => {
-  const token = getAccessToken()
-  if (!token) return
-
-  formMode.value = 'view'
-  selectedCourse.value = null
-  isFormOpen.value = true
-  try {
-    selectedCourse.value = await courseService.getById(course.id, token)
-  } catch (err) {
-    showFeedback('Não foi possível carregar o curso.', 'error')
-    console.error(err)
-    isFormOpen.value = false
-  }
-}
+const openEditForm = (course: Course) => openExistingCourseForm('edit', course)
+const openViewForm = (course: Course) => openExistingCourseForm('view', course)
 
 const closeForm = () => {
   isFormOpen.value = false
   selectedCourse.value = null
+
+  // Remove `form=create` da URL sem empilhar histórico.
   if (route.query.form === 'create') {
-    const query = { ...route.query }
-    delete query.form
-    void router.replace({ query })
+    const { form: _discarded, ...rest } = route.query
+    void router.replace({ query: rest })
   }
 }
 
+// Query `form=create` na URL abre o modal (deep-link).
 watch(
   () => route.query.form,
   (form) => {
     if (form === 'create') {
       openCreateForm()
-    } else if (formMode.value === 'create') {
+    } else if (isFormOpen.value && formMode.value === 'create') {
+      // Alguém removeu a flag da URL: fecha o modal correspondente.
       isFormOpen.value = false
       selectedCourse.value = null
     }
@@ -367,83 +372,88 @@ watch(
 )
 
 /* ============================================================
-  SUBMISSÃO E ATUALIZAÇÃO DA LISTA
-  Após POST/PATCH bem-sucedido, fechar o modal e reler os dados.
-  ============================================================ */
-const handleFormSubmit = async (payload: CourseCreatePayload | CourseUpdatePayload) => {
-  closeFeedback()
-  const token = getAccessToken()
+   Submissão
+   ============================================================ */
+const persistCourse = async (
+  token: string,
+  payload: CourseCreatePayload | CourseUpdatePayload,
+): Promise<string> => {
+  if (formMode.value === 'create') {
+    await courseService.create(token, payload as CourseCreatePayload)
+    return 'Curso cadastrado com sucesso.'
+  }
+
+  const updatePayload = payload as CourseUpdatePayload
+  await courseService.update(token, updatePayload.id, updatePayload)
+  return 'Curso atualizado com sucesso.'
+}
+
+const resetListState = () => {
+  searchTerm.value = ''
+  currentPage.value = 1
+}
+
+const handleFormSubmit = async (
+  payload: CourseCreatePayload | CourseUpdatePayload,
+) => {
+  const token = requireToken()
   if (!token) return
 
   isSubmitting.value = true
-
   try {
-    let confirmationMessage = ''
+    const successMessage = await persistCourse(token, payload)
 
-    if (formMode.value === 'create') {
-      await courseService.create(token, payload as CourseCreatePayload)
-      confirmationMessage = 'Curso cadastrado com sucesso.'
-    } else if (formMode.value === 'edit') {
-      const updatePayload = payload as CourseUpdatePayload
-      await courseService.update(token, updatePayload.id, updatePayload)
-      confirmationMessage = 'Curso atualizado com sucesso.'
-    }
-      searchTerm.value = ''
-      currentPage.value = 1
-      await loadCourses()
-      if (!feedbackMessage.value) showFeedback(confirmationMessage, 'success')
-    } catch (err) {
-      showFeedback('Não foi possível salvar o curso.', 'error')
-      console.error(err)
-    } finally {
-      isSubmitting.value = false
+    // 1) Fecha o modal (e limpa o `form=create` da URL).
+    closeForm()
+    // 2) Recomeça a listagem do zero.
+    resetListState()
+    await loadCourses()
+    // 3) Só então notifica.
+    notify(successMessage)
+  } catch (err) {
+    // Mantém o formulário aberto para o usuário corrigir e reenviar.
+    console.error(err)
+    notify('Não foi possível salvar o curso.', 'error')
+  } finally {
+    isSubmitting.value = false
   }
 }
 
 /* ============================================================
-  EXCLUSÃO — aguardando endpoint
-  Necessário confirmar contrato e autorização antes de habilitar.
-  ============================================================ */
-  const isDeleteModalOpen = ref(false)
+   Exclusão
+   ============================================================ */
+const handleDeleteCourse = (course: Course) => {
+  selectedCourse.value = course
+  isDeleteModalOpen.value = true
+}
 
-  const handleDeleteCourse = (course: Course) => {
-    selectedCourse.value = course
-    isDeleteModalOpen.value = true
+const closeDeleteModal = () => {
+  isDeleteModalOpen.value = false
+  selectedCourse.value = null
+}
+
+const confirmDeleteCourse = async () => {
+  const token = requireToken()
+  if (!token || !selectedCourse.value) return
+
+  isSubmitting.value = true
+  try {
+    await courseService.delete(token, selectedCourse.value.id)
+
+    closeDeleteModal()
+    resetListState()
+    await loadCourses()
+    notify('Curso excluído com sucesso.')
+  } catch (err) {
+    console.error(err)
+    notify('Não foi possível excluir o curso.', 'error')
+  } finally {
+    isSubmitting.value = false
   }
-
-  const confirmDeleteCourse = async () => {
-    const token = getAccessToken()
-    if (!token || !selectedCourse.value) return
-
-    isSubmitting.value = true
-
-    try {
-      await courseService.delete(token, selectedCourse.value.id)
-
-      isDeleteModalOpen.value = false
-      selectedCourse.value = null
-
-      searchTerm.value = ''
-      currentPage.value = 1
-
-      await loadCourses()
-
-      showFeedback('Curso excluído com sucesso.', 'success')
-    } catch (err) {
-      showFeedback('Não foi possível excluir o curso.', 'error')
-      console.error(err)
-    } finally {
-      isSubmitting.value = false
-    }
-  }
-
-  const closeDeleteModal = () => {
-    isDeleteModalOpen.value = false
-    selectedCourse.value = null
-  }
+}
 
 /* ============================================================
-   CICLO DE VIDA
+   Ciclo de vida
    ============================================================ */
 onMounted(loadCourses)
 </script>
