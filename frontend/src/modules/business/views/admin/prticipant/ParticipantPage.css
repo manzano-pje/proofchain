@@ -141,6 +141,86 @@ BEM
   border-bottom: 0;
 }
 
+/* Modal de confirmação de exclusão */
+.participant-page__delete-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-lg);
+  background: rgba(0, 0, 0, 0.65);
+}
+
+.participant-page__delete-modal {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  width: min(100%, 440px);
+  padding: var(--space-xl);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  box-shadow: var(--shadow-xl);
+}
+
+.participant-page__delete-title {
+  color: var(--text-primary);
+  font-size: var(--font-lg);
+}
+.participant-page__delete-warning
+.participant-page__delete-message {
+  color: var(--text-secondary);
+  font-size: var(--font-sm);
+}
+
+.participant-page__delete-message strong {
+  font-weight: 600;
+}
+
+.participant-page__delete-actions {
+ display: flex;
+  justify-content: flex-end;
+  gap: var(--space-sm);
+  margin-top: var(--space-sm);
+}
+
+.participant-page__delete-cancel,
+.participant-page__delete-confirm {
+ padding: var(--space-sm) var(--space-lg);
+  border: 0;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.participant-page__delete-cancel {
+  background: var(--background-secondary);
+  color: var(--text-inverse);
+}
+
+.participant-page__delete-cancel:hover {
+  border-color: var(--action);
+  color: var(--action-light);
+}
+
+.participant-page__delete-confirm {
+  background: var(--danger);
+  color: var(--text-inverse);
+}
+
+.participant-page__delete-confirm:hover {
+  opacity: 0.9;
+}
+
+.participant-page__delete-cancel:disabled,
+.participant-page__delete-confirm:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+
+
+
 .participant-page__actions-heading,
 .participant-page__actions {
   width: 104px;
