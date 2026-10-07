@@ -1,25 +1,32 @@
  <script setup lang="ts">
 /**
- * Uploader da logo da instituição.
+ * Uploader reutilizável para imagens da instituição.
  *
  * Fluxo de estados:
  *   idle     → área de upload (clique ou arrastar/soltar)
  *   cropping → enquadramento com pan + zoom
  *   ready    → pré-visualização do arquivo final + alterar/remover
  *
-   * A imagem final é exportada nas dimensões de 1300 × 472 px.
+ * As dimensões, o texto e o nome do arquivo final são configuráveis pelo consumidor.
  */
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
 
-import { useImageCrop } from './useImageCrop'
+import { useImageCrop } from './util/useImageCrop'
+import { removeSignatureBackground } from './util/removeSignatureBackground'
 
 interface Props {
-  /**
-  * Proporção da área de crop.
-   */
-  aspectRatio?: number
+  /** Texto usado no título, nas instruções e nos atributos acessíveis. */
+  title?: string
   /** Largura final do arquivo exportado, em px. */
   outputWidth?: number
+  /** Altura final do arquivo exportado, em px. */
+  outputHeight?: number
+  /** Proporção opcional da área de crop; por padrão deriva das dimensões finais. */
+  aspectRatio?: number
+  /** Nome do arquivo PNG final. */
+  outputFilename?: string
+  /** Remove o fundo claro e reforça os traços antes do corte. */
+  removeWhiteBackground?: boolean
   /** Tamanho máximo do arquivo original, em bytes. */
   maxBytes?: number
   /** MIME types aceitos. */
@@ -29,8 +36,11 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  aspectRatio: 1300 / 472,
+  title: 'Imagem da instituição',
   outputWidth: 1300,
+  outputHeight: 472,
+  outputFilename: 'institution-image.png',
+  removeWhiteBackground: false,
   maxBytes: 2 * 1024 * 1024,
   acceptedMimeTypes: () => ['image/png', 'image/jpeg', 'image/svg+xml'] as const,
   acceptedExtensions: () => ['.png', '.jpg', '.jpeg', '.svg'] as const,
@@ -43,7 +53,7 @@ const emit = defineEmits<{
 /** Arquivo final cortado. `null` quando não há logo nova selecionada. */
 const model = defineModel<File | null>({ default: null })
 
-type UploaderState = 'idle' | 'cropping' | 'ready'
+type UploaderState = 'idle' | 'processing' | 'cropping' | 'ready'
 
 const state = ref<UploaderState>('idle')
 const errorMessage = ref<string | null>(null)
@@ -55,22 +65,26 @@ const cropViewportEl = ref<HTMLElement | null>(null)
 let resizeObserver: ResizeObserver | null = null
 
 const crop = useImageCrop()
+const cropAspectRatio = computed(() => props.aspectRatio ?? props.outputWidth / props.outputHeight)
 
 const acceptAttr = computed(() =>
   [...props.acceptedMimeTypes, ...props.acceptedExtensions].join(','),
 )
 
-const formatHint = computed(() => {
-  const labels = props.acceptedMimeTypes
+const acceptedFormatLabels = computed(() =>
+  props.acceptedMimeTypes
     .map((mime) =>
       mime === 'image/png' ? 'PNG'
       : mime === 'image/jpeg' ? 'JPG'
       : mime === 'image/svg+xml' ? 'SVG'
       : mime,
     )
-    .join(', ')
+    .join(', '),
+)
+
+const formatHint = computed(() => {
   const mb = (props.maxBytes / (1024 * 1024)).toFixed(0)
-  return `${labels} • Máximo ${mb} MB`
+  return `${acceptedFormatLabels.value} • Máximo ${mb} MB • Saída ${props.outputWidth} × ${props.outputHeight} px`
 })
 
 const cropImageStyle = computed(() => ({
@@ -144,7 +158,7 @@ async function handleFile(file: File): Promise<void> {
   errorMessage.value = null
 
   if (!isAcceptedFile(file)) {
-    errorMessage.value = 'Formato inválido. Envie PNG, JPG ou SVG.'
+    errorMessage.value = `Formato inválido. Envie: ${acceptedFormatLabels.value}.`
     return
   }
 
@@ -155,11 +169,27 @@ async function handleFile(file: File): Promise<void> {
   }
 
   try {
-    const url = URL.createObjectURL(file)
-    await crop.loadFromUrl(url, true)
+    if (props.removeWhiteBackground) {
+      state.value = 'processing'
+      await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()))
+    }
+
+    const imageFile = props.removeWhiteBackground
+      ? await removeSignatureBackground(file)
+      : file
+    const url = URL.createObjectURL(imageFile)
+    try {
+      await crop.loadFromUrl(url, true)
+    } catch (error) {
+      URL.revokeObjectURL(url)
+      throw error
+    }
     state.value = 'cropping'
-  } catch {
-    errorMessage.value = 'Não foi possível carregar a imagem selecionada.'
+  } catch (error) {
+    state.value = 'idle'
+    errorMessage.value = error instanceof Error
+      ? error.message
+      : 'Não foi possível processar a imagem selecionada.'
   }
 }
 
@@ -218,8 +248,10 @@ function onKeydown(event: KeyboardEvent): void {
 }
 
 async function confirmCrop(): Promise<void> {
-  const height = Math.round(props.outputWidth / props.aspectRatio)
-  const file = await crop.exportCropped({ width: props.outputWidth, height })
+  const file = await crop.exportCropped(
+    { width: props.outputWidth, height: props.outputHeight },
+    props.outputFilename,
+  )
   if (!file) {
     errorMessage.value = 'Não foi possível gerar a imagem final.'
     return
@@ -267,7 +299,7 @@ function removeLogo(): void {
       :class="{ 'institution-logo__dropzone--drag': isDragging }"
       role="button"
       tabindex="0"
-      :aria-label="`Selecionar logo da instituição. ${formatHint}`"
+      :aria-label="`Selecionar ${props.title}. ${formatHint}`"
       @click="openFilePicker"
       @keydown.enter.prevent="openFilePicker"
       @keydown.space.prevent="openFilePicker"
@@ -275,20 +307,25 @@ function removeLogo(): void {
       @dragleave.prevent="onDragLeave"
       @drop.prevent="onDrop"
     >
-      <span class="institution-logo__dropzone-title">Arraste uma imagem aqui</span>
-      <span class="institution-logo__dropzone-subtitle">ou clique para selecionar</span>
+      <span class="institution-logo__dropzone-title">{{ props.title }}</span>
+      <span class="institution-logo__dropzone-subtitle">Arraste uma imagem aqui ou clique para selecionar</span>
       <span class="institution-logo__dropzone-hint">{{ formatHint }}</span>
     </div>
+
+    <!-- Estado: processing -->
+    <p v-else-if="state === 'processing'" class="institution-logo__status" role="status">
+      Removendo o fundo claro e reforçando a assinatura...
+    </p>
 
     <!-- Estado: cropping -->
     <div v-else-if="state === 'cropping'" class="institution-logo__crop">
       <div
         ref="cropViewportEl"
         class="institution-logo__crop-viewport"
-        :style="{ aspectRatio: String(props.aspectRatio) }"
+        :style="{ aspectRatio: String(cropAspectRatio) }"
         role="application"
         tabindex="0"
-        aria-label="Área de enquadramento. Use as setas do teclado para mover e o controle deslizante para ampliar."
+        :aria-label="`Área de enquadramento de ${props.title}. Use as setas do teclado para mover e o controle deslizante para ampliar.`"
         @pointerdown="onPointerDown"
         @pointermove="onPointerMove"
         @pointerup="onPointerUp"
@@ -336,12 +373,17 @@ function removeLogo(): void {
     </div>
 
     <!-- Estado: ready -->
-    <div v-else class="institution-logo__preview">
+    <div
+      v-else
+      class="institution-logo__preview"
+      :class="{ 'institution-logo__preview--transparent': props.removeWhiteBackground }"
+    >
       <img
         v-if="previewUrl"
         class="institution-logo__preview-image"
+        :class="{ 'institution-logo__preview-image--transparent': props.removeWhiteBackground }"
         :src="previewUrl"
-        alt="Pré-visualização da logo que será enviada"
+        :alt="`Pré-visualização de ${props.title}`"
       />
       <div class="institution-logo__preview-actions">
         <button type="button" class="institution-logo__btn" @click="restart">
