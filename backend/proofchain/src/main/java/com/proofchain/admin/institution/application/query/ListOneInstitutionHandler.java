@@ -40,8 +40,11 @@ public class ListOneInstitutionHandler {
         Long institutionId = SecurityUtils.getInstitutionId();
         tenantValidation.validateInstitution(institutionId);
 
-        Institution institution = institutionRepository.findByIdAndDeletedAtIsNull(institutionId)
-                .orElseThrow(() -> new NotFoundException(InstitutionMessages.INSTITUTION_NOT_FOUND));
-        return InstitutionResponse.from(institution);
+        Optional<Institution> institution = institutionRepository.findByIdAndDeletedAtIsNull(institutionId);
+        if (institution.isEmpty()){
+            throw new NotFoundException(InstitutionMessages.INSTITUTION_NOT_FOUND);
+        }
+        InstitutionResponse response = institution.map(InstitutionResponse::from).get();
+        return response;
     }
 }

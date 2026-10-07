@@ -9,7 +9,7 @@ export interface InstitutionRecord extends InstitutionReadonlyData, InstitutionE
   active: boolean
 }
 
-const URL = `${import.meta.env.VITE_API_URL}/institution/me`
+const URL = `${import.meta.env.VITE_API_URL}/institution`
 
 async function readResponse(response: Response): Promise<string> {
   const responseText = await response.text()
@@ -33,7 +33,7 @@ async function readResponse(response: Response): Promise<string> {
 
 export const institutionService = {
   async getCurrent(token: string): Promise<InstitutionRecord> {
-    const response = await fetch(URL, {
+    const response = await fetch(`${URL}/get`, {
       headers: { Authorization: `Bearer ${token}` },
     })
     const responseText = await readResponse(response)
