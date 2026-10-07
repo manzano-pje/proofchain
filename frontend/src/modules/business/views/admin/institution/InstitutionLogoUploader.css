@@ -71,6 +71,12 @@
   gap: var(--space-md);
 }
 
+.institution-logo__status {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--body-small);
+}
+
 .institution-logo__crop-viewport {
   position: relative;
   width: 100%;
@@ -164,6 +170,17 @@
   height: auto;
   border-radius: var(--radius-sm);
   background: var(--background-dark);
+}
+
+.institution-logo__preview-image--transparent {
+  background-color: #fff;
+  background-image:
+    linear-gradient(45deg, #d1d5db 25%, transparent 25%),
+    linear-gradient(-45deg, #d1d5db 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #d1d5db 75%),
+    linear-gradient(-45deg, transparent 75%, #d1d5db 75%);
+  background-position: 0 0, 0 8px, 8px -8px, -8px 0;
+  background-size: 16px 16px;
 }
 
 .institution-logo__preview-actions {

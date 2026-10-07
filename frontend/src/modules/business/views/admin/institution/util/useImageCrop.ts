@@ -108,7 +108,10 @@ export function useImageCrop() {
   }
 
   /** Exporta a região visível atual como `File` PNG. */
-  async function exportCropped(target: { width: number; height: number }): Promise<File | null> {
+  async function exportCropped(
+    target: { width: number; height: number },
+    fileName = 'institution-logo.png',
+  ): Promise<File | null> {
     if (!element.value || !image.value) return null
     const canvas = document.createElement('canvas')
     canvas.width = target.width
@@ -129,7 +132,7 @@ export function useImageCrop() {
       canvas.toBlob((value) => resolve(value), 'image/png', 0.95),
     )
     if (!blob) return null
-    return new File([blob], 'institution-logo.png', { type: 'image/png' })
+    return new File([blob], fileName, { type: 'image/png' })
   }
 
   function reset(): void {
