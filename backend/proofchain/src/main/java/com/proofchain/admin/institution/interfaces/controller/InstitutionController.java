@@ -60,9 +60,13 @@ public class InstitutionController {
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
-    @GetMapping("/update")
+    @GetMapping("/get")
+    /**
+     * GET /api/v1/institution/get
+     * Retorna a instituição associada ao usuário autenticado.
+     * O identificador do tenant é obtido do JWT; não é necessário informar CNPJ.
+     */
     public InstitutionResponse getCurrentInstitution() {
-
         return listOneInstitution.getCurrentInstitution();
     }
 
