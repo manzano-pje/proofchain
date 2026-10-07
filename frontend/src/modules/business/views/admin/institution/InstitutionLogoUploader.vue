@@ -9,7 +9,7 @@
  *
  * As dimensões, o texto e o nome do arquivo final são configuráveis pelo consumidor.
  */
-import { computed, onBeforeUnmount, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
 
 import { useImageCrop } from './util/useImageCrop'
 import { removeSignatureBackground } from './util/removeSignatureBackground'
@@ -25,6 +25,8 @@ interface Props {
   aspectRatio?: number
   /** Nome do arquivo PNG final. */
   outputFilename?: string
+  /** Mantém a resolução em pixels da imagem selecionada na exportação. */
+  preserveSourceDimensions?: boolean
   /** Remove o fundo claro e reforça os traços antes do corte. */
   removeWhiteBackground?: boolean
   /** Tamanho máximo do arquivo original, em bytes. */
@@ -40,6 +42,7 @@ const props = withDefaults(defineProps<Props>(), {
   outputWidth: 1300,
   outputHeight: 472,
   outputFilename: 'institution-image.png',
+  preserveSourceDimensions: false,
   removeWhiteBackground: false,
   maxBytes: 2 * 1024 * 1024,
   acceptedMimeTypes: () => ['image/png', 'image/jpeg', 'image/svg+xml'] as const,
@@ -61,11 +64,29 @@ const isDragging = ref(false)
 const previewUrl = ref<string | null>(null)
 
 const fileInputRef = ref<HTMLInputElement | null>(null)
+const cropStageEl = ref<HTMLElement | null>(null)
 const cropViewportEl = ref<HTMLElement | null>(null)
 let resizeObserver: ResizeObserver | null = null
 
 const crop = useImageCrop()
-const cropAspectRatio = computed(() => props.aspectRatio ?? props.outputWidth / props.outputHeight)
+const sourceDimensions = computed(() => {
+  if (props.preserveSourceDimensions && crop.image.value) {
+    return {
+      width: crop.image.value.width,
+      height: crop.image.value.height,
+    }
+  }
+
+  return {
+    width: props.outputWidth,
+    height: props.outputHeight,
+  }
+})
+const cropAspectRatio = computed(() =>
+  props.preserveSourceDimensions && crop.image.value
+    ? crop.image.value.width / crop.image.value.height
+    : props.aspectRatio ?? props.outputWidth / props.outputHeight,
+)
 
 const acceptAttr = computed(() =>
   [...props.acceptedMimeTypes, ...props.acceptedExtensions].join(','),
@@ -84,7 +105,10 @@ const acceptedFormatLabels = computed(() =>
 
 const formatHint = computed(() => {
   const mb = (props.maxBytes / (1024 * 1024)).toFixed(0)
-  return `${acceptedFormatLabels.value} • Máximo ${mb} MB • Saída ${props.outputWidth} × ${props.outputHeight} px`
+  const outputSize = props.preserveSourceDimensions && crop.image.value
+    ? `Saída ${crop.image.value.width} × ${crop.image.value.height} px (dimensões originais)`
+    : `Saída ${props.outputWidth} × ${props.outputHeight} px`
+  return `${acceptedFormatLabels.value} • Máximo ${mb} MB • ${outputSize}`
 })
 
 const cropImageStyle = computed(() => ({
@@ -94,20 +118,45 @@ const cropImageStyle = computed(() => ({
   height: crop.image.value ? `${crop.image.value.height}px` : '0',
 }))
 
-watch(cropViewportEl, (el) => {
+function fitCropViewport(): void {
+  const stage = cropStageEl.value
+  if (!stage) return
+
+  const { width: availableWidth, height: availableHeight } = stage.getBoundingClientRect()
+  if (!availableWidth || !availableHeight) return
+
+  const aspectRatio = cropAspectRatio.value
+  let width = availableWidth
+  let height = width / aspectRatio
+
+  if (height > availableHeight) {
+    height = availableHeight
+    width = height * aspectRatio
+  }
+
+  crop.setViewport(width, height)
+}
+
+watch(cropStageEl, (el) => {
   resizeObserver?.disconnect()
   resizeObserver = null
   if (!el) return
-  resizeObserver = new ResizeObserver((entries) => {
-    const entry = entries[0]
-    if (!entry) return
-    const { width, height } = entry.contentRect
-    crop.setViewport(width, height)
-  })
+  resizeObserver = new ResizeObserver(fitCropViewport)
   resizeObserver.observe(el)
-  const rect = el.getBoundingClientRect()
-  crop.setViewport(rect.width, rect.height)
+  fitCropViewport()
 })
+
+watch(cropAspectRatio, fitCropViewport)
+
+watch(
+  () => state.value === 'cropping',
+  async (isCropping) => {
+    if (!isCropping) return
+    await nextTick()
+    fitCropViewport()
+    cropViewportEl.value?.focus()
+  },
+)
 
 onBeforeUnmount(() => {
   resizeObserver?.disconnect()
@@ -249,7 +298,7 @@ function onKeydown(event: KeyboardEvent): void {
 
 async function confirmCrop(): Promise<void> {
   const file = await crop.exportCropped(
-    { width: props.outputWidth, height: props.outputHeight },
+    sourceDimensions.value,
     props.outputFilename,
   )
   if (!file) {
@@ -263,7 +312,7 @@ async function confirmCrop(): Promise<void> {
 
 function cancelCrop(): void {
   crop.reset()
-  state.value = 'idle'
+  state.value = model.value && previewUrl.value ? 'ready' : 'idle'
 }
 
 function restart(): void {
@@ -317,64 +366,9 @@ function removeLogo(): void {
       Removendo o fundo claro e reforçando a assinatura...
     </p>
 
-    <!-- Estado: cropping -->
-    <div v-else-if="state === 'cropping'" class="institution-logo__crop">
-      <div
-        ref="cropViewportEl"
-        class="institution-logo__crop-viewport"
-        :style="{ aspectRatio: String(cropAspectRatio) }"
-        role="application"
-        tabindex="0"
-        :aria-label="`Área de enquadramento de ${props.title}. Use as setas do teclado para mover e o controle deslizante para ampliar.`"
-        @pointerdown="onPointerDown"
-        @pointermove="onPointerMove"
-        @pointerup="onPointerUp"
-        @pointercancel="onPointerUp"
-        @wheel.prevent="onWheel"
-        @keydown="onKeydown"
-      >
-        <img
-          v-if="crop.image.value"
-          class="institution-logo__crop-image"
-          :src="crop.image.value.url"
-          :style="cropImageStyle"
-          alt=""
-          draggable="false"
-        />
-        <span class="institution-logo__crop-frame" aria-hidden="true"></span>
-      </div>
-
-      <div class="institution-logo__crop-controls">
-        <label class="institution-logo__zoom">
-          <span class="institution-logo__zoom-label">Zoom</span>
-          <input
-            class="institution-logo__zoom-range"
-            type="range"
-            :min="crop.minScale.value"
-            :max="crop.maxScale.value"
-            :step="0.001"
-            :value="crop.scale.value"
-            @input="onZoomInput"
-          />
-        </label>
-        <div class="institution-logo__crop-actions">
-          <button type="button" class="institution-logo__btn" @click="cancelCrop">
-            Cancelar
-          </button>
-          <button
-            type="button"
-            class="institution-logo__btn institution-logo__btn--primary"
-            @click="confirmCrop"
-          >
-            Confirmar corte
-          </button>
-        </div>
-      </div>
-    </div>
-
     <!-- Estado: ready -->
     <div
-      v-else
+      v-else-if="state === 'ready'"
       class="institution-logo__preview"
       :class="{ 'institution-logo__preview--transparent': props.removeWhiteBackground }"
     >
@@ -391,13 +385,104 @@ function removeLogo(): void {
         </button>
         <button
           type="button"
-          class="institution-logo__btn institution-logo__btn--danger"
+          class="institution-logo__btn"
           @click="removeLogo"
         >
           Remover
         </button>
       </div>
     </div>
+
+    <Teleport to="body">
+      <div
+        v-if="state === 'cropping'"
+        class="institution-logo__modal-overlay"
+        role="presentation"
+        @click.self="cancelCrop"
+        @keydown.esc.stop.prevent="cancelCrop"
+      >
+        <section
+          class="institution-logo__crop-modal"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="institution-logo-crop-title"
+          aria-describedby="institution-logo-crop-instructions"
+        >
+          <header class="institution-logo__crop-modal-header">
+            <div>
+              <h2 id="institution-logo-crop-title">Ajustar {{ props.title }}</h2>
+              <p id="institution-logo-crop-instructions">
+                Arraste para posicionar, use a roda do mouse ou o controle para ampliar.
+              </p>
+            </div>
+            <button
+              type="button"
+              class="institution-logo__modal-close"
+              aria-label="Cancelar corte e fechar"
+              @click="cancelCrop"
+            >
+              ×
+            </button>
+          </header>
+
+          <div ref="cropStageEl" class="institution-logo__crop-stage">
+            <div
+              ref="cropViewportEl"
+              class="institution-logo__crop-viewport"
+
+              :class="{ 'institution-logo__crop-viewport--transparent': props.removeWhiteBackground }"
+              :style="{ width: `${crop.viewport.width}px`, height: `${crop.viewport.height}px` }"
+              role="application"
+              tabindex="0"
+              :aria-label="`Área de enquadramento de ${props.title}. Use as setas do teclado para mover e o controle deslizante para ampliar.`"
+              @pointerdown="onPointerDown"
+              @pointermove="onPointerMove"
+              @pointerup="onPointerUp"
+              @pointercancel="onPointerUp"
+              @wheel.prevent="onWheel"
+              @keydown="onKeydown"
+            >
+              <img
+                v-if="crop.image.value"
+                class="institution-logo__crop-image"
+                :src="crop.image.value.url"
+                :style="cropImageStyle"
+                alt=""
+                draggable="false"
+              />
+              <span class="institution-logo__crop-frame" aria-hidden="true"></span>
+            </div>
+          </div>
+
+          <div class="institution-logo__crop-modal-controls">
+            <label class="institution-logo__zoom">
+              <span class="institution-logo__zoom-label">Zoom</span>
+              <input
+                class="institution-logo__zoom-range"
+                type="range"
+                :min="crop.minScale.value"
+                :max="crop.maxScale.value"
+                :step="0.001"
+                :value="crop.scale.value"
+                @input="onZoomInput"
+              />
+            </label>
+            <div class="institution-logo__crop-actions">
+              <button type="button" class="institution-logo__btn institution-logo__btn--secondary" @click="cancelCrop">
+                Cancelar
+              </button>
+              <button
+                type="button"
+                class="institution-logo__btn institution-logo__btn--primary"
+                @click="confirmCrop"
+              >
+                Confirmar corte
+              </button>
+            </div>
+          </div>
+        </section>
+      </div>
+    </Teleport>
 
     <p v-if="errorMessage" class="institution-logo__error" role="alert">
       {{ errorMessage }}
