@@ -16,6 +16,23 @@
   box-shadow: var(--shadow-xs);
 }
 
+.institution-form__uploads {
+  display: grid;
+  gap: var(--space-lg);
+}
+
+.institution-form__upload-note {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--font-sm);
+}
+
+.institution-form__upload-grid {
+  display: grid;
+  gap: var(--space-xl);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 /* ------------------------------------------------------------------ */
 /* Grid + campos                                                      */
 /* ------------------------------------------------------------------ */
@@ -146,6 +163,10 @@
 
 @media (max-width: 767px) {
   .institution-form__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .institution-form__upload-grid {
     grid-template-columns: 1fr;
   }
 

@@ -39,8 +39,8 @@ export interface InstitutionEditableInitialData {
 }
 
 /**
- * Payload emitido em `submit`. O serviço envia os campos de endereço e
- * contato como JSON; os campos de logo aguardam suporte no backend.
+ * Payload emitido em `submit`. O serviço envia os campos de endereço,
+ * contato e imagens como multipart/form-data.
  *
  * NOTA: `id`, `institutionId`, `name`, `cnpj` e `email` NÃO fazem parte
  * deste payload. A instituição é identificada pelo backend a partir do JWT.
@@ -55,10 +55,14 @@ export interface InstitutionUpdatePayload {
   neighborhood: string
   city: string
   state: string
-  /** Arquivo final já cortado, ou `null` quando nenhuma logo nova foi selecionada. */
+  /** Logotipo final já cortado, ou `null` quando nenhum arquivo novo foi selecionado. */
   logo: File | null
-  /** `true` quando o usuário removeu a logo existente sem enviar outra. */
+  /** Assinatura final já cortada, ou `null` quando nenhum arquivo novo foi selecionado. */
+  signature: File | null
+  /** `true` quando o usuário removeu o logotipo existente sem enviar outro. */
   removeLogo: boolean
+  /** `true` quando o usuário removeu a assinatura existente sem enviar outra. */
+  removeSignature: boolean
 }
 
 export type InstitutionFieldErrors = Partial<

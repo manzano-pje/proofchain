@@ -4,8 +4,7 @@
  *
  * É montado pela página InstitutionPage dentro do AdminLayout. Não faz
  * chamadas HTTP: recebe os dados e emite `submit` para o componente pai.
- * O backend ainda não oferece persistência de logo; esse controle permanece
- * desativado até existir um contrato de upload.
+ * Os dados são enviados à API; o backend deve aceitar os campos multipart de imagem.
  */
 import { computed, reactive, ref, watch } from 'vue'
 
@@ -25,14 +24,14 @@ interface Props {
   initialData?: InstitutionEditableInitialData
   /** Controla o estado de carregamento do botão de submit. */
   submitting?: boolean
-  /** O backend ainda não persiste logos de instituição. */
-  logoSupported?: boolean
+  /** Exibe os seletores de logotipo e assinatura. */
+  uploadsEnabled?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
   initialData: () => ({}),
   submitting: false,
-  logoSupported: false,
+  uploadsEnabled: false,
 })
 
 const emit = defineEmits<{
@@ -54,6 +53,8 @@ const errors = reactive<InstitutionFieldErrors>({})
 
 const logoFile = ref<File | null>(null)
 const logoRemoved = ref(false)
+const signatureFile = ref<File | null>(null)
+const signatureRemoved = ref(false)
 
 const isBusy = computed(() => props.submitting)
 
@@ -191,8 +192,16 @@ function onLogoRemove(): void {
   logoRemoved.value = true
 }
 
+function onSignatureRemove(): void {
+  signatureRemoved.value = true
+}
+
 watch(logoFile, (next) => {
   if (next) logoRemoved.value = false
+})
+
+watch(signatureFile, (next) => {
+  if (next) signatureRemoved.value = false
 })
 
 /* ------------------------------------------------------------------ */
@@ -213,6 +222,8 @@ function onSubmit(): void {
     state: form.state.toUpperCase(),
     logo: logoFile.value,
     removeLogo: logoRemoved.value && logoFile.value === null,
+    signature: signatureFile.value,
+    removeSignature: signatureRemoved.value && signatureFile.value === null,
   }
 
   emit('submit', payload)
@@ -450,9 +461,36 @@ function onSubmit(): void {
       </div>
     </section>
 
-    <!-- Card 3 — logo -->
-    <section v-if="props.logoSupported" class="institution-form__card" aria-label="Logo da instituição">
-      <InstitutionLogoUploader v-model="logoFile" @remove="onLogoRemove" />
+    <!-- Card 3 — imagens enviadas como campos multipart para a API. -->
+    <section
+      v-if="props.uploadsEnabled"
+      class="institution-form__card institution-form__uploads"
+      aria-label="Imagens da instituição"
+    >
+
+      <div class="institution-form__upload-grid">
+        <InstitutionLogoUploader
+          v-model="logoFile"
+          title="Logotipo da empresa"
+          :output-width="1300"
+          :output-height="472"
+          :preserve-source-dimensions="true"
+          output-filename="institution-logo.png"
+          @remove="onLogoRemove"
+        />
+        <InstitutionLogoUploader
+          v-model="signatureFile"
+          title="Assinatura do responsável"
+          :output-width="1300"
+          :output-height="300"
+          :preserve-source-dimensions="true"
+          :remove-white-background="true"
+          :accepted-mime-types="['image/png', 'image/jpeg']"
+          :accepted-extensions="['.png', '.jpg', '.jpeg']"
+          output-filename="responsible-signature.png"
+          @remove="onSignatureRemove"
+        />
+      </div>
     </section>
 
     <div class="institution-form__actions">

@@ -51,11 +51,6 @@ async function loadInstitution(): Promise<void> {
 }
 
 async function saveInstitution(payload: InstitutionUpdatePayload): Promise<void> {
-  if (payload.logo || payload.removeLogo) {
-    errorMessage.value = 'A API ainda não oferece suporte à atualização da logo.'
-    return
-  }
-
   const token = authStore.session?.accessToken
   if (!token) {
     errorMessage.value = 'Sua sessão expirou. Entre novamente para continuar.'
@@ -80,7 +75,12 @@ async function saveInstitution(payload: InstitutionUpdatePayload): Promise<void>
         state: payload.state,
       }
     }
-    successMessage.value = 'Dados da instituição atualizados.'
+    successMessage.value = payload.logo ||
+      payload.signature ||
+      payload.removeLogo ||
+      payload.removeSignature
+      ? 'Dados e imagens da instituição atualizados.'
+      : 'Dados da instituição atualizados.'
   } catch (error) {
     errorMessage.value = error instanceof Error
       ? error.message
@@ -114,7 +114,7 @@ onMounted(loadInstitution)
       :readonly-data="readonlyData"
       :initial-data="initialData"
       :submitting="isSubmitting"
-      :logo-supported="false"
+      :uploads-enabled="true"
       @submit="saveInstitution"
     />
   </section>
