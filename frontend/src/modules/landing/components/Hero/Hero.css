@@ -63,7 +63,6 @@
   justify-content: center;
   padding: var(--button-padding-y) var(--button-padding-x);
   border-radius: var(--radius-md);
-  background: var(--gradient-cta);
   color: var(--text-primary);
   font-size: var(--text-sm);
   text-decoration: none;
@@ -72,10 +71,25 @@
   gap: var(--space-xl);
 }
 
-.hero-button--secondary {
-  background: var(--gradient-light);
+.hero-button--primary {
+  background: var(--gradient-buttom-primary);
   color: var(--text-primary);
 }
+
+.hero-button--primary:hover {
+  background: var(--gradient-buttom-primary-inverse);
+}
+
+
+.hero-button--secondary {
+  background: var(--gradient-buttom-secondary);
+  color: var(--text-primary);
+}
+
+.hero-button--secondary:hover {
+  background: var(--gradient-buttom-secondary-inverse);
+}
+
 
 .hero-button:hover {
   transform: translateY(-2px);

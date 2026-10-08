@@ -380,12 +380,12 @@ function removeLogo(): void {
         :alt="`Pré-visualização de ${props.title}`"
       />
       <div class="institution-logo__preview-actions">
-        <button type="button" class="institution-logo__btn" @click="restart">
+        <button type="button" class="institution-logo__btn institution-logo__btn--primary" @click="restart">
           Alterar imagem
         </button>
         <button
           type="button"
-          class="institution-logo__btn"
+          class="institution-logo__btn institution-logo__btn--secondary"
           @click="removeLogo"
         >
           Remover
@@ -468,7 +468,11 @@ function removeLogo(): void {
               />
             </label>
             <div class="institution-logo__crop-actions">
-              <button type="button" class="institution-logo__btn institution-logo__btn--secondary" @click="cancelCrop">
+              <button
+                type="button"
+                class="institution-logo__btn institution-logo__btn--secondary"
+                @click="cancelCrop"
+              >
                 Cancelar
               </button>
               <button

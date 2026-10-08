@@ -108,14 +108,14 @@
 
 .institution-logo__crop-modal-header h2 {
   margin: 0;
-  color: var(--text-primary);
+  color: var(--brand-card);
   font-family: var(--font-heading);
   font-size: var(--font-xl);
 }
 
 .institution-logo__crop-modal-header p {
   margin: var(--space-xs) 0 0;
-  color: var(--text-secondary);
+  color: var(--brand-light);
   font-size: var(--body-small);
 }
 
@@ -124,11 +124,11 @@
   flex: 0 0 auto;
   align-items: center;
   justify-content: center;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 1.5rem;
+  height: 1.5rem;
   border: var(--border-width-thin) solid var(--border-buttom);
   border-radius: var(--radius-md);
-  background: transparent;
+  background: var(--gradient-buttom-secondary);
   color: var(--text-primary);
   font-size: var(--font-xl);
   cursor: pointer;
@@ -291,7 +291,7 @@
 
 .institution-logo__btn:hover:not(:disabled) {
   border-color: var(--border-hover);
-  background: var(--gradient-buttom-secondary-inverse);
+  /* background: var(--gradient-buttom-secondary-inverse); */
 }
 
 .institution-logo__btn:focus-visible {
@@ -308,7 +308,7 @@
 }
 
 .institution-logo__btn--primary:hover:not(:disabled) {
-  background: var(--gradient-buttom-inverse);
+  background: var(--gradient-buttom-primary-inverse);
   border-color: transparent;
 }
 
@@ -324,10 +324,10 @@
   border-color: transparent;
 }
 
-.institution-logo__btn--danger {
+/* .institution-logo__btn--danger {
   color: var(--danger);
   border-color: rgba(238, 39, 39, 0.4);
-}
+} */
 
 /* .institution-logo__btn--danger:hover:not(:disabled) {
   background: rgba(238, 39, 39, 0.12);
