@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { removeLightBackground } from '../util/removeSignatureBackground'
+import { removeLightBackground } from './util/removeSignatureBackground'
 
 describe('removeLightBackground', () => {
   it('preserves and darkens black signature strokes', () => {

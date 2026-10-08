@@ -9,7 +9,7 @@
  *
  * As dimensões, o texto e o nome do arquivo final são configuráveis pelo consumidor.
  */
-import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
+import { computed, onBeforeUnmount, ref, watch } from 'vue'
 
 import { useImageCrop } from './util/useImageCrop'
 import { removeSignatureBackground } from './util/removeSignatureBackground'
@@ -25,8 +25,6 @@ interface Props {
   aspectRatio?: number
   /** Nome do arquivo PNG final. */
   outputFilename?: string
-  /** Mantém a resolução em pixels da imagem selecionada na exportação. */
-  preserveSourceDimensions?: boolean
   /** Remove o fundo claro e reforça os traços antes do corte. */
   removeWhiteBackground?: boolean
   /** Tamanho máximo do arquivo original, em bytes. */
@@ -42,7 +40,6 @@ const props = withDefaults(defineProps<Props>(), {
   outputWidth: 1300,
   outputHeight: 472,
   outputFilename: 'institution-image.png',
-  preserveSourceDimensions: false,
   removeWhiteBackground: false,
   maxBytes: 2 * 1024 * 1024,
   acceptedMimeTypes: () => ['image/png', 'image/jpeg', 'image/svg+xml'] as const,
@@ -64,29 +61,11 @@ const isDragging = ref(false)
 const previewUrl = ref<string | null>(null)
 
 const fileInputRef = ref<HTMLInputElement | null>(null)
-const cropStageEl = ref<HTMLElement | null>(null)
 const cropViewportEl = ref<HTMLElement | null>(null)
 let resizeObserver: ResizeObserver | null = null
 
 const crop = useImageCrop()
-const sourceDimensions = computed(() => {
-  if (props.preserveSourceDimensions && crop.image.value) {
-    return {
-      width: crop.image.value.width,
-      height: crop.image.value.height,
-    }
-  }
-
-  return {
-    width: props.outputWidth,
-    height: props.outputHeight,
-  }
-})
-const cropAspectRatio = computed(() =>
-  props.preserveSourceDimensions && crop.image.value
-    ? crop.image.value.width / crop.image.value.height
-    : props.aspectRatio ?? props.outputWidth / props.outputHeight,
-)
+const cropAspectRatio = computed(() => props.aspectRatio ?? props.outputWidth / props.outputHeight)
 
 const acceptAttr = computed(() =>
   [...props.acceptedMimeTypes, ...props.acceptedExtensions].join(','),
@@ -105,10 +84,7 @@ const acceptedFormatLabels = computed(() =>
 
 const formatHint = computed(() => {
   const mb = (props.maxBytes / (1024 * 1024)).toFixed(0)
-  const outputSize = props.preserveSourceDimensions && crop.image.value
-    ? `Saída ${crop.image.value.width} × ${crop.image.value.height} px (dimensões originais)`
-    : `Saída ${props.outputWidth} × ${props.outputHeight} px`
-  return `${acceptedFormatLabels.value} • Máximo ${mb} MB • ${outputSize}`
+  return `${acceptedFormatLabels.value} • Máximo ${mb} MB • Saída ${props.outputWidth} × ${props.outputHeight} px`
 })
 
 const cropImageStyle = computed(() => ({
@@ -118,45 +94,20 @@ const cropImageStyle = computed(() => ({
   height: crop.image.value ? `${crop.image.value.height}px` : '0',
 }))
 
-function fitCropViewport(): void {
-  const stage = cropStageEl.value
-  if (!stage) return
-
-  const { width: availableWidth, height: availableHeight } = stage.getBoundingClientRect()
-  if (!availableWidth || !availableHeight) return
-
-  const aspectRatio = cropAspectRatio.value
-  let width = availableWidth
-  let height = width / aspectRatio
-
-  if (height > availableHeight) {
-    height = availableHeight
-    width = height * aspectRatio
-  }
-
-  crop.setViewport(width, height)
-}
-
-watch(cropStageEl, (el) => {
+watch(cropViewportEl, (el) => {
   resizeObserver?.disconnect()
   resizeObserver = null
   if (!el) return
-  resizeObserver = new ResizeObserver(fitCropViewport)
+  resizeObserver = new ResizeObserver((entries) => {
+    const entry = entries[0]
+    if (!entry) return
+    const { width, height } = entry.contentRect
+    crop.setViewport(width, height)
+  })
   resizeObserver.observe(el)
-  fitCropViewport()
+  const rect = el.getBoundingClientRect()
+  crop.setViewport(rect.width, rect.height)
 })
-
-watch(cropAspectRatio, fitCropViewport)
-
-watch(
-  () => state.value === 'cropping',
-  async (isCropping) => {
-    if (!isCropping) return
-    await nextTick()
-    fitCropViewport()
-    cropViewportEl.value?.focus()
-  },
-)
 
 onBeforeUnmount(() => {
   resizeObserver?.disconnect()
@@ -298,7 +249,7 @@ function onKeydown(event: KeyboardEvent): void {
 
 async function confirmCrop(): Promise<void> {
   const file = await crop.exportCropped(
-    sourceDimensions.value,
+    { width: props.outputWidth, height: props.outputHeight },
     props.outputFilename,
   )
   if (!file) {
@@ -312,7 +263,7 @@ async function confirmCrop(): Promise<void> {
 
 function cancelCrop(): void {
   crop.reset()
-  state.value = model.value && previewUrl.value ? 'ready' : 'idle'
+  state.value = 'idle'
 }
 
 function restart(): void {
@@ -380,12 +331,12 @@ function removeLogo(): void {
         :alt="`Pré-visualização de ${props.title}`"
       />
       <div class="institution-logo__preview-actions">
-        <button type="button" class="institution-logo__btn institution-logo__btn--primary" @click="restart">
+        <button type="button" class="institution-logo__btn" @click="restart">
           Alterar imagem
         </button>
         <button
           type="button"
-          class="institution-logo__btn institution-logo__btn--secondary"
+          class="institution-logo__btn"
           @click="removeLogo"
         >
           Remover
@@ -468,11 +419,7 @@ function removeLogo(): void {
               />
             </label>
             <div class="institution-logo__crop-actions">
-              <button
-                type="button"
-                class="institution-logo__btn institution-logo__btn--secondary"
-                @click="cancelCrop"
-              >
+              <button type="button" class="institution-logo__btn institution-logo__btn--secondary" @click="cancelCrop">
                 Cancelar
               </button>
               <button
@@ -486,7 +433,7 @@ function removeLogo(): void {
           </div>
         </section>
       </div>
-    </Teleport>
+    </div>
 
     <p v-if="errorMessage" class="institution-logo__error" role="alert">
       {{ errorMessage }}
