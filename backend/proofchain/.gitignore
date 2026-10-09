@@ -12,6 +12,11 @@ target/
 .settings
 .springBeans
 .sts4-cache
+.gitignore
+.gitattributes
+.env
+TESTES_UNITARIOS.md
+
 
 ### IntelliJ IDEA ###
 .idea

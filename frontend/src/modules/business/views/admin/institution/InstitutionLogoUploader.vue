@@ -61,6 +61,7 @@ const isDragging = ref(false)
 const previewUrl = ref<string | null>(null)
 
 const fileInputRef = ref<HTMLInputElement | null>(null)
+const cropStageEl = ref<HTMLElement | null>(null)
 const cropViewportEl = ref<HTMLElement | null>(null)
 let resizeObserver: ResizeObserver | null = null
 
@@ -94,20 +95,53 @@ const cropImageStyle = computed(() => ({
   height: crop.image.value ? `${crop.image.value.height}px` : '0',
 }))
 
-watch(cropViewportEl, (el) => {
+function updateCropViewport(width: number, height: number): void {
+  const viewportEl = cropViewportEl.value
+  const aspectRatio = cropAspectRatio.value
+  if (!viewportEl || width <= 0 || height <= 0 || !Number.isFinite(aspectRatio) || aspectRatio <= 0) {
+    return
+  }
+
+  const viewportStyle = getComputedStyle(viewportEl)
+  const borderWidth =
+    Number.parseFloat(viewportStyle.borderLeftWidth) +
+    Number.parseFloat(viewportStyle.borderRightWidth)
+  const borderHeight =
+    Number.parseFloat(viewportStyle.borderTopWidth) +
+    Number.parseFloat(viewportStyle.borderBottomWidth)
+  const availableWidth = Math.max(0, width - borderWidth)
+  const availableHeight = Math.max(0, height - borderHeight)
+
+  let viewportWidth = availableWidth
+  let viewportHeight = viewportWidth / aspectRatio
+  if (viewportHeight > availableHeight) {
+    viewportHeight = availableHeight
+    viewportWidth = viewportHeight * aspectRatio
+  }
+
+  crop.setViewport(viewportWidth, viewportHeight)
+}
+
+function updateCropViewportFromStage(): void {
+  const stage = cropStageEl.value
+  if (!stage) return
+  updateCropViewport(stage.clientWidth, stage.clientHeight)
+}
+
+watch(cropStageEl, (el) => {
   resizeObserver?.disconnect()
   resizeObserver = null
   if (!el) return
   resizeObserver = new ResizeObserver((entries) => {
     const entry = entries[0]
     if (!entry) return
-    const { width, height } = entry.contentRect
-    crop.setViewport(width, height)
+    updateCropViewport(entry.contentRect.width, entry.contentRect.height)
   })
   resizeObserver.observe(el)
-  const rect = el.getBoundingClientRect()
-  crop.setViewport(rect.width, rect.height)
+  updateCropViewportFromStage()
 })
+
+watch(cropAspectRatio, updateCropViewportFromStage)
 
 onBeforeUnmount(() => {
   resizeObserver?.disconnect()
@@ -331,7 +365,7 @@ function removeLogo(): void {
         :alt="`Pré-visualização de ${props.title}`"
       />
       <div class="institution-logo__preview-actions">
-        <button type="button" class="institution-logo__btn" @click="restart">
+        <button type="button" class="institution-logo__btn institution-logo__btn--primary" @click="restart">
           Alterar imagem
         </button>
         <button
@@ -380,7 +414,6 @@ function removeLogo(): void {
             <div
               ref="cropViewportEl"
               class="institution-logo__crop-viewport"
-
               :class="{ 'institution-logo__crop-viewport--transparent': props.removeWhiteBackground }"
               :style="{ width: `${crop.viewport.width}px`, height: `${crop.viewport.height}px` }"
               role="application"
@@ -433,7 +466,7 @@ function removeLogo(): void {
           </div>
         </section>
       </div>
-    </div>
+    </Teleport>
 
     <p v-if="errorMessage" class="institution-logo__error" role="alert">
       {{ errorMessage }}

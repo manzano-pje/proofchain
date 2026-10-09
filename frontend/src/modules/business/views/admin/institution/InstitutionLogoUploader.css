@@ -121,7 +121,7 @@
 
 .institution-logo__crop-modal-header p {
   margin: var(--space-xs) 0 0;
-  color: var(--text-secondary);
+  color: var(--surface-secondary);
   font-size: var(--body-small);
 }
 
@@ -130,11 +130,11 @@
   flex: 0 0 auto;
   align-items: center;
   justify-content: center;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 1.5rem;
+  height: 1.5rem;
   border: var(--border-width-thin) solid var(--border-buttom);
   border-radius: var(--radius-md);
-  background: transparent;
+  background: var(--gradient-buttom-secondary);
   color: var(--text-primary);
   font-size: var(--font-xl);
   cursor: pointer;
@@ -150,7 +150,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100%;
   min-width: 0;
+  max-width: 742px;
+  margin-inline: auto;
   min-height: min(52dvh, 420px);
   max-height: min(58dvh, 560px);
   overflow: hidden;
@@ -158,11 +161,11 @@
 
 .institution-logo__crop-viewport {
   position: relative;
+  box-sizing: content-box;
   width: 100%;
   overflow: hidden;
   border: var(--border-width-thin) solid var(--border-buttom);
   border-radius: var(--radius-md);
-  background: var(--background-dark);
   cursor: grab;
   touch-action: none;
 }
@@ -197,7 +200,7 @@
   box-shadow: 0 0 0 9999px rgba(2, 6, 23, 0.35);
 }
 
-.institution-logo__crop-controls {
+.institution-logo__crop-modal-controls {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-md);
@@ -275,7 +278,6 @@
   padding: var(--button-padding-y) var(--button-padding-x);
   border: var(--border-width-thin) solid var(--border-buttom);
   border-radius: var(--radius-md);
-  background: transparent;
   color: var(--text-primary);
   font-size: var(--body-small);
   font-weight: var(--weight-medium);
@@ -285,7 +287,6 @@
 
 .institution-logo__btn:hover:not(:disabled) {
   border-color: var(--border-hover);
-  background: var(--gradient-buttom-secondary-inverse);
 }
 
 .institution-logo__btn:focus-visible {
@@ -296,13 +297,13 @@
 
 .institution-logo__btn--primary {
   border-color: transparent;
-  background: var(--action);
+  background: var(--gradient-buttom-primary);
   color: var(--text-inverse);
   font-weight: var(--weight-semibold);
 }
 
 .institution-logo__btn--primary:hover:not(:disabled) {
-  background: var(--gradient-buttom-inverse);
+  background: var(--gradient-buttom-primary-inverse);
   border-color: transparent;
 }
 
@@ -337,7 +338,7 @@
 }
 
 @media (max-width: 767px) {
-  .institution-logo__crop-controls {
+  .institution-logo__crop-modal-controls {
     flex-direction: column;
     align-items: stretch;
   }
