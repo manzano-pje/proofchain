@@ -90,6 +90,6 @@
   --gradient-buttom-primary: linear-gradient(0deg, #005825, #0fb655);
   --gradient-buttom-primary-inverse: linear-gradient(180deg, #005825, #0fb655);
   --gradient-buttom-secondary:linear-gradient(0deg, #f70606, #ff7676);
-  --gradient-buttom-secondary-inverse: linear-gradient(180deg, #ff7676, #f70606);
+  --gradient-buttom-secondary-inverse: linear-gradient(180deg, #f70606, #ff7676);
   --gradient-pricing: linear-gradient(135deg, #143f70, #195996);
 }
