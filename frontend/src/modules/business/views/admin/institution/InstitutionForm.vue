@@ -467,9 +467,7 @@ function onSubmit(): void {
       class="institution-form__card institution-form__uploads"
       aria-label="Imagens da instituição"
     >
-      <p class="institution-form__upload-note" role="note">
-        As imagens podem ser selecionadas e ajustadas aqui, mas ainda não são salvas pela API.
-      </p>
+
       <div class="institution-form__upload-grid">
         <InstitutionLogoUploader
           v-model="logoFile"

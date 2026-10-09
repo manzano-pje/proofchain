@@ -1,4 +1,4 @@
- <script setup lang="ts">
+<script setup lang="ts">
 /**
  * Uploader reutilizável para imagens da instituição.
  *
@@ -76,9 +76,9 @@ const acceptedFormatLabels = computed(() =>
   props.acceptedMimeTypes
     .map((mime) =>
       mime === 'image/png' ? 'PNG'
-      : mime === 'image/jpeg' ? 'JPG'
-      : mime === 'image/svg+xml' ? 'SVG'
-      : mime,
+        : mime === 'image/jpeg' ? 'JPG'
+          : mime === 'image/svg+xml' ? 'SVG'
+            : mime,
     )
     .join(', '),
 )
@@ -316,31 +316,15 @@ function removeLogo(): void {
 
 <template>
   <div class="institution-logo">
-    <input
-      ref="fileInputRef"
-      class="institution-logo__input"
-      type="file"
-      :accept="acceptAttr"
-      tabindex="-1"
-      aria-hidden="true"
-      @change="onFileChange"
-    />
+    <input ref="fileInputRef" class="institution-logo__input" type="file" :accept="acceptAttr" tabindex="-1"
+      aria-hidden="true" @change="onFileChange" />
 
     <!-- Estado: idle -->
-    <div
-      v-if="state === 'idle'"
-      class="institution-logo__dropzone"
-      :class="{ 'institution-logo__dropzone--drag': isDragging }"
-      role="button"
-      tabindex="0"
-      :aria-label="`Selecionar ${props.title}. ${formatHint}`"
-      @click="openFilePicker"
-      @keydown.enter.prevent="openFilePicker"
-      @keydown.space.prevent="openFilePicker"
-      @dragover.prevent="onDragOver"
-      @dragleave.prevent="onDragLeave"
-      @drop.prevent="onDrop"
-    >
+    <div v-if="state === 'idle'" class="institution-logo__dropzone"
+      :class="{ 'institution-logo__dropzone--drag': isDragging }" role="button" tabindex="0"
+      :aria-label="`Selecionar ${props.title}. ${formatHint}`" @click="openFilePicker"
+      @keydown.enter.prevent="openFilePicker" @keydown.space.prevent="openFilePicker" @dragover.prevent="onDragOver"
+      @dragleave.prevent="onDragLeave" @drop.prevent="onDrop">
       <span class="institution-logo__dropzone-title">{{ props.title }}</span>
       <span class="institution-logo__dropzone-subtitle">Arraste uma imagem aqui ou clique para selecionar</span>
       <span class="institution-logo__dropzone-hint">{{ formatHint }}</span>
@@ -352,126 +336,79 @@ function removeLogo(): void {
     </p>
 
     <!-- Estado: ready -->
-    <div
-      v-else-if="state === 'ready'"
-      class="institution-logo__preview"
-      :class="{ 'institution-logo__preview--transparent': props.removeWhiteBackground }"
-    >
-      <img
-        v-if="previewUrl"
-        class="institution-logo__preview-image"
-        :class="{ 'institution-logo__preview-image--transparent': props.removeWhiteBackground }"
-        :src="previewUrl"
-        :alt="`Pré-visualização de ${props.title}`"
-      />
+    <div v-else-if="state === 'ready'" class="institution-logo__preview"
+      :class="{ 'institution-logo__preview--transparent': props.removeWhiteBackground }">
+      <img v-if="previewUrl" class="institution-logo__preview-image"
+        :class="{ 'institution-logo__preview-image--transparent': props.removeWhiteBackground }" :src="previewUrl"
+        :alt="`Pré-visualização de ${props.title}`" />
       <div class="institution-logo__preview-actions">
         <button type="button" class="institution-logo__btn institution-logo__btn--primary" @click="restart">
           Alterar imagem
         </button>
-        <button
-          type="button"
-          class="institution-logo__btn"
-          @click="removeLogo"
-        >
+
+        <button type="button" class="institution-logo__btn institution-logo__btn--secondary" @click="removeLogo">
           Remover
         </button>
       </div>
     </div>
-
-    <Teleport to="body">
-      <div
-        v-if="state === 'cropping'"
-        class="institution-logo__modal-overlay"
-        role="presentation"
-        @click.self="cancelCrop"
-        @keydown.esc.stop.prevent="cancelCrop"
-      >
-        <section
-          class="institution-logo__crop-modal"
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="institution-logo-crop-title"
-          aria-describedby="institution-logo-crop-instructions"
-        >
-          <header class="institution-logo__crop-modal-header">
-            <div>
-              <h2 id="institution-logo-crop-title">Ajustar {{ props.title }}</h2>
-              <p id="institution-logo-crop-instructions">
-                Arraste para posicionar, use a roda do mouse ou o controle para ampliar.
-              </p>
-            </div>
-            <button
-              type="button"
-              class="institution-logo__modal-close"
-              aria-label="Cancelar corte e fechar"
-              @click="cancelCrop"
-            >
-              ×
-            </button>
-          </header>
-
-          <div ref="cropStageEl" class="institution-logo__crop-stage">
-            <div
-              ref="cropViewportEl"
-              class="institution-logo__crop-viewport"
-              :class="{ 'institution-logo__crop-viewport--transparent': props.removeWhiteBackground }"
-              :style="{ width: `${crop.viewport.width}px`, height: `${crop.viewport.height}px` }"
-              role="application"
-              tabindex="0"
-              :aria-label="`Área de enquadramento de ${props.title}. Use as setas do teclado para mover e o controle deslizante para ampliar.`"
-              @pointerdown="onPointerDown"
-              @pointermove="onPointerMove"
-              @pointerup="onPointerUp"
-              @pointercancel="onPointerUp"
-              @wheel.prevent="onWheel"
-              @keydown="onKeydown"
-            >
-              <img
-                v-if="crop.image.value"
-                class="institution-logo__crop-image"
-                :src="crop.image.value.url"
-                :style="cropImageStyle"
-                alt=""
-                draggable="false"
-              />
-              <span class="institution-logo__crop-frame" aria-hidden="true"></span>
-            </div>
-          </div>
-
-          <div class="institution-logo__crop-modal-controls">
-            <label class="institution-logo__zoom">
-              <span class="institution-logo__zoom-label">Zoom</span>
-              <input
-                class="institution-logo__zoom-range"
-                type="range"
-                :min="crop.minScale.value"
-                :max="crop.maxScale.value"
-                :step="0.001"
-                :value="crop.scale.value"
-                @input="onZoomInput"
-              />
-            </label>
-            <div class="institution-logo__crop-actions">
-              <button type="button" class="institution-logo__btn institution-logo__btn--secondary" @click="cancelCrop">
-                Cancelar
-              </button>
-              <button
-                type="button"
-                class="institution-logo__btn institution-logo__btn--primary"
-                @click="confirmCrop"
-              >
-                Confirmar corte
-              </button>
-            </div>
-          </div>
-        </section>
-      </div>
-    </Teleport>
-
-    <p v-if="errorMessage" class="institution-logo__error" role="alert">
-      {{ errorMessage }}
-    </p>
   </div>
+
+  <Teleport to="body">
+    <div v-if="state === 'cropping'" class="institution-logo__modal-overlay" role="presentation"
+      @click.self="cancelCrop" @keydown.esc.stop.prevent="cancelCrop">
+      <section class="institution-logo__crop-modal" role="dialog" aria-modal="true"
+        aria-labelledby="institution-logo-crop-title" aria-describedby="institution-logo-crop-instructions">
+        <header class="institution-logo__crop-modal-header">
+          <div>
+            <h2 id="institution-logo-crop-title">Ajustar {{ props.title }}</h2>
+            <p id="institution-logo-crop-instructions">
+              Arraste para posicionar, use a roda do mouse ou o controle para ampliar.
+            </p>
+          </div>
+          <button type="button" class="institution-logo__modal-close" aria-label="Cancelar corte e fechar"
+            @click="cancelCrop">
+            ×
+          </button>
+        </header>
+
+        <div ref="cropStageEl" class="institution-logo__crop-stage">
+          <div ref="cropViewportEl" class="institution-logo__crop-viewport"
+            :class="{ 'institution-logo__crop-viewport--transparent': props.removeWhiteBackground }"
+            :style="{ width: `${crop.viewport.width}px`, height: `${crop.viewport.height}px` }" role="application"
+            tabindex="0"
+            :aria-label="`Área de enquadramento de ${props.title}. Use as setas do teclado para mover e o controle deslizante para ampliar.`"
+            @pointerdown="onPointerDown" @pointermove="onPointerMove" @pointerup="onPointerUp"
+            @pointercancel="onPointerUp" @wheel.prevent="onWheel" @keydown="onKeydown">
+            <img v-if="crop.image.value" class="institution-logo__crop-image" :src="crop.image.value.url"
+              :style="cropImageStyle" alt="" draggable="false" />
+            <span class="institution-logo__crop-frame" aria-hidden="true"></span>
+          </div>
+        </div>
+
+        <div class="institution-logo__crop-modal-controls">
+          <label class="institution-logo__zoom">
+            <span class="institution-logo__zoom-label">Zoom</span>
+            <input class="institution-logo__zoom-range" type="range" :min="crop.minScale.value"
+              :max="crop.maxScale.value" :step="0.001" :value="crop.scale.value" @input="onZoomInput" />
+          </label>
+          <div class="institution-logo__crop-actions">
+            <button type="button" class="institution-logo__btn institution-logo__btn--secondary" @click="cancelCrop">
+              Cancelar
+            </button>
+
+            <button type="button" class="institution-logo__btn institution-logo__btn--primary" @click="confirmCrop">
+              Confirmar corte
+            </button>
+          </div>
+        </div>
+      </section>
+    </div>
+  </Teleport>
+
+  <p v-if="errorMessage" class="institution-logo__error" role="alert">
+    {{ errorMessage }}
+  </p>
+
 </template>
 
 <style scoped src="./InstitutionLogoUploader.css"></style>
