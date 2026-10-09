@@ -12,7 +12,7 @@ import './Hero.css'
       <p class="hero__subtitle">Toda conquista merece ser comprovada.</p>
       <p class="hero__subtitle">Toda credencial merece ser confiável.</p>
       <div class="hero__actions">
-        <a href="/onboarding?planId=1" class="hero-button">Começar grátis</a>
+        <a href="/onboarding?planId=1" class="hero-button hero-button--primary">Começar grátis</a>
         <a href="#" class="hero-button hero-button--secondary">Saiba mais</a>
       </div>
     </div>

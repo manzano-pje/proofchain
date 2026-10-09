@@ -4,7 +4,7 @@
  *
  * É montado pela página InstitutionPage dentro do AdminLayout. Não faz
  * chamadas HTTP: recebe os dados e emite `submit` para o componente pai.
- * Os dados são enviados à API; o backend deve aceitar os campos multipart de imagem.
+ * O backend ainda não oferece persistência para os arquivos de imagem.
  */
 import { computed, reactive, ref, watch } from 'vue'
 
@@ -461,20 +461,23 @@ function onSubmit(): void {
       </div>
     </section>
 
-    <!-- Card 3 — imagens enviadas como campos multipart para a API. -->
+    <!-- Card 3 — imagens da instituição. O backend ainda não persiste os arquivos. -->
     <section
       v-if="props.uploadsEnabled"
       class="institution-form__card institution-form__uploads"
       aria-label="Imagens da instituição"
     >
-
+      <p class="institution-form__upload-note" role="note">
+        As imagens podem ser selecionadas e ajustadas aqui, mas ainda não são salvas pela API.
+      </p>
       <div class="institution-form__upload-grid">
         <InstitutionLogoUploader
           v-model="logoFile"
           title="Logotipo da empresa"
           :output-width="1300"
           :output-height="472"
-          :preserve-source-dimensions="true"
+          :preserve-source-dimensions="false"
+          :aspect-ratio="1300 / 472"
           output-filename="institution-logo.png"
           @remove="onLogoRemove"
         />
@@ -483,7 +486,8 @@ function onSubmit(): void {
           title="Assinatura do responsável"
           :output-width="1300"
           :output-height="300"
-          :preserve-source-dimensions="true"
+          :preserve-source-dimensions="false"
+          :aspect-ratio="1300 / 300"
           :remove-white-background="true"
           :accepted-mime-types="['image/png', 'image/jpeg']"
           :accepted-extensions="['.png', '.jpg', '.jpeg']"

@@ -39,8 +39,8 @@ export interface InstitutionEditableInitialData {
 }
 
 /**
- * Payload emitido em `submit`. O serviço envia os campos de endereço,
- * contato e imagens como multipart/form-data.
+ * Payload emitido em `submit`. O serviço envia os campos de endereço e
+ * contato como JSON; o backend ainda não persiste os arquivos de imagem.
  *
  * NOTA: `id`, `institutionId`, `name`, `cnpj` e `email` NÃO fazem parte
  * deste payload. A instituição é identificada pelo backend a partir do JWT.

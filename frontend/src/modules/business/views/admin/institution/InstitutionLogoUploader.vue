@@ -9,7 +9,7 @@
  *
  * As dimensões, o texto e o nome do arquivo final são configuráveis pelo consumidor.
  */
-import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
+import { computed, onBeforeUnmount, ref, watch } from 'vue'
 
 import { useImageCrop } from './util/useImageCrop'
 import { removeSignatureBackground } from './util/removeSignatureBackground'
@@ -25,8 +25,6 @@ interface Props {
   aspectRatio?: number
   /** Nome do arquivo PNG final. */
   outputFilename?: string
-  /** Mantém a resolução em pixels da imagem selecionada na exportação. */
-  preserveSourceDimensions?: boolean
   /** Remove o fundo claro e reforça os traços antes do corte. */
   removeWhiteBackground?: boolean
   /** Tamanho máximo do arquivo original, em bytes. */
@@ -42,7 +40,6 @@ const props = withDefaults(defineProps<Props>(), {
   outputWidth: 1300,
   outputHeight: 472,
   outputFilename: 'institution-image.png',
-  preserveSourceDimensions: false,
   removeWhiteBackground: false,
   maxBytes: 2 * 1024 * 1024,
   acceptedMimeTypes: () => ['image/png', 'image/jpeg', 'image/svg+xml'] as const,
@@ -69,24 +66,7 @@ const cropViewportEl = ref<HTMLElement | null>(null)
 let resizeObserver: ResizeObserver | null = null
 
 const crop = useImageCrop()
-const sourceDimensions = computed(() => {
-  if (props.preserveSourceDimensions && crop.image.value) {
-    return {
-      width: crop.image.value.width,
-      height: crop.image.value.height,
-    }
-  }
-
-  return {
-    width: props.outputWidth,
-    height: props.outputHeight,
-  }
-})
-const cropAspectRatio = computed(() =>
-  props.preserveSourceDimensions && crop.image.value
-    ? crop.image.value.width / crop.image.value.height
-    : props.aspectRatio ?? props.outputWidth / props.outputHeight,
-)
+const cropAspectRatio = computed(() => props.aspectRatio ?? props.outputWidth / props.outputHeight)
 
 const acceptAttr = computed(() =>
   [...props.acceptedMimeTypes, ...props.acceptedExtensions].join(','),
@@ -105,10 +85,7 @@ const acceptedFormatLabels = computed(() =>
 
 const formatHint = computed(() => {
   const mb = (props.maxBytes / (1024 * 1024)).toFixed(0)
-  const outputSize = props.preserveSourceDimensions && crop.image.value
-    ? `Saída ${crop.image.value.width} × ${crop.image.value.height} px (dimensões originais)`
-    : `Saída ${props.outputWidth} × ${props.outputHeight} px`
-  return `${acceptedFormatLabels.value} • Máximo ${mb} MB • ${outputSize}`
+  return `${acceptedFormatLabels.value} • Máximo ${mb} MB • Saída ${props.outputWidth} × ${props.outputHeight} px`
 })
 
 const cropImageStyle = computed(() => ({
@@ -118,45 +95,53 @@ const cropImageStyle = computed(() => ({
   height: crop.image.value ? `${crop.image.value.height}px` : '0',
 }))
 
-function fitCropViewport(): void {
-  const stage = cropStageEl.value
-  if (!stage) return
-
-  const { width: availableWidth, height: availableHeight } = stage.getBoundingClientRect()
-  if (!availableWidth || !availableHeight) return
-
+function updateCropViewport(width: number, height: number): void {
+  const viewportEl = cropViewportEl.value
   const aspectRatio = cropAspectRatio.value
-  let width = availableWidth
-  let height = width / aspectRatio
-
-  if (height > availableHeight) {
-    height = availableHeight
-    width = height * aspectRatio
+  if (!viewportEl || width <= 0 || height <= 0 || !Number.isFinite(aspectRatio) || aspectRatio <= 0) {
+    return
   }
 
-  crop.setViewport(width, height)
+  const viewportStyle = getComputedStyle(viewportEl)
+  const borderWidth =
+    Number.parseFloat(viewportStyle.borderLeftWidth) +
+    Number.parseFloat(viewportStyle.borderRightWidth)
+  const borderHeight =
+    Number.parseFloat(viewportStyle.borderTopWidth) +
+    Number.parseFloat(viewportStyle.borderBottomWidth)
+  const availableWidth = Math.max(0, width - borderWidth)
+  const availableHeight = Math.max(0, height - borderHeight)
+
+  let viewportWidth = availableWidth
+  let viewportHeight = viewportWidth / aspectRatio
+  if (viewportHeight > availableHeight) {
+    viewportHeight = availableHeight
+    viewportWidth = viewportHeight * aspectRatio
+  }
+
+  crop.setViewport(viewportWidth, viewportHeight)
+}
+
+function updateCropViewportFromStage(): void {
+  const stage = cropStageEl.value
+  if (!stage) return
+  updateCropViewport(stage.clientWidth, stage.clientHeight)
 }
 
 watch(cropStageEl, (el) => {
   resizeObserver?.disconnect()
   resizeObserver = null
   if (!el) return
-  resizeObserver = new ResizeObserver(fitCropViewport)
+  resizeObserver = new ResizeObserver((entries) => {
+    const entry = entries[0]
+    if (!entry) return
+    updateCropViewport(entry.contentRect.width, entry.contentRect.height)
+  })
   resizeObserver.observe(el)
-  fitCropViewport()
+  updateCropViewportFromStage()
 })
 
-watch(cropAspectRatio, fitCropViewport)
-
-watch(
-  () => state.value === 'cropping',
-  async (isCropping) => {
-    if (!isCropping) return
-    await nextTick()
-    fitCropViewport()
-    cropViewportEl.value?.focus()
-  },
-)
+watch(cropAspectRatio, updateCropViewportFromStage)
 
 onBeforeUnmount(() => {
   resizeObserver?.disconnect()
@@ -298,7 +283,7 @@ function onKeydown(event: KeyboardEvent): void {
 
 async function confirmCrop(): Promise<void> {
   const file = await crop.exportCropped(
-    sourceDimensions.value,
+    { width: props.outputWidth, height: props.outputHeight },
     props.outputFilename,
   )
   if (!file) {
@@ -312,7 +297,7 @@ async function confirmCrop(): Promise<void> {
 
 function cancelCrop(): void {
   crop.reset()
-  state.value = model.value && previewUrl.value ? 'ready' : 'idle'
+  state.value = 'idle'
 }
 
 function restart(): void {
@@ -380,7 +365,7 @@ function removeLogo(): void {
         :alt="`Pré-visualização de ${props.title}`"
       />
       <div class="institution-logo__preview-actions">
-        <button type="button" class="institution-logo__btn" @click="restart">
+        <button type="button" class="institution-logo__btn institution-logo__btn--primary" @click="restart">
           Alterar imagem
         </button>
         <button
@@ -429,7 +414,6 @@ function removeLogo(): void {
             <div
               ref="cropViewportEl"
               class="institution-logo__crop-viewport"
-
               :class="{ 'institution-logo__crop-viewport--transparent': props.removeWhiteBackground }"
               :style="{ width: `${crop.viewport.width}px`, height: `${crop.viewport.height}px` }"
               role="application"

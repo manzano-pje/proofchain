@@ -51,6 +51,11 @@ async function loadInstitution(): Promise<void> {
 }
 
 async function saveInstitution(payload: InstitutionUpdatePayload): Promise<void> {
+  if (payload.logo || payload.removeLogo || payload.signature || payload.removeSignature) {
+    errorMessage.value = 'A API ainda não oferece suporte à gravação do logotipo ou da assinatura. Nenhuma alteração foi salva.'
+    return
+  }
+
   const token = authStore.session?.accessToken
   if (!token) {
     errorMessage.value = 'Sua sessão expirou. Entre novamente para continuar.'
@@ -75,12 +80,7 @@ async function saveInstitution(payload: InstitutionUpdatePayload): Promise<void>
         state: payload.state,
       }
     }
-    successMessage.value = payload.logo ||
-      payload.signature ||
-      payload.removeLogo ||
-      payload.removeSignature
-      ? 'Dados e imagens da instituição atualizados.'
-      : 'Dados da instituição atualizados.'
+    successMessage.value = 'Dados da instituição atualizados.'
   } catch (error) {
     errorMessage.value = error instanceof Error
       ? error.message
