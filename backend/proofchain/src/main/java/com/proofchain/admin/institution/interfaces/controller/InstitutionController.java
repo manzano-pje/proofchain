@@ -10,9 +10,11 @@ import com.proofchain.admin.institution.interfaces.dtos.response.InstitutionResp
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -51,11 +53,24 @@ public class InstitutionController {
                 .body("Instituição atualizada com sucesso.");
     }
 
+//    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
+//    @PatchMapping("/update")
+//    public ResponseEntity<String> updateCurrentInstitution(
+//            @Valid @RequestBody UpdateInstitutionRequest request) {
+//        updateInstitution.updateCurrentInstitution(request);
+//        return ResponseEntity.ok("Instituição atualizada com sucesso.");
+//    }
+
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
-    @PatchMapping("/update")
+    @PatchMapping(value = "/update", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> updateCurrentInstitution(
-            @Valid @RequestBody UpdateInstitutionRequest request) {
-        updateInstitution.updateCurrentInstitution(request);
+            @Valid @RequestPart("data") UpdateInstitutionRequest request,
+            @RequestPart(value = "logo", required = false) MultipartFile logo,
+            @RequestPart(value = "signature", required = false) MultipartFile signature) {
+
+
+        updateInstitution.updateCurrentInstitution(request,logo, signature);
+
         return ResponseEntity.ok("Instituição atualizada com sucesso.");
     }
 
@@ -69,6 +84,7 @@ public class InstitutionController {
     public InstitutionResponse getCurrentInstitution() {
         return listOneInstitution.getCurrentInstitution();
     }
+
 
     @PreAuthorize("hasRole('SUPER_ADMIN')")
     @GetMapping("/list")

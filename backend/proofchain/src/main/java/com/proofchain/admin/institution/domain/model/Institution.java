@@ -41,7 +41,6 @@ public class Institution {
     @Email
 //    @Column(nullable = false)
     private String email;
-
     private String address;
     private Integer number;
     private String complement;
@@ -59,6 +58,12 @@ public class Institution {
     private Instant createdAt;
     private Instant deletedAt;
     private Boolean active;
+
+    @Column(length = 512)
+    private String logoKey;
+
+    @Column(length = 512)
+    private String signatureKey;
 
     ///// RELACIONAMENTO /////
 
