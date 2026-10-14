@@ -44,6 +44,7 @@ public class ListOneInstitutionHandler {
         if (institution.isEmpty()){
             throw new NotFoundException(InstitutionMessages.INSTITUTION_NOT_FOUND);
         }
+        
         InstitutionResponse response = institution.map(InstitutionResponse::from).get();
         return response;
     }

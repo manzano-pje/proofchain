@@ -51,10 +51,6 @@ async function loadInstitution(): Promise<void> {
 }
 
 async function saveInstitution(payload: InstitutionUpdatePayload): Promise<void> {
-  if (payload.logo || payload.removeLogo || payload.signature || payload.removeSignature) {
-    errorMessage.value = 'A API ainda não oferece suporte à gravação do logotipo ou da assinatura. Nenhuma alteração foi salva.'
-    return
-  }
 
   const token = authStore.session?.accessToken
   if (!token) {

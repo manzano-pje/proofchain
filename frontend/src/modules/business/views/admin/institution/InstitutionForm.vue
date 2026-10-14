@@ -221,9 +221,7 @@ function onSubmit(): void {
     city: form.city.trim(),
     state: form.state.toUpperCase(),
     logo: logoFile.value,
-    removeLogo: logoRemoved.value && logoFile.value === null,
     signature: signatureFile.value,
-    removeSignature: signatureRemoved.value && signatureFile.value === null,
   }
 
   emit('submit', payload)
@@ -474,9 +472,8 @@ function onSubmit(): void {
           title="Logotipo da empresa"
           :output-width="1300"
           :output-height="472"
-          :preserve-source-dimensions="false"
           :aspect-ratio="1300 / 472"
-          output-filename="institution-logo.png"
+          output-filename="logo.png"
           @remove="onLogoRemove"
         />
         <InstitutionLogoUploader
@@ -484,12 +481,11 @@ function onSubmit(): void {
           title="Assinatura do responsável"
           :output-width="1300"
           :output-height="300"
-          :preserve-source-dimensions="false"
           :aspect-ratio="1300 / 300"
           :remove-white-background="true"
           :accepted-mime-types="['image/png', 'image/jpeg']"
           :accepted-extensions="['.png', '.jpg', '.jpeg']"
-          output-filename="responsible-signature.png"
+          output-filename="signature.png"
           @remove="onSignatureRemove"
         />
       </div>
