@@ -2,6 +2,7 @@ package com.proofchain.admin.institution.application.query;
 
 import com.proofchain.admin.institution.domain.model.Institution;
 import com.proofchain.admin.institution.infrastructure.repository.InstitutionRepository;
+import com.proofchain.admin.institution.infrastructure.repository.storage.DownloadImageToRF2;
 import com.proofchain.admin.institution.interfaces.dtos.response.InstitutionResponse;
 import com.proofchain.shared.exception.NotFoundException;
 import com.proofchain.shared.exception.messages.InstitutionMessages;
@@ -18,6 +19,7 @@ public class ListOneInstitutionHandler {
 
     private final InstitutionRepository institutionRepository;
     private final TenantValidation tenantValidation;
+    private final DownloadImageToRF2 downloadImageToRF2;
 
     public InstitutionResponse getOneinstitution(String cnpj){
 
@@ -37,6 +39,10 @@ public class ListOneInstitutionHandler {
     }
 
     public InstitutionResponse getCurrentInstitution() {
+
+        String logoUrl;
+        String signatureUrl;
+
         Long institutionId = SecurityUtils.getInstitutionId();
         tenantValidation.validateInstitution(institutionId);
 
@@ -44,8 +50,11 @@ public class ListOneInstitutionHandler {
         if (institution.isEmpty()){
             throw new NotFoundException(InstitutionMessages.INSTITUTION_NOT_FOUND);
         }
-        
-        InstitutionResponse response = institution.map(InstitutionResponse::from).get();
+
+        logoUrl = downloadImageToRF2.generateDownloadUrl(institution.get().getLogoKey());
+        signatureUrl = downloadImageToRF2.generateDownloadUrl(institution.get().getSignatureKey());
+
+        InstitutionResponse response = InstitutionResponse.from(institution.get(), signatureUrl, logoUrl);
         return response;
     }
 }
