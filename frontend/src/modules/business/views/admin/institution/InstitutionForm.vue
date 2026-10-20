@@ -4,7 +4,6 @@
  *
  * É montado pela página InstitutionPage dentro do AdminLayout. Não faz
  * chamadas HTTP: recebe os dados e emite `submit` para o componente pai.
- * O backend ainda não oferece persistência para os arquivos de imagem.
  */
 import { computed, reactive, ref, watch } from 'vue'
 
@@ -222,6 +221,8 @@ function onSubmit(): void {
     state: form.state.toUpperCase(),
     logo: logoFile.value,
     signature: signatureFile.value,
+    removeLogo: logoRemoved.value,
+    removeSignature: signatureRemoved.value,
   }
 
   emit('submit', payload)
@@ -469,6 +470,7 @@ function onSubmit(): void {
       <div class="institution-form__upload-grid">
         <InstitutionLogoUploader
           v-model="logoFile"
+          :image-url="props.initialData.logoUrl"
           title="Logotipo da empresa"
           :output-width="1300"
           :output-height="472"
@@ -478,6 +480,7 @@ function onSubmit(): void {
         />
         <InstitutionLogoUploader
           v-model="signatureFile"
+          :image-url="props.initialData.signatureUrl"
           title="Assinatura do responsável"
           :output-width="1300"
           :output-height="300"

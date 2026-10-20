@@ -25,6 +25,8 @@ interface Props {
   aspectRatio?: number
   /** Nome do arquivo PNG final. */
   outputFilename?: string
+  /** URL da imagem já salva no servidor. */
+  imageUrl?: string | null
   /** Remove o fundo claro e reforça os traços antes do corte. */
   removeWhiteBackground?: boolean
   /** Tamanho máximo do arquivo original, em bytes. */
@@ -320,7 +322,18 @@ function removeLogo(): void {
       aria-hidden="true" @change="onFileChange" />
 
     <!-- Estado: idle -->
-    <div v-if="state === 'idle'" class="institution-logo__dropzone"
+    <div v-if="state === 'idle' && props.imageUrl" class="institution-logo__preview"
+      :class="{ 'institution-logo__preview--transparent': props.removeWhiteBackground }">
+      <img class="institution-logo__preview-image"
+        :class="{ 'institution-logo__preview-image--transparent': props.removeWhiteBackground }"
+        :src="props.imageUrl" :alt="props.title" />
+      <div class="institution-logo__preview-actions">
+        <button type="button" class="institution-logo__btn institution-logo__btn--primary" @click="openFilePicker">
+          Alterar imagem
+        </button>
+      </div>
+    </div>
+    <div v-else-if="state === 'idle'" class="institution-logo__dropzone"
       :class="{ 'institution-logo__dropzone--drag': isDragging }" role="button" tabindex="0"
       :aria-label="`Selecionar ${props.title}. ${formatHint}`" @click="openFilePicker"
       @keydown.enter.prevent="openFilePicker" @keydown.space.prevent="openFilePicker" @dragover.prevent="onDragOver"

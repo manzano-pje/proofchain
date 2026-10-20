@@ -54,7 +54,7 @@ public class ListOneInstitutionHandler {
         logoUrl = downloadImageToRF2.generateDownloadUrl(institution.get().getLogoKey());
         signatureUrl = downloadImageToRF2.generateDownloadUrl(institution.get().getSignatureKey());
 
-        InstitutionResponse response = InstitutionResponse.from(institution.get(), signatureUrl, logoUrl);
+        InstitutionResponse response = InstitutionResponse.from(institution.get(), logoUrl, signatureUrl);
         return response;
     }
 }

@@ -7,6 +7,8 @@ import type {
 export interface InstitutionRecord extends InstitutionReadonlyData, InstitutionEditableInitialData {
   id: number
   active: boolean
+  logoUrl: string | null
+  signatureUrl: string | null
 }
 
 const URL = `${import.meta.env.VITE_API_URL}/institution`
