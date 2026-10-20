@@ -4,7 +4,6 @@
  *
  * É montado pela página InstitutionPage dentro do AdminLayout. Não faz
  * chamadas HTTP: recebe os dados e emite `submit` para o componente pai.
- * O backend ainda não oferece persistência para os arquivos de imagem.
  */
 import { computed, reactive, ref, watch } from 'vue'
 
@@ -221,9 +220,9 @@ function onSubmit(): void {
     city: form.city.trim(),
     state: form.state.toUpperCase(),
     logo: logoFile.value,
-    removeLogo: logoRemoved.value && logoFile.value === null,
     signature: signatureFile.value,
-    removeSignature: signatureRemoved.value && signatureFile.value === null,
+    removeLogo: logoRemoved.value,
+    removeSignature: signatureRemoved.value,
   }
 
   emit('submit', payload)
@@ -471,25 +470,25 @@ function onSubmit(): void {
       <div class="institution-form__upload-grid">
         <InstitutionLogoUploader
           v-model="logoFile"
+          :image-url="props.initialData.logoUrl"
           title="Logotipo da empresa"
           :output-width="1300"
           :output-height="472"
-          :preserve-source-dimensions="false"
           :aspect-ratio="1300 / 472"
-          output-filename="institution-logo.png"
+          output-filename="logo.png"
           @remove="onLogoRemove"
         />
         <InstitutionLogoUploader
           v-model="signatureFile"
+          :image-url="props.initialData.signatureUrl"
           title="Assinatura do responsável"
           :output-width="1300"
           :output-height="300"
-          :preserve-source-dimensions="false"
           :aspect-ratio="1300 / 300"
           :remove-white-background="true"
           :accepted-mime-types="['image/png', 'image/jpeg']"
           :accepted-extensions="['.png', '.jpg', '.jpeg']"
-          output-filename="responsible-signature.png"
+          output-filename="signature.png"
           @remove="onSignatureRemove"
         />
       </div>

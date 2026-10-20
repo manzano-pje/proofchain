@@ -24,9 +24,11 @@ public record InstitutionResponse(
     String phone,
     Instant createdAt,
     Instant DeletedAt,
-    Boolean active
+    Boolean active,
+    String logoUrl,
+    String signatureUrl
    ){
-    public static InstitutionResponse from(Institution institution){
+    public static InstitutionResponse from(Institution institution, String logoUrl, String signatureUrl){
            return new InstitutionResponse(
                     institution.getId(),
                     institution.getName(),
@@ -42,7 +44,31 @@ public record InstitutionResponse(
                     institution.getPhone(),
                     institution.getCreatedAt(),
                     institution.getDeletedAt(),
-                    institution.getActive()
+                    institution.getActive(),
+                    logoUrl,
+                    signatureUrl
             );
+    }
+
+    public static InstitutionResponse from(Institution institution){
+        return new InstitutionResponse(
+                institution.getId(),
+                institution.getName(),
+                institution.getCnpj(),
+                institution.getEmail(),
+                institution.getAddress(),
+                institution.getNumber(),
+                institution.getComplement(),
+                institution.getNeighborhood(),
+                institution.getCity(),
+                institution.getState(),
+                institution.getPostalCode(),
+                institution.getPhone(),
+                institution.getCreatedAt(),
+                institution.getDeletedAt(),
+                institution.getActive(),
+                institution.getLogoKey(),
+                institution.getSignatureKey()
+        );
     }
 }

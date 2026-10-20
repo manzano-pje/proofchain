@@ -7,6 +7,8 @@ import type {
 export interface InstitutionRecord extends InstitutionReadonlyData, InstitutionEditableInitialData {
   id: number
   active: boolean
+  logoUrl: string | null
+  signatureUrl: string | null
 }
 
 const URL = `${import.meta.env.VITE_API_URL}/institution`
@@ -41,23 +43,28 @@ export const institutionService = {
   },
 
   async updateCurrent(token: string, payload: InstitutionUpdatePayload): Promise<void> {
-    const response = await fetch(URL, {
+    const {
+      logo,
+      signature,
+      ...data
+    } = payload
+
+    const body = new FormData()
+    body.append(
+      'data',
+      new Blob([JSON.stringify(data)], {type: 'application/json'}),
+    )
+
+    if (logo) body.append('logo', logo)
+    if (signature) body.append('signature', signature)
+
+    const response = await fetch(`${URL}/update`, {
       method: 'PATCH',
       headers: {
         Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        postalCode: payload.postalCode,
-        phone: payload.phone,
-        address: payload.address,
-        number: payload.number,
-        complement: payload.complement,
-        neighborhood: payload.neighborhood,
-        city: payload.city,
-        state: payload.state,
-      }),
+      body,
     })
     await readResponse(response)
-  },
+  }
 }

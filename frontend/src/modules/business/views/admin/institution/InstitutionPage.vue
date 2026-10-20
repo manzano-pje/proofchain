@@ -28,6 +28,8 @@ const initialData = computed(() => ({
   neighborhood: institution.value?.neighborhood ?? '',
   city: institution.value?.city ?? '',
   state: institution.value?.state ?? '',
+  logoUrl: institution.value?.logoUrl ?? null,
+  signatureUrl: institution.value?.signatureUrl ?? null,
 }))
 
 async function loadInstitution(): Promise<void> {
@@ -51,10 +53,6 @@ async function loadInstitution(): Promise<void> {
 }
 
 async function saveInstitution(payload: InstitutionUpdatePayload): Promise<void> {
-  if (payload.logo || payload.removeLogo || payload.signature || payload.removeSignature) {
-    errorMessage.value = 'A API ainda não oferece suporte à gravação do logotipo ou da assinatura. Nenhuma alteração foi salva.'
-    return
-  }
 
   const token = authStore.session?.accessToken
   if (!token) {

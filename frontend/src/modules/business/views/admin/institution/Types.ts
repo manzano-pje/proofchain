@@ -36,6 +36,8 @@ export interface InstitutionEditableInitialData {
   neighborhood?: string
   city?: string
   state?: string
+  logoUrl?: string | null
+  signatureUrl?: string | null
 }
 
 /**
