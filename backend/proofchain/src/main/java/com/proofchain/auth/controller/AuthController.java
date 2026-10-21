@@ -2,6 +2,7 @@ package com.proofchain.auth.controller;
 
 import com.proofchain.auth.dtos.AuthRequest;
 import com.proofchain.auth.dtos.AuthResponse;
+import com.proofchain.auth.dtos.RefreshRequest;
 import com.proofchain.auth.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -64,6 +65,12 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@Valid @RequestBody AuthRequest request) {
         AuthResponse retorno = authService.login(request);
+        return ResponseEntity.ok(retorno);
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<AuthResponse> refreshToken(@Valid @RequestBody RefreshRequest request){
+        AuthResponse retorno = authService.refreshToken(request);
         return ResponseEntity.ok(retorno);
     }
 }

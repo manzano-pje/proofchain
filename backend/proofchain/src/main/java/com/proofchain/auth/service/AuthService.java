@@ -2,14 +2,17 @@ package com.proofchain.auth.service;
 
 import com.proofchain.auth.dtos.AuthRequest;
 import com.proofchain.auth.dtos.AuthResponse;
+import com.proofchain.auth.dtos.RefreshRequest;
 import com.proofchain.auth.dtos.UserSummaryDto;
 import com.proofchain.shared.exception.ForbiddenException;
 import com.proofchain.shared.exception.UnauthorizedException;
 import com.proofchain.shared.exception.messages.AuthMessages;
 import com.proofchain.shared.security.JwtService;
 import com.proofchain.shared.security.UserDetailsImpl;
+import com.proofchain.shared.security.UserDetailsServiceImpl;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 /**
@@ -41,11 +44,15 @@ public class AuthService {
 
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
+    private final UserDetailsServiceImpl userDetailsService;
 
     public AuthService(AuthenticationManager authenticationManager,
-                       JwtService jwtService) {
+                       JwtService jwtService,
+                       UserDetailsServiceImpl userDetailsService)
+    {
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
+        this.userDetailsService = userDetailsService;
     }
 
     public AuthResponse login(AuthRequest request) {
@@ -98,5 +105,51 @@ public class AuthService {
             throw new CredentialsExpiredException(AuthMessages.CREDENTIALS_EXPIRED); // status 403
         }
     }
-}
 
+    public AuthResponse refreshToken(RefreshRequest request){
+        if (request == null
+                || request.refreshToken() == null
+                || request.refreshToken().isBlank()){
+            throw new UnauthorizedException((AuthMessages.INVALID_CREDENTIALS));
+        }
+
+        try{
+            String refreshToken = request.refreshToken();
+
+            // Extrai o e-mail do token recebido
+            String username = jwtService.extractUsername(refreshToken);
+
+            // Carrega o usuário no backend
+            UserDetailsImpl user = (UserDetailsImpl)
+                    userDetailsService.loadUserByUsername(username);
+
+            // Confirma assinatura, validade, usuário e tipo REFRESH
+            if(!jwtService.validateRefreshToken(refreshToken, user)){
+                throw new UnauthorizedException(AuthMessages.INVALID_CREDENTIALS);
+            }
+
+            // Gera novos tokens
+            String newAcessTokens = jwtService.generateToken(user);
+            String newRefreshToken = jwtService.generateRefreshToken(user);
+
+            // Mantém o mesmo formato de usuário utilizado no login
+            UserSummaryDto userSumary = new UserSummaryDto(
+                    user.getId(),
+                user.getUsername(),
+                user.getUsername(),
+                user.getRole(),
+                user.getInstitutionId()
+            );
+            return new AuthResponse(
+                    newAcessTokens,
+                    newRefreshToken,
+                    jwtService.getExpirationInSeconds(),
+                    userSumary
+            );
+        }catch(io.jsonwebtoken.JwtException
+               | IllegalArgumentException
+               | UsernameNotFoundException e){
+            throw new UnauthorizedException(AuthMessages.INVALID_CREDENTIALS);
+        }
+    }
+}

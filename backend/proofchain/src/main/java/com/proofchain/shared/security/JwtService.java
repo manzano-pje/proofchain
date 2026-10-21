@@ -7,6 +7,7 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import io.jsonwebtoken.JwtException;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
@@ -72,6 +73,9 @@ public class JwtService {
     private static final String CLAIM_INSTITUTION_ID = "institutionId";
     private static final String CLAIM_ROLE = "role";
 
+    private static final String CLAIM_TOKEN_TYPE = "tokenType";
+    private static final String CLAIM_TOKEN_TYPE_ACCESS = "ACCESS";
+    private static final String CLAIM_TOKEN_TYPE_REFRESH = "REFRESH";
 
     /*
      * =========================================================
@@ -101,6 +105,7 @@ public class JwtService {
     public String generateToken(UserDetailsImpl user) {
 
         Map<String, Object> claims = buildClaims(user);
+        claims.put(CLAIM_TOKEN_TYPE, CLAIM_TOKEN_TYPE_ACCESS);
         return createToken(claims, user.getUsername(), expiration);
     }
 
@@ -114,7 +119,10 @@ public class JwtService {
      * @return refresh token JWT assinado
      */
     public String generateRefreshToken(UserDetailsImpl user) {
-        return createToken(new HashMap<>(), user.getUsername(), refreshExpiration);
+        Map<String, Object> claims = new HashMap<>();
+        claims.put(CLAIM_TOKEN_TYPE, CLAIM_TOKEN_TYPE_REFRESH);
+
+        return createToken(claims, user.getUsername(), refreshExpiration);
     }
 
     /**
@@ -232,8 +240,33 @@ public class JwtService {
      * @return true se válido, false caso contrário
      */
     public boolean validateToken(String token, UserDetails userDetails) {
-        return extractUsername(token).equals(userDetails.getUsername())
-                && !isTokenExpired(token);
+        try{
+            Claims claims = extractAllClaims(token);
+            return claims.getSubject().equals(userDetails.getUsername())
+                    && CLAIM_TOKEN_TYPE_ACCESS.equals(
+                            claims.get(CLAIM_TOKEN_TYPE, String.class))
+                    && claims.getExpiration().after(new Date());
+
+        }catch(JwtException | IllegalArgumentException e) {
+            return false;
+        }
+    }
+
+    public boolean validateRefreshToken(
+            String token,
+            UserDetails userDetails
+    ) {
+        try {
+            Claims claims = extractAllClaims(token);
+
+            return claims.getSubject().equals(userDetails.getUsername())
+                    && CLAIM_TOKEN_TYPE_REFRESH.equals(
+                    claims.get(CLAIM_TOKEN_TYPE, String.class))
+                    && claims.getExpiration().after(new Date());
+
+        } catch (JwtException | IllegalArgumentException e) {
+            return false;
+        }
     }
 
     /**
