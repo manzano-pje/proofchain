@@ -13,6 +13,7 @@ import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * JwtService
@@ -242,10 +243,15 @@ public class JwtService {
     public boolean validateToken(String token, UserDetails userDetails) {
         try{
             Claims claims = extractAllClaims(token);
-            return claims.getSubject().equals(userDetails.getUsername())
-                    && CLAIM_TOKEN_TYPE_ACCESS.equals(
-                            claims.get(CLAIM_TOKEN_TYPE, String.class))
-                    && claims.getExpiration().after(new Date());
+            Date tokenExpiration = claims.getExpiration();
+            return Objects.equals(
+                    claims.getSubject(),
+                    userDetails.getUsername())
+                            && CLAIM_TOKEN_TYPE_ACCESS.equals(
+                                claims.get(CLAIM_TOKEN_TYPE, String.class))
+                            && tokenExpiration != null
+                            && tokenExpiration.after(new Date());
+
 
         }catch(JwtException | IllegalArgumentException e) {
             return false;
@@ -256,14 +262,23 @@ public class JwtService {
             String token,
             UserDetails userDetails
     ) {
+        if (token == null || token.isBlank() | userDetails == null){
+            return false;
+        }
+
         try {
             Claims claims = extractAllClaims(token);
+            Date tokenExpiration = claims.getExpiration();
 
-            return claims.getSubject().equals(userDetails.getUsername())
+            return Objects.equals(
+                    claims.getSubject(),
+                    userDetails.getUsername()
+            )
                     && CLAIM_TOKEN_TYPE_REFRESH.equals(
-                    claims.get(CLAIM_TOKEN_TYPE, String.class))
-                    && claims.getExpiration().after(new Date());
-
+                        claims.get(CLAIM_TOKEN_TYPE, String.class)
+            )
+                    && tokenExpiration != null
+                    && tokenExpiration.after(new Date());
         } catch (JwtException | IllegalArgumentException e) {
             return false;
         }
