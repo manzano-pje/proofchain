@@ -10,8 +10,10 @@ import com.proofchain.shared.exception.messages.AuthMessages;
 import com.proofchain.shared.security.JwtService;
 import com.proofchain.shared.security.UserDetailsImpl;
 import com.proofchain.shared.security.UserDetailsServiceImpl;
+import io.jsonwebtoken.JwtException;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
+import com.proofchain.user.domain.exception.UserNotFoundException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -106,50 +108,61 @@ public class AuthService {
         }
     }
 
-    public AuthResponse refreshToken(RefreshRequest request){
+
+    public AuthResponse refreshToken(RefreshRequest request) {
         if (request == null
                 || request.refreshToken() == null
-                || request.refreshToken().isBlank()){
-            throw new UnauthorizedException((AuthMessages.INVALID_CREDENTIALS));
+                || request.refreshToken().isBlank()) {
+            throw new UnauthorizedException(AuthMessages.INVALID_CREDENTIALS);
         }
 
-        try{
+        try {
             String refreshToken = request.refreshToken();
 
-            // Extrai o e-mail do token recebido
+            // Extrai o e-mail do token assinado.
             String username = jwtService.extractUsername(refreshToken);
 
-            // Carrega o usuário no backend
-            UserDetailsImpl user = (UserDetailsImpl)
-                    userDetailsService.loadUserByUsername(username);
-
-            // Confirma assinatura, validade, usuário e tipo REFRESH
-            if(!jwtService.validateRefreshToken(refreshToken, user)){
+            if (username == null || username.isBlank()) {
                 throw new UnauthorizedException(AuthMessages.INVALID_CREDENTIALS);
             }
 
-            // Gera novos tokens
-            String newAcessTokens = jwtService.generateToken(user);
+            // Carrega o usuário atual.
+            UserDetailsImpl user = (UserDetailsImpl)
+                    userDetailsService.loadUserByUsername(username);
+
+            // Impede renovação para contas inativas.
+            if (!user.isEnabled()) {
+                throw new UnauthorizedException(AuthMessages.INVALID_CREDENTIALS);
+            }
+
+            // Confirma assinatura, expiração, subject e tipo REFRESH.
+            if (!jwtService.validateRefreshToken(refreshToken, user)) {
+                throw new UnauthorizedException(AuthMessages.INVALID_CREDENTIALS);
+            }
+
+            String newAccessToken = jwtService.generateToken(user);
             String newRefreshToken = jwtService.generateRefreshToken(user);
 
-            // Mantém o mesmo formato de usuário utilizado no login
-            UserSummaryDto userSumary = new UserSummaryDto(
+            UserSummaryDto userSummary = new UserSummaryDto(
                     user.getId(),
-                user.getUsername(),
-                user.getUsername(),
-                user.getRole(),
-                user.getInstitutionId()
+                    user.getUsername(),
+                    user.getUsername(),
+                    user.getRole(),
+                    user.getInstitutionId()
             );
+
             return new AuthResponse(
-                    newAcessTokens,
+                    newAccessToken,
                     newRefreshToken,
                     jwtService.getExpirationInSeconds(),
-                    userSumary
+                    userSummary
             );
-        }catch(io.jsonwebtoken.JwtException
-               | IllegalArgumentException
-               | UsernameNotFoundException e){
+
+        } catch (JwtException
+                 | IllegalArgumentException
+                 | UserNotFoundException e) {
             throw new UnauthorizedException(AuthMessages.INVALID_CREDENTIALS);
         }
     }
+
 }
