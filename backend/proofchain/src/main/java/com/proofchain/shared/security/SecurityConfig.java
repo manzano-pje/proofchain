@@ -76,6 +76,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/api/v1/auth/login",
+                                "/api/v1/auth/refresh",
                                 "api/v1/institution/register"
                         ).permitAll()
                         .requestMatchers("/api/v1/institution/me").hasAnyRole("ADMIN", "SUPER_ADMIN")
