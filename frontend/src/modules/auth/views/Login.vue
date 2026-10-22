@@ -139,7 +139,6 @@ async function handleSubmit(): Promise<void> {
   isSubmitting.value = true
   try {
     const response = await fetch(URL, {
-
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -167,7 +166,14 @@ async function handleSubmit(): Promise<void> {
       return
     }
 
-    if (!loginResponse.token || !loginResponse.user || !loginResponse.user.role) {
+    if (
+      !loginResponse.token ||
+      !loginResponse.refreshToken ||
+      !loginResponse.user ||
+      !loginResponse.user.role ||
+      !Number.isFinite(loginResponse.expiresIn) ||
+      loginResponse.expiresIn <= 0
+    ) {
       openModal(
         'error',
         'Resposta incompleta',

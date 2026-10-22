@@ -22,6 +22,7 @@ import type {
   ParticipantResponse,
   ParticipantSummary,
 } from '../types/Participant.types'
+import { authenticatedFetch } from '@/modules/auth/services/AuthenticatedFetch'
 
 const API_URL = import.meta.env.VITE_API_URL.replace(/\/$/, '')
 const PARTICIPANT_CREATE_URL = `${API_URL}/participants/register`
@@ -38,9 +39,11 @@ export const participantService = {
    * 404, 204 e corpo vazio representam a grade sem registros.
    */
   async getAll(token: string): Promise<ParticipantSummary[]> {
-    const response = await fetch(PARTICIPANT_SUMMARY_URL, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
+    const response = await authenticatedFetch(
+      PARTICIPANT_SUMMARY_URL,
+      {},
+      token,
+    )
 
     if (response.status === 404 || response.status === 204) return []
     if (!response.ok) {
@@ -51,9 +54,12 @@ export const participantService = {
 
   /** GET /api/v1/participantslistOne/{id} */
   async getById(id: number, token: string): Promise<ParticipantResponse> {
-    const response = await fetch(PARTICIPANT_DETAILS_URL(id), {
-      headers: { Authorization: `Bearer ${token}` },
-    })
+    const response = await authenticatedFetch(
+      PARTICIPANT_DETAILS_URL(id),
+      {},
+      token,
+    )
+
     if (!response.ok) {
       throw new Error(`Não foi possível carregar o participante (${response.status}).`)
     }
@@ -62,9 +68,11 @@ export const participantService = {
 
   /** Lista as associações de turma para identificar o curso mais recente por participante. */
   async getCourseClassAssignments(token: string): Promise<CourseClassAssignment[]> {
-    const response = await fetch(`${COURSE_CLASS_URL}/list`, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
+    const response = await authenticatedFetch(
+      `${COURSE_CLASS_URL}/list`,
+      {},
+      token,
+    )
 
     if (response.status === 404) return []
     if (!response.ok) {
@@ -80,20 +88,21 @@ export const participantService = {
       phone: payload.phone.replace(/\D/g, '') || null,
     }
 
-    const response = await fetch(PARTICIPANT_CREATE_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
+    const response = await authenticatedFetch(
+      PARTICIPANT_CREATE_URL,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestPayload),
       },
-      body: JSON.stringify(requestPayload),
-    })
+      token,
+    )
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => null)
-      throw new Error(
-        errorData?.message ?? `Erro ao cadastrar participante (${response.status})`,
-      )
+      throw new Error(errorData?.message ?? `Erro ao cadastrar participante (${response.status})`)
     }
   },
 
@@ -104,35 +113,37 @@ export const participantService = {
       phone: payload.phone.replace(/\D/g, '') || null,
     }
 
-    const response = await fetch(PARTICIPANT_UPDATE_URL(id), {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
+    const response = await authenticatedFetch(
+      PARTICIPANT_UPDATE_URL(id),
+      {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestPayload),
       },
-      body: JSON.stringify(requestPayload),
-    })
+      token,
+    )
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => null)
-      throw new Error(
-        errorData?.message ?? `Erro ao atualizar participante (${response.status})`,
-      )
+      throw new Error(errorData?.message ?? `Erro ao atualizar participante (${response.status})`)
     }
   },
 
   /** Exclui participante. DELETE /participants/delete/{id} */
   async delete(token: string, id: number): Promise<void> {
-    const response = await fetch(PARTICIPANT_DELETE_URL(id), {
-      method: 'DELETE',
-      headers: { Authorization: `Bearer ${token}` },
-    })
+    const response = await authenticatedFetch(
+      PARTICIPANT_DELETE_URL(id),
+      {
+        method: 'DELETE',
+      },
+      token,
+    )
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => null)
-      throw new Error(
-        errorData?.message ?? `Erro ao excluir participante (${response.status})`,
-      )
+      throw new Error(errorData?.message ?? `Erro ao excluir participante (${response.status})`)
     }
   },
 }

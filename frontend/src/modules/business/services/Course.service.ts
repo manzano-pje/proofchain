@@ -24,6 +24,7 @@ VITE_API_URL já inclui `/api/v1`; a base deste serviço acrescenta `/course`.
 */
 
 import type { Course, CourseCreatePayload, CourseUpdatePayload } from '../types/Course.types'
+import { authenticatedFetch } from '@/modules/auth/services/AuthenticatedFetch'
 
 const COURSE_URL = `${import.meta.env.VITE_API_URL.replace(/\/$/, '')}/course`
 
@@ -37,14 +38,17 @@ export const courseService = {
    * Retorna todos os cursos da instituição do usuário autenticado.
    */
   async getAll(token: string): Promise<Course[]> {
-    const response = await fetch(`${COURSE_URL}/list`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
+    const response = await authenticatedFetch(
+      `${COURSE_URL}/list`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
       },
-      credentials: 'include',
-    })
+      token,
+    )
 
     if (!response.ok) {
       throw new Error('Não foi possível carregar os cursos.')
@@ -58,14 +62,17 @@ export const courseService = {
    * Retorna um curso específico.
    */
   async getById(id: number, token: string): Promise<Course> {
-    const response = await fetch(`${COURSE_URL}/list/${id}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
+    const response = await authenticatedFetch(
+      `${COURSE_URL}/list/${id}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
       },
-      credentials: 'include',
-    })
+      token,
+    )
 
     if (!response.ok) {
       throw new Error('Não foi possível carregar o curso.')
@@ -79,15 +86,18 @@ export const courseService = {
    * Cria um novo curso.
    */
   async create(token: string, payload: CourseCreatePayload): Promise<void> {
-    const response = await fetch(`${COURSE_URL}/register`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
+    const response = await authenticatedFetch(
+      `${COURSE_URL}/register`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify(payload),
       },
-      credentials: 'include',
-      body: JSON.stringify(payload),
-    })
+      token,
+    )
 
     if (!response.ok) {
       throw new Error('Não foi possível salvar o curso.')
@@ -100,15 +110,18 @@ export const courseService = {
    * Atualiza um curso existente.
    */
   async update(token: string, id: number, payload: CourseUpdatePayload): Promise<Course> {
-    const response = await fetch(`${COURSE_URL}/update/${id}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
+    const response = await authenticatedFetch(
+      `${COURSE_URL}/update/${id}`,
+      {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify(payload),
       },
-      credentials: 'include',
-      body: JSON.stringify(payload),
-    })
+      token,
+    )
 
     if (!response.ok) {
       throw new Error('Não foi possível atualizar o curso.')
@@ -117,17 +130,18 @@ export const courseService = {
     return response.json() as Promise<Course>
   },
 
-
   async delete(token: string, id: number): Promise<void> {
-    const response = await fetch(`${COURSE_URL}/delete/${id}`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
+    const response = await authenticatedFetch(
+      `${COURSE_URL}/delete/${id}`,
+      {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
       },
-      credentials: 'include',
-    })
+      token,
+    )
     if (!response.ok) throw new Error('Não foi possível excluir o curso.')
   },
-
 }

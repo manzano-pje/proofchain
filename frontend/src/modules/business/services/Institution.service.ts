@@ -3,6 +3,7 @@ import type {
   InstitutionReadonlyData,
   InstitutionUpdatePayload,
 } from '@/modules/business/views/admin/institution/Types'
+import { authenticatedFetch } from '@/modules/auth/services/AuthenticatedFetch'
 
 export interface InstitutionRecord extends InstitutionReadonlyData, InstitutionEditableInitialData {
   id: number
@@ -35,36 +36,21 @@ async function readResponse(response: Response): Promise<string> {
 
 export const institutionService = {
   async getCurrent(token: string): Promise<InstitutionRecord> {
-    const response = await fetch(`${URL}/get`, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
+    const response = await authenticatedFetch(`${URL}/get`, { method: 'GET' }, token)
     const responseText = await readResponse(response)
     return JSON.parse(responseText) as InstitutionRecord
   },
 
   async updateCurrent(token: string, payload: InstitutionUpdatePayload): Promise<void> {
-    const {
-      logo,
-      signature,
-      ...data
-    } = payload
+    const { logo, signature, ...data } = payload
 
     const body = new FormData()
-    body.append(
-      'data',
-      new Blob([JSON.stringify(data)], {type: 'application/json'}),
-    )
+    body.append('data', new Blob([JSON.stringify(data)], { type: 'application/json' }))
 
     if (logo) body.append('logo', logo)
     if (signature) body.append('signature', signature)
 
-    const response = await fetch(`${URL}/update`, {
-      method: 'PATCH',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      body,
-    })
+    const response = await authenticatedFetch(`${URL}/update`, { method: 'PATCH', body }, token)
     await readResponse(response)
-  }
+  },
 }

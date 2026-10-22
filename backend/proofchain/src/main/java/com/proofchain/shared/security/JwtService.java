@@ -241,6 +241,10 @@ public class JwtService {
      * @return true se válido, false caso contrário
      */
     public boolean validateToken(String token, UserDetails userDetails) {
+        if (token == null || token.isBlank() || userDetails == null) {
+            return false;
+        }
+
         try{
             Claims claims = extractAllClaims(token);
             Date tokenExpiration = claims.getExpiration();
@@ -262,7 +266,7 @@ public class JwtService {
             String token,
             UserDetails userDetails
     ) {
-        if (token == null || token.isBlank() | userDetails == null){
+        if (token == null || token.isBlank() || userDetails == null) {
             return false;
         }
 

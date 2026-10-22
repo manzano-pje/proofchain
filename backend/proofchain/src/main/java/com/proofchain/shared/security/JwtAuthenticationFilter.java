@@ -94,46 +94,49 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try {
 
             String authHeader = request.getHeader("Authorization");
-            if( authHeader != null && authHeader.startsWith("Bearer")){
+            if (authHeader != null && authHeader.startsWith("Bearer ")) {
                 String token = authHeader.substring(7);
 
-                try{
-                    String username = jwtService.extractUsername(token);
+                if (!token.isBlank()) {
+                    try {
+                        String username = jwtService.extractUsername(token);
 
-                    if(username == null
-                            && SecurityContextHolder.getContext().getAuthentication()==null){
+                        if (username != null
+                                && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-                        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                            UserDetails userDetails =
+                                    userDetailsService.loadUserByUsername(username);
 
-                        if (userDetails.isEnabled()
-                                && jwtService.validateToken(token, userDetails)) {
+                            if (userDetails.isEnabled()
+                                    && jwtService.validateToken(token, userDetails)) {
 
-                            UsernamePasswordAuthenticationToken authentication =
-                                    new UsernamePasswordAuthenticationToken(
-                                            userDetails,
-                                            null,
-                                            userDetails.getAuthorities()
-                                    );
+                                UsernamePasswordAuthenticationToken authentication =
+                                        new UsernamePasswordAuthenticationToken(
+                                                userDetails,
+                                                null,
+                                                userDetails.getAuthorities()
+                                        );
 
-                            authentication.setDetails(
-                                    new WebAuthenticationDetailsSource()
-                                            .buildDetails(request)
-                            );
+                                authentication.setDetails(
+                                        new WebAuthenticationDetailsSource()
+                                                .buildDetails(request)
+                                );
 
-                            SecurityContextHolder.getContext()
-                                    .setAuthentication(authentication);
+                                SecurityContextHolder.getContext()
+                                        .setAuthentication(authentication);
 
-                            Long institutionId =
-                                    jwtService.extractInstitutionId(token);
+                                Long institutionId =
+                                        jwtService.extractInstitutionId(token);
 
-                            TenantContext.setInstitutionId(institutionId);
+                                TenantContext.setInstitutionId(institutionId);
+                            }
                         }
+                    } catch (JwtException
+                             | IllegalArgumentException
+                             | UserNotFoundException e) {
+                        SecurityContextHolder.clearContext();
+                        TenantContext.clear();
                     }
-                } catch (JwtException
-                         | IllegalArgumentException
-                         | UserNotFoundException e) {
-                    SecurityContextHolder.clearContext();
-                    TenantContext.clear();
                 }
             }
 
