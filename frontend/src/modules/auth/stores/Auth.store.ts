@@ -14,7 +14,12 @@ function readStoredSession(): AuthSession | null {
   try {
     const session = JSON.parse(storedSession) as AuthSession
 
-    if (!session.accessToken || !session.user || session.expiresAt <= Date.now()) {
+    if (
+      !session.accessToken ||
+      !session.user ||
+      !Number.isFinite(session.expiresAt) ||
+      (session.expiresAt <= Date.now() && !session.refreshToken)
+    ) {
       localStorage.removeItem(SESSION_STORAGE_KEY)
       return null
     }

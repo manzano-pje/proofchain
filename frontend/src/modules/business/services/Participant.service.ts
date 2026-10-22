@@ -41,9 +41,7 @@ export const participantService = {
   async getAll(token: string): Promise<ParticipantSummary[]> {
     const response = await authenticatedFetch(
       PARTICIPANT_SUMMARY_URL,
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      },
+      {},
       token,
     )
 
@@ -58,9 +56,7 @@ export const participantService = {
   async getById(id: number, token: string): Promise<ParticipantResponse> {
     const response = await authenticatedFetch(
       PARTICIPANT_DETAILS_URL(id),
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      },
+      {},
       token,
     )
 
@@ -74,9 +70,7 @@ export const participantService = {
   async getCourseClassAssignments(token: string): Promise<CourseClassAssignment[]> {
     const response = await authenticatedFetch(
       `${COURSE_CLASS_URL}/list`,
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      },
+      {},
       token,
     )
 

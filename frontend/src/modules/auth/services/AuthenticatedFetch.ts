@@ -11,6 +11,10 @@ function isLoginResponse(value: unknown): value is LoginResponse {
   const response = value as Record<string, unknown>
   const user = response.user
 
+  if (typeof user !== 'object' || user === null) return false
+
+  const userResponse = user as Record<string, unknown>
+
   return (
     typeof response.token === 'string' &&
     response.token.length > 0 &&
@@ -19,9 +23,10 @@ function isLoginResponse(value: unknown): value is LoginResponse {
     typeof response.expiresIn === 'number' &&
     Number.isFinite(response.expiresIn) &&
     response.expiresIn > 0 &&
-    typeof user === 'object' &&
-    user !== null &&
-    typeof (user as Record<string, unknown>).role === 'string'
+    (typeof userResponse.id === 'string' || typeof userResponse.id === 'number') &&
+    typeof userResponse.name === 'string' &&
+    typeof userResponse.email === 'string' &&
+    typeof userResponse.role === 'string'
   )
 }
 
@@ -29,7 +34,8 @@ async function refreshSession(): Promise<void> {
   if (refreshPromise) return refreshPromise
 
   const authStore = useAuthStore()
-  const refreshToken = authStore.session?.refreshToken
+  const sessionAtStart = authStore.session
+  const refreshToken = sessionAtStart?.refreshToken
 
   if (!refreshToken) {
     authStore.clearSession()
@@ -44,7 +50,9 @@ async function refreshSession(): Promise<void> {
     })
 
     if (response.status === 401 || response.status === 403) {
-      authStore.clearSession()
+      if (authStore.session?.refreshToken === refreshToken) {
+        authStore.clearSession()
+      }
       throw new Error('Sessão expirada. Faça login novamente.')
     }
 
@@ -55,8 +63,15 @@ async function refreshSession(): Promise<void> {
     const body: unknown = await response.json()
 
     if (!isLoginResponse(body)) {
-      authStore.clearSession()
+      if (authStore.session?.refreshToken === refreshToken) {
+        authStore.clearSession()
+      }
       throw new Error('O servidor retornou dados inválidos ao renovar a sessão.')
+    }
+
+    if (authStore.session?.refreshToken !== refreshToken) {
+      if (authStore.session) return
+      throw new Error('Sessão encerrada durante a renovação. Faça login novamente.')
     }
 
     // Atualiza também o refresh token, pois o backend emite um novo.
@@ -89,7 +104,13 @@ export async function authenticatedFetch(
     throw new Error('Sessão expirada. Faça login novamente.')
   }
 
-  if (authStore.session?.refreshToken && authStore.session.expiresAt <= Date.now()) {
+  const currentSession = authStore.session
+  if (currentSession && currentSession.expiresAt <= Date.now()) {
+    if (!currentSession.refreshToken) {
+      authStore.clearSession()
+      throw new Error('Sessão expirada. Faça login novamente.')
+    }
+
     await refreshSession()
     accessToken = authStore.session?.accessToken
   }
@@ -99,13 +120,19 @@ export async function authenticatedFetch(
     throw new Error('Não foi possível obter um token de acesso.')
   }
 
-  let response = await sendRequest(accessToken)
+  const sentAccessToken = accessToken
+  let response = await sendRequest(sentAccessToken)
 
   if (response.status !== 401) return response
 
-  await refreshSession()
+  const latestAccessToken = authStore.session?.accessToken
+  if (latestAccessToken && latestAccessToken !== sentAccessToken) {
+    accessToken = latestAccessToken
+  } else {
+    await refreshSession()
+    accessToken = authStore.session?.accessToken
+  }
 
-  accessToken = authStore.session?.accessToken
   if (!accessToken) {
     authStore.clearSession()
     throw new Error('Não foi possível obter um token de acesso.')
@@ -113,7 +140,7 @@ export async function authenticatedFetch(
 
   response = await sendRequest(accessToken)
 
-  if (response.status === 401) {
+  if (response.status === 401 && authStore.session?.accessToken === accessToken) {
     authStore.clearSession()
   }
 
