@@ -36,7 +36,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class DeleteUserHandlerTest {
+class UNI_03_DeleteUserHandlerTest {
 
     @Mock private UserRepository userRepository;
     @Mock private TenantValidation tenantValidation;
