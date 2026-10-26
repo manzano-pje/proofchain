@@ -1,9 +1,6 @@
 # Compiled class file
 *.class
 
-# Test package
-**/test/
-
 # Log file
 *.log
 
