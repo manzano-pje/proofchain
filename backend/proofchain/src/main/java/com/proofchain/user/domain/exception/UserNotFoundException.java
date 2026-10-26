@@ -36,6 +36,6 @@ public class UserNotFoundException extends BaseException {
      * Cria uma exceção indicando que o usuário solicitado não foi encontrado.
      */
     public UserNotFoundException() {
-        super("Usuário não encontrado", 404);
+        super("Usuário não encontrado.", 404);
     }
 }
