@@ -21,6 +21,7 @@ import com.proofchain.shared.exception.messages.UserMessage;
 import com.proofchain.shared.security.SecurityUtils;
 import com.proofchain.shared.util.TenantValidation;
 import com.proofchain.user.applications.handler.ListOneUserHandler;
+import com.proofchain.user.domain.exception.UserNotFoundException;
 import com.proofchain.user.domain.model.User;
 import com.proofchain.user.domain.model.UserRole;
 import com.proofchain.user.infrastructure.repository.UserRepository;
@@ -91,10 +92,11 @@ class UNI_05_ListOneUserHandlerTest {
             when(userRepository.findByEmailAndInstitution_Id(email, institutionId))
                     .thenReturn(Optional.empty());
 
-            NotFoundException ex = assertThrows(NotFoundException.class,
+            UserNotFoundException ex = assertThrows(UserNotFoundException.class,
                     () -> listOneUserHandler.listOneUser(email));
 
             assertEquals(UserMessage.USER_NOT_FOUND, ex.getMessage());
+
         }
     }
 
@@ -126,7 +128,7 @@ class UNI_05_ListOneUserHandlerTest {
             when(userRepository.findByEmailAndInstitution_Id(email, currentInstitutionId))
                     .thenReturn(Optional.empty());
 
-            assertThrows(NotFoundException.class,
+            assertThrows(UserNotFoundException.class,
                     () -> listOneUserHandler.listOneUser(email));
         }
     }

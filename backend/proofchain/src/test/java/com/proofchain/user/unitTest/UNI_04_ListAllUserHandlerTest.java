@@ -16,7 +16,6 @@ package com.proofchain.user.unitTest;
 
 import com.proofchain.shared.exception.NotFoundException;
 import com.proofchain.shared.exception.UnauthorizedException;
-import com.proofchain.shared.exception.messages.UserMessage;
 import com.proofchain.shared.security.SecurityUtils;
 import com.proofchain.shared.util.TenantValidation;
 import com.proofchain.user.applications.handler.ListAllUserHandler;
@@ -92,7 +91,7 @@ class UNI_04_ListAllUserHandlerTest {
             NotFoundException ex = assertThrows(NotFoundException.class,
                     () -> listAllUserHandler.listAllUser());
 
-            assertEquals(UserMessage.USER_NOT_FOUND, ex.getMessage());
+            assertEquals("Usuário não encontrado.", ex.getMessage());
         }
     }
 
