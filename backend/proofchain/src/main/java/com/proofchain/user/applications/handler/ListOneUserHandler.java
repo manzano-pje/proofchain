@@ -85,7 +85,7 @@ public class ListOneUserHandler {
 
         User user = userRepository
                 .findByEmailAndInstitution_Id(email, institutionId)
-                .orElseThrow(()-> new NotFoundException(UserMessage.USER_NOT_FOUND));
+                .orElseThrow(UserNotFoundException::new);
 
         return new UserReturn(user);
     }

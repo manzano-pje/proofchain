@@ -1,11 +1,11 @@
 package com.proofchain.user.applications.handler;
 
-import com.proofchain.admin.institution.infrastructure.repository.InstitutionRepository;
 import com.proofchain.shared.exception.NotFoundException;
 import com.proofchain.shared.exception.messages.UserMessage;
 import com.proofchain.shared.security.SecurityUtils;
 import com.proofchain.shared.util.TenantValidation;
 import com.proofchain.user.domain.exception.UserNotFoundException;
+import com.proofchain.admin.institution.infrastructure.repository.InstitutionRepository;
 import com.proofchain.user.domain.model.User;
 import com.proofchain.user.infrastructure.repository.UserRepository;
 import com.proofchain.user.interfaces.dto.response.UserReturn;
