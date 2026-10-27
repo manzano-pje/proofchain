@@ -14,12 +14,14 @@
 
 package com.proofchain.user.unitTest;
 
+import com.proofchain.shared.exception.UnauthorizedException;
 import com.proofchain.shared.exception.messages.UserMessage;
 import com.proofchain.shared.security.SecurityUtils;
 import com.proofchain.shared.util.TenantValidation;
 import com.proofchain.user.applications.handler.DeleteUserHandler;
 import com.proofchain.user.domain.exception.UserNotFoundException;
 import com.proofchain.user.domain.model.User;
+import com.proofchain.user.domain.model.UserRole;
 import com.proofchain.user.infrastructure.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -53,7 +55,7 @@ class UNI_03_DeleteUserHandlerTest {
 
         try (MockedStatic<SecurityUtils> mocked = mockStatic(SecurityUtils.class)) {
             mocked.when(SecurityUtils::getInstitutionId).thenReturn(institutionId);
-            when(userRepository.findByIdAndInstitution_Id(userId, institutionId))
+            when(userRepository.findByIdAndInstitution_IdAndActiveTrue(userId, institutionId))
                     .thenReturn(Optional.of(existing));
 
             deleteUserHandler.deleteUser(userId);
@@ -73,7 +75,7 @@ class UNI_03_DeleteUserHandlerTest {
 
         try (MockedStatic<SecurityUtils> mocked = mockStatic(SecurityUtils.class)) {
             mocked.when(SecurityUtils::getInstitutionId).thenReturn(institutionId);
-            when(userRepository.findByIdAndInstitution_Id(userId, institutionId))
+            when(userRepository.findByIdAndInstitution_IdAndActiveTrue(userId, institutionId))
                     .thenReturn(Optional.empty());
 
             UserNotFoundException ex = assertThrows(UserNotFoundException.class,
@@ -92,12 +94,82 @@ class UNI_03_DeleteUserHandlerTest {
 
         try (MockedStatic<SecurityUtils> mocked = mockStatic(SecurityUtils.class)) {
             mocked.when(SecurityUtils::getInstitutionId).thenReturn(institutionId);
-            when(userRepository.findByIdAndInstitution_Id(userId, institutionId))
+            when(userRepository.findByIdAndInstitution_IdAndActiveTrue(userId, institutionId))
                     .thenReturn(Optional.of(new User()));
 
             deleteUserHandler.deleteUser(userId);
 
             verify(tenantValidation).validateInstitution(institutionId);
+        }
+    }
+    @Test
+    @DisplayName("UNI_03.04 - Should reject deletion of already inactive user as not found")
+    void shouldRejectDeletionOfAlreadyInactiveUserAsNotFound() {
+        Long institutionId = 1L;
+        Long userId = 10L;
+        User inactiveUser = new User();
+        inactiveUser.setId(userId);
+        inactiveUser.setActive(false);
+
+        try (MockedStatic<SecurityUtils> mocked = mockStatic(SecurityUtils.class)) {
+            mocked.when(SecurityUtils::getInstitutionId).thenReturn(institutionId);
+            when(userRepository.findByIdAndInstitution_IdAndActiveTrue(userId, institutionId))
+                    .thenReturn(Optional.empty());
+
+            UserNotFoundException ex = assertThrows(UserNotFoundException.class,
+                    () -> deleteUserHandler.deleteUser(userId));
+
+            assertEquals(UserMessage.USER_NOT_FOUND, ex.getMessage());
+            verify(userRepository, never()).save(any());
+        }
+    }
+
+    @Test
+    @DisplayName("UNI_03.05 - Should preserve user data when deactivating")
+    void shouldPreserveUserDataWhenDeactivating() {
+        Long institutionId = 1L;
+        Long userId = 10L;
+        User existing = new User();
+        existing.setId(userId);
+        existing.setName("João Silva");
+        existing.setEmail("joao@example.com");
+        existing.setRole(UserRole.ADMIN);
+        existing.setActive(true);
+
+        try (MockedStatic<SecurityUtils> mocked = mockStatic(SecurityUtils.class)) {
+            mocked.when(SecurityUtils::getInstitutionId).thenReturn(institutionId);
+            when(userRepository.findByIdAndInstitution_IdAndActiveTrue(userId, institutionId))
+                    .thenReturn(Optional.of(existing));
+
+            deleteUserHandler.deleteUser(userId);
+
+            assertAll(
+                    () -> assertEquals(userId, existing.getId()),
+                    () -> assertEquals("João Silva", existing.getName()),
+                    () -> assertEquals("joao@example.com", existing.getEmail()),
+                    () -> assertEquals(UserRole.ADMIN, existing.getRole()),
+                    () -> assertFalse(existing.isActive())
+            );
+        }
+    }
+
+    @Test
+    @DisplayName("UNI_03.06 - Should reject deletion when tenant validation fails")
+    void shouldRejectDeletionWhenTenantValidationFails() {
+        Long institutionId = 1L;
+        Long userId = 10L;
+
+        try (MockedStatic<SecurityUtils> mocked = mockStatic(SecurityUtils.class)) {
+            mocked.when(SecurityUtils::getInstitutionId).thenReturn(institutionId);
+
+            doThrow(new UnauthorizedException("invalid tenant"))
+                    .when(tenantValidation).validateInstitution(institutionId);
+
+            assertThrows(UnauthorizedException.class,
+                    () -> deleteUserHandler.deleteUser(userId));
+
+            verify(userRepository, never()).findByIdAndInstitution_IdAndActiveTrue(any(), any());
+            verify(userRepository, never()).save(any());
         }
     }
 }

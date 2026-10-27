@@ -15,11 +15,13 @@
 package com.proofchain.user.unitTest;
 
 import com.proofchain.shared.exception.NotFoundException;
+import com.proofchain.shared.exception.UnauthorizedException;
 import com.proofchain.shared.exception.messages.UserMessage;
 import com.proofchain.shared.security.SecurityUtils;
 import com.proofchain.shared.util.TenantValidation;
 import com.proofchain.user.applications.handler.ListAllUserHandler;
 import com.proofchain.user.domain.model.User;
+import com.proofchain.user.domain.model.UserRole;
 import com.proofchain.user.infrastructure.repository.UserRepository;
 import com.proofchain.user.interfaces.dto.response.UserReturn;
 import org.junit.jupiter.api.DisplayName;
@@ -32,11 +34,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.mockStatic;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class UNI_04_ListAllUserHandlerTest {
@@ -51,8 +50,14 @@ class UNI_04_ListAllUserHandlerTest {
         Long institutionId = 1L;
         User user1 = new User();
         user1.setName("A");
+        user1.setEmail("a@example.com");
+        user1.setRole(UserRole.ADMIN);
+        user1.setActive(true);
         User user2 = new User();
         user2.setName("B");
+        user2.setEmail("b@example.com");
+        user2.setRole(UserRole.INSTRUCTOR);
+        user2.setActive(true);
 
         try (MockedStatic<SecurityUtils> mocked = mockStatic(SecurityUtils.class)) {
             mocked.when(SecurityUtils::getInstitutionId).thenReturn(institutionId);
@@ -61,7 +66,15 @@ class UNI_04_ListAllUserHandlerTest {
 
             List<UserReturn> result = listAllUserHandler.listAllUser();
 
-            assertEquals(2, result.size());
+            assertAll(
+                    () -> assertEquals(2, result.size()),
+                    () -> assertEquals("A", result.get(0).name()),
+                    () -> assertEquals("a@example.com", result.get(0).email()),
+                    () -> assertEquals(UserRole.ADMIN, result.get(0).role()),
+                    () -> assertEquals("B", result.get(1).name()),
+                    () -> assertEquals("b@example.com", result.get(1).email()),
+                    () -> assertEquals(UserRole.INSTRUCTOR, result.get(1).role())
+            );
             verify(tenantValidation).validateInstitution(institutionId);
         }
     }
@@ -96,6 +109,25 @@ class UNI_04_ListAllUserHandlerTest {
             listAllUserHandler.listAllUser();
 
             verify(tenantValidation).validateInstitution(institutionId);
+        }
+    }
+
+    @Test
+    @DisplayName("UNI_04.04 - Should reject listing when tenant validation fails")
+    void shouldRejectListingWhenTenantValidationFails() {
+        Long institutionId = 1L;
+
+        try (MockedStatic<SecurityUtils> mocked = mockStatic(SecurityUtils.class)) {
+            mocked.when(SecurityUtils::getInstitutionId).thenReturn(institutionId);
+
+            doThrow(new UnauthorizedException("invalid tenant"))
+                    .when(tenantValidation).validateInstitution(institutionId);
+
+            assertThrows(UnauthorizedException.class,
+                    () -> listAllUserHandler.listAllUser());
+
+            verify(userRepository, never())
+                    .findAllByInstitution_IdAndInstitution_DeletedAtIsNull(any());
         }
     }
 }
