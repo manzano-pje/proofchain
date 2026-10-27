@@ -68,7 +68,7 @@ class UNI_01_CreateUserHandlerTest {
     }
 
     @Test
-    @DisplayName("UNI-01.01 - Should create user with encoded password")
+    @DisplayName("UNI_01.01 - Should create user with encoded password")
     void shouldCreateUserWithEncodedPassword() {
         String encodedPassword = "encrypted_password_hash";
         try (MockedStatic<SecurityUtils> mocked = mockStatic(SecurityUtils.class)) {
@@ -96,7 +96,7 @@ class UNI_01_CreateUserHandlerTest {
     }
 
     @Test
-    @DisplayName("UNI-01.02 - Should reject creation without authenticated institution")
+    @DisplayName("UNI_01.02 - Should reject creation without authenticated institution")
     void shouldRejectCreationWithoutAuthenticatedInstitution() {
         try (MockedStatic<SecurityUtils> mocked = mockStatic(SecurityUtils.class)) {
             mocked.when(SecurityUtils::getInstitutionId).thenReturn(null);
@@ -112,7 +112,7 @@ class UNI_01_CreateUserHandlerTest {
     }
 
     @Test
-    @DisplayName("UNI-01.03 - Should reject non-existent institution")
+    @DisplayName("UNI_01.03 - Should reject non-existent institution")
     void shouldRejectNonExistentInstitution() {
         try (MockedStatic<SecurityUtils> mocked = mockStatic(SecurityUtils.class)) {
             mocked.when(SecurityUtils::getInstitutionId).thenReturn(1L);
@@ -128,7 +128,7 @@ class UNI_01_CreateUserHandlerTest {
     }
 
     @Test
-    @DisplayName("UNI-01.04 - Should reject creation with duplicate e-mail")
+    @DisplayName("UNI_01.04 - Should reject creation with duplicate e-mail")
     void shouldRejectCreationWithDuplicateEmail() {
         try (MockedStatic<SecurityUtils> mocked = mockStatic(SecurityUtils.class)) {
             mocked.when(SecurityUtils::getInstitutionId).thenReturn(1L);

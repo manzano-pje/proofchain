@@ -126,4 +126,28 @@ class UNI_02_UpdateUserHandlerTest {
             verify(tenantValidation).validateInstitution(institutionId);
         }
     }
+
+    @Test
+    @DisplayName("UNI_02.04 - Should reject update of user from another institution")
+    void shouldRejectUpdateOfUserFromAnotherInstitution() {
+        Long currentInstitutionId = 1L;
+        Long otherInstitutionId = 2L;
+        Long userId = 10L;
+
+        UpdateUserCommand command = new UpdateUserCommand("Name", UserRole.ADMIN, true);
+
+        try (MockedStatic<SecurityUtils> mocked = mockStatic(SecurityUtils.class)) {
+            mocked.when(SecurityUtils::getInstitutionId).thenReturn(currentInstitutionId);
+
+            // O repositório é consultado com o ID da instituição autenticada (1L),
+            // portanto um usuário da instituição 2L não é encontrado.
+            when(userRepository.findByIdAndInstitution_Id(userId, currentInstitutionId))
+                    .thenReturn(Optional.empty());
+
+            assertThrows(NotFoundException.class,
+                    () -> updateUserHandler.updateUser(userId, command));
+
+            verify(userRepository, never()).save(any());
+        }
+    }
 }

@@ -36,9 +36,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.Instant;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -116,4 +114,44 @@ class UNI_05_ListOneUserHandlerTest {
             verify(tenantValidation).validateInstitution(institutionId);
         }
     }
+
+    @Test
+    @DisplayName("UNI_05.04 - Should reject query of user from another institution")
+    void shouldRejectQueryOfUserFromAnotherInstitution() {
+        Long currentInstitutionId = 1L;
+        String email = "user@example.com";
+
+        try (MockedStatic<SecurityUtils> mocked = mockStatic(SecurityUtils.class)) {
+            mocked.when(SecurityUtils::getInstitutionId).thenReturn(currentInstitutionId);
+            when(userRepository.findByEmailAndInstitution_Id(email, currentInstitutionId))
+                    .thenReturn(Optional.empty());
+
+            assertThrows(NotFoundException.class,
+                    () -> listOneUserHandler.listOneUser(email));
+        }
+    }
+
+    @Test
+    @DisplayName("UNI_05.05 - Should return inactive user when queried directly")
+    void shouldReturnInactiveUserWhenQueriedDirectly() {
+        Long institutionId = 1L;
+        String email = "inactive@example.com";
+        User inactive = new User();
+        inactive.setName("Inactive User");
+        inactive.setEmail(email);
+        inactive.setRole(UserRole.ADMIN);
+        inactive.setActive(false);
+
+        try (MockedStatic<SecurityUtils> mocked = mockStatic(SecurityUtils.class)) {
+            mocked.when(SecurityUtils::getInstitutionId).thenReturn(institutionId);
+            when(userRepository.findByEmailAndInstitution_Id(email, institutionId))
+                    .thenReturn(Optional.of(inactive));
+
+            UserReturn result = listOneUserHandler.listOneUser(email);
+
+            assertEquals(email, result.email());
+            assertFalse(result.active());
+        }
+    }
+
 }

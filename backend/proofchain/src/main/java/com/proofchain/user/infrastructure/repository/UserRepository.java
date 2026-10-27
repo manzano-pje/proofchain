@@ -78,6 +78,15 @@ public interface UserRepository extends JpaRepository<User, Long> {
      */
     List<User> findAllByInstitution_IdAndInstitution_DeletedAtIsNull(Long institutionId);
 
+    /**
+     * lista usuário cadastrado se estiver ativo.
+     *
+     * @param userId id do usuário
+     * @Param institutionId id da instituição
+     * @return true quando existir
+     */
+    Optional<User> findByIdAndInstitution_IdAndActiveTrue(Long userId, Long institutionId);
+
     /*
      * =========================================================
      * VALIDAÇÕES
