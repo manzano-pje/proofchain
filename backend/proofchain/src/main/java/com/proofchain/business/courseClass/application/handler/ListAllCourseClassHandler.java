@@ -1,8 +1,8 @@
-package com.proofchain.business.couseClass.application.handler;
+package com.proofchain.business.courseClass.application.handler;
 
-import com.proofchain.business.couseClass.domain.model.CourseClass;
-import com.proofchain.business.couseClass.infraestructure.repository.CourseClassRepository;
-import com.proofchain.business.couseClass.interfaces.dto.response.CourseClassReturn;
+import com.proofchain.business.courseClass.domain.model.CourseClass;
+import com.proofchain.business.courseClass.infrastructure.repository.CourseClassRepository;
+import com.proofchain.business.courseClass.interfaces.dto.response.CourseClassReturn;
 import com.proofchain.shared.exception.NotFoundException;
 import com.proofchain.shared.exception.messages.CourseMessages;
 import com.proofchain.shared.security.SecurityUtils;

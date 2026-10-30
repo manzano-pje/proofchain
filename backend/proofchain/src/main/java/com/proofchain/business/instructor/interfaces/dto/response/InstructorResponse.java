@@ -12,8 +12,6 @@ public record InstructorResponse(
         Long idInstructor,
         String name,
         String email,
-        String specialty,
-        Instant hiringDate,
         boolean isActive,
         Instant creatAt,
         Instant deletedAt
@@ -24,8 +22,6 @@ public record InstructorResponse(
                 instructor.getIdInstructor(),
                 instructor.getUser().getName(),
                 instructor.getUser().getEmail(),
-                instructor.getSpecialty(),
-                instructor.getHiringDate(),
                 instructor.isActive(),
                 instructor.getCreatedAt(),
                 instructor.getDeletedAt()

@@ -29,8 +29,6 @@ public class Instructor {
     @JoinColumn(name = "institution_id")
     private Institution institution;
 
-    private String specialty;
-    private Instant hiringDate;
     private boolean isActive;
     private Instant createdAt;
     private Instant deletedAt;

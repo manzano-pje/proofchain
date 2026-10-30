@@ -1,7 +1,8 @@
-package com.proofchain.business.couseClass.domain.model;
+package com.proofchain.business.courseClass.domain.model;
 
 import com.proofchain.business.course.domain.model.Course;
 import com.proofchain.admin.institution.domain.model.Institution;
+import com.proofchain.business.instructor.domain.model.Instructor;
 import com.proofchain.business.participant.domain.model.Participant;
 import com.proofchain.user.domain.model.User;
 import jakarta.persistence.*;
@@ -30,8 +31,8 @@ public class CourseClass {
 
     @OneToOne
     @MapsId
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "idInstructor")
+    private Instructor instructor;
 
     @ManyToOne
     @JoinColumn(name = "course_id")
@@ -52,6 +53,7 @@ public class CourseClass {
     private Instant updateAt;
 
     private boolean isActive;
+
     /////// RELACIONAMENTO ///////
 
     // EM Instituition
