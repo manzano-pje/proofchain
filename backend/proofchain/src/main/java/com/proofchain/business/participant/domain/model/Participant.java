@@ -1,9 +1,7 @@
 package com.proofchain.business.participant.domain.model;
 
-import com.proofchain.business.course.domain.model.Course;
 import com.proofchain.admin.institution.domain.model.Institution;
-import com.proofchain.business.couseClass.domain.model.CourseClass;
-import com.proofchain.business.participant.aplication.command.UpdateParticipantCommand;
+import com.proofchain.business.courseClass.domain.model.CourseClass;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;

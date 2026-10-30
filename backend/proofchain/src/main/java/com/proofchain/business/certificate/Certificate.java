@@ -2,7 +2,7 @@ package com.proofchain.business.certificate;
 
 import com.proofchain.business.course.domain.model.Course;
 import com.proofchain.admin.institution.domain.model.Institution;
-import com.proofchain.business.couseClass.domain.model.CourseClass;
+import com.proofchain.business.courseClass.domain.model.CourseClass;
 import com.proofchain.business.participant.domain.model.Participant;
 import jakarta.persistence.*;
 import lombok.*;

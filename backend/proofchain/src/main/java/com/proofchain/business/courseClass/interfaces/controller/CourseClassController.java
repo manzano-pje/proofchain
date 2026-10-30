@@ -1,10 +1,10 @@
-package com.proofchain.business.couseClass.interfaces.controller;
+package com.proofchain.business.courseClass.interfaces.controller;
 
-import com.proofchain.business.couseClass.application.command.RequestCourseClassCommand;
-import com.proofchain.business.couseClass.application.handler.CreateCourseClassHandler;
-import com.proofchain.business.couseClass.application.handler.ListAllCourseClassHandler;
-import com.proofchain.business.couseClass.interfaces.dto.request.RequestCourseClassDto;
-import com.proofchain.business.couseClass.interfaces.dto.response.CourseClassReturn;
+import com.proofchain.business.courseClass.application.command.RequestCourseClassCommand;
+import com.proofchain.business.courseClass.application.handler.CreateCourseClassHandler;
+import com.proofchain.business.courseClass.application.handler.ListAllCourseClassHandler;
+import com.proofchain.business.courseClass.interfaces.dto.request.RequestCourseClassDto;
+import com.proofchain.business.courseClass.interfaces.dto.response.CourseClassReturn;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;

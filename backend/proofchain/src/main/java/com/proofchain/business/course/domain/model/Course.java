@@ -1,7 +1,7 @@
 package com.proofchain.business.course.domain.model;
 
 import com.proofchain.admin.institution.domain.model.Institution;
-import com.proofchain.business.couseClass.domain.model.CourseClass;
+import com.proofchain.business.courseClass.domain.model.CourseClass;
 import com.proofchain.business.certificate.Certificate;
 import com.proofchain.business.participant.domain.model.Participant;
 import com.proofchain.shared.domain.model.BaseEntity;

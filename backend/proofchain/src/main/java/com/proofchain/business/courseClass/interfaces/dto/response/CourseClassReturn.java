@@ -1,6 +1,6 @@
-package com.proofchain.business.couseClass.interfaces.dto.response;
+package com.proofchain.business.courseClass.interfaces.dto.response;
 
-import com.proofchain.business.couseClass.domain.model.CourseClass;
+import com.proofchain.business.courseClass.domain.model.CourseClass;
 import com.proofchain.business.participant.domain.model.Participant;
 
 import java.time.Instant;

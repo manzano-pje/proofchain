@@ -1,6 +1,6 @@
-package com.proofchain.business.couseClass.application.command;
+package com.proofchain.business.courseClass.application.command;
 
-import com.proofchain.business.couseClass.interfaces.dto.request.RequestCourseClassDto;
+import com.proofchain.business.courseClass.interfaces.dto.request.RequestCourseClassDto;
 import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

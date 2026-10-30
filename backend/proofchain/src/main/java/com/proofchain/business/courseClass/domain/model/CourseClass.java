@@ -1,4 +1,4 @@
-package com.proofchain.business.couseClass.domain.model;
+package com.proofchain.business.courseClass.domain.model;
 
 import com.proofchain.business.course.domain.model.Course;
 import com.proofchain.admin.institution.domain.model.Institution;

@@ -1,12 +1,12 @@
-package com.proofchain.business.couseClass.application.handler;
+package com.proofchain.business.courseClass.application.handler;
 
 import com.proofchain.admin.institution.domain.model.Institution;
 import com.proofchain.admin.institution.infrastructure.repository.InstitutionRepository;
 import com.proofchain.business.course.domain.model.Course;
 import com.proofchain.business.course.infrastructure.repository.CourseRepository;
-import com.proofchain.business.couseClass.application.command.RequestCourseClassCommand;
-import com.proofchain.business.couseClass.domain.model.CourseClass;
-import com.proofchain.business.couseClass.infraestructure.repository.CourseClassRepository;
+import com.proofchain.business.courseClass.application.command.RequestCourseClassCommand;
+import com.proofchain.business.courseClass.domain.model.CourseClass;
+import com.proofchain.business.courseClass.infrastructure.repository.CourseClassRepository;
 import com.proofchain.shared.exception.AlreadyExistsException;
 import com.proofchain.shared.exception.NotFoundException;
 import com.proofchain.shared.exception.messages.CourseMessages;

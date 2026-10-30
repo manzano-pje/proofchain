@@ -1,6 +1,6 @@
-package com.proofchain.business.couseClass.infraestructure.repository;
+package com.proofchain.business.courseClass.infrastructure.repository;
 
-import com.proofchain.business.couseClass.domain.model.CourseClass;
+import com.proofchain.business.courseClass.domain.model.CourseClass;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
