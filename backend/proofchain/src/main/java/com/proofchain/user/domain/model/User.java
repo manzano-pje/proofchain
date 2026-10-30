@@ -178,5 +178,4 @@ public class User {
     @JoinColumn(name = "institution_id")
     private Institution institution;
 
-
 }

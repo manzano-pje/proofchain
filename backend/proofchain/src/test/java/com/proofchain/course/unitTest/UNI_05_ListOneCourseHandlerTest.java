@@ -111,7 +111,7 @@ class CreateCourseClassHandlerTest {
             verify(courseClassRepository).save(captor.capture());
             CourseClass saved = captor.getValue();
             assertAll(
-                    () -> assertEquals(mockUser, saved.getUser()),
+                    () -> assertEquals(mockUser, saved.getInstructor()),
                     () -> assertEquals(mockCourse, saved.getCourse()),
                     () -> assertEquals(mockInstitution, saved.getInstitution()),
                     () -> assertTrue(saved.isActive()),

@@ -88,8 +88,6 @@ public class CreateInstructorHandler {
            Instructor instructor = new Instructor();
           instructor.setUser(userOptional.get());
           instructor.setInstitution(institutionOptional.get());
-          instructor.setSpecialty(command.getSpecialty());
-          instructor.setHiringDate(command.getHiringDate());
           instructor.setActive(true);
           instructor.setCreatedAt(Instant.now());
           instructor.setDeletedAt(null);

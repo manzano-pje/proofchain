@@ -37,8 +37,6 @@ public class UpdateInstructorHandler {
 
         instructor.setIdInstructor(id);
         instructor.setActive(command.isActive());
-        instructor.setSpecialty(command.getSpecialty());
-        instructor.setHiringDate(command.getHiringDate());
 
         instructorRepository.save(instructor);
     }

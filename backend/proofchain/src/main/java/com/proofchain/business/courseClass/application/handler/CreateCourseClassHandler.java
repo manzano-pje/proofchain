@@ -7,6 +7,8 @@ import com.proofchain.business.course.infrastructure.repository.CourseRepository
 import com.proofchain.business.courseClass.application.command.RequestCourseClassCommand;
 import com.proofchain.business.courseClass.domain.model.CourseClass;
 import com.proofchain.business.courseClass.infrastructure.repository.CourseClassRepository;
+import com.proofchain.business.instructor.domain.model.Instructor;
+import com.proofchain.business.instructor.insfrastructure.repository.InstructorRepository;
 import com.proofchain.shared.exception.AlreadyExistsException;
 import com.proofchain.shared.exception.NotFoundException;
 import com.proofchain.shared.exception.messages.CourseMessages;
@@ -35,7 +37,7 @@ public class CreateCourseClassHandler {
     private final CourseClassRepository courseClassRepository;
     private final InstitutionRepository institutionRepository;
     private final CourseRepository courseRepository;
-    private final UserRepository userRepository;
+    private final InstructorRepository instructorRepository;
     private final TenantValidation tenantValidation;
 
     public void create(RequestCourseClassCommand command){
@@ -51,20 +53,42 @@ public class CreateCourseClassHandler {
 
         /*
          * =========================================================
+         * BUSCA DE TURMA
+         * =========================================================
+         */
+        boolean existsClourseClass = courseClassRepository.existsByCourse_idAndInstitution_IdAndInstitution_DeletedAtIsNullAndIsActiveTrue(
+                command.getIdCourse(),
+                institutionId );
+
+        if(existsClourseClass){
+            throw new AlreadyExistsException(CourseMessages.COURSE_ALREADY_EXISTS);
+        }
+
+        /*
+         * =========================================================
          * BUSCA DE INSTITUIÇÃO
          * =========================================================
          */
         Optional<Institution> institution = institutionRepository.findByIdAndDeletedAtIsNull(institutionId);
 
         /*
-         * TODO CORRIGIR VALIDAÇÃO INSTRUTOR PARA ENTIDADE INSTRUTOR
          * =========================================================
-         * VALIDAÇÃO DE INSTRUTOR
+         * VALIDAÇÃO DE INSTRUTOR NA TURMA
          * =========================================================
          */
         boolean instructorExist = courseClassRepository.existsByIdAndCourse_IdAndInstitution_IdAndInstitution_DeletedAtIsNull(command.getIdUser(), command.getIdCourse(), institutionId);
-        if(instructorExist){
-            throw new AlreadyExistsException(InstructorMessages.INSTRUCTOR_ALREAY_EXISTS);
+        if(!instructorExist){
+            throw new NotFoundException(InstructorMessages.INSTRUCTOR_ALREAY_EXISTS);
+        }
+
+        /*
+         * =========================================================
+         * BUSCA DE INSTRUTOR
+         * =========================================================
+         */
+        Optional<Instructor> instructor = instructorRepository.findByIdAndInstitutionDeletedAtIsNull(command.getIdUser(), institutionId);
+        if(instructor.isEmpty()){
+            throw new NotFoundException(InstructorMessages.INSTRUCTOR_NOT_FOUND);
         }
 
         /*
@@ -79,28 +103,18 @@ public class CreateCourseClassHandler {
 
         /*
          * =========================================================
-         * BUSCA DE USUÁRIO
-         * =========================================================
-         */
-        Optional<User> user = userRepository.findByIdAndInstitution_Id(command.getIdUser(), institutionId);
-        if(user.isEmpty()){
-            throw new NotFoundException(UserMessage.USER_NOT_FOUND);
-        }
-
-        /*
-         * =========================================================
          * CRIAÇÃO DA ENTIDADE DE DOMÍNIO
          * =========================================================
          */
 
         CourseClass courseClass = new CourseClass();
 
-        courseClass.setUser(user.get()); // instrutor
-        courseClass.setCourse(course.get());
-        courseClass.setCreateAt(Instant.now());
-        courseClass.setUpdateAt(null);
-        courseClass.setActive(true);
-        courseClass.setInstitution(institution.get());
+        courseClass.setInstructor(instructor.get());   // instrutor
+        courseClass.setCourse(course.get());           // Curso
+        courseClass.setCreateAt(Instant.now());        // Criação da turma
+        courseClass.setUpdateAt(null);                 // atualização da turma
+        courseClass.setActive(true);                   // se a turma está ativa
+        courseClass.setInstitution(institution.get()); // vínculo da turma com instituição
 
         /*
          * =========================================================

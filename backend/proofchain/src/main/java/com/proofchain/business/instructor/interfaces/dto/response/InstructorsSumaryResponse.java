@@ -7,17 +7,14 @@ import java.time.Instant;
 public record InstructorsSumaryResponse (
     Long id,
     String name,
-    String email,
-    String specialty,
-    Instant hiringDate
+    String email
 ){
 
     public InstructorsSumaryResponse(Instructor instructor) {
         this(
                 instructor.getIdInstructor(),
                 instructor.getUser().getName(),
-                instructor.getUser().getEmail(),
-                instructor.getSpecialty(),
-                instructor.getHiringDate());
+                instructor.getUser().getEmail()
+        );
     }
 }

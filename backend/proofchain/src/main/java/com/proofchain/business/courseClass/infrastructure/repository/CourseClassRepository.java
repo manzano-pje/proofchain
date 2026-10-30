@@ -1,11 +1,13 @@
 package com.proofchain.business.courseClass.infrastructure.repository;
 
 import com.proofchain.business.courseClass.domain.model.CourseClass;
+import org.springframework.data.domain.Example;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -49,4 +51,14 @@ public interface CourseClassRepository extends JpaRepository<CourseClass, Long> 
             Long userId,
             Long courseId,
             Long institutionId);
+
+    boolean existsByCourse_idAndInstitution_IdAndInstitution_DeletedAtIsNullAndIsActiveTrue(
+            Long courseId,
+            Long institutionID
+            );
+
+    boolean existsByInstructor_idInstructorAndInstitution_IdAndInstitution_DeletedAtIsNull(
+            Long instructorId,
+            Long institutionId
+    );
 }

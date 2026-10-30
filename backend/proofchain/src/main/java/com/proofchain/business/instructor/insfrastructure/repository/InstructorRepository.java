@@ -11,7 +11,9 @@ import java.util.Optional;
 public interface InstructorRepository extends JpaRepository<Instructor, Long> {
 
     boolean existsByUserIdAndInstitutionIdAndInstitutionDeletedAtIsNull(Long InstUserId, Long InstitutionId );
-    Optional<Instructor> findByUserIdAndInstitutionIdAndInstitutionDeletedAtIsNull(Long InstUserId, Long InstitutionId );
-    List<Instructor> findAllByIsActiveIsTrue();
     boolean existsByIdInstructorAndIsActiveIsTrue(Long idInstructor);
+
+    List<Instructor> findAllByIsActiveIsTrue();
+    Optional<Instructor> findByIdAndInstitutionDeletedAtIsNull(Long isntructorId, Long institutionId);
+
 }

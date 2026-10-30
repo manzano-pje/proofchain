@@ -24,6 +24,7 @@ import com.proofchain.business.courseClass.application.command.RequestCourseClas
 import com.proofchain.business.courseClass.application.handler.CreateCourseClassHandler;
 import com.proofchain.business.courseClass.domain.model.CourseClass;
 import com.proofchain.business.courseClass.infrastructure.repository.CourseClassRepository;
+import com.proofchain.business.instructor.domain.model.Instructor;
 import com.proofchain.shared.exception.AlreadyExistsException;
 import com.proofchain.shared.exception.NotFoundException;
 import com.proofchain.shared.exception.messages.CourseMessages;
@@ -68,6 +69,7 @@ public class UNI_01_CreateCourseClassHandlerTest {
     private Institution mockInstitution;
     private Course mockCourse;
     private User mockUser;
+    private Instructor mockInstructor;
 
     @BeforeEach
     void setUp() {
@@ -82,9 +84,12 @@ public class UNI_01_CreateCourseClassHandlerTest {
         mockCourse.setId(10L);
         mockCourse.setName("Curso Teste");
 
-        mockUser = new User();
         mockUser.setId(5L);
-        mockUser.setName("Instrutor Teste");
+        mockUser.setName("Teste de nome");
+        mockInstructor = new Instructor();
+
+        mockInstructor.setIdInstructor(mockUser.getId());
+
     }
 
     @Test
@@ -96,7 +101,7 @@ public class UNI_01_CreateCourseClassHandlerTest {
                     .thenReturn(Optional.of(mockInstitution));
             when(courseClassRepository
                     .existsByIdAndCourse_IdAndInstitution_IdAndInstitution_DeletedAtIsNull(5L, 10L, 1L))
-                    .thenReturn(false);
+                    .thenReturn(true);
             when(courseRepository.findByIdAndInstitutionId(10L, 1L))
                     .thenReturn(Optional.of(mockCourse));
             when(userRepository.findByIdAndInstitution_Id(5L, 1L))
@@ -109,7 +114,7 @@ public class UNI_01_CreateCourseClassHandlerTest {
             CourseClass saved = captor.getValue();
 
             assertAll(
-                    () -> assertEquals(mockUser, saved.getUser()),
+                    () -> assertEquals(mockUser, saved.getInstructor()),
                     () -> assertEquals(mockCourse, saved.getCourse()),
                     () -> assertEquals(mockInstitution, saved.getInstitution()),
                     () -> assertTrue(saved.isActive()),
@@ -132,7 +137,7 @@ public class UNI_01_CreateCourseClassHandlerTest {
                     .existsByIdAndCourse_IdAndInstitution_IdAndInstitution_DeletedAtIsNull(5L, 10L, 1L))
                     .thenReturn(true);
 
-            AlreadyExistsException ex = assertThrows(AlreadyExistsException.class,
+            NotFoundException ex = assertThrows(NotFoundException.class,
                     () -> createCourseClassHandler.create(validCommand));
 
             assertEquals(InstructorMessages.INSTRUCTOR_ALREAY_EXISTS, ex.getMessage());
