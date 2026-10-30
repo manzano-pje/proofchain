@@ -53,7 +53,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class AuthServiceTest {
+class UNI_01_AuthServiceTest {
 
     @Mock private AuthenticationManager authenticationManager;
     @Mock private JwtService jwtService;
@@ -247,7 +247,7 @@ class AuthServiceTest {
     void shouldRejectExpiredRefreshToken() {
         RefreshRequest request = new RefreshRequest("refresh-expirado");
         UserDetailsImpl userDetails = mock(UserDetailsImpl.class);
-        when(userDetails.isEnabled()).thenReturn(true);  
+        when(userDetails.isEnabled()).thenReturn(true);
 
         when(jwtService.extractUsername("refresh-expirado")).thenReturn("user@example.com");
         when(userDetailsService.loadUserByUsername("user@example.com")).thenReturn(userDetails);
