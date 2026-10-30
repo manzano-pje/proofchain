@@ -25,5 +25,10 @@
 hs_err_pid*
 replay_pid*
 
+# others
+prototipos/
+*.odt
+*.txt
+tatus --short
 
 
