@@ -145,7 +145,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         } finally {
             // Evita que o contexto multi-tenant vaze para outra requisição.
-            TenantContext.clear();
+           TenantContext.clear();
         }
     }
 }
