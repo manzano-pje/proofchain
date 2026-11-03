@@ -48,17 +48,12 @@ public interface CourseClassRepository extends JpaRepository<CourseClass, Long> 
         """)
     List<CourseClass> findAllByInstitution_IdAndInstitution_DeletedAtIsNullOrderByUser_NameAscCourse_NameAsc(@Param("institutionId") Long institutionId);
 
-    boolean existsByIdAndCourse_IdAndInstitution_IdAndInstitution_DeletedAtIsNull(
-            Long userId,
-            Long courseId,
-            Long institutionId);
-
     boolean existsByCourse_idAndInstitution_IdAndInstitution_DeletedAtIsNullAndIsActiveTrue(
             Long courseId,
             Long institutionID
             );
 
-    boolean existsByCourse_idAndInstructor_idInstructorAndInstitution_IdAndInstitution_DeletedAtIsNull(
+    boolean existsByCourse_idAndInstructor_idAndInstitution_IdAndInstitution_DeletedAtIsNull(
             Long courseId,
             Long instructorId,
             Long institutionId

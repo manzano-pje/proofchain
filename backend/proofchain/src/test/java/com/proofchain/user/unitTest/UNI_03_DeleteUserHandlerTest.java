@@ -55,7 +55,7 @@ class UNI_03_DeleteUserHandlerTest {
 
         try (MockedStatic<SecurityUtils> mocked = mockStatic(SecurityUtils.class)) {
             mocked.when(SecurityUtils::getInstitutionId).thenReturn(institutionId);
-            when(userRepository.findByIdAndInstitution_IdAndActiveTrue(userId, institutionId))
+            when(userRepository.findByIdAndInstitution_IdAndIsActiveTrue(userId, institutionId))
                     .thenReturn(Optional.of(existing));
 
             deleteUserHandler.deleteUser(userId);
@@ -75,7 +75,7 @@ class UNI_03_DeleteUserHandlerTest {
 
         try (MockedStatic<SecurityUtils> mocked = mockStatic(SecurityUtils.class)) {
             mocked.when(SecurityUtils::getInstitutionId).thenReturn(institutionId);
-            when(userRepository.findByIdAndInstitution_IdAndActiveTrue(userId, institutionId))
+            when(userRepository.findByIdAndInstitution_IdAndIsActiveTrue(userId, institutionId))
                     .thenReturn(Optional.empty());
 
             UserNotFoundException ex = assertThrows(UserNotFoundException.class,
@@ -94,7 +94,7 @@ class UNI_03_DeleteUserHandlerTest {
 
         try (MockedStatic<SecurityUtils> mocked = mockStatic(SecurityUtils.class)) {
             mocked.when(SecurityUtils::getInstitutionId).thenReturn(institutionId);
-            when(userRepository.findByIdAndInstitution_IdAndActiveTrue(userId, institutionId))
+            when(userRepository.findByIdAndInstitution_IdAndIsActiveTrue(userId, institutionId))
                     .thenReturn(Optional.of(new User()));
 
             deleteUserHandler.deleteUser(userId);
@@ -113,7 +113,7 @@ class UNI_03_DeleteUserHandlerTest {
 
         try (MockedStatic<SecurityUtils> mocked = mockStatic(SecurityUtils.class)) {
             mocked.when(SecurityUtils::getInstitutionId).thenReturn(institutionId);
-            when(userRepository.findByIdAndInstitution_IdAndActiveTrue(userId, institutionId))
+            when(userRepository.findByIdAndInstitution_IdAndIsActiveTrue(userId, institutionId))
                     .thenReturn(Optional.empty());
 
             UserNotFoundException ex = assertThrows(UserNotFoundException.class,
@@ -138,7 +138,7 @@ class UNI_03_DeleteUserHandlerTest {
 
         try (MockedStatic<SecurityUtils> mocked = mockStatic(SecurityUtils.class)) {
             mocked.when(SecurityUtils::getInstitutionId).thenReturn(institutionId);
-            when(userRepository.findByIdAndInstitution_IdAndActiveTrue(userId, institutionId))
+            when(userRepository.findByIdAndInstitution_IdAndIsActiveTrue(userId, institutionId))
                     .thenReturn(Optional.of(existing));
 
             deleteUserHandler.deleteUser(userId);
@@ -168,7 +168,7 @@ class UNI_03_DeleteUserHandlerTest {
             assertThrows(UnauthorizedException.class,
                     () -> deleteUserHandler.deleteUser(userId));
 
-            verify(userRepository, never()).findByIdAndInstitution_IdAndActiveTrue(any(), any());
+            verify(userRepository, never()).findByIdAndInstitution_IdAndIsActiveTrue(any(), any());
             verify(userRepository, never()).save(any());
         }
     }

@@ -76,7 +76,7 @@ public class CreateCourseClassHandler {
          * VALIDAÇÃO DE INSTRUTOR NA TURMA
          * =========================================================
          */
-        boolean instructorExist = courseClassRepository.existsByCourse_idAndInstructor_idInstructorAndInstitution_IdAndInstitution_DeletedAtIsNull(command.getIdCourse(), command.getIdUser(), institutionId);
+        boolean instructorExist = courseClassRepository.existsByCourse_idAndInstructor_idAndInstitution_IdAndInstitution_DeletedAtIsNull(command.getIdCourse(), command.getIdUser(), institutionId);
         if(!instructorExist){
             throw new NotFoundException(InstructorMessages.INSTRUCTOR_NOT_FOUND);
         }
