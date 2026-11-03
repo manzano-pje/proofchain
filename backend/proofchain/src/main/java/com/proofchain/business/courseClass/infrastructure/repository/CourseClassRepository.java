@@ -39,7 +39,8 @@ public interface CourseClassRepository extends JpaRepository<CourseClass, Long> 
         SELECT DISTINCT cc
         FROM CourseClass cc
         LEFT JOIN FETCH cc.participants p
-        LEFT JOIN FETCH cc.user u
+        LEFT JOIN FETCH cc.instructor i
+        LEFT JOIN FETCH i.user u
         LEFT JOIN FETCH cc.course c
         WHERE cc.institution.id = :institutionId
           AND cc.institution.deletedAt IS NULL
@@ -57,7 +58,8 @@ public interface CourseClassRepository extends JpaRepository<CourseClass, Long> 
             Long institutionID
             );
 
-    boolean existsByInstructor_idInstructorAndInstitution_IdAndInstitution_DeletedAtIsNull(
+    boolean existsByCourse_idAndInstructor_idInstructorAndInstitution_IdAndInstitution_DeletedAtIsNull(
+            Long courseId,
             Long instructorId,
             Long institutionId
     );
