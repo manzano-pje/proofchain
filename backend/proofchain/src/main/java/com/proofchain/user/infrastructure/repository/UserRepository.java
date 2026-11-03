@@ -85,7 +85,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * @Param institutionId id da instituição
      * @return true quando existir
      */
-    Optional<User> findByIdAndInstitution_IdAndActiveTrue(Long userId, Long institutionId);
+    Optional<User> findByIdAndInstitution_IdAndIsActiveTrue(Long userId, Long institutionId);
 
     /*
      * =========================================================

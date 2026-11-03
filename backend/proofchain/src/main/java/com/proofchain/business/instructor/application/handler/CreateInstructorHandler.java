@@ -2,14 +2,14 @@ package com.proofchain.business.instructor.application.handler;
 
 import com.proofchain.admin.institution.domain.model.Institution;
 import com.proofchain.admin.institution.infrastructure.repository.InstitutionRepository;
+import com.proofchain.business.course.domain.model.Course;
+import com.proofchain.business.course.infrastructure.repository.CourseRepository;
 import com.proofchain.business.instructor.application.command.CreateInstructorCommand;
 import com.proofchain.business.instructor.domain.model.Instructor;
 import com.proofchain.business.instructor.insfrastructure.repository.InstructorRepository;
 import com.proofchain.shared.exception.AlreadyExistsException;
 import com.proofchain.shared.exception.NotFoundException;
-import com.proofchain.shared.exception.messages.InstitutionMessages;
-import com.proofchain.shared.exception.messages.InstructorMessages;
-import com.proofchain.shared.exception.messages.UserMessage;
+import com.proofchain.shared.exception.messages.*;
 import com.proofchain.shared.security.SecurityUtils;
 import com.proofchain.shared.util.TenantValidation;
 import com.proofchain.user.domain.model.User;
@@ -27,8 +27,10 @@ public class CreateInstructorHandler {
     private final TenantValidation tenantValidation;
     private final InstructorRepository instructorRepository;
     private final UserRepository userRepository;
-    private final CreateInstructorCommand command;
+    private final CourseRepository courseRepository;
     private final InstitutionRepository institutionRepository;
+
+    private final CreateInstructorCommand command;
 
     public void createInstructor(CreateInstructorCommand command){
 
@@ -67,6 +69,17 @@ public class CreateInstructorHandler {
 
         /*
          * =========================================================
+         * CARREGAR DADOS DE CURSO
+         * =========================================================
+         */
+
+        Optional<Course> courseOptional = courseRepository.findByIdAndInstitutionId(command.getId_course(), institutionId);
+        if(courseOptional.isEmpty()){
+            throw new NotFoundException(CourseMessages.COURSE_NOT_FOUND);
+        }
+
+        /*
+         * =========================================================
          * VERIFICAR SE INSTRUTOR JÁ EXISTE
          * =========================================================
          */
@@ -85,9 +98,10 @@ public class CreateInstructorHandler {
          * CRIAÇÃO E PERSISTÊNCIA DE INSCTRUTOR
          * =========================================================
          */
-           Instructor instructor = new Instructor();
+          Instructor instructor = new Instructor();
           instructor.setUser(userOptional.get());
           instructor.setInstitution(institutionOptional.get());
+          instructor.setCourse(courseOptional.get());
           instructor.setActive(true);
           instructor.setCreatedAt(Instant.now());
           instructor.setDeletedAt(null);

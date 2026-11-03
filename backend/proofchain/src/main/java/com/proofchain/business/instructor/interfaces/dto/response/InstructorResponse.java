@@ -1,6 +1,7 @@
 package com.proofchain.business.instructor.interfaces.dto.response;
 
 import com.proofchain.admin.institution.domain.model.Institution;
+import com.proofchain.business.course.domain.model.Course;
 import com.proofchain.business.instructor.domain.model.Instructor;
 import com.proofchain.user.domain.model.User;
 import jakarta.persistence.JoinColumn;
@@ -12,6 +13,7 @@ public record InstructorResponse(
         Long idInstructor,
         String name,
         String email,
+        String course,
         boolean isActive,
         Instant creatAt,
         Instant deletedAt
@@ -22,6 +24,7 @@ public record InstructorResponse(
                 instructor.getIdInstructor(),
                 instructor.getUser().getName(),
                 instructor.getUser().getEmail(),
+                instructor.getCourse().getName(),
                 instructor.isActive(),
                 instructor.getCreatedAt(),
                 instructor.getDeletedAt()

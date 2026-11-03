@@ -18,12 +18,12 @@ import java.time.Instant;
 public class CreateInstructorCommand {
 
     private Long id_User;
-    private String specialty;
-    private Instant hiringDate;
+    private Long id_Institution;
+    private Long id_course;
 
     public CreateInstructorCommand(InstructorRequest dto){
-        this.id_User = dto.getId_User();
-        this.specialty = dto.getSpecialty();
-        this.hiringDate = dto.getHiringDate();
+        this.id_User = dto.id_User();
+        this.id_Institution = dto.id_Institution();
+        this.id_course = dto.id_course();
     }
 }
