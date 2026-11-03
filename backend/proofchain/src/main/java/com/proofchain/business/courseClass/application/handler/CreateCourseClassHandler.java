@@ -76,9 +76,9 @@ public class CreateCourseClassHandler {
          * VALIDAÇÃO DE INSTRUTOR NA TURMA
          * =========================================================
          */
-        boolean instructorExist = courseClassRepository.existsByIdAndCourse_IdAndInstitution_IdAndInstitution_DeletedAtIsNull(command.getIdUser(), command.getIdCourse(), institutionId);
+        boolean instructorExist = courseClassRepository.existsByCourse_idAndInstructor_idInstructorAndInstitution_IdAndInstitution_DeletedAtIsNull(command.getIdCourse(), command.getIdUser(), institutionId);
         if(!instructorExist){
-            throw new NotFoundException(InstructorMessages.INSTRUCTOR_ALREAY_EXISTS);
+            throw new NotFoundException(InstructorMessages.INSTRUCTOR_NOT_FOUND);
         }
 
         /*
@@ -86,7 +86,7 @@ public class CreateCourseClassHandler {
          * BUSCA DE INSTRUTOR
          * =========================================================
          */
-        Optional<Instructor> instructor = instructorRepository.findByIdAndInstitutionDeletedAtIsNull(command.getIdUser(), institutionId);
+        Optional<Instructor> instructor = instructorRepository.findByIdInstructorAndInstitution_IdAndInstitutionDeletedAtIsNull(command.getIdUser(), institutionId);
         if(instructor.isEmpty()){
             throw new NotFoundException(InstructorMessages.INSTRUCTOR_NOT_FOUND);
         }

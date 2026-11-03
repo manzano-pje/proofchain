@@ -7,10 +7,11 @@ COPY mvnw pom.xml ./
 RUN chmod +x mvnw
 COPY src ./src
 
-RUN ./mvnw dependency:go-offline
-RUN ./mvnw clean package spring-boot:repackage -DskipTests
+# RUN ./mvnw dependency:go-offline
+RUN ./mvnw clean package -DskipTests
 
 # -------- Runtime Stage --------
+
 FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 
