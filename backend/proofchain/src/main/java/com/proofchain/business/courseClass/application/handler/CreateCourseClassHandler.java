@@ -85,7 +85,7 @@ public class CreateCourseClassHandler {
          * =========================================================
          * BUSCA DE INSTRUTOR
          * =========================================================
-         */
+        */
         Optional<Instructor> instructor = instructorRepository.findByIdInstructorAndInstitution_IdAndInstitutionDeletedAtIsNull(command.getIdUser(), institutionId);
         if(instructor.isEmpty()){
             throw new NotFoundException(InstructorMessages.INSTRUCTOR_NOT_FOUND);
