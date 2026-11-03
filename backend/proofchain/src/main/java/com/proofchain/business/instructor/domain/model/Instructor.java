@@ -1,6 +1,7 @@
 package com.proofchain.business.instructor.domain.model;
 
 import com.proofchain.admin.institution.domain.model.Institution;
+import com.proofchain.business.course.domain.model.Course;
 import com.proofchain.user.domain.model.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -28,6 +29,10 @@ public class Instructor {
     @ManyToOne
     @JoinColumn(name = "institution_id")
     private Institution institution;
+
+    @ManyToOne
+    @JoinColumn(name = "course_id")
+    private Course course;
 
     private boolean isActive;
     private Instant createdAt;

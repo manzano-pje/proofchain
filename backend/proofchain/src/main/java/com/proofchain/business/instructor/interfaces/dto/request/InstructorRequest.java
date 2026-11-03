@@ -8,14 +8,8 @@ import lombok.Setter;
 
 import java.time.Instant;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
-public class InstructorRequest {
-
-    private Long id_User;
-    private String specialty;
-    private Instant hiringDate;
-
-}
+public record InstructorRequest(
+     Long id_User,
+     Long id_Institution,
+     Long id_course
+){}

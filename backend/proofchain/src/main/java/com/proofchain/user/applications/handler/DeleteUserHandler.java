@@ -75,7 +75,7 @@ public class DeleteUserHandler {
         tenantValidation.validateInstitution(institutionId);
 
         User user = userRepository
-                .findByIdAndInstitution_IdAndActiveTrue(id, institutionId)
+                .findByIdAndInstitution_IdAndIsActiveTrue(id, institutionId)
                 .orElseThrow(UserNotFoundException::new);
 
         user.setActive(false);
