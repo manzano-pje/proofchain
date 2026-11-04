@@ -53,7 +53,7 @@ public interface CourseClassRepository extends JpaRepository<CourseClass, Long> 
             Long institutionID
             );
 
-    boolean existsByCourse_idAndInstructor_idAndInstitution_IdAndInstitution_DeletedAtIsNull(
+    boolean existsByCourse_idAndInstructor_IdInstructorAndInstitution_IdAndInstitution_DeletedAtIsNull(
             Long courseId,
             Long instructorId,
             Long institutionId

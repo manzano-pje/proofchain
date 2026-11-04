@@ -25,15 +25,14 @@ import com.proofchain.business.courseClass.application.handler.CreateCourseClass
 import com.proofchain.business.courseClass.domain.model.CourseClass;
 import com.proofchain.business.courseClass.infrastructure.repository.CourseClassRepository;
 import com.proofchain.business.instructor.domain.model.Instructor;
+import com.proofchain.business.instructor.insfrastructure.repository.InstructorRepository;
 import com.proofchain.shared.exception.AlreadyExistsException;
 import com.proofchain.shared.exception.NotFoundException;
 import com.proofchain.shared.exception.messages.CourseMessages;
 import com.proofchain.shared.exception.messages.InstructorMessages;
-import com.proofchain.shared.exception.messages.UserMessage;
 import com.proofchain.shared.security.SecurityUtils;
 import com.proofchain.shared.util.TenantValidation;
 import com.proofchain.user.domain.model.User;
-import com.proofchain.user.infrastructure.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -44,7 +43,6 @@ import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDate;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -61,7 +59,7 @@ public class UNI_01_CreateCourseClassHandlerTest {
     @Mock private CourseClassRepository courseClassRepository;
     @Mock private InstitutionRepository institutionRepository;
     @Mock private CourseRepository courseRepository;
-    @Mock private UserRepository userRepository;
+    @Mock private InstructorRepository instructorRepository;
     @Mock private TenantValidation tenantValidation;
     @InjectMocks private CreateCourseClassHandler createCourseClassHandler;
 
@@ -84,11 +82,15 @@ public class UNI_01_CreateCourseClassHandlerTest {
         mockCourse.setId(10L);
         mockCourse.setName("Curso Teste");
 
+        mockUser = new User();
         mockUser.setId(5L);
         mockUser.setName("Teste de nome");
         mockInstructor = new Instructor();
 
         mockInstructor.setIdInstructor(mockUser.getId());
+        mockInstructor.setUser(mockUser);
+        mockInstructor.setInstitution(mockInstitution);
+        mockInstructor.setCourse(mockCourse);
 
     }
 
@@ -100,12 +102,12 @@ public class UNI_01_CreateCourseClassHandlerTest {
             when(institutionRepository.findByIdAndDeletedAtIsNull(1L))
                     .thenReturn(Optional.of(mockInstitution));
             when(courseClassRepository
-                    .existsByIdAndCourse_IdAndInstitution_IdAndInstitution_DeletedAtIsNull(5L, 10L, 1L))
-                    .thenReturn(true);
+                    .existsByCourse_idAndInstructor_IdInstructorAndInstitution_IdAndInstitution_DeletedAtIsNull(10L, 5L, 1L))
+                    .thenReturn(false);
             when(courseRepository.findByIdAndInstitutionId(10L, 1L))
                     .thenReturn(Optional.of(mockCourse));
-            when(userRepository.findByIdAndInstitution_Id(5L, 1L))
-                    .thenReturn(Optional.of(mockUser));
+            when(instructorRepository.findByIdInstructorAndInstitution_IdAndInstitutionDeletedAtIsNull(5L, 1L))
+                    .thenReturn(Optional.of(mockInstructor));
 
             createCourseClassHandler.create(validCommand);
 
@@ -114,7 +116,7 @@ public class UNI_01_CreateCourseClassHandlerTest {
             CourseClass saved = captor.getValue();
 
             assertAll(
-                    () -> assertEquals(mockUser, saved.getInstructor()),
+                    () -> assertEquals(mockInstructor, saved.getInstructor()),
                     () -> assertEquals(mockCourse, saved.getCourse()),
                     () -> assertEquals(mockInstitution, saved.getInstitution()),
                     () -> assertTrue(saved.isActive()),
@@ -134,10 +136,10 @@ public class UNI_01_CreateCourseClassHandlerTest {
             when(institutionRepository.findByIdAndDeletedAtIsNull(1L))
                     .thenReturn(Optional.of(mockInstitution));
             when(courseClassRepository
-                    .existsByIdAndCourse_IdAndInstitution_IdAndInstitution_DeletedAtIsNull(5L, 10L, 1L))
+                    .existsByCourse_idAndInstructor_IdInstructorAndInstitution_IdAndInstitution_DeletedAtIsNull(10L, 5L, 1L))
                     .thenReturn(true);
 
-            NotFoundException ex = assertThrows(NotFoundException.class,
+            AlreadyExistsException ex = assertThrows(AlreadyExistsException.class,
                     () -> createCourseClassHandler.create(validCommand));
 
             assertEquals(InstructorMessages.INSTRUCTOR_ALREAY_EXISTS, ex.getMessage());
@@ -153,8 +155,10 @@ public class UNI_01_CreateCourseClassHandlerTest {
             when(institutionRepository.findByIdAndDeletedAtIsNull(1L))
                     .thenReturn(Optional.of(mockInstitution));
             when(courseClassRepository
-                    .existsByIdAndCourse_IdAndInstitution_IdAndInstitution_DeletedAtIsNull(5L, 10L, 1L))
+                    .existsByCourse_idAndInstructor_IdInstructorAndInstitution_IdAndInstitution_DeletedAtIsNull(10L, 5L, 1L))
                     .thenReturn(false);
+            when(instructorRepository.findByIdInstructorAndInstitution_IdAndInstitutionDeletedAtIsNull(5L, 1L))
+                    .thenReturn(Optional.of(mockInstructor));
             when(courseRepository.findByIdAndInstitutionId(10L, 1L))
                     .thenReturn(Optional.empty());
 
@@ -167,24 +171,22 @@ public class UNI_01_CreateCourseClassHandlerTest {
     }
 
     @Test
-    @DisplayName("UNI_01.04 - Deve rejeitar criação quando usuário não existir")
-    void shouldRejectCreationWhenUserDoesNotExist() {
+    @DisplayName("UNI_01.04 - Deve rejeitar criação quando instrutor não existir")
+    void shouldRejectCreationWhenInstructorDoesNotExist() {
         try (MockedStatic<SecurityUtils> mocked = mockStatic(SecurityUtils.class)) {
             mocked.when(SecurityUtils::getInstitutionId).thenReturn(1L);
             when(institutionRepository.findByIdAndDeletedAtIsNull(1L))
                     .thenReturn(Optional.of(mockInstitution));
             when(courseClassRepository
-                    .existsByIdAndCourse_IdAndInstitution_IdAndInstitution_DeletedAtIsNull(5L, 10L, 1L))
+                    .existsByCourse_idAndInstructor_IdInstructorAndInstitution_IdAndInstitution_DeletedAtIsNull(10L, 5L, 1L))
                     .thenReturn(false);
-            when(courseRepository.findByIdAndInstitutionId(10L, 1L))
-                    .thenReturn(Optional.of(mockCourse));
-            when(userRepository.findByIdAndInstitution_Id(5L, 1L))
+            when(instructorRepository.findByIdInstructorAndInstitution_IdAndInstitutionDeletedAtIsNull(5L, 1L))
                     .thenReturn(Optional.empty());
 
             NotFoundException ex = assertThrows(NotFoundException.class,
                     () -> createCourseClassHandler.create(validCommand));
 
-            assertEquals(UserMessage.USER_NOT_FOUND, ex.getMessage());
+            assertEquals(InstructorMessages.INSTRUCTOR_NOT_FOUND, ex.getMessage());
             verify(courseClassRepository, never()).save(any());
         }
     }
@@ -212,7 +214,7 @@ public class UNI_01_CreateCourseClassHandlerTest {
             when(institutionRepository.findByIdAndDeletedAtIsNull(1L))
                     .thenReturn(Optional.of(mockInstitution));
             when(courseClassRepository
-                    .existsByIdAndCourse_IdAndInstitution_IdAndInstitution_DeletedAtIsNull(5L, 10L, 1L))
+                    .existsByCourse_idAndInstructor_IdInstructorAndInstitution_IdAndInstitution_DeletedAtIsNull(10L, 5L, 1L))
                     .thenReturn(true);
 
             assertThrows(AlreadyExistsException.class,

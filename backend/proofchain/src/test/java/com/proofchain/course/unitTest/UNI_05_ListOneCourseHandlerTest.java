@@ -16,28 +16,18 @@
 
 package com.proofchain.course.unitTest;
 
-import com.proofchain.admin.institution.domain.model.Institution;
 import com.proofchain.admin.institution.infrastructure.repository.InstitutionRepository;
+import com.proofchain.business.course.application.handler.ListOneCourseHandler;
 import com.proofchain.business.course.domain.model.Course;
 import com.proofchain.business.course.infrastructure.repository.CourseRepository;
-import com.proofchain.business.courseClass.application.command.RequestCourseClassCommand;
-import com.proofchain.business.courseClass.application.handler.CreateCourseClassHandler;
-import com.proofchain.business.courseClass.domain.model.CourseClass;
-import com.proofchain.business.courseClass.infrastructure.repository.CourseClassRepository;
-import com.proofchain.shared.exception.AlreadyExistsException;
+import com.proofchain.business.course.interfaces.dto.response.CourseResponse;
 import com.proofchain.shared.exception.NotFoundException;
 import com.proofchain.shared.exception.messages.CourseMessages;
-import com.proofchain.shared.exception.messages.InstructorMessages;
-import com.proofchain.shared.exception.messages.UserMessage;
 import com.proofchain.shared.security.SecurityUtils;
 import com.proofchain.shared.util.TenantValidation;
-import com.proofchain.user.domain.model.User;
-import com.proofchain.user.infrastructure.repository.UserRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
@@ -47,11 +37,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.never;
@@ -59,162 +45,125 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class CreateCourseClassHandlerTest {
+class UNI_05_ListOneCourseHandlerTest {
 
-    @Mock private CourseClassRepository courseClassRepository;
     @Mock private InstitutionRepository institutionRepository;
     @Mock private CourseRepository courseRepository;
-    @Mock private UserRepository userRepository;
     @Mock private TenantValidation tenantValidation;
-    @InjectMocks private CreateCourseClassHandler createCourseClassHandler;
+    @InjectMocks private ListOneCourseHandler listOneCourseHandler;
 
-    private RequestCourseClassCommand validCommand;
-    private Institution mockInstitution;
-    private Course mockCourse;
-    private User mockUser;
-
-    @BeforeEach
-    void setUp() {
-        validCommand = new RequestCourseClassCommand(5L, 10L);
-
-        mockInstitution = new Institution();
-        mockInstitution.setId(1L);
-        mockInstitution.setName("Instituição Test");
-
-        mockCourse = new Course();
-        mockCourse.setId(10L);
-        mockCourse.setName("Curso Teste");
-
-        mockUser = new User();
-        mockUser.setId(5L);
-        mockUser.setName("Instrutor Teste");
+    private Course buildCourse(Long id, String name, String description, int hours) {
+        Course course = new Course();
+        course.setId(id);
+        course.setName(name);
+        course.setDescription(description);
+        course.setHours(hours);
+        return course;
     }
 
     @Test
-    @DisplayName("UNI_01.01 - Deve criar turma com dados válidos")
-    void shouldCreateCourseClassWithValidData() {
+    @DisplayName("UNI_05.01 - Deve retornar curso por identificador no tenant atual")
+    void shouldReturnCourseByIdInCurrentTenant() {
+        Long institutionId = 1L;
+        Long courseId = 10L;
+        Course course = buildCourse(courseId, "Java Avançado", "Curso de Java", 40);
+
         try (MockedStatic<SecurityUtils> mocked = mockStatic(SecurityUtils.class)) {
-            mocked.when(SecurityUtils::getInstitutionId).thenReturn(1L);
-            when(institutionRepository.findByIdAndDeletedAtIsNull(1L))
-                    .thenReturn(Optional.of(mockInstitution));
-            when(courseClassRepository
-                    .existsByIdAndCourse_IdAndInstitution_IdAndInstitution_DeletedAtIsNull(5L, 10L, 1L))
-                    .thenReturn(false);
-            when(courseRepository.findByIdAndInstitutionId(10L, 1L))
-                    .thenReturn(Optional.of(mockCourse));
-            when(userRepository.findByIdAndInstitution_Id(5L, 1L))
-                    .thenReturn(Optional.of(mockUser));
+            mocked.when(SecurityUtils::getInstitutionId).thenReturn(institutionId);
+            when(courseRepository.findByIdAndInstitutionId(courseId, institutionId))
+                    .thenReturn(Optional.of(course));
 
-            createCourseClassHandler.create(validCommand);
+            CourseResponse result = listOneCourseHandler.listOneCourse(courseId);
 
-            ArgumentCaptor<CourseClass> captor = ArgumentCaptor.forClass(CourseClass.class);
-            verify(courseClassRepository).save(captor.capture());
-            CourseClass saved = captor.getValue();
             assertAll(
-                    () -> assertEquals(mockUser, saved.getInstructor()),
-                    () -> assertEquals(mockCourse, saved.getCourse()),
-                    () -> assertEquals(mockInstitution, saved.getInstitution()),
-                    () -> assertTrue(saved.isActive()),
-                    () -> assertNull(saved.getUpdateAt()),
-                    () -> assertEquals(0, saved.getParticipants() == null ? 0 : saved.getParticipants().size())
+                    () -> assertEquals(courseId, result.id()),
+                    () -> assertEquals("Java Avançado", result.name()),
+                    () -> assertEquals("Curso de Java", result.description()),
+                    () -> assertEquals(40, result.hours())
             );
-            verify(tenantValidation).validateInstitution(1L);
+            verify(tenantValidation).validateInstitution(institutionId);
+            verify(courseRepository).findByIdAndInstitutionId(courseId, institutionId);
         }
     }
 
     @Test
-    @DisplayName("UNI_01.02 - Deve rejeitar criação quando validação de tenant falhar")
-    void shouldRejectCreationWhenTenantValidationFails() {
+    @DisplayName("UNI_05.02 - Deve rejeitar consulta de curso inexistente")
+    void shouldRejectQueryOfNonExistentCourse() {
+        Long institutionId = 1L;
+        Long courseId = 99L;
+
         try (MockedStatic<SecurityUtils> mocked = mockStatic(SecurityUtils.class)) {
-            mocked.when(SecurityUtils::getInstitutionId).thenReturn(1L);
-            doThrow(new NotFoundException("Instituição não encontrada"))
-                    .when(tenantValidation).validateInstitution(1L);
-
-            assertThrows(NotFoundException.class,
-                    () -> createCourseClassHandler.create(validCommand));
-
-            verify(courseClassRepository, never()).save(any());
-        }
-    }
-
-    @Test
-    @DisplayName("UNI_01.03 - Deve rejeitar criação quando instrutor já vinculado ao curso")
-    void shouldRejectCreationWhenInstructorAlreadyLinkedToCourse() {
-        try (MockedStatic<SecurityUtils> mocked = mockStatic(SecurityUtils.class)) {
-            mocked.when(SecurityUtils::getInstitutionId).thenReturn(1L);
-            when(institutionRepository.findByIdAndDeletedAtIsNull(1L))
-                    .thenReturn(Optional.of(mockInstitution));
-            when(courseClassRepository
-                    .existsByIdAndCourse_IdAndInstitution_IdAndInstitution_DeletedAtIsNull(5L, 10L, 1L))
-                    .thenReturn(true);
-
-            AlreadyExistsException ex = assertThrows(AlreadyExistsException.class,
-                    () -> createCourseClassHandler.create(validCommand));
-
-            assertEquals(InstructorMessages.INSTRUCTOR_ALREAY_EXISTS, ex.getMessage());
-            verify(courseClassRepository, never()).save(any());
-        }
-    }
-
-    @Test
-    @DisplayName("UNI_01.04 - Deve rejeitar criação quando curso não existir")
-    void shouldRejectCreationWhenCourseDoesNotExist() {
-        try (MockedStatic<SecurityUtils> mocked = mockStatic(SecurityUtils.class)) {
-            mocked.when(SecurityUtils::getInstitutionId).thenReturn(1L);
-            when(institutionRepository.findByIdAndDeletedAtIsNull(1L))
-                    .thenReturn(Optional.of(mockInstitution));
-            when(courseClassRepository
-                    .existsByIdAndCourse_IdAndInstitution_IdAndInstitution_DeletedAtIsNull(5L, 10L, 1L))
-                    .thenReturn(false);
-            when(courseRepository.findByIdAndInstitutionId(10L, 1L))
+            mocked.when(SecurityUtils::getInstitutionId).thenReturn(institutionId);
+            when(courseRepository.findByIdAndInstitutionId(courseId, institutionId))
                     .thenReturn(Optional.empty());
 
             NotFoundException ex = assertThrows(NotFoundException.class,
-                    () -> createCourseClassHandler.create(validCommand));
+                    () -> listOneCourseHandler.listOneCourse(courseId));
 
             assertEquals(CourseMessages.COURSE_NOT_FOUND, ex.getMessage());
-            verify(courseClassRepository, never()).save(any());
         }
     }
 
     @Test
-    @DisplayName("UNI_01.05 - Deve rejeitar criação quando usuário não existir")
-    void shouldRejectCreationWhenUserDoesNotExist() {
+    @DisplayName("UNI_05.03 - Deve rejeitar consulta de curso de outra instituição")
+    void shouldRejectQueryOfCourseFromAnotherInstitution() {
+        Long currentInstitutionId = 1L;
+        Long otherInstitutionId = 2L;
+        Long courseId = 10L;
+
         try (MockedStatic<SecurityUtils> mocked = mockStatic(SecurityUtils.class)) {
-            mocked.when(SecurityUtils::getInstitutionId).thenReturn(1L);
-            when(institutionRepository.findByIdAndDeletedAtIsNull(1L))
-                    .thenReturn(Optional.of(mockInstitution));
-            when(courseClassRepository
-                    .existsByIdAndCourse_IdAndInstitution_IdAndInstitution_DeletedAtIsNull(5L, 10L, 1L))
-                    .thenReturn(false);
-            when(courseRepository.findByIdAndInstitutionId(10L, 1L))
-                    .thenReturn(Optional.of(mockCourse));
-            when(userRepository.findByIdAndInstitution_Id(5L, 1L))
+            mocked.when(SecurityUtils::getInstitutionId).thenReturn(currentInstitutionId);
+            // A consulta usa o institutionId autenticado (1L),
+            // portanto um curso da instituição 2L não é encontrado.
+            when(courseRepository.findByIdAndInstitutionId(courseId, currentInstitutionId))
                     .thenReturn(Optional.empty());
 
-            NotFoundException ex = assertThrows(NotFoundException.class,
-                    () -> createCourseClassHandler.create(validCommand));
+            assertThrows(NotFoundException.class,
+                    () -> listOneCourseHandler.listOneCourse(courseId));
 
-            assertEquals(UserMessage.USER_NOT_FOUND, ex.getMessage());
-            verify(courseClassRepository, never()).save(any());
+            verify(courseRepository).findByIdAndInstitutionId(courseId, currentInstitutionId);
+            verify(courseRepository, never()).findByIdAndInstitutionId(courseId, otherInstitutionId);
         }
     }
 
     @Test
-    @DisplayName("UNI_01.06 - Não deve persistir turma quando validação falhar")
-    void shouldNotPersistCourseClassWhenValidationFails() {
+    @DisplayName("UNI_05.04 - Deve rejeitar consulta quando validação de tenant falhar")
+    void shouldRejectQueryWhenTenantValidationFails() {
+        Long institutionId = 1L;
+        Long courseId = 10L;
+
         try (MockedStatic<SecurityUtils> mocked = mockStatic(SecurityUtils.class)) {
-            mocked.when(SecurityUtils::getInstitutionId).thenReturn(1L);
-            when(institutionRepository.findByIdAndDeletedAtIsNull(1L))
-                    .thenReturn(Optional.of(mockInstitution));
-            when(courseClassRepository
-                    .existsByIdAndCourse_IdAndInstitution_IdAndInstitution_DeletedAtIsNull(5L, 10L, 1L))
-                    .thenReturn(true);
+            mocked.when(SecurityUtils::getInstitutionId).thenReturn(institutionId);
+            doThrow(new NotFoundException("Instituição não encontrada"))
+                    .when(tenantValidation).validateInstitution(institutionId);
 
-            assertThrows(AlreadyExistsException.class,
-                    () -> createCourseClassHandler.create(validCommand));
+            assertThrows(NotFoundException.class,
+                    () -> listOneCourseHandler.listOneCourse(courseId));
 
-            verify(courseClassRepository, never()).save(any());
+            verify(courseRepository, never()).findByIdAndInstitutionId(courseId, institutionId);
+        }
+    }
+
+    @Test
+    @DisplayName("UNI_05.05 - Deve mapear corretamente a entidade para CourseResponse")
+    void shouldMapEntityToCourseResponseCorrectly() {
+        Long institutionId = 1L;
+        Long courseId = 7L;
+        Course course = buildCourse(courseId, "Spring Boot", "API REST com Spring", 60);
+
+        try (MockedStatic<SecurityUtils> mocked = mockStatic(SecurityUtils.class)) {
+            mocked.when(SecurityUtils::getInstitutionId).thenReturn(institutionId);
+            when(courseRepository.findByIdAndInstitutionId(courseId, institutionId))
+                    .thenReturn(Optional.of(course));
+
+            CourseResponse result = listOneCourseHandler.listOneCourse(courseId);
+
+            assertAll(
+                    () -> assertEquals(7L, result.id()),
+                    () -> assertEquals("Spring Boot", result.name()),
+                    () -> assertEquals("API REST com Spring", result.description()),
+                    () -> assertEquals(60, result.hours())
+            );
         }
     }
 }
