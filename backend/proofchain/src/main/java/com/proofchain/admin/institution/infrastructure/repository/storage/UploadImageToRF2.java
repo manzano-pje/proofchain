@@ -2,6 +2,7 @@ package com.proofchain.admin.institution.infrastructure.repository.storage;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.core.sync.RequestBody;
@@ -12,11 +13,10 @@ import java.io.IOException;
 import java.util.UUID;
 
 @Component
-@AllArgsConstructor
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class UploadImageToRF2 {
 
-    private S3Client s3Client;
+    private final S3Client s3Client;
 
     public String uploadImageToRF2(MultipartFile file) throws IOException {
 
