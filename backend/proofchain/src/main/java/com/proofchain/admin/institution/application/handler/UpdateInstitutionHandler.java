@@ -9,7 +9,7 @@ import com.proofchain.shared.exception.messages.InstitutionMessages;
 import com.proofchain.shared.security.SecurityUtils;
 import com.proofchain.shared.util.TenantValidation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.core.sync.RequestBody;
@@ -23,10 +23,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UpdateInstitutionHandler {
 
-
-    @Autowired
-    private S3Client s3Client;
-    private UploadImageToRF2 uploadImage;
+    private final S3Client s3Client;
+    private final UploadImageToRF2 uploadImage;
     private final InstitutionRepository institutionRepository;
     private final TenantValidation tenantValidation;
 
@@ -56,24 +54,34 @@ public class UpdateInstitutionHandler {
                 .orElseThrow(() -> new NotFoundException(InstitutionMessages.INSTITUTION_NOT_FOUND));
         institution.updateFrom(request);
 
-        //Faz upload de imagens para o cloudFlare R2
-        String logoKey = uploadImage.uploadImageToRF2(logo);
+        if(logo != null && !logo.isEmpty()) {
 
-        // Se a instituição já tinha um logo antigo, deleta do R2 após gravação com sucesso
-        if (institution.getLogoKey() != null) {
-            s3Client.deleteObject(d -> d.bucket("proofchain-assets").key(institution.getLogoKey()));
+            //Faz upload de imagens para o cloudFlare R2
+            String logoKey = uploadImage.uploadImageToRF2(logo);
+
+            // Se a instituição já tinha um logo antigo, deleta do R2 após gravação com sucesso
+            if (institution.getLogoKey() != null) {
+                s3Client.deleteObject(d ->
+                        d.bucket("proofchain-assets")
+                                .key(institution.getLogoKey()));
+            }
+            institution.setLogoKey(logoKey);
         }
 
-        String signatureKey = uploadImage.uploadImageToRF2(logo);
+        if(signature != null && !signature.isEmpty()){
+            // Faz upload de assinatura para o CloudFlare R2
+            String signatureKey = uploadImage.uploadImageToRF2(signature);
 
-        // Se a instituição já tinha um logo antigo, deleta do R2 após gravação com sucesso
-        if (institution.getSignatureKey() != null) {
-            s3Client.deleteObject(d -> d.bucket("proofchain-assets").key(institution.getSignatureKey()));
+            // Se a instituição já tinha uma assinatura antiga, deleta do R2 após gravação com sucesso
+            if (institution.getSignatureKey() != null) {
+                s3Client.deleteObject(d ->
+                        d.bucket("proofchain-assets")
+                                .key(institution.getSignatureKey()));
+            }
+            institution.setSignatureKey(signatureKey);
         }
 
         institution.updateFrom(request);
-        institution.setLogoKey(logoKey);
-        institution.setSignatureKey(signatureKey);
 
         institutionRepository.save(institution);
     }
