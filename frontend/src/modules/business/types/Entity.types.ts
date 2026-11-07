@@ -230,14 +230,7 @@ export const ADMIN_MENU: readonly MenuGroupConfig[] = [
         category: 'CERTIFICADOS',
         allowedRoles: ['Super_admin', 'Admin'],
       },
-      {
-        id: 'validate',
-        label: 'Validar',
-        icon: '🔎',
-        route: '/admin/certificados/validar',
-        category: 'CERTIFICADOS',
-        allowedRoles: ['Super_admin', 'Admin', 'user'],
-      },
+
     ],
   },
   {
@@ -260,14 +253,14 @@ export const ADMIN_MENU: readonly MenuGroupConfig[] = [
         category: 'ADMINISTRAÇÃO',
         allowedRoles: ['Super_admin', 'Admin'],
       },
-      {
-        id: 'settings',
-        label: 'Configurações',
-        icon: '⚙️',
-        route: '/admin/configuracoes',
-        category: 'ADMINISTRAÇÃO',
-        allowedRoles: ['Super_admin', 'Admin'],
-      },
+      // {
+      //   id: 'settings',
+      //   label: 'Configurações',
+      //   icon: '⚙️',
+      //   route: '/admin/configuracoes',
+      //   category: 'ADMINISTRAÇÃO',
+      //   allowedRoles: ['Super_admin', 'Admin'],
+      // },
     ],
   },
 ] as const
