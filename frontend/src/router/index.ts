@@ -6,13 +6,25 @@ import { useAuthStore } from '@/modules/auth/stores/Auth.store'
 import { canAccessAdminRoute } from '@/modules/business/types/Entity.types'
 
 
-const institutionRoute = () =>
-  import('@/modules/business/views/admin/institution/InstitutionPage.vue')
-// A mesma página de cursos é compartilhada pelos dois contextos administrativos.
-const courseRoute = () =>
-  import('@/modules/business/views/admin/courses/CoursePage.vue')
+const adminDashboardRoute = () =>
+  import('@/modules/business/views/admin/AdminLayout.vue')
 const participantRoute = () =>
   import('@/modules/business/views/admin/prticipant/ParticipantPage.vue')
+const courseRoute = () =>
+  import('@/modules/business/views/admin/courses/CoursePage.vue')
+const courseClassRoute = () =>
+  import('@/modules/business/views/admin/AdminLayout.vue')
+const instructorRoute = () =>
+  import('@/modules/business/views/admin/AdminLayout.vue')
+const certificatesRoute = () =>
+  import('@/modules/business/views/admin/AdminLayout.vue')
+const generateCertificatesRoute = () =>
+  import('@/modules/business/views/admin/AdminLayout.vue')
+const institutionRoute = () =>
+  import('@/modules/business/views/admin/institution/InstitutionPage.vue')
+const usersRoute = () =>
+  import('@/modules/business/views/admin/AdminLayout.vue')
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -38,88 +50,87 @@ const router = createRouter({
       path: '/admin',
       name: 'platformAdmin',
       component: () => import('@/modules/business/views/admin/AdminLayout.vue'),
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: true, allowedRoles: ['Admin', 'Super_admin'] },
       children: [
         {
           path: 'instituicao',
           name: 'institution',
           component: institutionRoute,
-          meta: { allowedRoles: ['Super_admin', 'Admin'] },
+          meta: { allowedRoles: ['Admin'] },
         },
         {
           path: 'cursos',
           name: 'admin-courses',
           component: courseRoute,
-          // Manter permissões alinhadas ao endpoint de leitura do backend.
-          meta: { allowedRoles: ['Super_admin', 'Admin', 'user'] },
+          meta: { allowedRoles: ['Admin'] },
         },
         {
           path: 'participantes',
           name: 'admin-participants',
           component: participantRoute,
-          meta: { allowedRoles: ['Super_admin', 'Admin', 'user'] },
-        },
-        // Rotas para telas ainda não disponibilizadas; habilitar conforme a implementação:
-        // { path: 'dashboard', name: 'admin-dashboard', component: () => import('@/modules/business/views/admin/dashboard/DashboardPage.vue') },
-        // { path: 'participantes', name: 'admin-participants', component: () => import('@/modules/business/views/admin/participants/ParticipantsPage.vue') },
-        // { path: 'turmas', name: 'admin-classes', component: () => import('@/modules/business/views/admin/classes/ClassesPage.vue') },
-        // { path: 'instrutores', name: 'admin-instructors', component: () => import('@/modules/business/views/admin/instructors/InstructorsPage.vue') },
-        // { path: 'certificados', name: 'admin-certificates', component: () => import('@/modules/business/views/admin/certificates/CertificatesPage.vue') },
-        // { path: 'certificados/gerar', name: 'admin-generate-certificates', component: () => import('@/modules/business/views/admin/certificates/GenerateCertificatesPage.vue') },
-        // { path: 'certificados/validar', name: 'admin-validate-certificates', component: () => import('@/modules/business/views/admin/certificates/ValidateCertificatesPage.vue') },
-        // { path: 'usuarios', name: 'admin-users', component: () => import('@/modules/business/views/admin/users/UsersPage.vue') },
-        // { path: 'configuracoes', name: 'admin-settings', component: () => import('@/modules/business/views/admin/settings/SettingsPage.vue') },
-      ],
+          meta: { allowedRoles: ['Admin'] },
+        }
+       ],
     },
     {
       path: '/institutionAdmin',
       name: 'institutionAdmin',
       component: () => import('@/modules/business/views/admin/AdminLayout.vue'),
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: true, allowedRoles: ['Admin'] },
       children: [
         {
           path: 'instituicao',
           name: 'institutionAdmin-institution',
           component: institutionRoute,
-          meta: { allowedRoles: ['Super_admin', 'Admin'] },
+          meta: { allowedRoles: ['Admin'] },
         },
         {
+          path: 'turmas',
+          name: 'institutionAdmin-classes',
+          component: courseClassRoute,
+          meta: { allowedRoles: ['Admin'] },
+        },
+                {
           path: 'cursos',
           name: 'institutionAdmin-courses',
           component: courseRoute,
-          // Manter permissões alinhadas ao endpoint de leitura do backend.
-          meta: { allowedRoles: ['Super_admin', 'Admin', 'user'] },
+          meta: { allowedRoles: ['Admin'] },
         },
         {
           path: 'participantes',
           name: 'institutionAdmin-participants',
           component: participantRoute,
-          meta: { allowedRoles: ['Super_admin', 'Admin', 'user'] },
+          meta: { allowedRoles: ['Admin'] },
         },
         {
           path: 'dashboard',
           name: 'admin-dashboard',
-          redirect: { name: 'admin-home' },
+         component: adminDashboardRoute,
+          meta: { allowedRoles: ['Admin'] },
         },
         {
           path: 'turmas',
           name: 'admin-classes',
-          redirect: { name: 'admin-home' },
+          component: participantRoute,
+          meta: { allowedRoles: ['Admin'] },
         },
         {
           path: 'instrutores',
           name: 'admin-instructors',
-          redirect: { name: 'admin-home' },
+          component: instructorRoute,
+          meta: { allowedRoles: ['Admin'] },
         },
         {
           path: 'certificados',
           name: 'admin-certificates',
-          redirect: { name: 'admin-home' },
+          component: certificatesRoute,
+          meta: { allowedRoles: ['Admin'] },
         },
         {
           path: 'certificados/gerar',
           name: 'admin-generate-certificates',
-          redirect: { name: 'admin-home' },
+          component: generateCertificatesRoute,
+          meta: { allowedRoles: ['Admin'] },
         },
         {
           path: 'certificados/validar',
@@ -129,12 +140,8 @@ const router = createRouter({
         {
           path: 'usuarios',
           name: 'admin-users',
-          redirect: { name: 'admin-home' },
-        },
-        {
-          path: 'configuracoes',
-          name: 'admin-settings',
-          redirect: { name: 'admin-home' },
+          component: usersRoute,
+          meta: { allowedRoles: ['Admin'] },
         },
       ],
     },
@@ -165,8 +172,11 @@ router.beforeEach((to) => {
     return { name: 'platformAdmin' }
   }
 
-  if (to.meta.requiresAuth && authStore.role && !canAccessAdminRoute(to.path, authStore.role)) {
-    return { name: isPlatformInstitution ? 'platformAdmin' : 'institutionAdmin' }
+  if (
+    to.meta.requiresAuth &&
+    (!authStore.role || !canAccessAdminRoute(to.path, authStore.role))
+  ) {
+    return { name: 'home' }
   }
 
   return true
