@@ -15,7 +15,7 @@ const courseRoute = () =>
 const courseClassRoute = () =>
   import('@/modules/business/views/admin/AdminLayout.vue')
 const instructorRoute = () =>
-  import('@/modules/business/views/admin/AdminLayout.vue')
+  import('@/modules/business/views/admin/instructors/InstructorPage.vue')
 const certificatesRoute = () =>
   import('@/modules/business/views/admin/AdminLayout.vue')
 const generateCertificatesRoute = () =>
@@ -68,6 +68,12 @@ const router = createRouter({
           path: 'participantes',
           name: 'admin-participants',
           component: participantRoute,
+          meta: { allowedRoles: ['Admin'] },
+        },
+        {
+          path: 'instrutores',
+          name: 'admin-instructors',
+          component: instructorRoute,
           meta: { allowedRoles: ['Admin'] },
         }
        ],
