@@ -93,7 +93,7 @@ const loadInstructors = async () => {
   if (!token) return
   isLoading.value = true
   try {
-    instructors.value = await instructorService.getAll(token)
+    instructors.value = (await instructorService.getAll(token)).map((item) => ({\n      idInstructor: item.id,\n      name: item.name,\n      email: item.email,\n      course: '',\n      isActive: true,\n      creatAt: '',\n      deletedAt: null,\n    }))
   } catch (error) {
     notify(error instanceof Error ? error.message : 'Não foi possível carregar os instrutores.', 'error')
   } finally {
