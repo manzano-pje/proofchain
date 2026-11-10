@@ -37,6 +37,8 @@ import java.time.Instant;
  */
 public record UserReturn(
 
+        Long id,
+
         @Schema(
                 description = "Nome completo do usuário.",
                 example = "Paulo Manzano"
@@ -91,6 +93,7 @@ public record UserReturn(
      */
     public UserReturn(User user) {
         this(
+                user.getId(),
                 user.getName(),
                 user.getEmail(),
                 user.getRole(),

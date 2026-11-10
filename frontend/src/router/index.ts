@@ -15,7 +15,7 @@ const courseRoute = () =>
 const courseClassRoute = () =>
   import('@/modules/business/views/admin/AdminLayout.vue')
 const instructorRoute = () =>
-  import('@/modules/business/views/admin/AdminLayout.vue')
+  import('@/modules/business/views/admin/instructor/InstructorPage.vue')
 const certificatesRoute = () =>
   import('@/modules/business/views/admin/AdminLayout.vue')
 const generateCertificatesRoute = () =>
@@ -69,8 +69,14 @@ const router = createRouter({
           name: 'admin-participants',
           component: participantRoute,
           meta: { allowedRoles: ['Admin'] },
-        }
-       ],
+        },
+        {
+          path: 'instrutores',
+          name: 'platform-admin-instructors',
+          component: instructorRoute,
+          meta: { allowedRoles: ['Admin'] },
+        },
+      ],
     },
     {
       path: '/institutionAdmin',
@@ -90,7 +96,7 @@ const router = createRouter({
           component: courseClassRoute,
           meta: { allowedRoles: ['Admin'] },
         },
-                {
+        {
           path: 'cursos',
           name: 'institutionAdmin-courses',
           component: courseRoute,
@@ -106,12 +112,6 @@ const router = createRouter({
           path: 'dashboard',
           name: 'admin-dashboard',
          component: adminDashboardRoute,
-          meta: { allowedRoles: ['Admin'] },
-        },
-        {
-          path: 'turmas',
-          name: 'admin-classes',
-          component: participantRoute,
           meta: { allowedRoles: ['Admin'] },
         },
         {
@@ -135,7 +135,7 @@ const router = createRouter({
         {
           path: 'certificados/validar',
           name: 'admin-validate-certificates',
-          redirect: { name: 'admin-home' },
+          redirect: { name: 'admin-dashboard' },
         },
         {
           path: 'usuarios',
@@ -175,6 +175,18 @@ router.beforeEach((to) => {
   if (
     to.meta.requiresAuth &&
     (!authStore.role || !canAccessAdminRoute(to.path, authStore.role))
+  ) {
+    return { name: 'home' }
+  }
+
+  if (
+    to.matched.some((record) => {
+      const allowedRoles = record.meta.allowedRoles
+      return (
+        Array.isArray(allowedRoles) &&
+        (!authStore.role || !allowedRoles.includes(authStore.role))
+      )
+    })
   ) {
     return { name: 'home' }
   }
