@@ -207,6 +207,7 @@ export const ADMIN_MENU: readonly MenuGroupConfig[] = [
         icon: '🎓',
         route: '/admin/instrutores',
         category: 'GESTÃO',
+        // allowedRoles: ['Admin'],
       },
     ],
   },
@@ -285,4 +286,3 @@ export function canAccessAdminRoute(path: string, role: AuthRole): boolean {
     ),
   )
 }
-

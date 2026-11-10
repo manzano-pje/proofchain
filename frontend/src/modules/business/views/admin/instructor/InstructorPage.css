@@ -1,0 +1,340 @@
+/*
+=========================================================
+Projeto.......: ProofChain
+Módulo........: Business / Instrutores
+Arquivo.......: InstructorPage.css
+Metodologia...: BEM
+Descrição.....: Estilos da página de administração de instrutores.
+=========================================================
+*/
+
+.instructor-page {
+  width: 100%;
+  color: var(--color-text, #202938);
+}
+
+.instructor-page__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.instructor-page__title {
+  margin: 0;
+  font-size: 1.65rem;
+  font-weight: 700;
+}
+
+.instructor-page__subtitle {
+  margin: 0.4rem 0 0;
+  color: var(--color-text-muted, #667085);
+}
+
+.instructor-page__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.instructor-page__search {
+  width: min(100%, 32rem);
+  min-height: 2.7rem;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid #d0d5dd;
+  border-radius: 0.5rem;
+  font: inherit;
+}
+
+.instructor-page__counter {
+  color: #667085;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.instructor-page__table-wrapper {
+  overflow-x: auto;
+  border: 1px solid #eaecf0;
+  border-radius: 0.75rem;
+  background: #fff;
+}
+
+.instructor-page__table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.instructor-page__table th,
+.instructor-page__table td {
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid #eaecf0;
+  vertical-align: middle;
+}
+
+.instructor-page__table th {
+  color: #667085;
+  background: #f9fafb;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.instructor-page__table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.instructor-page__person-name {
+  font-weight: 600;
+}
+
+.instructor-page__actions-heading,
+.instructor-page__actions {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.instructor-page__icon-button {
+  min-width: 2.1rem;
+  min-height: 2.1rem;
+  margin-left: 0.3rem;
+  border: 1px solid #eaecf0;
+  border-radius: 0.4rem;
+  background: #fff;
+  color: #344054;
+  cursor: pointer;
+}
+
+.instructor-page__icon-button:hover {
+  background: #f9fafb;
+}
+
+.instructor-page__icon-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.instructor-page__icon-button--danger {
+  color: #b42318;
+}
+
+.instructor-page__state {
+  display: flex;
+  min-height: 10rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 2rem 1rem;
+  color: #667085;
+  text-align: center;
+}
+
+.instructor-page__pagination {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
+  padding: 1rem 0;
+  color: #667085;
+}
+
+.instructor-page__pagination button {
+  padding: 0.45rem 0.8rem;
+  border: 1px solid #d0d5dd;
+  border-radius: 0.4rem;
+  background: #fff;
+  cursor: pointer;
+}
+
+.instructor-page__pagination button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.instructor-page__feedback {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.8rem 1rem;
+  margin: 1rem 0;
+  border-radius: 0.5rem;
+}
+
+.instructor-page__feedback--success {
+  color: #067647;
+  background: #ecfdf3;
+}
+
+.instructor-page__feedback--error {
+  color: #b42318;
+  background: #fef3f2;
+}
+
+.instructor-page__feedback-close {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-size: 1.3rem;
+  cursor: pointer;
+}
+
+.instructor-page__overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgb(16 24 40 / 55%);
+}
+
+.instructor-page__modal {
+  width: min(100%, 36rem);
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 1.5rem;
+  border-radius: 0.8rem;
+  background: #fff;
+  box-shadow: 0 1rem 3rem rgb(16 24 40 / 20%);
+}
+
+.instructor-page__modal--compact {
+  width: min(100%, 30rem);
+}
+
+.instructor-page__modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.instructor-page__modal-header h2,
+.instructor-page__modal h2 {
+  margin: 0;
+}
+
+.instructor-page__modal-header p {
+  margin: 0.4rem 0 0;
+  color: #667085;
+  font-size: 0.9rem;
+}
+
+.instructor-page__modal-close {
+  border: 0;
+  background: transparent;
+  color: #667085;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.instructor-page__form {
+  display: grid;
+  gap: 1.1rem;
+}
+
+.instructor-page__notice {
+  padding: 0.8rem;
+  border-radius: 0.5rem;
+  color: #344054;
+  background: #f2f4f7;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.instructor-page__field {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.instructor-page__field label {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.instructor-page__field label span {
+  color: #b42318;
+}
+
+.instructor-page__field input {
+  width: 100%;
+  min-height: 2.7rem;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid #d0d5dd;
+  border-radius: 0.45rem;
+  font: inherit;
+}
+
+.instructor-page__field input:focus,
+.instructor-page__search:focus {
+  border-color: var(--color-primary, #3157a4);
+  outline: 2px solid rgb(49 87 164 / 15%);
+}
+
+.instructor-page__field input[readonly] {
+  color: #667085;
+  background: #f9fafb;
+}
+
+.instructor-page__field small {
+  color: #667085;
+  line-height: 1.4;
+}
+
+.instructor-page__form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.7rem;
+  margin-top: 1rem;
+}
+
+.instructor-page__details {
+  display: grid;
+  gap: 1rem;
+  margin: 0;
+}
+
+.instructor-page__details div {
+  display: grid;
+  gap: 0.2rem;
+  padding-bottom: 0.7rem;
+  border-bottom: 1px solid #eaecf0;
+}
+
+.instructor-page__details dt {
+  color: #667085;
+  font-size: 0.82rem;
+}
+
+.instructor-page__details dd {
+  margin: 0;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.instructor-page__warning {
+  color: #b42318;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 640px) {
+  .instructor-page__header,
+  .instructor-page__toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .instructor-page__search {
+    width: 100%;
+  }
+
+  .instructor-page__form-actions {
+    flex-direction: column-reverse;
+  }
+}

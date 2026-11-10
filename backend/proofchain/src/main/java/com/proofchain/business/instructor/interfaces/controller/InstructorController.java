@@ -42,7 +42,7 @@ public class InstructorController {
      */
 
     @PostMapping("/register")
-    @PreAuthorize("hasRole('SUPER_ADMIN','ADMIN', 'USER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<Void> createInstructor(@Valid @RequestBody InstructorRequest dto){
         CreateInstructorCommand command = new CreateInstructorCommand(dto);
         createInstructorHandler.createInstructor(command);
@@ -50,19 +50,19 @@ public class InstructorController {
     }
 
     @GetMapping("/list")
-    @PreAuthorize("hasRole('SUPER_ADMIN','ADMIN', 'USER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public List<InstructorsSumaryResponse> listAllInstructors(){
         return listAllInstructorHandler.listAllInstructors();
     }
 
     @GetMapping("/get/{id}")
-    @PreAuthorize("hasRole('SUPER_ADMIN','ADMIN', 'USER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public InstructorResponse getOneInstructor(@PathVariable Long id){
         return getOneInstructorHandler.getOneInstructor(id);
     }
 
     @PatchMapping("/update/{id}")
-    @PreAuthorize("hasRole('SUPER_ADMIN','ADMIN', 'USER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<Void> updateInstructor(@Valid @PathVariable Long id,
                                                  @RequestBody UpdateInstructor dto){
         UpdateInstructorCommand command = new UpdateInstructorCommand(dto);
@@ -71,7 +71,7 @@ public class InstructorController {
     }
 
     @DeleteMapping("/delete/{id}")
-    @PreAuthorize("hasRole('SUPER_ADMIN','ADMIN', 'USER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<Void> deleteInstructor(@PathVariable Long id) {
         deleteInstructorHandler.deleteInstructor(id);
         return ResponseEntity.ok().build();

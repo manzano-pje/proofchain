@@ -97,7 +97,7 @@ public class UserController {
             @ApiResponse(responseCode = "403", description = "Acesso negado"),
             @ApiResponse(responseCode = "409", description = "Usuário já cadastrado")
     })
-    @PreAuthorize("hasRole('SUPER_ADMIN','ADMIN')")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN')")
     @PostMapping("/register")
     public ResponseEntity<Void> createUser(@Valid @RequestBody UserRequestDto user) {
 
