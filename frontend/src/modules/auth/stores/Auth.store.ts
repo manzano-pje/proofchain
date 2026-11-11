@@ -7,7 +7,7 @@ import { normalizeAuthRole } from '../types/Auth.types'
 const SESSION_STORAGE_KEY = 'proofchain.auth.session'
 
 function readStoredSession(): AuthSession | null {
-  const storedSession = localStorage.getItem(SESSION_STORAGE_KEY)
+  const storedSession = sessionStorage.getItem(SESSION_STORAGE_KEY)
 
   if (!storedSession) return null
 
@@ -20,13 +20,13 @@ function readStoredSession(): AuthSession | null {
       !Number.isFinite(session.expiresAt) ||
       (session.expiresAt <= Date.now() && !session.refreshToken)
     ) {
-      localStorage.removeItem(SESSION_STORAGE_KEY)
+      sessionStorage.removeItem(SESSION_STORAGE_KEY)
       return null
     }
 
     return session
   } catch {
-    localStorage.removeItem(SESSION_STORAGE_KEY)
+    sessionStorage.removeItem(SESSION_STORAGE_KEY)
     return null
   }
 }
@@ -59,12 +59,12 @@ export const useAuthStore = defineStore('auth', () => {
     }
 
     session.value = nextSession
-    localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(nextSession))
+    sessionStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(nextSession))
   }
 
   function clearSession(): void {
     session.value = null
-    localStorage.removeItem(SESSION_STORAGE_KEY)
+    sessionStorage.removeItem(SESSION_STORAGE_KEY)
   }
 
   return {
