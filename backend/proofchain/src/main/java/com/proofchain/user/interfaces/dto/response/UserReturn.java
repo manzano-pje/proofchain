@@ -37,6 +37,7 @@ import java.time.Instant;
  */
 public record UserReturn(
 
+        @Schema(description = "Identificador do usuário.", example = "12")
         Long id,
 
         @Schema(
