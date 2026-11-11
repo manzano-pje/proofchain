@@ -14,7 +14,6 @@
 
 package com.proofchain.user.unitTest;
 
-import com.proofchain.shared.exception.NotFoundException;
 import com.proofchain.shared.exception.UnauthorizedException;
 import com.proofchain.shared.security.SecurityUtils;
 import com.proofchain.shared.util.TenantValidation;
@@ -48,11 +47,13 @@ class UNI_04_ListAllUserHandlerTest {
     void shouldListUsersFromAuthenticatedInstitution() {
         Long institutionId = 1L;
         User user1 = new User();
+        user1.setId(1L);
         user1.setName("A");
         user1.setEmail("a@example.com");
         user1.setRole(UserRole.ADMIN);
         user1.setActive(true);
         User user2 = new User();
+        user2.setId(2L);
         user2.setName("B");
         user2.setEmail("b@example.com");
         user2.setRole(UserRole.INSTRUCTOR);
@@ -67,6 +68,7 @@ class UNI_04_ListAllUserHandlerTest {
 
             assertAll(
                     () -> assertEquals(2, result.size()),
+                    () -> assertEquals(1L, result.get(0).id()),
                     () -> assertEquals("A", result.get(0).name()),
                     () -> assertEquals("a@example.com", result.get(0).email()),
                     () -> assertEquals(UserRole.ADMIN, result.get(0).role()),
@@ -79,8 +81,8 @@ class UNI_04_ListAllUserHandlerTest {
     }
 
     @Test
-    @DisplayName("UNI_04.02 - Should throw NotFoundException when no users exist")
-    void shouldThrowNotFoundExceptionWhenNoUsersExist() {
+    @DisplayName("UNI_04.02 - Should return an empty list when no users exist")
+    void shouldReturnEmptyListWhenNoUsersExist() {
         Long institutionId = 1L;
 
         try (MockedStatic<SecurityUtils> mocked = mockStatic(SecurityUtils.class)) {
@@ -88,10 +90,7 @@ class UNI_04_ListAllUserHandlerTest {
             when(userRepository.findAllByInstitution_IdAndInstitution_DeletedAtIsNull(institutionId))
                     .thenReturn(List.of());
 
-            NotFoundException ex = assertThrows(NotFoundException.class,
-                    () -> listAllUserHandler.listAllUser());
-
-            assertEquals("Usuário não encontrado.", ex.getMessage());
+            assertTrue(listAllUserHandler.listAllUser().isEmpty());
         }
     }
 

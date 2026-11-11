@@ -50,7 +50,7 @@ public class CreateInstructorHandler {
          */
 
         Optional<User> userOptional = userRepository
-                .findByIdAndInstitution_Id(command.getId_User(), institutionId);
+                .findByIdAndInstitution_IdAndIsActiveTrue(command.getId_User(), institutionId);
         if(userOptional.isEmpty()){
             throw new NotFoundException(UserMessage.USER_NOT_FOUND);
         }

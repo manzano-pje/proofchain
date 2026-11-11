@@ -4,8 +4,6 @@ import com.proofchain.admin.institution.infrastructure.repository.InstitutionRep
 import com.proofchain.business.course.domain.model.Course;
 import com.proofchain.business.course.infrastructure.repository.CourseRepository;
 import com.proofchain.business.course.interfaces.dto.response.FullCourseResponse;
-import com.proofchain.shared.exception.NotFoundException;
-import com.proofchain.shared.exception.messages.CourseMessages;
 import com.proofchain.shared.security.SecurityUtils;
 import com.proofchain.shared.util.TenantValidation;
 import lombok.AllArgsConstructor;
@@ -29,9 +27,8 @@ import java.util.stream.Collectors;
  * 1. Obtém o contexto da instituição (tenant)
  * 2. Valida existência da instituição
  * 3. Consulta todos os cursos associados à instituição
- * 4. Valida se existem cursos cadastrados
- * 5. Converte entidade Course para FullCourseResponse
- * 6. Retorna lista de cursos ao consumidor
+ * 4. Converte entidade Course para FullCourseResponse
+ * 5. Retorna lista de cursos ao consumidor, vazia quando não houver cursos
  *
  * Integração no sistema:
  * Utilizado pela camada de interface (Controller) para fornecer listagem de cursos
@@ -74,10 +71,6 @@ public class ListAllCourseHandler {
          */
 
         List<Course> courseList = courseRepository.findAllByInstitutionIdAndDeletedAtIsNull(institutionId);
-
-        if (courseList.isEmpty()) {
-            throw new NotFoundException(CourseMessages.COURSE_NOT_FOUND);
-        }
 
         /*
          * =========================================================

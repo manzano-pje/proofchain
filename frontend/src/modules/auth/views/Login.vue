@@ -26,7 +26,7 @@ BEM
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 import BaseButton from '@/core/components/base/BaseButton/BaseButton.vue'
 import Modal from '@/core/components/ui/Modal/Modal.vue'
@@ -50,6 +50,7 @@ const showModal = ref(false)
 const modalType = ref<'success' | 'warning' | 'error'>('error')
 const modalTitle = ref('')
 const modalMessage = ref('')
+const route = useRoute()
 const router = useRouter()
 const authStore = useAuthStore()
 const URL = `${import.meta.env.VITE_API_URL}/auth/login`
@@ -191,7 +192,15 @@ async function handleSubmit(): Promise<void> {
     }
 
     const routeName = Number(authStore.user?.tenantId) === 1 ? 'platformAdmin' : 'institutionAdmin'
-    void router.push({ name: routeName })
+    const requestedRedirect = route.query.redirect
+    const destination =
+      typeof requestedRedirect === 'string'
+      && requestedRedirect.startsWith('/')
+      && !requestedRedirect.startsWith('//')
+        ? requestedRedirect
+        : { name: routeName }
+
+    void router.push(destination)
   } catch (error) {
     const message =
       error instanceof Error

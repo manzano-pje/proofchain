@@ -148,7 +148,7 @@ public class UserController {
     )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso"),
-            @ApiResponse(responseCode = "404", description = "Nenhum usuário encontrado")
+            @ApiResponse(responseCode = "200", description = "Lista retornada; vazia quando não houver usuários")
     })
 
     @PreAuthorize("hasAnyRole('SUPER_ADMIN','USER','ADMIN')")

@@ -220,58 +220,73 @@ Observações:
 
           <form class="instructor-page__form" @submit.prevent="handleCreate">
             <div class="instructor-page__notice">
-              O usuário e o curso devem existir previamente. A instituição
-              será validada pelo backend com base na sessão autenticada.
+              Selecione um usuário cadastrado e um curso disponível.
             </div>
 
-            <div class="instructor-page__field">
-              <label for="instructor-user-id">
-                ID do usuário <span aria-hidden="true">*</span>
-              </label>
-              <input
-                id="instructor-user-id"
-                v-model.number="form.id_User"
-                type="number"
-                min="1"
-                step="1"
-                required
-                placeholder="Ex.: 12"
-              />
-              <small>
-                Identificador do usuário já cadastrado nesta instituição.
-              </small>
+            <div
+              v-if="isFormOptionsLoading"
+              class="instructor-page__state"
+              role="status"
+            >
+              Carregando usuários e cursos...
             </div>
 
-            <div class="instructor-page__field">
-              <label for="instructor-course-id">
-                ID do curso <span aria-hidden="true">*</span>
-              </label>
-              <input
-                id="instructor-course-id"
-                v-model.number="form.id_course"
-                type="number"
-                min="1"
-                step="1"
-                required
-                placeholder="Ex.: 4"
-              />
-              <small>
-                Identificador de um curso pertencente à instituição.
-              </small>
+            <div v-else-if="formOptionsError" class="instructor-page__options-error" role="alert">
+              <span>{{ formOptionsError }}</span>
+              <button type="button" @click="loadFormOptions">
+                Tentar novamente
+              </button>
             </div>
 
-            <div class="instructor-page__field">
-              <label for="instructor-institution-id">Instituição</label>
-              <input
-                id="instructor-institution-id"
-                :value="institutionLabel"
-                type="text"
-                readonly
-              />
-              <small>
-                Campo informativo. O backend utiliza a instituição da sessão.
-              </small>
-            </div>
+            <template v-else>
+              <div class="instructor-page__field">
+                <label for="instructor-user-id">
+                  Usuário <span aria-hidden="true">*</span>
+                </label>
+                <select
+                  id="instructor-user-id"
+                  v-model.number="form.id_User"
+                  required
+                  :disabled="availableUsers.length === 0"
+                >
+                  <option :value="null" disabled>Selecione um usuário</option>
+                  <option
+                    v-for="user in availableUsers"
+                    :key="user.id"
+                    :value="user.id"
+                  >
+                    {{ user.name }} — {{ user.email }}
+                  </option>
+                </select>
+                <small v-if="availableUsers.length === 0">
+                  Não há usuários ativos disponíveis para cadastro.
+                </small>
+              </div>
+
+              <div class="instructor-page__field">
+                <label for="instructor-course-id">
+                  Curso <span aria-hidden="true">*</span>
+                </label>
+                <select
+                  id="instructor-course-id"
+                  v-model.number="form.id_course"
+                  required
+                  :disabled="courses.length === 0"
+                >
+                  <option :value="null" disabled>Selecione um curso</option>
+                  <option
+                    v-for="course in courses"
+                    :key="course.id"
+                    :value="course.id"
+                  >
+                    {{ course.name }}
+                  </option>
+                </select>
+                <small v-if="courses.length === 0">
+                  Não há cursos disponíveis para cadastro.
+                </small>
+              </div>
+            </template>
 
             <footer class="instructor-page__form-actions">
               <BaseButton
@@ -286,7 +301,12 @@ Observações:
               <BaseButton
                 type="submit"
                 :loading="isSubmitting"
-                :disabled="isSubmitting || !isFormValid"
+                :disabled="
+                  isSubmitting
+                  || isFormOptionsLoading
+                  || Boolean(formOptionsError)
+                  || !isFormValid
+                "
               >
                 Cadastrar Instrutor
               </BaseButton>
@@ -417,12 +437,16 @@ Observações:
 import { computed, onMounted, ref, watch } from 'vue'
 import BaseButton from '@/core/components/base/BaseButton/BaseButton.vue'
 import { useAuthStore } from '@/modules/auth/stores/Auth.store'
+import { courseService } from '@/modules/business/services/Course.service'
 import { instructorService } from '@/modules/business/services/Instructor.service'
+import { userService } from '@/modules/business/services/User.service'
+import type { Course } from '@/modules/business/types/Course.types'
 import type {
   Instructor,
   InstructorCreatePayload,
   InstructorSummary,
 } from '@/modules/business/types/Instructor.types'
+import type { UserOption } from '@/modules/business/types/User.types'
 
 /* ============================================================
    Dependências
@@ -433,8 +457,12 @@ const authStore = useAuthStore()
    Estado da página
    ============================================================ */
 const instructors = ref<InstructorSummary[]>([])
+const users = ref<UserOption[]>([])
+const courses = ref<Course[]>([])
 const isLoading = ref(false)
 const isSubmitting = ref(false)
+const isFormOptionsLoading = ref(false)
+const formOptionsError = ref('')
 
 const searchTerm = ref('')
 const currentPage = ref(1)
@@ -462,17 +490,18 @@ const feedback = ref<Feedback | null>(null)
 /* ============================================================
    Computed
    ============================================================ */
-const institutionLabel = computed(() =>
-  authStore.user?.tenantId != null
-    ? String(authStore.user.tenantId)
-    : 'Identificada pela sessão autenticada',
+const availableUsers = computed(() =>
+  users.value.filter((user) =>
+    user.active
+    && !instructors.value.some(
+      (instructor) => instructor.email.toLocaleLowerCase() === user.email.toLocaleLowerCase(),
+    ),
+  ),
 )
 
 const isFormValid = computed(() =>
-  Number.isInteger(form.value.id_User)
-  && Number(form.value.id_User) > 0
-  && Number.isInteger(form.value.id_course)
-  && Number(form.value.id_course) > 0,
+  availableUsers.value.some((user) => user.id === form.value.id_User)
+  && courses.value.some((course) => course.id === form.value.id_course),
 )
 
 const filteredInstructors = computed(() => {
@@ -578,9 +607,36 @@ const openCreateForm = (): void => {
     id_User: null,
     id_course: null,
   }
+  formOptionsError.value = ''
 
   dismissFeedback()
   isFormOpen.value = true
+  void loadFormOptions()
+}
+
+/** Carrega as opções válidas de usuário e curso para o cadastro. */
+const loadFormOptions = async (): Promise<void> => {
+  const token = getAccessToken()
+  if (!token) return
+
+  isFormOptionsLoading.value = true
+  formOptionsError.value = ''
+
+  try {
+    const [availableUsers, availableCourses] = await Promise.all([
+      userService.getAll(token),
+      courseService.getAll(token),
+    ])
+
+    users.value = availableUsers
+    courses.value = availableCourses
+  } catch (error) {
+    formOptionsError.value = error instanceof Error
+      ? error.message
+      : 'Não foi possível carregar usuários e cursos.'
+  } finally {
+    isFormOptionsLoading.value = false
+  }
 }
 
 /** Fecha o formulário. */
@@ -591,7 +647,7 @@ const closeForm = (): void => {
 /** Valida e envia o cadastro para a API. */
 const handleCreate = async (): Promise<void> => {
   if (!isFormValid.value) {
-    notify('Informe IDs válidos para usuário e curso.', 'error')
+    notify('Selecione um usuário e um curso válidos.', 'error')
     return
   }
 
