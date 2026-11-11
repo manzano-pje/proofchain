@@ -1,3 +1,16 @@
 {
-    "java.compile.nullAnalysis.mode": "disabled"
+    "java.compile.nullAnalysis.mode": "disabled",
+    "sqltools.connections": [
+        {
+            "ssh": "Disabled",
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "proofchain",
+            "database": "proofchain",
+            "username": "admin",
+            "password": "admin"
+        }
+    ]
 }

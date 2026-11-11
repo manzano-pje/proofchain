@@ -206,31 +206,51 @@ Descrição.....: Estilos da página de administração de instrutores.
   cursor: not-allowed;
 }
 
-.instructor-page__feedback {
+.instructor-page__feedback-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  display: grid;
+  place-items: center;
+  padding: var(--space-lg);
+  background: var(--overlay-dark);
+}
+
+.instructor-page__feedback-modal {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
   gap: var(--space-md);
-  padding: var(--space-md);
+  width: min(100%, 420px);
+  padding: var(--space-xl);
+  border: 1px solid var(--border-buttom);
   border-radius: var(--radius-md);
+  background: var(--surface);
+  box-shadow: var(--shadow-xl);
+}
+
+.instructor-page__feedback-modal h2,
+.instructor-page__feedback-modal p {
+  margin: 0;
+}
+
+.instructor-page__feedback-modal h2 {
+  color: var(--text-primary);
+  font-size: var(--font-lg);
+}
+
+.instructor-page__feedback-modal p {
+  color: var(--text-secondary);
   font-size: var(--font-sm);
 }
 
-.instructor-page__feedback--success {
-  color: var(--success-dark);
-  background: var(--success-light);
-}
-
-.instructor-page__feedback--error {
-  color: var(--danger);
-  background: var(--danger-light);
-}
-
-.instructor-page__feedback-close {
+.instructor-page__feedback-ok {
+  align-self: flex-end;
+  min-width: 5rem;
+  padding: var(--space-sm) var(--space-lg);
   border: 0;
-  background: transparent;
-  color: inherit;
-  font-size: var(--font-lg);
+  border-radius: var(--radius-sm);
+  background: var(--action);
+  color: var(--text-inverse);
   cursor: pointer;
 }
 

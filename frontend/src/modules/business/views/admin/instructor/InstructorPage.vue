@@ -50,25 +50,6 @@ Observações:
       </BaseButton>
     </header>
 
-    <!-- Feedback -->
-    <div
-      v-if="feedback"
-      class="instructor-page__feedback"
-      :class="`instructor-page__feedback--${feedback.type}`"
-      role="status"
-      aria-live="polite"
-    >
-      <span>{{ feedback.message }}</span>
-      <button
-        type="button"
-        class="instructor-page__feedback-close"
-        aria-label="Fechar mensagem"
-        @click="dismissFeedback"
-      >
-        ×
-      </button>
-    </div>
-
     <!-- Pesquisa -->
     <section class="instructor-page__toolbar">
       <input
@@ -189,6 +170,31 @@ Observações:
 
     <!-- Modal de cadastro -->
     <Teleport to="body">
+      <!-- Modal de feedback -->
+      <div
+        v-if="feedback"
+        class="instructor-page__feedback-backdrop"
+      >
+        <section
+          class="instructor-page__feedback-modal"
+          role="alertdialog"
+          aria-modal="true"
+          aria-labelledby="instructor-feedback-title"
+        >
+          <h2 id="instructor-feedback-title">
+            {{ feedback.type === 'error' ? 'Não foi possível concluir' : 'Concluído' }}
+          </h2>
+          <p>{{ feedback.message }}</p>
+          <button
+            type="button"
+            class="instructor-page__feedback-ok"
+            @click="dismissFeedback"
+          >
+            OK
+          </button>
+        </section>
+      </div>
+
       <div
         v-if="isFormOpen"
         class="instructor-page__overlay"
