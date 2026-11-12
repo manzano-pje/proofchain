@@ -381,6 +381,16 @@ BEM
   overflow-y: auto;
 }
 
+.participant-page__feedback-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  display: grid;
+  place-items: center;
+  padding: var(--space-lg);
+  background: var(--overlay-dark);
+}
+
 .participant-page__feedback-modal {
   display: flex;
   flex-direction: column;

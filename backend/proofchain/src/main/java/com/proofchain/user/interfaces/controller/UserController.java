@@ -1,12 +1,15 @@
 package com.proofchain.user.interfaces.controller;
 
 import com.proofchain.user.applications.command.CreateUserCommand;
+import com.proofchain.user.applications.command.RecoveryPasswordCommand;
 import com.proofchain.user.applications.command.UpdateUserCommand;
 import com.proofchain.user.applications.handler.CreateUserHandler;
 import com.proofchain.user.applications.handler.DeleteUserHandler;
 import com.proofchain.user.applications.handler.ListAllUserHandler;
 import com.proofchain.user.applications.handler.ListOneUserHandler;
 import com.proofchain.user.applications.handler.UpdateUserHandler;
+import com.proofchain.user.applications.handler.RecoveryPasswordHandler;
+import com.proofchain.user.interfaces.dto.request.RecoveryPasswordDto;
 import com.proofchain.user.interfaces.dto.request.UserRequestDto;
 import com.proofchain.user.interfaces.dto.request.UserUpdateDto;
 import com.proofchain.user.interfaces.dto.response.UserReturn;
@@ -68,6 +71,7 @@ public class UserController {
     private final ListAllUserHandler listAllUser;
     private final ListOneUserHandler listOneUser;
     private final UpdateUserHandler updateUser;
+    private final RecoveryPasswordHandler recoveryPassword;
 
     /*
      * =========================================================
@@ -228,4 +232,36 @@ public class UserController {
 
         return ResponseEntity.ok("Usuário apagado com sucesso.");
     }
+
+    /*
+     * =========================================================
+     * ATUALIZAÇÃO DE SENHA
+     * =========================================================
+     */
+
+    /**
+     * Troca de senha de um usuário
+     *
+     * @param email identificador do usuário
+     * @param password nova senha do usuário
+     * @return mensagem de confirmação
+     */
+    @Operation(
+            summary = "Troca de senha de usuário",
+            description = "Troca a senha de um usuário pertencente à instituição autenticada."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Senha atualizada"),
+            @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
+    })
+    @PatchMapping("/recoveryPassword")
+    public ResponseEntity<String> updatePassword(@Valid @RequestBody RecoveryPasswordDto recoveryPasswordDto) {
+
+        RecoveryPasswordCommand command = new RecoveryPasswordCommand(recoveryPasswordDto);
+
+        recoveryPassword.recoveryPassword(command);
+
+        return ResponseEntity.ok("Senha atualizada com sucesso.");
+    }
+
 }
