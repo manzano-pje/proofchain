@@ -67,6 +67,7 @@ public class UpdateParticipantHandler {
         participant.setCity(command.getCity());
         participant.setState(command.getState());
         participant.setPostalCode(command.getPostalCode());
+        participant.setActive(command.isActive());
         participantRepository.save(participant);
     }
 }
