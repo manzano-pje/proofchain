@@ -1,6 +1,6 @@
 package com.proofchain.user.interfaces.dto.request;
 
-public record RecoveryPasswordDto(
+public record ResetPasswordDto(
         String email,
         String password
 ) {
