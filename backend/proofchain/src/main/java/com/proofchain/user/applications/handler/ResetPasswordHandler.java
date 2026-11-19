@@ -5,9 +5,8 @@ import com.proofchain.shared.exception.NotFoundException;
 import com.proofchain.shared.exception.messages.TokenMessages;
 import com.proofchain.shared.exception.messages.UserMessage;
 import com.proofchain.shared.util.EmailService;
-import com.proofchain.user.applications.command.ResetPasswordCommand;
+import com.proofchain.user.applications.command.NewPasswordCommand;
 import com.proofchain.user.applications.command.TokenValidationCommand;
-import com.proofchain.user.domain.exception.UserNotFoundException;
 import com.proofchain.user.domain.model.PasswordResetToken;
 import com.proofchain.user.domain.model.User;
 import com.proofchain.user.infrastructure.repository.PasswordResetTokenRepository;
@@ -30,9 +29,9 @@ public class ResetPasswordHandler {
     private final PasswordResetTokenRepository passwordResetRepository;
     private final EmailService emailService;
 
-    public void resetPassword(ResetPasswordCommand command) {
+    public void resetPassword(String email) {
 
-        Optional<User> userOptional = userRepository.findByEmail(command.getEmail());
+        Optional<User> userOptional = userRepository.findByEmail(email);
         if(userOptional.isEmpty()) {
             throw new NotFoundException(UserMessage.USER_NOT_FOUND);
         }
@@ -57,8 +56,7 @@ public class ResetPasswordHandler {
         ===============================================================================
          */
         PasswordResetToken password = new PasswordResetToken();
-        password.setPassword(passwordEncoder.encode(command.getPassword()));
-        password.setToken(token);
+        password.setToken(passwordEncoder.encode(token));
         password.setExpirationDate(Instant.now().plus(10, ChronoUnit.MINUTES));
 
         passwordResetRepository.save(password);
@@ -68,8 +66,25 @@ public class ResetPasswordHandler {
         ENVIAR E-MAIL COM TOKEN PARA O USUÁRIO
         =======================================
          */
-        emailService.sendEmail(command.getEmail(), token);
+        emailService.sendEmail(email, token);
 
+    }
+
+    /*
+   ======================================
+    GRAVAR NOVA SENHA
+   =======================================
+    */
+
+    public void newPassword(NewPasswordCommand command){
+
+        Optional<User> userOptional = userRepository.findByEmail(command.getEmail());
+        if(userOptional.isEmpty()) {
+            throw new NotFoundException(UserMessage.USER_NOT_FOUND);
+        }
+
+        userOptional.get().setPassword(passwordEncoder.encode(command.getPassword()));
+        userRepository.save(userOptional.get());
     }
 
    /*

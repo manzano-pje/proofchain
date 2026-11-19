@@ -302,7 +302,9 @@ async function handleSubmit(): Promise<void> {
             </p>
           </div>
 
-          <a class="login__forgot-link" href="/recuperar-senha">Esqueci minha senha</a>
+          <RouterLink class="login__forgot-link" :to="{ name: 'requestPasswordRecovery' }">
+            Esqueci minha senha
+          </RouterLink>
 
           <BaseButton
             type="submit"
