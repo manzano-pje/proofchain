@@ -12,7 +12,7 @@ import java.time.Instant;
 @Getter
 @Setter
 @RequiredArgsConstructor
-@NoArgsConstructor
+//@NoArgsConstructor
 public class PasswordResetToken {
 
     @Id
@@ -28,7 +28,6 @@ public class PasswordResetToken {
     private User user;
 
     public boolean isexpirated() {
-
         return !this.getExpirationDate().isAfter(Instant.now());
     }
 }
