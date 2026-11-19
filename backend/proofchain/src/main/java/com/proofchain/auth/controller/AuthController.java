@@ -2,13 +2,20 @@ package com.proofchain.auth.controller;
 
 import com.proofchain.auth.dtos.AuthRequest;
 import com.proofchain.auth.dtos.AuthResponse;
+import com.proofchain.auth.dtos.NewPasswordDto;
 import com.proofchain.auth.dtos.RefreshRequest;
 import com.proofchain.auth.service.AuthService;
+import com.proofchain.auth.service.ResetPasswordService;
+import com.proofchain.user.applications.command.TokenValidationCommand;
+import com.proofchain.user.interfaces.dto.request.TokenValidationDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,19 +40,18 @@ import org.springframework.web.bind.annotation.*;
  * Utilizado como ponto de entrada do módulo de autenticação.
  * Integra camada HTTP com camada de serviço de autenticação.
  */
-@RestController
-@RequestMapping("api/v1/auth")
+
 @Tag(
         name = "Authentication",
         description = "Endpoints responsáveis pela autenticação e geração de token JWT"
 )
+@RestController
+@AllArgsConstructor
+@RequestMapping("api/v1/auth")
 public class AuthController {
 
     private final AuthService authService;
-
-    public AuthController(AuthService authService) {
-        this.authService = authService;
-    }
+    private final ResetPasswordService resetPassword;
 
     /**
      * Realiza autenticação do usuário e gera token JWT.
@@ -72,5 +78,46 @@ public class AuthController {
     public ResponseEntity<AuthResponse> refreshToken(@Valid @RequestBody RefreshRequest request){
         AuthResponse retorno = authService.refreshToken(request);
         return ResponseEntity.ok(retorno);
+    }
+
+    /*
+     * =========================================================
+     * ATUALIZAÇÃO DE SENHA
+     * =========================================================
+     */
+
+    /**
+     * Troca de senha de um usuário
+     *
+     * param email identificador do usuário
+     * param password nova senha do usuário
+     * @return mensagem de confirmação
+     */
+    @Operation(
+            summary = "Troca de senha de usuário",
+            description = "Troca a senha de um usuário pertencente à instituição autenticada."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Senha atualizada"),
+            @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
+    })
+    @PatchMapping("/reset/{email}")
+    public ResponseEntity<String> resetPassword(@Valid @PathVariable String email) {
+
+        resetPassword.resetPassword(email);
+        return ResponseEntity.ok("Token enviado com sucesso.");
+    }
+
+    @PostMapping("/reset/validate")
+    public ResponseEntity<String> tokenValidation(@Valid @RequestBody TokenValidationDto tokenValidation){
+        TokenValidationCommand command = new TokenValidationCommand(tokenValidation);
+        resetPassword.tokenValidation(command);
+        return ResponseEntity.ok("Token validado com sucesso.");
+    }
+
+    @PatchMapping("/newPassword")
+    public ResponseEntity<String> newPassword(@Valid @RequestBody NewPasswordDto newPassword){
+        resetPassword.newPassword(newPassword);
+        return ResponseEntity.ok("Senha alterada com sucesso.");
     }
 }

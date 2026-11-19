@@ -1,17 +1,8 @@
 package com.proofchain.user.interfaces.controller;
 
 import com.proofchain.user.applications.command.CreateUserCommand;
-import com.proofchain.user.applications.command.ResetPasswordCommand;
-import com.proofchain.user.applications.command.TokenValidationCommand;
 import com.proofchain.user.applications.command.UpdateUserCommand;
-import com.proofchain.user.applications.handler.CreateUserHandler;
-import com.proofchain.user.applications.handler.DeleteUserHandler;
-import com.proofchain.user.applications.handler.ListAllUserHandler;
-import com.proofchain.user.applications.handler.ListOneUserHandler;
-import com.proofchain.user.applications.handler.UpdateUserHandler;
-import com.proofchain.user.applications.handler.ResetPasswordHandler;
-import com.proofchain.user.interfaces.dto.request.ResetPasswordDto;
-import com.proofchain.user.interfaces.dto.request.TokenValidationDto;
+import com.proofchain.user.applications.handler.*;
 import com.proofchain.user.interfaces.dto.request.UserRequestDto;
 import com.proofchain.user.interfaces.dto.request.UserUpdateDto;
 import com.proofchain.user.interfaces.dto.response.UserReturn;
@@ -73,7 +64,6 @@ public class UserController {
     private final ListAllUserHandler listAllUser;
     private final ListOneUserHandler listOneUser;
     private final UpdateUserHandler updateUser;
-    private final ResetPasswordHandler resetPassword;
 
     /*
      * =========================================================
@@ -233,41 +223,5 @@ public class UserController {
         deleteUser.deleteUser(id);
 
         return ResponseEntity.ok("Usuário apagado com sucesso.");
-    }
-
-    /*
-     * =========================================================
-     * ATUALIZAÇÃO DE SENHA
-     * =========================================================
-     */
-
-    /**
-     * Troca de senha de um usuário
-     *
-     * param email identificador do usuário
-     * param password nova senha do usuário
-     * @return mensagem de confirmação
-     */
-    @Operation(
-            summary = "Troca de senha de usuário",
-            description = "Troca a senha de um usuário pertencente à instituição autenticada."
-    )
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Senha atualizada"),
-            @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
-    })
-    @PatchMapping("/reset")
-    public ResponseEntity<String> resetPassword(@Valid @RequestBody ResetPasswordDto resetPasswordDto) {
-
-        ResetPasswordCommand command = new ResetPasswordCommand(resetPasswordDto);
-        resetPassword.resetPassword(command);
-        return ResponseEntity.ok("Token enviado com sucesso.");
-    }
-
-    @PostMapping("/reset/validate")
-    public ResponseEntity<String> tokenValidation(@Valid @RequestBody TokenValidationDto tokenValidation){
-        TokenValidationCommand command = new TokenValidationCommand(tokenValidation);
-        resetPassword.tokenValidation(command);
-        return ResponseEntity.ok("Senha alterada com sucesso.");
     }
 }

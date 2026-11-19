@@ -1,6 +1,6 @@
-package com.proofchain.user.infrastructure.repository;
+package com.proofchain.auth.repository;
 
-import com.proofchain.user.domain.model.PasswordResetToken;
+import com.proofchain.auth.Entity.PasswordResetToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

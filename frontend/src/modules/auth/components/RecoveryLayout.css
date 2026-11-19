@@ -1,0 +1,41 @@
+/*
+=========================================================
+Project.......: ProofChain
+Module........: Auth
+Feature.......: Password Recovery
+File..........: RecoveryLayout.css
+Version.......: 1.0.0
+
+Description...:
+Complementos mínimos de estilo para o layout compartilhado
+de recuperação, reutilizando os estilos da tela de login.
+=========================================================
+*/
+
+@import '../views/Login.css';
+
+.recovery__back-link {
+  align-self: flex-start;
+  margin: var(--space-md) 0;
+  color: var(--action-active);
+  font-size: var(--font-xs);
+  font-weight: var(--weight-medium);
+}
+
+.recovery__back-link:focus-visible {
+  outline: 3px solid var(--action-light);
+  outline-offset: 2px;
+}
+
+.recovery__description {
+  margin: 0;
+  color: var(--text-disabled);
+  font-size: var(--font-sm);
+  line-height: var(--line-normal);
+}
+
+.recovery__email {
+  overflow-wrap: anywhere;
+  color: var(--text-inverse);
+  font-weight: var(--weight-semibold);
+}

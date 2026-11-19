@@ -1,8 +1,8 @@
-package com.proofchain.user.domain.model;
+package com.proofchain.auth.Entity;
 
+import com.proofchain.user.domain.model.User;
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 

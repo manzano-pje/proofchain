@@ -1,38 +1,41 @@
-package com.proofchain.user.applications.handler;
+package com.proofchain.auth.service;
 
+import com.proofchain.auth.dtos.NewPasswordDto;
 import com.proofchain.shared.exception.InvalidTokenExceptions;
 import com.proofchain.shared.exception.NotFoundException;
+import com.proofchain.shared.exception.PasswordExceptions;
+import com.proofchain.shared.exception.messages.PasswordMessages;
 import com.proofchain.shared.exception.messages.TokenMessages;
 import com.proofchain.shared.exception.messages.UserMessage;
 import com.proofchain.shared.util.EmailService;
-import com.proofchain.user.applications.command.ResetPasswordCommand;
 import com.proofchain.user.applications.command.TokenValidationCommand;
-import com.proofchain.user.domain.exception.UserNotFoundException;
-import com.proofchain.user.domain.model.PasswordResetToken;
+import com.proofchain.auth.Entity.PasswordResetToken;
 import com.proofchain.user.domain.model.User;
-import com.proofchain.user.infrastructure.repository.PasswordResetTokenRepository;
+import com.proofchain.auth.repository.PasswordResetTokenRepository;
 import com.proofchain.user.infrastructure.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
+import java.text.ParseException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
-@Component
+@Service
 @AllArgsConstructor
-public class ResetPasswordHandler {
+public class ResetPasswordService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final PasswordResetTokenRepository passwordResetRepository;
     private final EmailService emailService;
 
-    public void resetPassword(ResetPasswordCommand command) {
+    public void resetPassword(String email) {
 
-        Optional<User> userOptional = userRepository.findByEmail(command.getEmail());
+        Optional<User> userOptional = userRepository.findByEmail(email);
         if(userOptional.isEmpty()) {
             throw new NotFoundException(UserMessage.USER_NOT_FOUND);
         }
@@ -57,8 +60,9 @@ public class ResetPasswordHandler {
         ===============================================================================
          */
         PasswordResetToken password = new PasswordResetToken();
-        password.setPassword(passwordEncoder.encode(command.getPassword()));
-        password.setToken(token);
+        password.setUser(userOptional.get());
+        password.setPassword(null);
+        password.setToken(passwordEncoder.encode(token));
         password.setExpirationDate(Instant.now().plus(10, ChronoUnit.MINUTES));
 
         passwordResetRepository.save(password);
@@ -68,7 +72,7 @@ public class ResetPasswordHandler {
         ENVIAR E-MAIL COM TOKEN PARA O USUÁRIO
         =======================================
          */
-        emailService.sendEmail(command.getEmail(), token);
+        emailService.sendEmail(email, token);
 
     }
 
@@ -88,15 +92,36 @@ public class ResetPasswordHandler {
         if(passwordResetTokenOptional.isEmpty()) {
             throw new NotFoundException(UserMessage.USER_NOT_FOUND);
         }
-        if(!passwordResetTokenOptional.get().getToken().equals(command.getToken())){
+        if(!passwordEncoder.matches(command.getToken(), passwordResetTokenOptional.get().getToken())){
             throw new InvalidTokenExceptions(TokenMessages.INVALID_TOKEN);
         }
         if(passwordResetTokenOptional.get().getExpirationDate().isBefore(Instant.now())){
             throw new InvalidTokenExceptions(TokenMessages.TOKEN_EXPIRED);
         }
+    }
+
+    public void newPassword(NewPasswordDto newPassword) {
+        String password = passwordEncoder.encode(newPassword.password());
+        Optional<User> userOptional = userRepository.findByEmail(newPassword.email());
+        if(userOptional.isEmpty()) {
+            throw new NotFoundException(UserMessage.USER_NOT_FOUND);
+        }
+        Optional<PasswordResetToken> passwordResetTokenOptional = passwordResetRepository.findByUser_Id(userOptional.get().getId());
+        if(passwordResetTokenOptional.isEmpty()) {
+            throw new NotFoundException(UserMessage.USER_NOT_FOUND);
+        }
+        if(!passwordEncoder.matches(newPassword.token(), passwordResetTokenOptional.get().getToken())){
+            throw new InvalidTokenExceptions(TokenMessages.INVALID_TOKEN);
+        }
+        if(passwordResetTokenOptional.get().getExpirationDate().isBefore(Instant.now())){
+            throw new InvalidTokenExceptions(TokenMessages.TOKEN_EXPIRED);
+        }
+        if(passwordEncoder.matches(password, userOptional.get().getPassword())){
+            throw new PasswordExceptions(PasswordMessages.PASSWORD_ALREADY_EXIST);
+        }
 
         User user = passwordResetTokenOptional.get().getUser();
-        user.setPassword(passwordResetTokenOptional.get().getPassword());
+        user.setPassword(password);
 
         userRepository.save(user);
         passwordResetRepository.deleteByUser_id(user.getId());

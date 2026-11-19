@@ -77,7 +77,11 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/api/v1/auth/login",
                                 "/api/v1/auth/refresh",
-                                "/api/v1/institution/register"
+                                "/api/v1/institution/register",
+                                "/api/v1/auth/reset/*",
+                                "/api/v1/auth/reset/validate",
+                                "/api/v1/auth/newPassword"
+
                         ).permitAll()
                         .requestMatchers("/api/v1/institution/me").hasAnyRole("ADMIN", "SUPER_ADMIN")
                         .requestMatchers("/api/v1/participants/**")
