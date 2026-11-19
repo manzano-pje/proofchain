@@ -41,6 +41,21 @@ const router = createRouter({
       component: Login,
     },
     {
+      path: '/recuperar-senha',
+      name: 'requestPasswordRecovery',
+      component: () => import('@/modules/auth/views/RequestPasswordRecovery.vue'),
+    },
+    {
+      path: '/validar-codigo',
+      name: 'validateRecoveryCode',
+      component: () => import('@/modules/auth/views/ValidateRecoveryCode.vue'),
+    },
+    {
+      path: '/redefinir-senha',
+      name: 'resetPassword',
+      component: () => import('@/modules/auth/views/ResetPassword.vue'),
+    },
+    {
       path: '/onboarding',
       name: 'Onboarding',
       component: () => import('@/modules/business/views/onboarding/Onboarding.vue'),

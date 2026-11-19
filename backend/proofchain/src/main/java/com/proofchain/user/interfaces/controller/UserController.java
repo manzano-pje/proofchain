@@ -1,7 +1,6 @@
 package com.proofchain.user.interfaces.controller;
 
 import com.proofchain.user.applications.command.CreateUserCommand;
-import com.proofchain.user.applications.command.ResetPasswordCommand;
 import com.proofchain.user.applications.command.TokenValidationCommand;
 import com.proofchain.user.applications.command.UpdateUserCommand;
 import com.proofchain.user.applications.handler.CreateUserHandler;
@@ -10,7 +9,7 @@ import com.proofchain.user.applications.handler.ListAllUserHandler;
 import com.proofchain.user.applications.handler.ListOneUserHandler;
 import com.proofchain.user.applications.handler.UpdateUserHandler;
 import com.proofchain.user.applications.handler.ResetPasswordHandler;
-import com.proofchain.user.interfaces.dto.request.ResetPasswordDto;
+import com.proofchain.user.interfaces.dto.request.NewPasswordDto;
 import com.proofchain.user.interfaces.dto.request.TokenValidationDto;
 import com.proofchain.user.interfaces.dto.request.UserRequestDto;
 import com.proofchain.user.interfaces.dto.request.UserUpdateDto;
@@ -256,11 +255,10 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "Senha atualizada"),
             @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
     })
-    @PatchMapping("/reset")
-    public ResponseEntity<String> resetPassword(@Valid @RequestBody ResetPasswordDto resetPasswordDto) {
+    @PatchMapping("/reset/{email}")
+    public ResponseEntity<String> resetPassword(@Valid @PathVariable String email) {
 
-        ResetPasswordCommand command = new ResetPasswordCommand(resetPasswordDto);
-        resetPassword.resetPassword(command);
+        resetPassword.resetPassword(email);
         return ResponseEntity.ok("Token enviado com sucesso.");
     }
 
@@ -268,6 +266,12 @@ public class UserController {
     public ResponseEntity<String> tokenValidation(@Valid @RequestBody TokenValidationDto tokenValidation){
         TokenValidationCommand command = new TokenValidationCommand(tokenValidation);
         resetPassword.tokenValidation(command);
+        return ResponseEntity.ok("Token validado com sucesso.");
+    }
+
+    @PatchMapping("/reset-password")
+    public ResponseEntity<String> newPassword(@Valid @RequestBody NewPasswordDto newPassword){
+        resetPassword.newPassword(newPassword);
         return ResponseEntity.ok("Senha alterada com sucesso.");
     }
 }
