@@ -2,17 +2,14 @@ package com.proofchain.auth.Entity;
 
 import com.proofchain.user.domain.model.User;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.Instant;
 
 @Entity
 @Getter
 @Setter
-@RequiredArgsConstructor
-//@NoArgsConstructor
+@AllArgsConstructor
 public class PasswordResetToken {
 
     @Id
@@ -26,6 +23,10 @@ public class PasswordResetToken {
     @OneToOne(targetEntity = User.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
+
+    public PasswordResetToken() {
+
+    }
 
     public boolean isexpirated() {
         return !this.getExpirationDate().isAfter(Instant.now());

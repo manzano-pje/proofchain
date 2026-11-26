@@ -14,9 +14,11 @@ import com.proofchain.user.domain.model.User;
 import com.proofchain.auth.repository.PasswordResetTokenRepository;
 import com.proofchain.user.infrastructure.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.security.SecureRandom;
 import java.text.ParseException;
@@ -26,54 +28,67 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
+@NoArgsConstructor
 public class ResetPasswordService {
 
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final PasswordResetTokenRepository passwordResetRepository;
-    private final EmailService emailService;
+    private  UserRepository userRepository;
+    private  PasswordEncoder passwordEncoder;
+    private  PasswordResetTokenRepository passwordResetRepository;
+    private  EmailService emailService;
 
+
+    @Transactional
     public void resetPassword(String email) {
 
+        // 1. Busca o usuário pelo e-mail informado.
+        // Se não existir no banco, lança NotFoundException e interrompe o método.
         Optional<User> userOptional = userRepository.findByEmail(email);
-        if(userOptional.isEmpty()) {
+        if (userOptional.isEmpty()) {
             throw new NotFoundException(UserMessage.USER_NOT_FOUND);
         }
 
-        /*
-        ==================================
-        DELETAR TOKEN ANTERIOR SE EXISTIR
-        ==================================
-         */
-        passwordResetRepository.deleteByUser_id(userOptional.get().getId());
+        // Guarda o usuário encontrado em uma variável para evitar chamar userOptional.get() várias vezes
+        User user = userOptional.get();
 
-        /*
-        ==================================
-        GERAR TOKEN ALEATÓRIO DE 6 DÍGITOS
-        ==================================
-         */
-        String token = String.format("%06d", new SecureRandom().nextInt(999999));
+    /*
+    ==================================
+    DELETAR TOKEN ANTERIOR SE EXISTIR
+    ==================================
+     */
+        // ATENÇÃO: aqui buscamos pelo ID do usuário (e não pelo ID do registro de token),
+        // pois um usuário pode ter ou não um token de reset já gerado anteriormente.
+        // (Ajuste o nome do método conforme o seu PasswordResetTokenRepository, ex: findByUserId / deleteByUserId)
+        PasswordResetToken resetToken = passwordResetRepository.findByUser_Id(user.getId())
+                .orElseGet(PasswordResetToken::new);
 
-        /*
-        ===============================================================================
-        GRAVAR TOKEN E SENHA CRIPTOGRAFADA NO BANCO DE DADOS COM VALIDADE DE 10 MINUTOS
-        ===============================================================================
-         */
-        PasswordResetToken password = new PasswordResetToken();
-        password.setUser(userOptional.get());
-        password.setPassword(null);
-        password.setToken(passwordEncoder.encode(token));
-        password.setExpirationDate(Instant.now().plus(10, ChronoUnit.MINUTES));
+    /*
+    ==================================
+    GERAR TOKEN ALEATÓRIO DE 6 DÍGITOS
+    ==================================
+     */
+        // SecureRandom é mais seguro que Random comum para códigos/tokens.
+        // nextInt(1_000_000) gera números de 0 até 999999, e "%06d" preenche com zeros à esquerda (ex: "004812").
+        String token = String.format("%06d", new SecureRandom().nextInt(1_000_000));
 
-        passwordResetRepository.save(password);
+    /*
+    ===============================================================================
+    GRAVAR TOKEN E SENHA CRIPTOGRAFADA NO BANCO DE DADOS COM VALIDADE DE 10 MINUTOS
+    ===============================================================================
+     */
+        resetToken.setUser(user);
+        resetToken.setPassword(null);
+        resetToken.setToken(passwordEncoder.encode(token));
+        resetToken.setExpirationDate(Instant.now().plus(10, ChronoUnit.MINUTES));
 
-        /*
-        ======================================
-        ENVIAR E-MAIL COM TOKEN PARA O USUÁRIO
-        =======================================
-         */
-        emailService.sendEmail(email, token);
+        passwordResetRepository.save(resetToken);
 
+    /*
+    ======================================
+    ENVIAR E-MAIL COM TOKEN PARA O USUÁRIO
+    =======================================
+     */
+        // Envia o código puro (6 dígitos) por e-mail para o usuário validar na tela de redefinição
+        emailService.sendEmail(user.getEmail(), token);
     }
 
    /*
@@ -124,6 +139,6 @@ public class ResetPasswordService {
         user.setPassword(password);
 
         userRepository.save(user);
-        passwordResetRepository.deleteByUser_id(user.getId());
+        passwordResetRepository.deleteByUser_Id(user.getId());
     }
 }
