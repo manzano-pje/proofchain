@@ -28,13 +28,13 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-@NoArgsConstructor
+//@NoArgsConstructor
 public class ResetPasswordService {
 
-    private  UserRepository userRepository;
-    private  PasswordEncoder passwordEncoder;
-    private  PasswordResetTokenRepository passwordResetRepository;
-    private  EmailService emailService;
+    private  final UserRepository userRepository;
+    private  final PasswordEncoder passwordEncoder;
+    private  final PasswordResetTokenRepository passwordResetRepository;
+    private  final EmailService emailService;
 
 
     @Transactional
@@ -42,6 +42,8 @@ public class ResetPasswordService {
 
         // 1. Busca o usuário pelo e-mail informado.
         // Se não existir no banco, lança NotFoundException e interrompe o método.
+
+
         Optional<User> userOptional = userRepository.findByEmail(email);
         if (userOptional.isEmpty()) {
             throw new NotFoundException(UserMessage.USER_NOT_FOUND);
